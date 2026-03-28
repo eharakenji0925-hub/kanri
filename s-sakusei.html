@@ -1,0 +1,2083 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self';">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta name="referrer" content="no-referrer">
+<title>Lucina スタジオスケジュール作成APP</title>
+<script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js" integrity="sha384-OLBgp1GsljhM2TJ+sbHjaiH9txEUvgdDTAzHv2P24donTt6/529l+9Ua0vFImLlb" crossorigin="anonymous"></script>
+<style>
+:root{
+  --pri:#c0392b;--pri-lt:#e74c3c;--pri-dk:#962d22;--acc:#e91e63;
+  --bg:#fdf2f0;--card:#fff;--txt:#2c2c2c;--txt2:#888;--bdr:#e0d0cd;
+  --shd:0 2px 12px rgba(192,57,43,.08);--rad:10px;
+  --cYoga:#ff5252;--cPilH:#ba68c8;--cMach:#0277bd;--cBeauty:#ec407a;
+  --cPersonal:#e67e22;--cShower:#1abc9c;--cSpecial:#f39c12;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans JP','Segoe UI','Hiragino Sans','Yu Gothic',sans-serif;background:var(--bg);color:var(--txt);font-size:14px}
+
+.header{background:linear-gradient(135deg,var(--pri),var(--acc));color:#fff;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.header h1{font-size:19px;letter-spacing:1px}
+.header-sub{font-size:11px;opacity:.85}
+.hact{display:flex;gap:5px;flex-wrap:wrap}
+
+.tabs{display:flex;background:var(--card);border-bottom:2px solid var(--bdr);overflow-x:auto}
+.tab{padding:10px 20px;cursor:pointer;border-bottom:3px solid transparent;font-size:13px;font-weight:600;color:var(--txt2);white-space:nowrap;transition:.2s}
+.tab:hover{color:var(--pri)}
+.tab.on{color:var(--pri);border-bottom-color:var(--pri);box-shadow:inset 0 -3px 0 var(--pri)}
+
+.main{padding:14px;max-width:1500px;margin:0 auto}
+.sec{display:none}.sec.on{display:block}
+
+.card{background:var(--card);border-radius:var(--rad);box-shadow:var(--shd);padding:16px;margin-bottom:12px;border:1px solid var(--bdr)}
+.ct{font-size:15px;font-weight:700;color:var(--pri);margin-bottom:8px}
+
+.fr{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;align-items:flex-end}
+.fg{display:flex;flex-direction:column;gap:2px}
+.fg label{font-size:11px;font-weight:600;color:var(--txt2)}
+.fg input,.fg select,.fg textarea{padding:7px 10px;border:1px solid var(--bdr);border-radius:6px;font-size:12px;outline:none;transition:.2s}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--pri)}
+.fg textarea{resize:vertical;min-height:50px}
+
+.btn{padding:6px 14px;border:none;border-radius:5px;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:4px}
+.bp{background:var(--pri);color:#fff}.bp:hover{background:var(--pri-dk);transform:translateY(-1px)}
+.ba{background:var(--acc);color:#fff}.ba:hover{background:#c2185b;transform:translateY(-1px)}
+.bo{background:transparent;border:1px solid var(--bdr);color:var(--txt)}.bo:hover{background:var(--bg);transform:translateY(-1px)}
+.bd{background:#e74c3c;color:#fff}.bd:hover{background:#c0392b;transform:translateY(-1px)}
+.bs{background:#27ae60;color:#fff}.bs:hover{background:#229954;transform:translateY(-1px)}
+.bw{background:transparent;border:1px solid rgba(255,255,255,.5);color:#fff;font-size:12px}.bw:hover{background:rgba(255,255,255,.15);transform:translateY(-1px)}
+.bsm{padding:3px 7px;font-size:10px}
+.be{background:var(--cMach);color:#fff}.be:hover{background:#2471a3}
+
+table{width:100%;border-collapse:collapse}
+th,td{padding:5px 7px;text-align:left;border-bottom:1px solid var(--bdr);font-size:12px}
+th{background:var(--bg);font-weight:600;color:var(--txt2);font-size:11px}
+
+.badge{display:inline-block;padding:2px 6px;border-radius:8px;font-size:9px;font-weight:600;color:#fff}
+.cdot{width:10px;height:10px;border-radius:50%;display:inline-block}
+
+/* Schedule */
+.sctrl{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.vt{display:flex;border:1px solid var(--bdr);border-radius:5px;overflow:hidden}
+.vt button{padding:4px 10px;border:none;background:transparent;cursor:pointer;font-size:11px;font-weight:600;color:var(--txt2)}
+.vt button.on{background:var(--pri);color:#fff}
+.wn{display:flex;align-items:center;gap:5px}
+.wn button{background:var(--card);border:1px solid var(--bdr);border-radius:5px;padding:4px 8px;cursor:pointer;font-size:12px}
+.wn button:hover{background:var(--bg)}
+.wl{font-size:15px;font-weight:700;min-width:180px;text-align:center}
+
+/* Schedule Grid */
+.sched-wrap{border:1px solid var(--bdr);border-radius:var(--rad);overflow:hidden;background:var(--card)}
+.sched-header{display:grid;grid-template-columns:50px repeat(7,1fr);height:38px;background:linear-gradient(135deg,var(--pri),var(--acc));border-radius:var(--rad) var(--rad) 0 0}
+.sh-time{display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;border-right:1px solid rgba(255,255,255,.3)}
+.sh-day{display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;border-right:1px solid rgba(255,255,255,.15)}
+.sh-day span{font-size:10px;font-weight:400;opacity:.85}
+.sh-day.sat,.sh-day.sun{color:#fff}
+.sh-day.today{background:rgba(255,255,255,.2)}
+
+.sched-body{display:grid;grid-template-columns:50px repeat(7,1fr);position:relative}
+.sched-times{border-right:1px solid var(--bdr);background:#fdf5f3}
+.tmark{display:flex;align-items:center;justify-content:center;font-weight:600;border-bottom:1px solid transparent;position:absolute;width:100%;font-size:10px}
+.tmark.th0{font-size:11px;color:var(--txt);border-bottom:1px solid var(--bdr);background:rgba(192,57,43,.04)}
+.tmark.th30{font-size:9px;color:var(--txt2);border-bottom:1px dotted #e8d8d5}
+.tmark.th15{font-size:7px;color:#ccc;border-bottom:1px dotted #f0eae8}
+
+.sched-day{border-right:1px solid #f0e8e5;position:relative}
+.gline{border-bottom:1px solid transparent;cursor:pointer;transition:background .1s;position:absolute;width:100%;display:flex;align-items:center;justify-content:center}
+.gline:hover{background:rgba(192,57,43,.03)}
+.gline.gl0{border-bottom:1px solid #e8dbd8}
+.gline.gl30{border-bottom:1px dotted #eee5e2}
+.gline.gl15{border-bottom:1px dotted #f5f0ef}
+
+/* Lesson blocks */
+.lb{border-radius:7px;padding:3px 5px;color:#fff;overflow:hidden;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.12);transition:transform .15s,box-shadow .15s;display:flex;flex-direction:column;justify-content:center;position:absolute;z-index:2;border-left:3px solid rgba(0,0,0,.15)}
+.lb:hover{transform:scale(1.02);box-shadow:0 2px 8px rgba(0,0,0,.2);z-index:10!important}
+.lb .ln{font-weight:700;font-size:13px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:.3px}
+.lb .ls{font-size:9px;opacity:.9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lb .lt{font-size:9px;opacity:.9}
+.lb .li{font-size:11px;margin-top:1px}
+.lb .lx{position:absolute;top:2px;right:4px;background:rgba(0,0,0,.25);color:#fff;border:none;border-radius:50%;width:16px;height:16px;font-size:10px;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:3}
+.lb:hover .lx{display:flex}
+
+/* Monthly */
+.mg{display:grid;grid-template-columns:repeat(7,1fr);border:1px solid var(--bdr);border-radius:var(--rad);overflow:hidden;background:var(--card)}
+.mg .mdh{background:var(--pri);color:#fff;padding:5px;text-align:center;font-size:10px;font-weight:700}
+.mg .mc{border:1px solid #f0e0dd;min-height:80px;padding:2px}
+.mg .mc.ot{background:#f8f4f3;opacity:.5}
+.mg .mc.td{background:rgba(233,30,99,.05)}
+.mg .mc .dn{font-size:10px;font-weight:700;color:var(--txt2)}
+.mg .mc .dn.sun,.mg .mc .dn.sat{color:var(--txt)}
+.mg .mc .ml{font-size:7px;padding:1px 2px;border-radius:2px;color:#fff;margin-bottom:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:12px}
+.sc{background:var(--card);border-radius:var(--rad);padding:12px;box-shadow:var(--shd);text-align:center}
+.sc .n{font-size:28px;font-weight:800;color:var(--pri)}
+.sc .l{font-size:11px;color:var(--txt2)}
+
+/* Legend */
+.leg{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.leg-i{display:flex;align-items:center;gap:3px;font-size:10px}
+
+/* 裏面 (Back page) */
+.ura-section{margin-bottom:20px}
+.ura-cat-header{background:var(--pri);color:#fff;padding:8px 12px;font-size:13px;font-weight:700;border-radius:6px 6px 0 0;margin-top:14px}
+.ura-cat-header.beauty{background:var(--cBeauty)}
+.ura-cat-header.yoga{background:var(--cYoga)}
+.ura-cat-header.pilh{background:var(--cPilH)}
+.ura-cat-header.mach{background:var(--cMach)}
+.ura-cat-header.personal{background:var(--cPersonal)}
+.ura-cat-header.shower{background:var(--cShower)}
+.ura-table{width:100%;border-collapse:collapse;border:1px solid var(--bdr);margin-bottom:0}
+.ura-table th{background:#f8f0ee;padding:6px 8px;font-size:11px;font-weight:700;color:var(--txt);border:1px solid var(--bdr);text-align:center}
+.ura-table td{padding:6px 8px;font-size:11px;border:1px solid var(--bdr);vertical-align:top}
+.ura-table td.name{font-weight:700;white-space:nowrap;width:140px}
+.ura-table td.star{text-align:center;width:50px;color:var(--pri)}
+.ura-table td.desc{line-height:1.5}
+.ura-note{font-size:10px;color:var(--txt2);padding:4px 8px;background:#f9f1ef;border:1px solid var(--bdr);border-top:none;border-radius:0 0 6px 6px}
+
+/* Modal */
+.mo{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(3px)}
+.mo.show{display:flex}
+.md{background:var(--card);border-radius:var(--rad);padding:22px;max-width:520px;width:92%;max-height:85vh;overflow-y:auto}
+.mdt{font-size:16px;font-weight:700;color:var(--pri);margin-bottom:12px}
+.mda{display:flex;gap:6px;justify-content:flex-end;margin-top:12px}
+
+.toast{position:fixed;bottom:16px;right:16px;background:#333;color:#fff;padding:8px 16px;border-radius:10px;font-size:12px;z-index:2000;display:none;box-shadow:0 4px 12px rgba(0,0,0,.15)}
+.toast.show{display:block;animation:su .3s}
+@keyframes su{from{transform:translateY(16px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+
+/* 印刷専用レイアウト (sp-*) - 画面では非表示 */
+.sp-wrap{display:none}
+.printing .sp-wrap{display:flex;flex-direction:column}
+.printing .sched-wrap{display:none}
+
+@media print{
+  @page{size:A4 landscape;margin:3mm 5mm}
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  body{margin:0;padding:0}
+  .header,.tabs,.sctrl,.btn,.no-print,.stats,.leg,.card,.mo,.sec:not(#sec-schedule){display:none!important}
+  .main{padding:0;margin:0;max-width:100%}
+  #sec-schedule{display:block!important;page-break-after:always}
+  #vm,.mg,.sched-wrap,.vt,.wn,.wl{display:none!important}
+
+  /* 表面タイトル */
+  .print-title{display:block!important;background:linear-gradient(135deg,#FF6699,#FF8899);color:#fff;text-align:center;padding:2px 10px;font-size:12px;font-weight:700;border-radius:3px;margin-bottom:1px}
+
+  /* === 印刷用グリッド (sp-*) === */
+  .sp-wrap{display:flex!important;flex-direction:column;width:100%}
+
+  /* ヘッダー行 */
+  .sp-hdr{display:grid;grid-template-columns:36px repeat(7,1fr);height:18px;background:linear-gradient(135deg,#FF6699,#FF8899)}
+  .sp-th{display:flex;align-items:center;justify-content:center;color:#fff;font-size:8px;font-weight:700;border-right:0.5px solid rgba(255,255,255,.3)}
+  .sp-dh{display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:700;border-right:0.5px solid rgba(255,255,255,.2)}
+  .sp-dh span{font-size:8px;opacity:.85}
+  .sp-dh.sat,.sp-dh.sun{color:#fff}
+
+  /* ボディ: ページ残り全部を使う */
+  .sp-body{display:grid;grid-template-columns:36px repeat(7,1fr);height:187mm;position:relative}
+
+  /* 時間列 */
+  .sp-tc{position:relative;border-right:0.5px solid #daa;background:#fff5f8}
+  .sp-t{position:absolute;width:100%;display:flex;align-items:flex-start;justify-content:center;font-weight:600;padding-top:1px;left:0}
+  .sp-t.h0{font-size:8px;color:#333;border-top:0.5px solid #c99}
+  .sp-t.h30{font-size:6.5px;color:#888;border-top:0.3px dotted #dbb}
+  .sp-t.h15{font-size:0;color:transparent;border-top:0.15px dotted #eee}
+
+  /* 曜日列 */
+  .sp-dc{position:relative;border-right:0.4px solid #f0e8e5}
+  .sp-g{position:absolute;width:100%;height:0}
+  .sp-g.g0{border-top:0.4px solid #d8c4c0}
+  .sp-g.g30{border-top:0.2px dotted #e8dbd8}
+  .sp-g.g15{border-top:0.1px dotted #f5f0ef}
+
+  /* レッスンブロック: お客様が読めるサイズ */
+  .sp-lb{position:absolute;left:1px;right:1px;border-radius:3px;padding:1px 4px;color:#fff;overflow:hidden;display:flex;flex-direction:column;justify-content:center;line-height:1.15;box-shadow:0 0.5px 1px rgba(0,0,0,.15)}
+  .sp-lb b{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .sp-lb span{font-size:10px;opacity:.95}
+  .sp-lb span:last-child{font-size:10px;opacity:1}
+
+  /* 表面フッター: 非表示（裏面に集約） */
+  .print-footer{display:none!important}
+
+  /* ===== Page 2: 裏面 ===== */
+  .print-ura{display:block!important}
+  .print-ura-page{display:block!important;page-break-before:always;height:200mm;overflow:hidden}
+  .print-ura-page .ura-title{background:linear-gradient(135deg,#FF6699,#FF8899);color:#fff;text-align:center;font-weight:700;border-radius:3px}
+  .print-ura-page .ura-section{page-break-inside:avoid}
+  .print-ura-page .ura-cat-header{color:#fff;font-weight:700;border-radius:2px 2px 0 0;margin-bottom:0}
+  .print-ura-page .ura-cat-header.beauty{background:#ec407a!important}
+  .print-ura-page .ura-cat-header.yoga{background:#ff5252!important}
+  .print-ura-page .ura-cat-header.pilh{background:#ba68c8!important}
+  .print-ura-page .ura-cat-header.mach{background:#0277bd!important}
+  .print-ura-page .ura-cat-header.shower{background:#1abc9c!important}
+  .print-ura-page .ura-table{width:100%;border-collapse:collapse;border:0.3px solid #ddd}
+  .print-ura-page .ura-table th{background:#f5f0f0!important;font-weight:700;color:#333;border:0.3px solid #ddd;text-align:center}
+  .print-ura-page .ura-table td{border:0.3px solid #ddd;vertical-align:top}
+  .print-ura-page .ura-table td.name{font-weight:700;text-align:center}
+  .print-ura-page .ura-table td.star{text-align:center}
+  .print-ura-page .ura-note{color:#666;background:#f9f1ef;border:0.3px solid #ddd;border-top:none}
+  .print-ura-page .ura-footer{color:#555}
+
+  /* 裏面サイズ: JS側で .ura-sz-* クラスを付与して動的制御 */
+  /* ≤15件: ゆったり大きめ */
+  .print-ura-page.ura-sz-s .ura-title{padding:5px 10px;font-size:14px;margin-bottom:4px}
+  .print-ura-page.ura-sz-s .ura-section{margin-bottom:6px}
+  .print-ura-page.ura-sz-s .ura-cat-header{padding:4px 10px;font-size:11px}
+  .print-ura-page.ura-sz-s .ura-table,.print-ura-page.ura-sz-s .ura-table th,.print-ura-page.ura-sz-s .ura-table td{font-size:10px;padding:3px 6px;line-height:1.4}
+  .print-ura-page.ura-sz-s .ura-table td.name{width:110px;font-size:10px}
+  .print-ura-page.ura-sz-s .ura-table td.star{width:34px;font-size:10px}
+  .print-ura-page.ura-sz-s .ura-table td.desc{font-size:9px}
+  .print-ura-page.ura-sz-s .ura-note{font-size:8px;padding:3px 6px}
+  .print-ura-page.ura-sz-s .ura-footer{font-size:8px;margin-top:6px}
+
+  /* 16-25件: 標準 */
+  .print-ura-page.ura-sz-m .ura-title{padding:3px 8px;font-size:12px;margin-bottom:3px}
+  .print-ura-page.ura-sz-m .ura-section{margin-bottom:4px}
+  .print-ura-page.ura-sz-m .ura-cat-header{padding:3px 8px;font-size:10px}
+  .print-ura-page.ura-sz-m .ura-table,.print-ura-page.ura-sz-m .ura-table th,.print-ura-page.ura-sz-m .ura-table td{font-size:8.5px;padding:2px 5px;line-height:1.3}
+  .print-ura-page.ura-sz-m .ura-table td.name{width:100px;font-size:9px}
+  .print-ura-page.ura-sz-m .ura-table td.star{width:30px;font-size:9px}
+  .print-ura-page.ura-sz-m .ura-table td.desc{font-size:8px}
+  .print-ura-page.ura-sz-m .ura-note{font-size:7px;padding:2px 5px}
+  .print-ura-page.ura-sz-m .ura-footer{font-size:7px;margin-top:4px}
+
+  /* >25件: コンパクト */
+  .print-ura-page.ura-sz-l .ura-title{padding:2px 6px;font-size:10px;margin-bottom:1px}
+  .print-ura-page.ura-sz-l .ura-section{margin-bottom:2px}
+  .print-ura-page.ura-sz-l .ura-cat-header{padding:2px 6px;font-size:8px}
+  .print-ura-page.ura-sz-l .ura-table,.print-ura-page.ura-sz-l .ura-table th,.print-ura-page.ura-sz-l .ura-table td{font-size:6px;padding:1px 3px;line-height:1.1}
+  .print-ura-page.ura-sz-l .ura-table td.name{width:75px;font-size:6.5px}
+  .print-ura-page.ura-sz-l .ura-table td.star{width:22px;font-size:6.5px}
+  .print-ura-page.ura-sz-l .ura-table td.desc{font-size:5.5px}
+  .print-ura-page.ura-sz-l .ura-note{font-size:5px;padding:1px 2px}
+  .print-ura-page.ura-sz-l .ura-footer{font-size:5px;margin-top:1px}
+}
+
+@media(max-width:768px){.header{padding:8px 12px}.header h1{font-size:14px}.main{padding:8px}}
+</style>
+</head>
+<body>
+
+<!-- ===== 第1段階: トップレベルログイン画面 ===== -->
+<div id="top-login-screen" style="display:flex;align-items:center;justify-content:center;position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#c0392b,#e91e63);z-index:10001">
+  <div style="background:#fff;border-radius:16px;padding:40px 36px;box-shadow:0 8px 32px rgba(0,0,0,.2);text-align:center;max-width:380px;width:90%">
+    <div style="font-size:32px;margin-bottom:8px">🔐</div>
+    <h2 style="color:#c0392b;font-size:20px;margin-bottom:4px;font-family:'Noto Sans JP',sans-serif">Lucina 管理システム</h2>
+    <p style="color:#888;font-size:12px;margin-bottom:20px">管理者パスワードを入力してください</p>
+    <input id="top-pw-input" type="password" placeholder="管理者パスワード"
+      style="width:100%;padding:12px 16px;border:2px solid #e0d0cd;border-radius:8px;font-size:15px;outline:none;margin-bottom:12px;box-sizing:border-box;transition:.2s"
+      onfocus="this.style.borderColor='#c0392b'" onblur="this.style.borderColor='#e0d0cd'"
+      onkeydown="if(event.key==='Enter')checkTopPw()">
+    <button onclick="checkTopPw()"
+      style="width:100%;padding:12px;background:linear-gradient(135deg,#c0392b,#e91e63);color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;transition:.2s;font-family:'Noto Sans JP',sans-serif"
+      onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='1'">ログイン</button>
+    <p id="top-pw-err" style="color:#e74c3c;font-size:12px;margin-top:8px;display:none">パスワードが正しくありません</p>
+  </div>
+</div>
+
+<!-- ===== 第2段階: 店舗選択画面 ===== -->
+<div id="store-select-screen" style="display:none;align-items:center;justify-content:center;position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#c0392b,#e91e63);z-index:10000">
+  <div style="background:#fff;border-radius:16px;padding:40px 36px;box-shadow:0 8px 32px rgba(0,0,0,.2);text-align:center;max-width:420px;width:90%">
+    <div style="font-size:32px;margin-bottom:8px">🏢</div>
+    <h2 style="color:#c0392b;font-size:20px;margin-bottom:4px;font-family:'Noto Sans JP',sans-serif">Lucina スタジオスケジュール</h2>
+    <p style="color:#888;font-size:13px;margin-bottom:24px">店舗を選択してください</p>
+    <div id="store-buttons" style="display:flex;flex-direction:column;gap:10px"></div>
+  </div>
+</div>
+
+<!-- ===== 第3段階: 店舗別パスワード画面 ===== -->
+<div id="pw-screen" style="display:none;align-items:center;justify-content:center;position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#c0392b,#e91e63);z-index:9999">
+  <div style="background:#fff;border-radius:16px;padding:40px 36px;box-shadow:0 8px 32px rgba(0,0,0,.2);text-align:center;max-width:360px;width:90%">
+    <div style="font-size:28px;margin-bottom:8px">🔒</div>
+    <h2 style="color:#c0392b;font-size:18px;margin-bottom:4px;font-family:'Noto Sans JP',sans-serif">Lucina スタジオスケジュール</h2>
+    <p id="pw-store-name" style="color:#e91e63;font-size:13px;font-weight:700;margin-bottom:4px"></p>
+    <p style="color:#888;font-size:12px;margin-bottom:20px">店舗パスワードを入力してください</p>
+    <input id="pw-input" type="password" placeholder="店舗パスワード"
+      style="width:100%;padding:12px 16px;border:2px solid #e0d0cd;border-radius:8px;font-size:15px;outline:none;margin-bottom:12px;box-sizing:border-box;transition:.2s"
+      onfocus="this.style.borderColor='#c0392b'" onblur="this.style.borderColor='#e0d0cd'"
+      onkeydown="if(event.key==='Enter')checkStorePw()">
+    <button onclick="checkStorePw()"
+      style="width:100%;padding:12px;background:linear-gradient(135deg,#c0392b,#e91e63);color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;transition:.2s;font-family:'Noto Sans JP',sans-serif"
+      onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='1'">ログイン</button>
+    <p id="pw-err" style="color:#e74c3c;font-size:12px;margin-top:8px;display:none">パスワードが正しくありません</p>
+    <a href="?" style="display:inline-block;margin-top:12px;color:#888;font-size:11px;text-decoration:none">← 店舗選択に戻る</a>
+  </div>
+</div>
+
+<script>
+// ===== 店舗リスト定義（各店舗にパスワードハッシュを含む） =====
+const _STORE_LIST={
+  'kitakogane':{name:'Lucina北小金',tel:'047-348-3133',pwHash:'71b48f7d15260ca6f16cd3f6d93899fa4a3c5d02f5a5470f9aeca3b30d1ad113'},
+  'kitaurawa':{name:'Lucina北浦和',tel:'',pwHash:'8d27cf8b308dd863301d586380212d308bf0546b22094d7732e58426863c8008'},
+  'higashikurume':{name:'Lucina東久留米',tel:'',pwHash:'22479e169f2c7cb58c34dd783ba5a71306b7449a6333071951ad3773cbeaaf7b'},
+  'naha':{name:'Lucina那覇新都心',tel:'',pwHash:'a87f564636784358fec4024c179fd301ee986420d178ea13de3da17b229c50d5'},
+  'atami':{name:'Lucina熱海',tel:'',pwHash:'0eb850721e75e8649945307a294757178bc39c05bddcabb9589d16246cdb5eef'},
+  'kiyosumi':{name:'Lucina清澄白河',tel:'',pwHash:'1381483061ae14283cbfdd719ed811de916f43563816f115e6640050a75e6247'},
+  'minowa':{name:'Lucina三ノ輪',tel:'',pwHash:'aaf6a45768fca66334760d7d2f81dbf3b35753ba42fff791496d06ab70782e06'}
+};
+
+// SHA-256ハッシュ関数（共通）
+async function sha256(str){const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(str));return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');}
+
+// トップレベル管理者パスワードハッシュ (SHA-256)
+const _TOP_PW_HASH='28a530fd3d3873ea882fe4abd4b3b09d1e735db954ea16e372a8842f65a8e5ba';
+
+function getStoreId(){
+  const p=new URLSearchParams(location.search);
+  return p.get('store')||null;
+}
+
+// ===== 第1段階: トップレベル認証 =====
+async function checkTopPw(){
+  const input=document.getElementById('top-pw-input').value;
+  const hash=await sha256(input);
+  if(hash===_TOP_PW_HASH){
+    sessionStorage.setItem('lucina_top_auth','1');
+    document.getElementById('top-login-screen').style.display='none';
+    document.getElementById('top-pw-input').value='';
+    showNextScreen();
+  } else {
+    document.getElementById('top-pw-err').style.display='block';
+    document.getElementById('top-pw-input').style.borderColor='#e74c3c';
+    document.getElementById('top-pw-input').value='';
+    document.getElementById('top-pw-input').focus();
+  }
+}
+
+// ===== 第2段階: 店舗選択 or 店舗パスワード画面を表示 =====
+function showNextScreen(){
+  if(!getStoreId()){
+    // 店舗未選択 → 店舗選択画面
+    const screen=document.getElementById('store-select-screen');
+    screen.style.display='flex';
+    const btns=document.getElementById('store-buttons');
+    let h='';
+    for(const[id,info]of Object.entries(_STORE_LIST)){
+      h+=`<a href="?store=${id}" style="display:block;padding:14px 20px;background:linear-gradient(135deg,#c0392b,#e91e63);color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;text-decoration:none;transition:.2s;font-family:'Noto Sans JP',sans-serif" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">${info.name}</a>`;
+    }
+    btns.innerHTML=h;
+  } else {
+    // 店舗選択済み → 店舗パスワード画面
+    const sid=getStoreId();
+    if(sid&&_STORE_LIST[sid]){
+      const el=document.getElementById('pw-store-name');
+      if(el)el.textContent=_STORE_LIST[sid].name;
+    }
+    // セッション中で店舗認証済みならスキップ
+    if(sessionStorage.getItem('lucina_store_auth_'+sid)==='1'){
+      document.getElementById('pw-screen').style.display='none';
+    } else {
+      document.getElementById('pw-screen').style.display='flex';
+    }
+  }
+}
+
+// ===== 第3段階: 店舗別パスワード認証 =====
+async function checkStorePw(){
+  const input=document.getElementById('pw-input').value;
+  const hash=await sha256(input);
+  const sid=getStoreId()||'kitakogane';
+  const storeInfo=_STORE_LIST[sid];
+  if(storeInfo&&hash===storeInfo.pwHash){
+    sessionStorage.setItem('lucina_store_auth_'+sid,'1');
+    document.getElementById('pw-screen').style.display='none';
+    document.getElementById('pw-input').value='';
+  } else {
+    document.getElementById('pw-err').style.display='block';
+    document.getElementById('pw-input').style.borderColor='#e74c3c';
+    document.getElementById('pw-input').value='';
+    document.getElementById('pw-input').focus();
+  }
+}
+
+// ===== 初期表示制御 =====
+// トップ認証済みならトップ画面をスキップ
+if(sessionStorage.getItem('lucina_top_auth')==='1'){
+  document.getElementById('top-login-screen').style.display='none';
+  showNextScreen();
+} else {
+  // 未認証 → トップログイン画面を表示（他は全て非表示）
+  document.getElementById('store-select-screen').style.display='none';
+  document.getElementById('pw-screen').style.display='none';
+}
+</script>
+
+<div class="header">
+  <div><h1 id="app-title">Lucina スタジオスケジュール管理</h1><div class="header-sub"><span id="store-badge" style="background:rgba(255,255,255,.25);padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;margin-right:6px"></span>スケジュール作成・配布用PDF出力・レッスン管理</div></div>
+  <div class="hact">
+    <button class="btn bw" onclick="printSchedule()">🖨 配布用PDF出力</button>
+    <button class="btn bw" onclick="exportFullExcel()">📊 Excel出力</button>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab on" onclick="goTab('schedule')">📅 スケジュール</div>
+  <div class="tab" onclick="goTab('instructors')">👤 インストラクター</div>
+  <div class="tab" onclick="goTab('classes')">📋 レッスン管理</div>
+  <div class="tab" onclick="goTab('ura')">📄 裏面プレビュー</div>
+  <div class="tab" onclick="goTab('guide')">❓ 使い方</div>
+  <div class="tab" onclick="goTab('settings')">⚙ 設定</div>
+</div>
+
+<div class="main">
+
+<!-- ===== SCHEDULE ===== -->
+<div id="sec-schedule" class="sec on">
+  <div class="stats">
+    <div class="sc"><div class="n" id="s1">0</div><div class="l">今週のレッスン</div></div>
+    <div class="sc"><div class="n" id="s2">0</div><div class="l">インストラクター</div></div>
+    <div class="sc"><div class="n" id="s3">0</div><div class="l">レッスン種類</div></div>
+    <div class="sc"><div class="n" id="s4">0</div><div class="l">今月のレッスン</div></div>
+  </div>
+  <div class="leg no-print">
+    <div class="leg-i"><span class="cdot" style="background:var(--cYoga)"></span>ホットヨガ</div>
+    <div class="leg-i"><span class="cdot" style="background:var(--cPilH)"></span>ホットピラティス</div>
+    <div class="leg-i"><span class="cdot" style="background:var(--cMach)"></span>マシンピラティス</div>
+    <div class="leg-i"><span class="cdot" style="background:var(--cBeauty)"></span>ビューティーメソッド</div>
+    <div class="leg-i"><span class="cdot" style="background:var(--cPersonal)"></span>パーソナル</div>
+    <div class="leg-i"><span class="cdot" style="background:var(--cShower)"></span>コラーゲンシャワー</div>
+  </div>
+  <div class="sctrl no-print">
+    <div class="vt"><button class="on" onclick="setV('w',this)">週間</button><button onclick="setV('m',this)">月間</button></div>
+    <div class="wn"><button onclick="nv(-1)">◀</button><span class="wl" id="wl"></span><button onclick="nv(1)">▶</button><button class="btn bsm bo" onclick="goNow()">今日</button></div>
+    <button class="btn bp week-only" onclick="openAdd()">＋ レッスン追加</button>
+    <button class="btn bo bsm week-only" onclick="dupWeek()">📋 翌週コピー</button>
+    <button class="btn bo bsm" onclick="dupMonth()">📅 翌月コピー</button>
+    <button class="btn bd bsm" onclick="clearMonth()">🗑 この月を一括削除</button>
+    <button class="btn ba bsm" id="btn-undo-copy" style="display:none" onclick="undoCopy()">↩ コピーを取り消す</button>
+    <span id="month-count" style="font-size:11px;font-weight:600;color:var(--txt2);margin-left:4px"></span>
+  </div>
+  <!-- 印刷用タイトル（画面では非表示、印刷時のみ表示） -->
+  <div class="print-title" id="print-title" style="display:none"></div>
+  <div id="vw"></div>
+  <div id="vm" style="display:none"><div class="mg" id="mgr"></div></div>
+  <!-- 印刷用フッター（店舗情報のみ） -->
+  <div class="print-footer" id="print-footer" style="display:none">
+    <div class="pf-left"></div>
+    <div class="pf-right"></div>
+  </div>
+</div>
+
+<!-- ===== PRINT 裏面 PAGE (Page 2) ===== -->
+<div class="print-ura" id="print-ura-page" style="display:none">
+  <div class="print-ura-page" id="print-ura-content">
+    <!-- Generated by renderPrintUra() -->
+  </div>
+</div>
+
+<!-- ===== INSTRUCTORS ===== -->
+<div id="sec-instructors" class="sec">
+  <div class="card">
+    <div class="ct" id="i-form-title">👤 インストラクター登録</div>
+    <div class="fr">
+      <div class="fg"><label>名前</label><input id="i-n" placeholder="例: 山田 花子" style="width:150px"></div>
+      <div class="fg"><label>専門</label><select id="i-s"><option>ホットヨガ</option><option>マシンピラティス</option><option>ホットピラティス</option><option>ビューティーメソッド</option><option>複数担当</option></select></div>
+      <div class="fg"><label>カラー</label><input type="color" id="i-c" value="#c0392b"></div>
+      <div class="fg"><label>メモ</label><input id="i-m" placeholder="備考" style="width:180px"></div>
+      <input type="hidden" id="i-edit-id" value="">
+      <div class="fg"><button class="btn bp" id="i-save-btn" onclick="saveI()">追加</button></div>
+      <div class="fg"><button class="btn bo" id="i-cancel-btn" style="display:none" onclick="cancelEditI()">キャンセル</button></div>
+    </div>
+  </div>
+  <div class="card"><div class="ct">登録済みインストラクター</div>
+    <div style="margin-bottom:6px"><input id="inst-filter" placeholder="名前で検索..." style="padding:4px 8px;border:1px solid var(--bdr);border-radius:4px;font-size:11px;width:180px" oninput="renderIT()"></div>
+    <table><thead><tr><th>名前</th><th>専門</th><th>カラー</th><th>メモ</th><th>担当数</th><th></th></tr></thead><tbody id="itbl"></tbody></table>
+  </div>
+</div>
+
+<!-- ===== CLASSES ===== -->
+<div id="sec-classes" class="sec">
+  <div class="card">
+    <div class="ct">📋 レッスン登録・編集</div>
+    <p style="font-size:10px;color:var(--txt2);margin-bottom:8px">※ここで登録した強度・難度・説明が「裏面」に自動反映されます</p>
+    <div class="fr">
+      <div class="fg"><label>レッスン名</label><input id="c-n" placeholder="例: シンプル" style="width:140px"></div>
+      <div class="fg"><label>カテゴリ</label><select id="c-cat"><option value="ホットヨガ">ホットヨガ</option><option value="ホットピラティス">ホットピラティス</option><option value="マシンピラティス">マシンピラティス</option><option value="ビューティーメソッド">ビューティーメソッド</option><option value="パーソナル">パーソナル</option><option value="コラーゲンシャワー">コラーゲンシャワー</option><option value="特別">特別</option></select></div>
+      <div class="fg"><label>強度</label><select id="c-int"><option>★</option><option>★★</option><option>★★★</option><option>-</option></select></div>
+      <div class="fg"><label>難度</label><select id="c-dif"><option>★</option><option>★★</option><option>★★★</option><option>-</option></select></div>
+    </div>
+    <div class="fr">
+      <div class="fg"><label>時間(分)</label><input type="number" id="c-dur" value="60" min="15" step="15" style="width:60px"></div>
+      <div class="fg"><label>定員</label><input type="number" id="c-cap" value="20" min="1" style="width:50px"></div>
+      <div class="fg"><label>表示順</label><input type="number" id="c-ord" value="0" min="0" style="width:50px"></div>
+      <div class="fg"><label>オリジナル</label><select id="c-orig"><option value="">通常</option><option value="1">ルキナオリジナル</option></select></div>
+    </div>
+    <div class="fr">
+      <div class="fg" style="flex:1"><label>クラス内容（裏面に表示）</label><textarea id="c-desc" rows="3" style="width:100%" placeholder="レッスンの詳細説明を入力..."></textarea></div>
+    </div>
+    <div class="fr">
+      <input type="hidden" id="c-edit-id" value="">
+      <button class="btn bp" id="c-save-btn" onclick="saveCls()">追加</button>
+      <button class="btn bo" id="c-cancel-btn" style="display:none" onclick="cancelEditCls()">キャンセル</button>
+    </div>
+  </div>
+  <div class="card"><div class="ct">登録済みレッスン一覧</div>
+    <div style="margin-bottom:8px"><input id="cls-filter" placeholder="検索..." style="padding:4px 8px;border:1px solid var(--bdr);border-radius:4px;font-size:11px;width:200px" oninput="renderCT()"></div>
+    <table><thead><tr><th>順</th><th>レッスン名</th><th>カテゴリ</th><th>強度</th><th>難度</th><th>時間</th><th>定員</th><th>説明</th><th></th></tr></thead><tbody id="ctbl"></tbody></table>
+  </div>
+</div>
+
+<!-- ===== 裏面 PREVIEW ===== -->
+<div id="sec-ura" class="sec">
+  <div class="card">
+    <div class="ct">📄 裏面プレビュー（レッスン一覧 自動生成）</div>
+    <p style="font-size:10px;color:var(--txt2);margin-bottom:8px">表面のスケジュールに登録されたレッスンが自動的にカテゴリ別で表示されます。レッスン管理で「クラス内容」を入力すると反映されます。</p>
+    <div style="margin-bottom:8px" class="no-print">
+      <label style="font-size:10px;display:flex;align-items:center;gap:4px"><input type="checkbox" id="ura-all" onchange="renderUra()"> スケジュール未使用のレッスンも表示</label>
+    </div>
+    <div id="ura-content"></div>
+  </div>
+</div>
+
+<!-- ===== GUIDE ===== -->
+<div id="sec-guide" class="sec">
+  <div class="card">
+    <div class="ct">📖 使い方ガイド</div>
+
+    <div style="font-size:13px;line-height:1.8;color:#333">
+      <h3 style="color:var(--pri);margin:14px 0 6px">① 初期設定（新規の場合）</h3>
+      <p>1. <b>「設定」タブ</b>で店舗情報（店舗名・TEL・住所・営業時間・休館日）を入力して保存</p>
+      <p>2. <b>「インストラクター」タブ</b>でインストラクターを登録</p>
+      <p>3. <b>「レッスン管理」タブ</b>でレッスン種類を登録（強度・難度・クラス内容を入力すると裏面に自動反映）</p>
+      <p style="color:var(--acc);font-size:12px">※ 他の店舗のデータがある場合：下の「データの読み込み」からJSONファイルを読み込むと、すべてのデータが復元されます</p>
+
+      <h3 style="color:var(--pri);margin:14px 0 6px">② 週間スケジュールを作成する</h3>
+      <p>1. <b>「スケジュール」タブ</b>の週間ビューで、時間枠をクリック → レッスンを配置</p>
+      <p>2. <b>「＋ レッスン追加」ボタン</b>からも追加できます</p>
+      <p>3. レッスンをクリックすると編集・削除ができます</p>
+
+      <h3 style="color:var(--pri);margin:14px 0 6px">③ 1ヶ月分を作成する</h3>
+      <p>1. 1週目のスケジュールを完成させる</p>
+      <p>2. <b>「📋 翌週コピー」</b>をクリック → 翌週に同じ内容がコピーされます</p>
+      <p>3. ▶ボタンで翌週に移動し、変更が必要なレッスンだけ編集・削除</p>
+      <p>4. これを繰り返して1ヶ月分を完成させます</p>
+
+      <h3 style="color:var(--pri);margin:14px 0 6px">④ 隔週レッスンの場合</h3>
+      <p>翌週コピー後に、隔週のレッスンをクリックして削除してください</p>
+      <p>例：1週目にBasicを入れる → 翌週コピー → 2週目のBasicを削除 → これで隔週になります</p>
+
+      <h3 style="color:var(--pri);margin:14px 0 6px">⑤ 月間ビューで全体を確認</h3>
+      <p><b>「月間」ボタン</b>で切り替えると、1ヶ月全体のスケジュールを俯瞰できます</p>
+      <p>週間ビューで作成した内容がそのまま反映されます</p>
+
+      <h3 style="color:var(--pri);margin:14px 0 6px">⑥ お客様用PDFを出力する</h3>
+      <p>1. 配布したい週を表示した状態で<b>「🖨 配布用PDF出力」</b>をクリック</p>
+      <p>2. 印刷画面で<b>「PDFとして保存」</b>を選択</p>
+      <p>3. 1ページ目：週間スケジュール（表面）、2ページ目：レッスン内容一覧（裏面）</p>
+      <p style="color:var(--acc);font-size:12px">※ 印刷設定で「背景のグラフィック」にチェックを入れてください</p>
+
+      <h3 style="color:var(--pri);margin:14px 0 6px">⑦ 裏面のカスタマイズ</h3>
+      <p><b>「裏面プレビュー」タブ</b>で内容を確認できます</p>
+      <p>レッスンの説明文は<b>「レッスン管理」</b>の「クラス内容」欄で編集</p>
+      <p>案内文・ロゴ・QRは<b>「設定」タブ</b>で変更できます</p>
+
+      <h3 style="color:var(--pri);margin:14px 0 6px">⑧ データの保存について</h3>
+      <p>データは<b>自動で保存・バックアップ</b>されます。手動操作は不要です。</p>
+      <p>万が一データが壊れた場合も、自動的に前回のバックアップから復元されます。</p>
+
+      <h3 style="color:var(--pri);margin:14px 0 6px">⑨ 強度と難度の見方</h3>
+      <p>スケジュール上のレッスン名の右に色付きの★で表示されます</p>
+      <p><span style="color:#FFA500;font-weight:700">★ オレンジ = 強度</span>　　<span style="color:#00DDFF;font-weight:700">★ 水色 = 難度</span></p>
+      <p>裏面の一覧表でも同じ色分けで表示されます</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ct">🔄 スケジュールの初期化</div>
+    <p style="font-size:12px;color:var(--txt);margin-bottom:8px">スケジュールが表示されない場合や、初期状態に戻したい場合はこちらを使用してください。</p>
+    <button class="btn bp" onclick="loadSample()" style="font-size:13px;padding:8px 16px">4月スケジュールを再読込する</button>
+  </div>
+</div>
+
+<!-- ===== SETTINGS ===== -->
+<div id="sec-settings" class="sec">
+  <!-- 店舗切り替え -->
+  <div class="card">
+    <div class="ct">🏪 店舗切り替え</div>
+    <p style="font-size:11px;color:var(--txt2);margin-bottom:8px">現在の店舗: <b id="current-store-name" style="color:var(--pri)"></b></p>
+    <div id="store-links" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+    <p style="font-size:10px;color:var(--txt2);margin-top:8px">各店舗のデータは完全に独立しています。URLをブックマークしておくと便利です。</p>
+  </div>
+
+  <!-- 店舗基本情報 -->
+  <div class="card">
+    <div class="ct">🏢 店舗基本情報</div>
+    <p style="font-size:10px;color:var(--txt2);margin-bottom:6px">表面のタイトルと裏面のフッターに反映されます。変更後は「保存」を押してください。</p>
+    <div class="fr">
+      <div class="fg"><label>店舗名</label><input id="se-n" value="Lucina北小金" style="width:220px"></div>
+      <div class="fg"><label>TEL</label><input id="se-tel" placeholder="047-348-3133" style="width:160px"></div>
+    </div>
+    <div class="fr">
+      <div class="fg"><label>住所</label><input id="se-addr" placeholder="千葉県松戸市北小金..." style="width:400px"></div>
+    </div>
+    <div class="fr">
+      <div class="fg"><label>営業開始</label><input type="time" id="se-o" value="09:30"></div>
+      <div class="fg"><label>営業終了</label><input type="time" id="se-c" value="22:00"></div>
+      <div class="fg"><label>休館日</label><input id="se-h" value="毎月10日・20日・年末年始" style="width:250px"></div>
+    </div>
+    <div class="fr">
+      <div class="fg"><label>営業時間補足</label><input id="se-note" placeholder="最終レッスン終了後30分後迄" style="width:400px"></div>
+    </div>
+    <button class="btn bp" onclick="saveSe()" style="margin-top:6px">💾 店舗情報を保存</button>
+  </div>
+
+  <!-- 裏面の案内文 -->
+  <div class="card">
+    <div class="ct">📝 裏面の案内文</div>
+    <p style="font-size:10px;color:var(--txt2);margin-bottom:6px">裏面の下部に表示されるお客様向けの案内文です。自由に追加・削除できます。</p>
+    <div id="guide-lines"></div>
+    <div style="display:flex;gap:6px;margin-top:4px">
+      <button class="btn bo bsm" onclick="addGuideLine()">＋ 行を追加</button>
+      <button class="btn bp" onclick="saveSe()">💾 案内文を保存</button>
+    </div>
+  </div>
+
+  <!-- ロゴ・QR画像 -->
+  <div class="card">
+    <div class="ct">🖼 裏面のロゴ・QR画像</div>
+    <p style="font-size:10px;color:var(--txt2);margin-bottom:6px">裏面の右下に表示されます。PNG/JPG対応。</p>
+    <div class="fr">
+      <div class="fg"><label>ロゴ画像</label><input type="file" id="se-logo-file" accept="image/*" onchange="previewImg('logo',event)" style="font-size:11px"></div>
+      <div class="fg"><label>QRコード</label><input type="file" id="se-qr-file" accept="image/*" onchange="previewImg('qr',event)" style="font-size:11px"></div>
+    </div>
+    <div id="img-preview" style="display:flex;gap:12px;margin-top:6px"></div>
+    <div id="img-save-area" style="display:none;margin-top:8px">
+      <button class="btn bs" onclick="confirmImgSave()">✔ 画像を保存</button>
+      <button class="btn bo bsm" onclick="cancelImgSave()" style="margin-left:4px">キャンセル</button>
+    </div>
+  </div>
+
+  <!-- カテゴリ管理 -->
+  <div class="card">
+    <div class="ct">🏷 カテゴリ管理</div>
+    <p style="font-size:10px;color:var(--txt2);margin-bottom:6px">レッスンのカテゴリを追加・管理できます。カテゴリ色はスケジュール上のレッスンブロックの色になります。</p>
+    <div id="cat-list"></div>
+    <div class="fr" style="margin-top:6px">
+      <div class="fg"><label>新しいカテゴリ名</label><input id="new-cat-name" placeholder="例: ストレッチ" style="width:160px"></div>
+      <div class="fg"><label>カラー</label><input type="color" id="new-cat-color" value="#FF9800"></div>
+      <div class="fg"><button class="btn bp" onclick="addCategory()">追加</button></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ct">データ管理</div>
+    <p style="font-size:12px;color:var(--txt2);margin-bottom:10px">データは1時間ごとに自動バックアップされます。</p>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:10px">
+      <span id="backup-status" style="font-size:11px;color:#27ae60;font-weight:600"></span>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+      <button class="btn bo" onclick="document.getElementById('imp-restore').click()">📂 バックアップファイルから復元</button>
+      <input type="file" id="imp-restore" accept=".json" style="display:none" onchange="restoreFromFile(event)">
+      <button class="btn bo bsm" onclick="manualFileBackup()">💾 今すぐバックアップ保存</button>
+    </div>
+    <p style="font-size:10px;color:var(--txt2);margin-top:6px">ダウンロードフォルダに保存されたバックアップファイル（lucina_backup_...）を選択して復元できます。</p>
+  </div>
+</div>
+
+</div>
+
+<!-- Modal -->
+<div class="mo" id="modal">
+  <div class="md">
+    <div class="mdt" id="mt">レッスン追加</div>
+    <div class="fr">
+      <div class="fg"><label>曜日</label><select id="m-d"><option value="0">月</option><option value="1">火</option><option value="2">水</option><option value="3">木</option><option value="4">金</option><option value="5">土</option><option value="6">日</option></select></div>
+      <div class="fg"><label>日付</label><input type="date" id="m-dt"></div>
+    </div>
+    <div class="fr">
+      <div class="fg"><label>開始</label><input type="time" id="m-s" value="10:00" step="900"></div>
+      <div class="fg"><label>終了</label><input type="time" id="m-e" value="11:00" step="900"></div>
+    </div>
+    <div class="fr"><div class="fg" style="flex:1"><label>レッスン</label><select id="m-c" style="width:100%"></select></div></div>
+    <div class="fr"><div class="fg" style="flex:1"><label>インストラクター</label><select id="m-i" style="width:100%"></select></div></div>
+    <div class="fr"><div class="fg" style="flex:1"><label>備考</label><input id="m-n" style="width:100%" placeholder="例: 2ヶ月限定"></div></div>
+    <div class="mda">
+      <button class="btn bo" onclick="clMo()">キャンセル</button>
+      <button class="btn bp" id="m-btn" onclick="saveSch()">追加</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+'use strict';
+
+/* === セキュリティ: HTMLエスケープ関数 === */
+function esc(s){
+  if(typeof s!=='string')return '';
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+/* === セキュリティ: 入力長制限 === */
+function limit(s,max){return typeof s==='string'?s.substring(0,max||200):'';}
+
+const DJ=['月','火','水','木','金','土','日'];
+const CC={'ホットヨガ':'var(--cYoga)','ホットピラティス':'var(--cPilH)','マシンピラティス':'var(--cMach)','ビューティーメソッド':'var(--cBeauty)','パーソナル':'var(--cPersonal)','コラーゲンシャワー':'var(--cShower)','特別':'var(--cSpecial)'};
+const CH={'ホットヨガ':'#e74c3c','ホットピラティス':'#8e44ad','マシンピラティス':'#2980b9','ビューティーメソッド':'#e91e63','パーソナル':'#e67e22','コラーゲンシャワー':'#1abc9c','特別':'#f39c12'};
+const URA_CLS={'ビューティーメソッド':'beauty','ホットヨガ':'yoga','ホットピラティス':'pilh','マシンピラティス':'mach','パーソナル':'personal','コラーゲンシャワー':'shower'};
+// Category display names for 裏面 (matching original Excel)
+const URA_NAMES={'ビューティーメソッド':'ホットコラーゲンビューティーメソッド','ホットヨガ':'ホットヨガ','ホットピラティス':'ホットピラティス、エクササイズ、ストレッチ','マシンピラティス':'ピラティスリフォーマー（常温）　※9名定員','パーソナル':'パーソナルピラティス','コラーゲンシャワー':'コラーゲンシャワータイム'};
+// Category notes
+const URA_NOTES={'ビューティーメソッド':'※専用ローションを使用します。服装にご注意ください。','マシンピラティス':'','パーソナル':'経験と知識を備えたトレーナーがひとり一人の癖や体型に合わせたあなただけのトレーニングを指導します。','コラーゲンシャワー':'※出入り自由！！どなたでもご利用いただけます。IRによるレッスンはございません。'};
+
+const APP_VER='2026.03.22b';
+
+// 店舗切り替え: _STORE_LIST, getStoreId() は上部のscriptで定義済み
+const STORE_LIST=_STORE_LIST;
+const STORE_ID=getStoreId()||'kitakogane';
+const STORE_INFO=STORE_LIST[STORE_ID]||STORE_LIST['kitakogane'];
+const LS_KEY='lucina2_'+STORE_ID;
+
+let D={inst:[],cls:[],sch:[],tpl:[],se:{name:STORE_INFO.name,tel:STORE_INFO.tel,addr:'',open:'09:30',close:'22:00',intv:15,hol:'毎月10日・20日・年末年始',note:'最終レッスン終了後30分後迄',uraNote:'※こちらのマーク　はルキナオリジナルレッスンとなります。'},ws:null,mo:0,yr:0,vw:'w',eid:null,ver:null};
+
+function init(){
+  ldLS();
+  // バージョンが変わった場合、古いデータをクリアして初期化
+  if(D.ver!==APP_VER){
+    console.log('App version changed: '+D.ver+' -> '+APP_VER+'. Resetting data.');
+    D={inst:[],cls:[],sch:[],tpl:[],se:{name:STORE_INFO.name,tel:STORE_INFO.tel,addr:'',open:'09:30',close:'22:00',intv:15,hol:'毎月10日・20日・年末年始',note:'最終レッスン終了後30分後迄',uraNote:'※こちらのマーク　はルキナオリジナルレッスンとなります。'},ws:null,mo:0,yr:0,vw:'w',eid:null,ver:APP_VER};
+    preset();
+    autoLoadSchedule();
+  }
+  migrateData();
+  if(!D.ws)D.ws=fD(gMon(new Date()));
+  const n=new Date();D.mo=n.getMonth();D.yr=n.getFullYear();
+  if(!D.inst.length&&!D.cls.length){preset();autoLoadSchedule();}
+  else if(!D.sch.length)autoLoadSchedule();
+  renderAll();
+  startAutoFileBackup();
+  // 店舗名をヘッダーに表示
+  const sb=document.getElementById('store-badge');
+  if(sb)sb.textContent=D.se.name||STORE_INFO.name;
+  document.title=(D.se.name||STORE_INFO.name)+' スケジュール管理';
+  // 店舗切り替えリンク生成
+  const csn=document.getElementById('current-store-name');
+  if(csn)csn.textContent=D.se.name||STORE_INFO.name;
+  const sl=document.getElementById('store-links');
+  if(sl){
+    let h='';
+    for(const[id,info]of Object.entries(STORE_LIST)){
+      const isCurrent=id===STORE_ID;
+      const url=location.pathname+'?store='+id;
+      if(isCurrent){
+        h+=`<span style="padding:6px 14px;border-radius:8px;background:var(--pri);color:#fff;font-size:12px;font-weight:700">${esc(info.name)}（現在）</span>`;
+      } else {
+        h+=`<a href="${url}" style="padding:6px 14px;border-radius:8px;border:1px solid var(--bdr);color:var(--txt);font-size:12px;font-weight:600;text-decoration:none;transition:.2s" onmouseover="this.style.borderColor='var(--pri)';this.style.color='var(--pri)'" onmouseout="this.style.borderColor='var(--bdr)';this.style.color='var(--txt)'">${esc(info.name)}</a>`;
+      }
+    }
+    sl.innerHTML=h;
+  }
+}
+function migrateData(){
+  // マシンピラティスのord:0→1始まりに修正
+  const mpCls=D.cls.filter(c=>c.cat==='マシンピラティス');
+  const hasZero=mpCls.some(c=>c.ord===0);
+  if(hasZero){mpCls.forEach(c=>{c.ord=(c.ord||0)+1;});svLS();}
+}
+function gMon(d){const dd=new Date(d),dy=dd.getDay();dd.setDate(dd.getDate()-dy+(dy===0?-6:1));return dd}
+function fD(d){const dd=new Date(d);return dd.getFullYear()+'-'+P(dd.getMonth()+1)+'-'+P(dd.getDate())}
+function P(n){return String(n).padStart(2,'0')}
+function pD(s){return new Date(s+'T00:00:00')}
+
+// Helper functions for grid rendering
+let ROW_H = 20;
+
+function printSchedule(){
+  // 印刷モード: %ベースの専用レイアウトで描画
+  document.body.classList.add('printing');
+  renderWkPrint();
+  renderPrintUra();
+  updatePrintTitleForMonth();
+  setTimeout(()=>{
+    window.print();
+    setTimeout(()=>{
+      document.body.classList.remove('printing');
+      renderWk(); // 画面用に復帰
+    }, 500);
+  }, 200);
+}
+
+// 印刷用タイトルを月表示に更新
+function updatePrintTitleForMonth(){
+  const nm=D.se?D.se.name:'Lucina';
+  // 現在の表示月を取得
+  let tgtY,tgtM;
+  if(D.vw==='m'){tgtY=D.yr;tgtM=D.mo;}
+  else{const ws=pD(D.ws);tgtY=ws.getFullYear();tgtM=ws.getMonth();}
+  const pt=document.getElementById('print-title');
+  if(pt)pt.textContent=`ホットコラーゲンスタジオプログラム　${nm}　　${tgtY}年${tgtM+1}月`;
+}
+
+// 月間印刷: 月の全週を1ページに収める
+function renderMonthPrint(){
+  const container=document.getElementById('vw');
+  const se=D.se||{};
+  const openMin=tm(se.open||'09:30'),closeMin=tm(se.close||'22:00'),totalMin=closeMin-openMin;
+  function toPct(m){return((m-openMin)/totalMin*100).toFixed(2)+'%';}
+  function durPct(d){return(d/totalMin*100).toFixed(2)+'%';}
+
+  // 対象月を特定
+  let tgtY,tgtM;
+  if(D.vw==='m'){tgtY=D.yr;tgtM=D.mo;}
+  else{const ws=pD(D.ws);tgtY=ws.getFullYear();tgtM=ws.getMonth();}
+
+  // 月の全週を取得（月曜始まり）
+  const firstDay=new Date(tgtY,tgtM,1);
+  const lastDay=new Date(tgtY,tgtM+1,0);
+  // 月の最初の月曜日を求める
+  let startMon=new Date(firstDay);
+  const dow=startMon.getDay();
+  if(dow===0)startMon.setDate(startMon.getDate()-6);
+  else if(dow!==1)startMon.setDate(startMon.getDate()-(dow-1));
+
+  // 全週を収集
+  const weeks=[];
+  let wkStart=new Date(startMon);
+  while(true){
+    const wkDates=[];
+    for(let i=0;i<7;i++){
+      const dd=new Date(wkStart);
+      dd.setDate(dd.getDate()+i);
+      wkDates.push(dd);
+    }
+    weeks.push(wkDates);
+    // 次の月曜
+    wkStart.setDate(wkStart.getDate()+7);
+    // この週の月曜が翌月以降で、前週で月末をカバー済みならbreak
+    if(wkStart.getMonth()!==tgtM&&wkStart>lastDay)break;
+  }
+
+  const numWeeks=weeks.length;
+  // A4横: 210mm - 余白6mm - タイトル6mm = 198mm を週数で分割
+  // 各週: ヘッダー(3.5mm) + ボディ(残り)
+  const totalH=194; // mm
+  const weekH=(totalH/numWeeks).toFixed(1);
+  const hdrH=3.5;
+  const bodyH=(weekH-hdrH).toFixed(1);
+
+  let h='<div class="sp-wrap"><div class="sp-month-container">';
+
+  weeks.forEach((dates,wi)=>{
+    h+=`<div class="sp-week-block">`;
+    // ヘッダー行
+    h+=`<div class="sp-hdr" style="height:${hdrH}mm">`;
+    h+=`<div class="sp-th">時間</div>`;
+    dates.forEach((d)=>{
+      const sat=d.getDay()===6,sun=d.getDay()===0;
+      const isOtherMonth=d.getMonth()!==tgtM;
+      h+=`<div class="sp-dh${sun?' sun':''}${sat?' sat':''}${isOtherMonth?' other-month':''}">${d.getDate()}<span>${DJ[(d.getDay()+6)%7]} ${d.getMonth()+1}/${d.getDate()}</span></div>`;
+    });
+    h+=`</div>`;
+    // ボディ
+    h+=`<div class="sp-body" style="height:${bodyH}mm">`;
+    // 時間列
+    h+=`<div class="sp-tc">`;
+    for(let m=openMin;m<=closeMin;m+=15){
+      const mm=m%60,cls=mm===0?'h0':(mm===30?'h30':'h15');
+      h+=`<div class="sp-t ${cls}" style="top:${toPct(m)}">${mm===0?ft(m):''}</div>`;
+    }
+    h+=`</div>`;
+    // 曜日列
+    dates.forEach((d)=>{
+      const fd=fD(d);
+      const isOtherMonth=d.getMonth()!==tgtM;
+      h+=`<div class="sp-dc${isOtherMonth?' other-month':''}">`;
+      for(let m=openMin;m<=closeMin;m+=15){
+        const mm=m%60,cls=mm===0?'g0':(mm===30?'g30':'g15');
+        h+=`<div class="sp-g ${cls}" style="top:${toPct(m)}"></div>`;
+      }
+      if(!isOtherMonth){
+        D.sch.filter(s=>s.date===fd).forEach(l=>{
+          const st=tm(l.st),et=tm(l.et);
+          const c=D.cls.find(x=>x.id===l.cid),inst=D.inst.find(x=>x.id===l.iid);
+          const cat=c?c.cat:'特別',clr=CC[cat]||'#999';
+          const nm=c?c.n:'?',hasS=nm.includes('★');
+          const iS=(c&&c.int!=='-'&&!hasS)?c.int:'';
+          const dS=(c&&c.dif&&c.dif!=='-'&&!hasS)?c.dif:'';
+          h+=`<div class="sp-lb" style="top:${toPct(st)};height:calc(${durPct(et-st)} - 0.5px);background:${clr}">`;
+          h+=`<b>${nm}`;
+          if(iS) h+=` <span style="color:#FFA500;text-shadow:0 0 1px rgba(0,0,0,.4)">${iS}</span>`;
+          if(dS) h+=`<span style="color:#00DDFF;text-shadow:0 0 1px rgba(0,0,0,.4)">${dS}</span>`;
+          h+=`</b>`;
+          h+=`<span>${l.st}-${l.et}</span>`;
+          h+=`<span>${inst?inst.name:''}</span>`;
+          h+=`</div>`;
+        });
+      }
+      h+=`</div>`;
+    });
+    h+=`</div>`; // sp-body
+    h+=`</div>`; // sp-week-block
+  });
+
+  h+=`</div></div>`; // sp-month-container, sp-wrap
+  container.innerHTML=h;
+}
+
+// 週間印刷用レンダリング（旧: 参考用に残す）
+function renderWkPrint(){
+  const container=document.getElementById('vw'),start=pD(D.ws);
+  const dates=[];for(let i=0;i<7;i++){const dd=new Date(start);dd.setDate(dd.getDate()+i);dates.push(dd);}
+  const se=D.se||{};
+  const openMin=tm(se.open||'09:30'),closeMin=tm(se.close||'22:00'),totalMin=closeMin-openMin;
+  function toPct(m){return((m-openMin)/totalMin*100).toFixed(2)+'%';}
+  function durPct(d){return(d/totalMin*100).toFixed(2)+'%';}
+
+  let h='<div class="sp-wrap">';
+  h+='<div class="sp-hdr"><div class="sp-th">時間</div>';
+  dates.forEach((d,i)=>{
+    const sat=d.getDay()===6,sun=d.getDay()===0;
+    h+=`<div class="sp-dh${sun?' sun':''}${sat?' sat':''}">${DJ[i]}<br><span>${d.getMonth()+1}/${d.getDate()}</span></div>`;
+  });
+  h+='</div>';
+  h+='<div class="sp-body" style="height:187mm">';
+  h+='<div class="sp-tc">';
+  for(let m=openMin;m<=closeMin;m+=15){
+    const mm=m%60,cls=mm===0?'h0':(mm===30?'h30':'h15');
+    h+=`<div class="sp-t ${cls}" style="top:${toPct(m)}">${ft(m)}</div>`;
+  }
+  h+='</div>';
+  dates.forEach((d)=>{
+    const fd=fD(d);
+    h+='<div class="sp-dc">';
+    for(let m=openMin;m<=closeMin;m+=15){
+      const mm=m%60,cls=mm===0?'g0':(mm===30?'g30':'g15');
+      h+=`<div class="sp-g ${cls}" style="top:${toPct(m)}"></div>`;
+    }
+    D.sch.filter(s=>s.date===fd).forEach(l=>{
+      const st=tm(l.st),et=tm(l.et);
+      const c=D.cls.find(x=>x.id===l.cid),inst=D.inst.find(x=>x.id===l.iid);
+      const cat=c?c.cat:'特別',clr=CC[cat]||'#999';
+      const nm=c?c.n:'?',hasS=nm.includes('★');
+      const iS=(c&&c.int!=='-'&&!hasS)?c.int:'';
+      const dS=(c&&c.dif&&c.dif!=='-'&&!hasS)?c.dif:'';
+      h+=`<div class="sp-lb" style="top:${toPct(st)};height:calc(${durPct(et-st)} - 1px);background:${clr}">`;
+      h+=`<b>${esc(nm)}`;
+      if(iS) h+=` <span style="color:#FFA500;text-shadow:0 0 1px rgba(0,0,0,.4)">${esc(iS)}</span>`;
+      if(dS) h+=`<span style="color:#00DDFF;text-shadow:0 0 1px rgba(0,0,0,.4)">${esc(dS)}</span>`;
+      h+=`</b>`;
+      h+=`<span>${l.st}-${l.et}</span>`;
+      h+=`<span>${inst?esc(inst.name):''}</span>`;
+      h+=`</div>`;
+    });
+    h+='</div>';
+  });
+  h+='</div></div>';
+  container.innerHTML=h;
+}
+function tm(timeStr){const[h,m]=timeStr.split(':').map(Number);return h*60+m}
+function ft(minutes){return P(Math.floor(minutes/60))+':'+P(minutes%60)}
+
+let _lastSave=0;
+function svLS(){
+  try{
+    D.ver=APP_VER;
+    D._saved=new Date().toISOString();
+    const json=JSON.stringify(D);
+    // バックアップ: 前回保存から30秒以上経過していれば退避
+    const now=Date.now();
+    const prev=localStorage.getItem(LS_KEY);
+    if(prev&&prev.length>100&&(now-_lastSave>30000)){
+      localStorage.setItem(LS_KEY+'_backup',prev);
+      localStorage.setItem(LS_KEY+'_backup_time',new Date().toISOString());
+    }
+    localStorage.setItem(LS_KEY,json);
+    _lastSave=now;
+    updBackupStatus();
+  }catch(e){
+    console.error('保存エラー:',e);
+    tt('⚠ 保存に失敗しました（容量超過の可能性）');
+  }
+}
+function ldLS(){
+  try{
+    const s=localStorage.getItem(LS_KEY);
+    if(s){
+      const d=JSON.parse(s);
+      // データ整合性チェック: inst,cls,schが配列であること
+      if(Array.isArray(d.inst)&&Array.isArray(d.cls)){
+        Object.assign(D,d);
+      } else {
+        throw new Error('データ構造が不正');
+      }
+    }
+  }catch(e){
+    console.error('読込エラー:',e);
+    // バックアップから自動復元
+    try{
+      const bk=localStorage.getItem(LS_KEY+'_backup');
+      if(bk){
+        const d=JSON.parse(bk);
+        if(Array.isArray(d.inst)&&Array.isArray(d.cls)){
+          Object.assign(D,d);
+          console.log('バックアップから自動復元しました');
+        }
+      }
+    }catch(e2){console.error('バックアップ復元も失敗:',e2);}
+  }
+}
+function updBackupStatus(){
+  const el=document.getElementById('backup-status');
+  if(!el)return;
+  const saved=D._saved;
+  if(saved){
+    const d=new Date(saved);
+    el.textContent='✓ 最終保存: '+(d.getMonth()+1)+'/'+d.getDate()+' '+P(d.getHours())+':'+P(d.getMinutes());
+    el.style.color='#27ae60';
+  }
+  const lastDL=localStorage.getItem(LS_KEY+'_lastFileBk');
+  if(lastDL){
+    const bd=new Date(lastDL);
+    el.textContent+=' ／ ファイルBK: '+(bd.getMonth()+1)+'/'+bd.getDate()+' '+P(bd.getHours())+':'+P(bd.getMinutes());
+  }
+}
+
+// 自動ファイルバックアップ: 1時間ごとにJSONファイルをPCに自動保存
+let _autoBackupTimer=null;
+const AUTO_BK_INTERVAL=60*60*1000; // 1時間
+function startAutoFileBackup(){
+  if(_autoBackupTimer)clearInterval(_autoBackupTimer);
+  _autoBackupTimer=setInterval(()=>{
+    autoFileBackup();
+  },AUTO_BK_INTERVAL);
+  // 初回: 前回バックアップから1時間以上経過していたら即実行
+  const last=localStorage.getItem(LS_KEY+'_lastFileBk');
+  if(!last||Date.now()-new Date(last).getTime()>AUTO_BK_INTERVAL){
+    setTimeout(()=>autoFileBackup(),3000); // 3秒後に初回実行
+  }
+}
+function autoFileBackup(){
+  try{
+    if(!D.sch.length)return; // データがない場合はスキップ
+    const now=new Date();
+    const fname='lucina_backup_'+STORE_ID+'_'+now.getFullYear()+P(now.getMonth()+1)+P(now.getDate())+'_'+P(now.getHours())+P(now.getMinutes())+'.json';
+    const blob=new Blob([JSON.stringify(D,null,2)],{type:'application/json'});
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download=fname;
+    a.style.display='none';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(a.href);
+    localStorage.setItem(LS_KEY+'_lastFileBk',now.toISOString());
+    updBackupStatus();
+    tt('💾 自動バックアップを保存しました');
+    console.log('自動バックアップ完了: '+fname);
+  }catch(e){
+    console.error('自動バックアップ失敗:',e);
+  }
+}
+
+// ===== PRESETS =====
+function preset(){
+const pi=[
+  {n:'Eri',s:'ホットヨガ'},{n:'西上 歩',s:'ホットヨガ'},{n:'与沢 愛子',s:'複数担当'},
+  {n:'蓮見 恵莉',s:'マシンピラティス'},{n:'木村 絵美子',s:'ホットヨガ'},{n:'佐々木 美貴',s:'複数担当'},
+  {n:'峯岸 明美',s:'複数担当'},{n:'竹内 恵',s:'ホットヨガ'},{n:'竹内 里美',s:'ホットヨガ'},
+  {n:'高鳥 マノ',s:'マシンピラティス'},{n:'ituco',s:'ホットヨガ'},{n:'ピョンソンファ',s:'ホットヨガ'},
+  {n:'市川 ミカ',s:'ホットヨガ'},{n:'宮城 ゆみこ',s:'複数担当'},{n:'鈴木 真由',s:'マシンピラティス'},
+  {n:'YOKO',s:'マシンピラティス'},{n:'hitomi',s:'ホットヨガ'},{n:'オン',s:'ホットヨガ'},
+  {n:'えみ',s:'マシンピラティス'},{n:'夏海はるか',s:'ホットピラティス'},{n:'長野 道子',s:'マシンピラティス'}
+];
+const cs=['#e74c3c','#8e44ad','#2980b9','#e91e63','#f39c12','#1abc9c','#e67e22','#c0392b','#9b59b6','#3498db','#d35400','#16a085','#c0392b','#8e44ad','#2980b9','#e91e63','#f39c12','#1abc9c','#e67e22','#c0392b','#27ae60'];
+pi.forEach((p,i)=>D.inst.push({id:Date.now()+i,name:p.n,spec:p.s,color:cs[i%cs.length],note:''}));
+
+const pc=[
+  {n:'美彩心',cat:'ビューティーメソッド',int:'★',dif:'★',dur:60,cap:20,ord:1,orig:'',desc:'脚・腕・デコルテ、お腹と全身のマッサージをしていきます。血液やリンパの流れを良くしながら、デトックス効果を高め、スッキリしたボディラインへと導きます。'},
+  {n:'流美身',cat:'ビューティーメソッド',int:'★',dif:'★',dur:60,cap:20,ord:2,orig:'',desc:'美容効果を高めるセルフマッサージと呼吸に合わせて身体を整えるエクササイズプログラム。身体に「触れながら・動きながら」五感を使うことで感覚を高め、流れるような心地良い動きの中で発汗やデトックス効果を促します。'},
+  {n:'シンプル',cat:'ホットヨガ',int:'★',dif:'★',dur:60,cap:20,ord:1,orig:'',desc:'ヨガを始めたい！始めたばかりの人にオススメするヨガ。簡単でたのしみながら続けられ、続けられるから効果を実感することができるレッスンです。'},
+  {n:'ハタ',cat:'ホットヨガ',int:'★',dif:'★',dur:60,cap:20,ord:2,orig:'',desc:'伝統的なヨガの基本であり、呼吸をしっかりと行うことで身体のエネルギーを整え、アーサナ（ポーズ）を行う事で全身にエネルギーを流します。'},
+  {n:'リラックス',cat:'ホットヨガ',int:'★',dif:'★',dur:60,cap:20,ord:3,orig:'',desc:'ゆっくりとポーズを行い、ストレスから解放されカラダの深層部からほぐしていきます。仰向けや座った状態で行うポーズが多めのレッスンです。'},
+  {n:'ボディメンテナンス',cat:'ホットヨガ',int:'★',dif:'★',dur:60,cap:20,ord:4,orig:'',desc:'身体の不調を整えていくレッスンです。肩こり・腰痛など緩和したい方にお勧めです。'},
+  {n:'ヒーリングフロー',cat:'ホットヨガ',int:'★',dif:'★',dur:60,cap:20,ord:5,orig:'',desc:'優しいフローのクラスです。アーサナ（ポーズ）を流れるように行い、身体への意識を高め、リラックスしていくレッスンです。'},
+  {n:'デトックスフロー',cat:'ホットヨガ',int:'★',dif:'★',dur:60,cap:20,ord:6,orig:'',desc:'アーサナ(ポーズ）を流れるように行い、体内に蓄積された老廃物を体外に排出していくレッスンです。'},
+  {n:'ダイエット★',cat:'ホットヨガ',int:'★',dif:'★',dur:60,cap:20,ord:7,orig:'',desc:'深い呼吸と共に、ご自身の身体を観察しながらゆっくりと動いていくレッスンです。デトックス効果の高いポーズで動いていきます。'},
+  {n:'Beauty Yoga',cat:'ホットヨガ',int:'★',dif:'★',dur:60,cap:20,ord:8,orig:'1',desc:'ルキナ人気インストラクター木村絵美子さん開発のルキナオリジナルレッスン。ストレッチボールを使ってカラダをほぐしながらヨガの呼吸法＆トレーニングで自分自身の価値を高めていきます。'},
+  {n:'朝ヨガ',cat:'ホットヨガ',int:'★',dif:'★',dur:60,cap:20,ord:9,orig:'',desc:''},
+  {n:'パワー',cat:'ホットヨガ',int:'★★',dif:'★★',dur:60,cap:20,ord:10,orig:'',desc:'太陽礼拝の動きをベースに動きと呼吸の連動を感じていきます。ボディメイクに適したレッスンです。'},
+  {n:'デトックス',cat:'ホットヨガ',int:'★★',dif:'★★',dur:60,cap:20,ord:11,orig:'',desc:'詰まりがちだった血流の流れを改善していきます。体内に蓄積された老廃物を体外に排出していきましょう。'},
+  {n:'姿勢改善',cat:'ホットヨガ',int:'★★',dif:'★★',dur:60,cap:20,ord:12,orig:'',desc:'座りっぱなしの仕事や、立ち仕事が続く方、重荷物を運ぶ事が多い方など、自身の姿勢に違和感を感じたりする方におすすめです。'},
+  {n:'コア',cat:'ホットヨガ',int:'★★',dif:'★★',dur:60,cap:20,ord:13,orig:'',desc:'身体の内側の筋肉である深層筋を使うことで、関節や骨格が安定し、ポーズがとりやすくなる身体をつくります。怪我の予防や持久力を高めることができます。'},
+  {n:'ダイエット★★',cat:'ホットヨガ',int:'★★',dif:'★★',dur:60,cap:20,ord:14,orig:'',desc:'デトックス効果を促して基礎代謝をあげ、ポーズを多く取り入れたシェイプアップに効果的なレッスンです。'},
+  {n:'ヴィンヤサフロー',cat:'ホットヨガ',int:'★★',dif:'★★',dur:60,cap:20,ord:15,orig:'',desc:'呼吸と動きを知的にシンクロさせダイナミックな動きとクリエイティブな流れを体感していくレッスンです。'},
+  {n:'ハードダイエット',cat:'ホットヨガ',int:'★★★',dif:'★★',dur:60,cap:20,ord:16,orig:'',desc:'美肌などのアンチエイジング効果やデトックス効果も高く、シェイプアップ効果も期待できます。ホットのレッスンに慣れて来た方にもおすすめです。'},
+  {n:'ピラティス シンプル',cat:'ホットピラティス',int:'★',dif:'★',dur:60,cap:20,ord:1,orig:'',desc:'美しいボディラインを目指す為、安定したコアバランスを身につけていきます。'},
+  {n:'Rhythm Flow',cat:'ホットピラティス',int:'★',dif:'★',dur:60,cap:20,ord:2,orig:'1',desc:'フィットネスYouTuber大熊理奈さんが開発したルキナオリジナルレッスン。音楽に合わせながら呼吸のリズムを整え、カラダを流れるように動かしながら鍛えていくプログラムです。'},
+  {n:'美Body',cat:'ホットピラティス',int:'★★',dif:'★★',dur:60,cap:20,ord:3,orig:'',desc:'たるみやすい部分をエクササイズし、女性らしい身体へ導きます。'},
+  {n:'ボディケア',cat:'ホットピラティス',int:'★★',dif:'★★',dur:60,cap:20,ord:4,orig:'',desc:'姿勢や呼吸を整え、正しい身体の使い方を習得するピラティスレッスンです。'},
+  {n:'Intro',cat:'マシンピラティス',int:'-',dif:'-',dur:60,cap:9,ord:1,orig:'',desc:'ピラティス初心者におすすめのクラス。ピラティスの基本の動きから、パワーハウス（コア）意識し正しくエクササイズを行うことにフォーカスしています。'},
+  {n:'Basic',cat:'マシンピラティス',int:'★',dif:'★',dur:60,cap:9,ord:2,orig:'',desc:'パワーハウス（コア）を意識しながら全身をバランス良く鍛えることができるプログラム。スプリングの張力を利用して無理なく、効果的なトレーニングが可能です。'},
+  {n:'Basic～waist～',cat:'マシンピラティス',int:'★',dif:'★',dur:60,cap:9,ord:3,orig:'',desc:'基本のコアエクササイズとともに、ウエストによりフォーカスしたエクササイズを行います。腹筋の強化により、コアの安定感がアップします。'},
+  {n:'Basic～hip～',cat:'マシンピラティス',int:'★',dif:'★',dur:60,cap:9,ord:4,orig:'',desc:'コアの安定感を意識しながら、ヒップアップを目指してエクササイズを行います。股関節まわりのストレッチも取り入れ、きれいなヒップラインに繋がるエクササイズを行います。'},
+  {n:'Intermediate',cat:'マシンピラティス',int:'★★',dif:'★★',dur:60,cap:9,ord:5,orig:'',desc:'半年に一度アップデートされる中級プログラムです。テーマや目的に合わせたエクササイズをプログラムとして行います。'},
+  {n:'Back&Core',cat:'マシンピラティス',int:'★★',dif:'★★',dur:60,cap:9,ord:6,orig:'',desc:'体のたるみやすい背面〈背中・二の腕・お尻〉を引き締めていくクラスです。ピラティスで大切なコアの安定性を高めることで、背面の筋力を効率良く使えるようにしていきます。'},
+  {n:'Lower Body',cat:'マシンピラティス',int:'★★',dif:'★★',dur:60,cap:9,ord:7,orig:'',desc:'コアの安定をベースに骨盤、お尻、脚を整えて鍛えるレッスンです。コアの安定性を高めつつ、股関節の柔軟性のUPしお尻から脚のラインを綺麗に整えます。'},
+  {n:'Waist Shape',cat:'マシンピラティス',int:'★★',dif:'★★',dur:60,cap:9,ord:8,orig:'',desc:'腹筋をメインに鍛えていくクラスです。体幹の強化・安定に繋がり、ウエストのラインもきれいに引き締めます。ぽっこりお腹の解消やお腹痩せ、くびれラインの整えに効果的です。'},
+  {n:'Jump Board',cat:'マシンピラティス',int:'★★',dif:'★★',dur:60,cap:9,ord:9,orig:'',desc:'ジャンプボードで下半身を中心に全身を引き締めるクラスです。ジャンプの動きで筋力強化、柔軟性アップまでバランスよくアプローチします。'},
+  {n:'パーソナルピラティス',cat:'パーソナル',int:'-',dif:'-',dur:30,cap:1,ord:1,orig:'',desc:'経験と知識を備えたトレーナーがひとり一人の癖や体型に合わせたあなただけのトレーニングを指導します。'},
+  {n:'コラーゲンシャワータイム',cat:'コラーゲンシャワー',int:'-',dif:'-',dur:45,cap:99,ord:1,orig:'',desc:'※出入り自由！！どなたでもご利用いただけます。IRによるレッスンはございません。'},
+];
+pc.forEach((p,i)=>D.cls.push({id:Date.now()+100+i,...p}));
+svLS();
+}
+
+// ===== TABS =====
+function goTab(t){document.querySelectorAll('.tab').forEach(n=>n.classList.remove('on'));document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));const tabs=['schedule','instructors','classes','ura','guide','settings'];document.querySelectorAll('.tab')[tabs.indexOf(t)].classList.add('on');document.getElementById('sec-'+t).classList.add('on');if(t==='ura')renderUra();}
+
+function setV(v,b){D.vw=v;document.querySelectorAll('.vt button').forEach(x=>x.classList.remove('on'));b.classList.add('on');document.getElementById('vw').style.display=v==='w'?'block':'none';document.getElementById('vm').style.display=v==='m'?'block':'none';
+  if(v==='m'){const ws=pD(D.ws);D.mo=ws.getMonth();D.yr=ws.getFullYear();renderMo();}
+  document.querySelectorAll('.week-only').forEach(el=>{el.style.display=v==='w'?'':'none';});
+  updLbl();}
+function nv(d){
+  if(D.vw==='w'){
+    const dd=pD(D.ws);dd.setDate(dd.getDate()+d*7);D.ws=fD(dd);renderWk();
+  } else {
+    D.mo+=d;if(D.mo>11){D.mo=0;D.yr++;}if(D.mo<0){D.mo=11;D.yr--;}
+    // 月間→週間を連動: その月の第1月曜に移動
+    const first=new Date(D.yr,D.mo,1);
+    D.ws=fD(gMon(first));
+    renderMo();
+  }
+  updLbl();updSt();updMonthCount();svLS();
+}
+function goNow(){D.ws=fD(gMon(new Date()));const n=new Date();D.mo=n.getMonth();D.yr=n.getFullYear();if(D.vw==='w')renderWk();else renderMo();updLbl();updSt();updMonthCount();svLS();}
+function updLbl(){if(D.vw==='w'){const s=pD(D.ws),e=new Date(s);e.setDate(e.getDate()+6);document.getElementById('wl').textContent=`${s.getMonth()+1}/${s.getDate()} - ${e.getMonth()+1}/${e.getDate()} (${s.getFullYear()})`;}else{document.getElementById('wl').textContent=`${D.yr}年 ${D.mo+1}月`;}}
+
+function getSlots(){const s=D.se;let[sh,sm]=(s.open||'09:30').split(':').map(Number),[eh,em]=(s.close||'22:00').split(':').map(Number);const iv=parseInt(s.intv)||15;const sl=[];let t=sh*60+sm;const en=eh*60+em;while(t<=en){sl.push(P(Math.floor(t/60))+':'+P(t%60));t+=iv;}return sl;}
+
+// ===== WEEKLY =====
+function renderWk(){
+  const container=document.getElementById('vw'),start=pD(D.ws),today=fD(new Date());
+  const dates=[];for(let i=0;i<7;i++){const dd=new Date(start);dd.setDate(dd.getDate()+i);dates.push(dd);}
+
+  const se=D.se||{};
+  const openMin=tm(se.open||'09:30');
+  const closeMin=tm(se.close||'22:00');
+  const totalMin=closeMin-openMin;
+  const interval=15; // 15-minute grid
+  const totalH=(totalMin/interval)*ROW_H;
+  const TIME_COL_W=50;
+
+  let html=`<div class="sched-wrap" style="position:relative;overflow-x:auto">`;
+
+  // Header row
+  html+=`<div class="sched-header" style="grid-template-columns:${TIME_COL_W}px repeat(7,1fr)">`;
+  html+=`<div class="sh-time">時間</div>`;
+  dates.forEach((d,i)=>{
+    const fd=fD(d);
+    const isToday=fd===today;
+    const isSat=d.getDay()===6;
+    const isSun=d.getDay()===0;
+    const dayClass=isSun?'sun':(isSat?'sat':'');
+    html+=`<div class="sh-day ${dayClass} ${isToday?'today':''}">${DJ[i]}<br><span>${d.getMonth()+1}/${d.getDate()}</span></div>`;
+  });
+  html+='</div>';
+
+  // Grid body
+  html+=`<div class="sched-body" style="grid-template-columns:${TIME_COL_W}px repeat(7,1fr);height:${totalH}px">`;
+
+  // Time column with grid lines
+  html+=`<div class="sched-times" style="position:relative;height:${totalH}px">`;
+  for(let m=openMin;m<=closeMin;m+=interval){
+    const y=((m-openMin)/interval)*ROW_H;
+    const mm=m%60;
+    const timeStr=ft(m);
+    const cls=mm===0?'th0':(mm===30?'th30':'th15');
+    html+=`<div class="tmark ${cls}" style="position:absolute;top:${y}px;width:100%;height:${ROW_H}px">${timeStr}</div>`;
+  }
+  html+='</div>';
+
+  // Day columns with grid lines + lesson blocks
+  dates.forEach((d,di)=>{
+    const fd=fD(d);
+    html+=`<div class="sched-day" style="position:relative;height:${totalH}px" data-date="${fd}">`;
+
+    // Background grid lines
+    for(let m=openMin;m<=closeMin;m+=interval){
+      const y=((m-openMin)/interval)*ROW_H;
+      const mm=m%60;
+      const cls=mm===0?'gl0':(mm===30?'gl30':'gl15');
+      html+=`<div class="gline ${cls}" style="position:absolute;top:${y}px;width:100%;height:${ROW_H}px" onclick="openFor(${di},'${ft(m)}','${fd}')"></div>`;
+    }
+
+    // Lesson blocks
+    const dayLessons=D.sch.filter(s=>s.date===fd);
+    dayLessons.forEach(l=>{
+      const stMin=tm(l.st);
+      const etMin=tm(l.et);
+      const topPx=((stMin-openMin)/interval)*ROW_H;
+      const heightPx=((etMin-stMin)/interval)*ROW_H-2;
+      const c=D.cls.find(x=>x.id===l.cid);
+      const inst=D.inst.find(x=>x.id===l.iid);
+      const cat=c?c.cat:'特別';
+      const clr=CC[cat]||'#999';
+      const cName=c?c.n:'?';
+      const hasStars=cName.includes('★');
+      const intStr=(c&&c.int!=='-'&&!hasStars)?c.int:'';
+      const difStr=(c&&c.dif&&c.dif!=='-'&&!hasStars)?c.dif:'';
+
+      html+=`<div class="lb" style="position:absolute;top:${topPx}px;left:2px;right:2px;height:${heightPx}px;background:${clr}" onclick="editSch(${l.id})">`;
+      html+=`<div class="ln">${esc(cName)}`;
+      if(intStr) html+=` <span style="color:#FFA500;text-shadow:0 0 2px rgba(0,0,0,.4)">${esc(intStr)}</span>`;
+      if(difStr) html+=`<span style="color:#00DDFF;text-shadow:0 0 2px rgba(0,0,0,.4)">${esc(difStr)}</span>`;
+      html+=`</div>`;
+      if(l.note)html+=`<div class="ls">${esc(l.note)}</div>`;
+      html+=`<div class="lt">${l.st}-${l.et}</div>`;
+      html+=`<div class="li">${inst?esc(inst.name):''}</div>`;
+      html+=`<button class="lx" onclick="event.stopPropagation();delSch(${l.id})">×</button>`;
+      html+='</div>';
+    });
+
+    html+='</div>';
+  });
+
+  html+='</div></div>';
+  container.innerHTML=html;
+}
+
+// ===== MONTHLY =====
+function renderMo(){
+  const g=document.getElementById('mgr'),y=D.yr,m=D.mo,today=fD(new Date());
+  const f=new Date(y,m,1);let sd=f.getDay();if(sd===0)sd=7;sd--;const dim=new Date(y,m+1,0).getDate();
+  let h='';DJ.forEach(d=>{h+=`<div class="mdh">${d}</div>`;});
+  const prev=new Date(y,m,0).getDate();for(let i=sd-1;i>=0;i--)h+=`<div class="mc ot"><div class="dn">${prev-i}</div></div>`;
+  for(let d=1;d<=dim;d++){const dd=new Date(y,m,d),fd=fD(dd),dw=dd.getDay(),cls=dw===0?'sun':dw===6?'sat':'';const ls=D.sch.filter(s=>s.date===fd).sort((a,b)=>a.st.localeCompare(b.st));
+    h+=`<div class="mc${fd===today?' td':''}"><div class="dn ${cls}">${d}</div>`;ls.slice(0,4).forEach(l=>{const c=D.cls.find(x=>x.id===l.cid);h+=`<span class="ml" style="background:${CH[c?c.cat:'特別']||'#999'}">${l.st} ${c?esc(c.n):'?'}</span>`;});if(ls.length>4)h+=`<span style="font-size:9px;color:#fff;background:var(--pri);border-radius:8px;padding:1px 5px;font-weight:600">他 ${ls.length-4}件</span>`;h+='</div>';
+  }
+  const tot=sd+dim,rem=(7-tot%7)%7;for(let i=1;i<=rem;i++)h+=`<div class="mc ot"><div class="dn">${i}</div></div>`;
+  g.innerHTML=h;
+}
+
+// ===== INSTRUCTORS =====
+function saveI(){
+  const eid=document.getElementById('i-edit-id').value;
+  const n=document.getElementById('i-n').value.trim();
+  if(!n){tt('名前を入力');return;}
+  const obj={name:n,spec:document.getElementById('i-s').value,color:document.getElementById('i-c').value,note:document.getElementById('i-m').value.trim()};
+  if(eid){
+    const idx=D.inst.findIndex(i=>i.id===parseInt(eid));
+    if(idx>=0)Object.assign(D.inst[idx],obj);
+    cancelEditI();tt('更新しました');
+  } else {
+    D.inst.push({id:Date.now(),...obj});
+    document.getElementById('i-n').value='';document.getElementById('i-m').value='';
+    tt('追加しました');
+  }
+  svLS();renderAll();
+}
+function editI(id){
+  const i=D.inst.find(x=>x.id===id);if(!i)return;
+  document.getElementById('i-edit-id').value=id;
+  document.getElementById('i-n').value=i.name;
+  document.getElementById('i-s').value=i.spec;
+  document.getElementById('i-c').value=i.color;
+  document.getElementById('i-m').value=i.note||'';
+  document.getElementById('i-save-btn').textContent='更新';
+  document.getElementById('i-cancel-btn').style.display='inline-flex';
+  document.getElementById('i-form-title').textContent='👤 インストラクター編集: '+i.name;
+  document.getElementById('i-n').focus();
+}
+function cancelEditI(){
+  document.getElementById('i-edit-id').value='';
+  document.getElementById('i-n').value='';document.getElementById('i-m').value='';
+  document.getElementById('i-save-btn').textContent='追加';
+  document.getElementById('i-cancel-btn').style.display='none';
+  document.getElementById('i-form-title').textContent='👤 インストラクター登録';
+}
+function delI(id){
+  const i=D.inst.find(x=>x.id===id);
+  const cnt=D.sch.filter(s=>s.iid===id).length;
+  if(cnt>0){if(!confirm(`${i?i.name:''}は${cnt}件のスケジュールで使用中です。削除しますか？`))return;}
+  else{if(!confirm('削除しますか？'))return;}
+  D.inst=D.inst.filter(x=>x.id!==id);svLS();renderAll();
+}
+function renderIT(){
+  const f=(document.getElementById('inst-filter')||{}).value||'';
+  const filtered=D.inst.filter(i=>!f||i.name.includes(f)||i.spec.includes(f));
+  document.getElementById('itbl').innerHTML=filtered.map(i=>{
+    const cnt=D.sch.filter(s=>s.iid===i.id).length;
+    return `<tr>
+      <td><strong>${esc(i.name)}</strong></td>
+      <td><span class="badge" style="background:${CH[i.spec]||'#999'}">${esc(i.spec)}</span></td>
+      <td><span class="cdot" style="background:${i.color}"></span></td>
+      <td>${esc(i.note||'-')}</td>
+      <td style="text-align:center">${cnt}</td>
+      <td style="white-space:nowrap">
+        <button class="btn bsm be" onclick="editI(${Number(i.id)})">編集</button>
+        <button class="btn bsm bd" onclick="delI(${Number(i.id)})">削除</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+// ===== CLASSES =====
+function saveCls(){
+  const eid=document.getElementById('c-edit-id').value;
+  const obj={n:document.getElementById('c-n').value.trim(),cat:document.getElementById('c-cat').value,int:document.getElementById('c-int').value,dif:document.getElementById('c-dif').value,dur:parseInt(document.getElementById('c-dur').value),cap:parseInt(document.getElementById('c-cap').value),ord:parseInt(document.getElementById('c-ord').value)||0,orig:document.getElementById('c-orig').value,desc:document.getElementById('c-desc').value.trim()};
+  if(!obj.n){tt('レッスン名を入力');return;}
+  if(eid){const idx=D.cls.findIndex(c=>c.id===parseInt(eid));if(idx>=0)Object.assign(D.cls[idx],obj);cancelEditCls();tt('更新しました');}
+  else{D.cls.push({id:Date.now(),...obj});document.getElementById('c-n').value='';document.getElementById('c-desc').value='';tt('追加しました');}
+  svLS();renderAll();
+}
+function editCls(id){
+  const c=D.cls.find(x=>x.id===id);if(!c)return;
+  document.getElementById('c-edit-id').value=id;
+  document.getElementById('c-n').value=c.n;document.getElementById('c-cat').value=c.cat;
+  document.getElementById('c-int').value=c.int;document.getElementById('c-dif').value=c.dif||c.int;
+  document.getElementById('c-dur').value=c.dur;document.getElementById('c-cap').value=c.cap;
+  document.getElementById('c-ord').value=c.ord||0;document.getElementById('c-orig').value=c.orig||'';
+  document.getElementById('c-desc').value=c.desc||'';
+  document.getElementById('c-save-btn').textContent='更新';
+  document.getElementById('c-cancel-btn').style.display='inline-flex';
+  document.getElementById('c-n').focus();
+  goTab('classes');window.scrollTo(0,0);
+}
+function cancelEditCls(){document.getElementById('c-edit-id').value='';document.getElementById('c-n').value='';document.getElementById('c-desc').value='';document.getElementById('c-save-btn').textContent='追加';document.getElementById('c-cancel-btn').style.display='none';}
+function delCls(id){if(!confirm('削除？'))return;D.cls=D.cls.filter(c=>c.id!==id);svLS();renderAll();}
+function renderCT(){
+  const f=(document.getElementById('cls-filter')||{}).value||'';
+  const all=D.cls.filter(c=>!f||c.n.includes(f)||c.cat.includes(f));
+
+  // Group by category
+  const cats=[...new Set(all.map(c=>c.cat))].sort();
+  let html='';
+
+  cats.forEach(cat=>{
+    const items=all.filter(c=>c.cat===cat).sort((a,b)=>(a.ord||0)-(b.ord||0));
+    const color=CH[cat]||'#999';
+    // Category header row
+    html+=`<tr><td colspan="9" style="background:${color};color:#fff;font-weight:700;font-size:12px;padding:6px 10px;border-radius:3px">${cat}（${items.length}件）</td></tr>`;
+    // Lesson rows
+    items.forEach(c=>{
+      html+=`<tr>
+        <td>${c.ord||0}</td>
+        <td><strong>${esc(c.n)}</strong></td>
+        <td><span class="badge" style="background:${CH[c.cat]||'#999'}">${esc(c.cat)}</span></td>
+        <td style="color:#E67E22">${esc(c.int)}</td>
+        <td style="color:#2980B9">${esc(c.dif||c.int)}</td>
+        <td>${c.dur}分</td>
+        <td>${c.cap}人</td>
+        <td style="max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${esc(c.desc||'')}">${esc(c.desc||'-')}</td>
+        <td style="white-space:nowrap"><button class="btn bsm be" onclick="editCls(${c.id})">編集</button> <button class="btn bsm bd" onclick="delCls(${c.id})">削除</button></td>
+      </tr>`;
+    });
+  });
+
+  document.getElementById('ctbl').innerHTML=html;
+}
+
+// ===== 裏面 =====
+function renderUra(){
+  const showAll=document.getElementById('ura-all')&&document.getElementById('ura-all').checked;
+  // Get classes used in current schedule
+  const usedIds=new Set(D.sch.map(s=>s.cid));
+  const catOrder=['ビューティーメソッド','ホットヨガ','ホットピラティス','マシンピラティス','パーソナル','コラーゲンシャワー'];
+  let html='';
+
+  catOrder.forEach(cat=>{
+    let items=D.cls.filter(c=>c.cat===cat);
+    if(!showAll) items=items.filter(c=>usedIds.has(c.id));
+    items.sort((a,b)=>(a.ord||0)-(b.ord||0));
+    if(!items.length)return;
+
+    const catCls=URA_CLS[cat]||'';
+    html+=`<div class="ura-cat-header ${catCls}">${URA_NAMES[cat]||cat}</div>`;
+    if(cat!=='パーソナル'&&cat!=='コラーゲンシャワー'){
+      html+=`<table class="ura-table"><thead><tr><th style="width:140px">レッスン名</th><th style="width:50px;color:#E67E22">強度</th><th style="width:50px;color:#2980B9">難度</th><th>クラス内容</th></tr></thead><tbody>`;
+      items.forEach(c=>{
+        html+=`<tr><td class="name">${esc(c.n)}</td><td class="star" style="color:#E67E22">${c.int!=='-'?esc(c.int):''}</td><td class="star" style="color:#2980B9">${(c.dif||c.int)!=='-'?esc(c.dif||c.int):''}</td><td class="desc">${esc(c.desc||'')}</td></tr>`;
+      });
+      html+='</tbody></table>';
+      if(URA_NOTES[cat]) html+=`<div class="ura-note">${esc(URA_NOTES[cat])}</div>`;
+    } else {
+      // パーソナル / シャワー - simple format
+      items.forEach(c=>{
+        html+=`<div style="padding:8px 12px;border:1px solid var(--bdr);border-top:none;font-size:11px;background:#fff"><strong>${esc(c.n)}</strong><br>${esc(c.desc||'')}</div>`;
+      });
+      if(URA_NOTES[cat]) html+=`<div class="ura-note">${esc(URA_NOTES[cat])}</div>`;
+    }
+  });
+
+  // 案内文 + 店舗情報 + ロゴ/QR（2カラム）
+  const se=D.se||{};
+  const gLines=se.guideLines||['≪お客様へのご利用案内≫','☆祝日・代行情報はアプリやホームページ、館内掲示版をご確認ください。','☆レッスン開始以降の入室はできません。'];
+  const imgs=se.images||{};
+  html+='<div style="margin-top:16px;padding:10px 12px;background:#fff0f5;border-radius:6px;border:1px solid #f0d0d8;display:flex;gap:12px">';
+  // 左: 案内文
+  html+='<div style="flex:1;font-size:12px;color:var(--txt)">';
+  gLines.forEach((l,i)=>{if(l)html+=`${i===0?'<b>'+esc(l)+'</b>':esc(l)}<br>`;});
+  html+='<hr style="border:none;border-top:1px solid #f0d0d8;margin:6px 0">';
+  html+=`<div style="font-size:13px;font-weight:700;color:var(--pri);margin-bottom:2px">${esc(se.name||'Lucina')}</div>`;
+  if(se.addr) html+=`<div style="font-size:11px">〒 ${esc(se.addr)}</div>`;
+  const info=[];
+  if(se.tel) info.push('TEL　'+esc(se.tel));
+  if(se.open) info.push('営業時間　'+esc(se.open)+' ～ '+esc(se.note||''));
+  if(info.length) html+=`<div style="font-size:11px">${info.join('　　')}</div>`;
+  if(se.hol) html+=`<div style="font-size:11px">休館日　${esc(se.hol)}</div>`;
+  html+='</div>';
+  // 右: ロゴ・QR
+  if(imgs.logo||imgs.qr){
+    html+='<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px">';
+    if(imgs.logo) html+=`<img src="${imgs.logo}" style="max-height:60px;max-width:120px">`;
+    if(imgs.qr) html+=`<img src="${imgs.qr}" style="max-height:60px;max-width:60px">`;
+    html+='</div>';
+  }
+  html+='</div>';
+
+  document.getElementById('ura-content').innerHTML=html;
+}
+
+// ===== PRINT URA PAGE (Page 2 for printing) =====
+function renderPrintUra(){
+  const usedIds=new Set(D.sch.map(s=>s.cid));
+  const catOrder=['ビューティーメソッド','ホットヨガ','ホットピラティス','マシンピラティス','パーソナル','コラーゲンシャワー'];
+
+  // レッスン数に応じてサイズクラスを決定
+  const totalUsed=D.cls.filter(c=>usedIds.has(c.id)).length;
+  let szCls='ura-sz-s'; // ≤15件: 大きめフォント
+  if(totalUsed>25) szCls='ura-sz-l'; // >25件: 小さめフォント
+  else if(totalUsed>15) szCls='ura-sz-m'; // 16-25件: 中サイズ
+
+  // ページコンテナにサイズクラスを適用
+  const pageEl=document.getElementById('print-ura-content');
+  if(pageEl){pageEl.className='print-ura-page '+szCls;}
+
+  let html='';
+
+  catOrder.forEach(cat=>{
+    let items=D.cls.filter(c=>c.cat===cat&&usedIds.has(c.id)).sort((a,b)=>(a.ord||0)-(b.ord||0));
+    if(!items.length)return;
+
+    const catCls=URA_CLS[cat]||'';
+    html+=`<div class="ura-section"><div class="ura-cat-header ${catCls}">${URA_NAMES[cat]||cat}</div>`;
+    if(cat!=='パーソナル'&&cat!=='コラーゲンシャワー'){
+      html+=`<table class="ura-table"><thead><tr><th class="name">レッスン名</th><th class="star" style="color:#E67E22">強度</th><th class="star" style="color:#2980B9">難度</th><th>クラス内容</th></tr></thead><tbody>`;
+      items.forEach(c=>{
+        html+=`<tr><td class="name">${esc(c.n)}</td><td class="star" style="color:#E67E22">${c.int!=='-'?esc(c.int):''}</td><td class="star" style="color:#2980B9">${(c.dif||c.int)!=='-'?esc(c.dif||c.int):''}</td><td class="desc">${esc(c.desc||'')}</td></tr>`;
+      });
+      html+='</tbody></table>';
+      if(URA_NOTES[cat]) html+=`<div class="ura-note">${esc(URA_NOTES[cat])}</div>`;
+    } else {
+      items.forEach(c=>{
+        html+=`<div style="padding:6px 8px;border:0.5px solid #ddd;border-top:none;font-size:10px;background:#fff"><strong>${esc(c.n)}</strong><br>${esc(c.desc||'')}</div>`;
+      });
+      if(URA_NOTES[cat]) html+=`<div class="ura-note">${esc(URA_NOTES[cat])}</div>`;
+    }
+    html+='</div>';
+  });
+
+  // 案内文 + 店舗情報 + ロゴ/QR（印刷用2カラム）
+  const se=D.se||{};
+  const gLines=se.guideLines||['≪お客様へのご利用案内≫','☆祝日・代行情報はアプリやホームページ、館内掲示版をご確認ください。','☆レッスン開始以降の入室はできません。'];
+  const imgs=se.images||{};
+  html+='<div class="ura-footer" style="margin-top:4px;padding:4px 8px;border-top:0.5px solid #dcc;display:flex;gap:10px;align-items:center">';
+  // 左: 案内文 + 店舗情報
+  html+='<div style="flex:1;font-size:7px;color:#555;line-height:1.4">';
+  gLines.forEach((l,i)=>{if(l)html+=`${i===0?'<b>'+esc(l)+'</b>':esc(l)}<br>`;});
+  html+=`<div style="margin-top:2px;font-size:7px"><strong>${esc(se.name||'Lucina')}</strong>`;
+  if(se.tel) html+=`　TEL ${esc(se.tel)}`;
+  if(se.addr) html+=`<br>${esc(se.addr)}`;
+  html+='<br>';
+  if(se.open) html+=`営業時間 ${esc(se.open)} ～ ${esc(se.note||'')}`;
+  if(se.hol) html+=`　　休館日 ${esc(se.hol)}`;
+  html+='</div></div>';
+  // 右: ロゴ・QR（適切なサイズで右寄せ）
+  if(imgs.logo||imgs.qr){
+    html+='<div style="display:flex;flex-direction:column;align-items:center;gap:3px;flex-shrink:0">';
+    if(imgs.logo) html+=`<img src="${imgs.logo}" style="height:20px;width:auto">`;
+    if(imgs.qr) html+=`<img src="${imgs.qr}" style="height:20px;width:20px">`;
+    html+='</div>';
+  }
+  html+='</div>';
+
+  document.getElementById('print-ura-content').innerHTML=html;
+}
+
+// ===== SCHEDULE MODAL =====
+function openAdd(){D.eid=null;document.getElementById('mt').textContent='レッスン追加';document.getElementById('m-btn').textContent='追加';document.getElementById('m-dt').value=fD(new Date());document.getElementById('m-d').value=(new Date().getDay()+6)%7;document.getElementById('m-s').value='10:00';document.getElementById('m-e').value='11:00';document.getElementById('m-n').value='';popSel();document.getElementById('modal').classList.add('show');}
+function openFor(di,time,date){D.eid=null;document.getElementById('mt').textContent='レッスン追加';document.getElementById('m-btn').textContent='追加';document.getElementById('m-d').value=di;document.getElementById('m-dt').value=date;document.getElementById('m-s').value=time;const[h,mm]=time.split(':').map(Number);document.getElementById('m-e').value=P(h+1)+':'+P(mm);document.getElementById('m-n').value='';popSel();document.getElementById('modal').classList.add('show');}
+function editSch(id){const l=D.sch.find(s=>s.id===id);if(!l)return;D.eid=id;document.getElementById('mt').textContent='レッスン編集';document.getElementById('m-btn').textContent='更新';document.getElementById('m-dt').value=l.date;document.getElementById('m-d').value=(pD(l.date).getDay()+6)%7;document.getElementById('m-s').value=l.st;document.getElementById('m-e').value=l.et;document.getElementById('m-n').value=l.note||'';popSel();document.getElementById('m-c').value=l.cid;document.getElementById('m-i').value=l.iid;document.getElementById('modal').classList.add('show');}
+function popSel(){
+  document.getElementById('m-c').innerHTML=D.cls.sort((a,b)=>a.cat.localeCompare(b.cat)||(a.ord||0)-(b.ord||0)).map(c=>`<option value="${c.id}" data-dur="${c.dur||60}">${esc(c.n)} (${esc(c.cat)}, ${c.dur||60}分)</option>`).join('')||'<option>--</option>';
+  document.getElementById('m-i').innerHTML=D.inst.map(i=>`<option value="${i.id}">${esc(i.name)}</option>`).join('')||'<option>--</option>';
+  // Auto-calc end time when class changes
+  document.getElementById('m-c').onchange=autoEndTime;
+}
+function autoEndTime(){
+  const sel=document.getElementById('m-c');
+  const opt=sel.options[sel.selectedIndex];
+  const dur=parseInt(opt?.dataset?.dur||60);
+  const st=document.getElementById('m-s').value;
+  if(st){const[h,m]=st.split(':').map(Number);const em=h*60+m+dur;document.getElementById('m-e').value=P(Math.floor(em/60))+':'+P(em%60);}
+}
+// Also auto-calc when start time changes
+document.getElementById('m-s').addEventListener('change',autoEndTime);
+function clMo(){document.getElementById('modal').classList.remove('show');}
+function saveSch(){
+  const date=document.getElementById('m-dt').value,st=document.getElementById('m-s').value,et=document.getElementById('m-e').value,cid=parseInt(document.getElementById('m-c').value),iid=parseInt(document.getElementById('m-i').value),note=document.getElementById('m-n').value.trim();
+  if(!date||!st||!et||!cid||!iid){tt('すべて入力');return;}
+  if(D.eid){const idx=D.sch.findIndex(s=>s.id===D.eid);if(idx>=0)D.sch[idx]={...D.sch[idx],date,st,et,cid,iid,note};}
+  else D.sch.push({id:Date.now(),date,st,et,cid,iid,note});
+  clMo();svLS();renderAll();tt(D.eid?'更新':'追加');
+}
+function delSch(id){
+  const l=D.sch.find(s=>s.id===id);
+  if(l){const c=D.cls.find(x=>x.id===l.cid);const nm=c?c.n:'レッスン';if(!confirm(`「${nm}」(${l.st}-${l.et})\nを削除しますか？`))return;}
+  D.sch=D.sch.filter(s=>s.id!==id);svLS();renderAll();tt('削除しました');
+}
+function dupWeek(){const s=pD(D.ws),e=new Date(s);e.setDate(e.getDate()+6);const wk=D.sch.filter(x=>{const d=pD(x.date);return d>=s&&d<=e;});if(!wk.length){tt('今週にレッスンなし');return;}if(!confirm(`${wk.length}件を翌週にコピー？`))return;wk.forEach(l=>{const nd=new Date(pD(l.date));nd.setDate(nd.getDate()+7);D.sch.push({...l,id:Date.now()+Math.random()*1e4,date:fD(nd)});});svLS();renderAll();tt('翌週にコピー完了');}
+
+let _undoCopyIds=[];
+function dupMonth(){
+  // 現在表示中の月を特定
+  let srcY,srcM;
+  if(D.vw==='m'){srcY=D.yr;srcM=D.mo;}
+  else{const ws=pD(D.ws);srcY=ws.getFullYear();srcM=ws.getMonth();}
+  const srcStart=new Date(srcY,srcM,1),srcEnd=new Date(srcY,srcM+1,0);
+  const srcLessons=D.sch.filter(x=>{const d=pD(x.date);return d>=srcStart&&d<=srcEnd;});
+  if(!srcLessons.length){tt(`${srcM+1}月にレッスンなし`);return;}
+  const dstY=srcM===11?srcY+1:srcY, dstM=srcM===11?0:srcM+1;
+  const existing=D.sch.filter(x=>{const d=pD(x.date);return d>=new Date(dstY,dstM,1)&&d<=new Date(dstY,dstM+1,0);});
+  // 強化された確認ダイアログ
+  let msg=`━━━━━━━━━━━━━━━━━━\n`;
+  msg+=`📅 翌月コピーの確認\n`;
+  msg+=`━━━━━━━━━━━━━━━━━━\n\n`;
+  msg+=`コピー元: ${srcY}年${srcM+1}月（${srcLessons.length}件）\n`;
+  msg+=`コピー先: ${dstY}年${dstM+1}月\n\n`;
+  if(existing.length){
+    msg+=`⚠ ${dstM+1}月に既に${existing.length}件のスケジュールがあります。\n`;
+    msg+=`　 既存データに追加されます（上書きではありません）。\n\n`;
+  }
+  msg+=`コピーしますか？\n`;
+  msg+=`（コピー後「↩ コピーを取り消す」で元に戻せます）`;
+  if(!confirm(msg))return;
+  // コピー実行 - IDを記録してUndo可能に
+  _undoCopyIds=[];
+  srcLessons.forEach(l=>{
+    const sd=pD(l.date);
+    const dow=sd.getDay();
+    const weekOfMonth=Math.floor((sd.getDate()-1)/7);
+    const dstFirst=new Date(dstY,dstM,1);
+    const dstFirstDow=dstFirst.getDay();
+    let dayOffset=dow-dstFirstDow;
+    if(dayOffset<0)dayOffset+=7;
+    const targetDate=1+dayOffset+weekOfMonth*7;
+    const dstLastDay=new Date(dstY,dstM+1,0).getDate();
+    if(targetDate>dstLastDay)return;
+    const nd=new Date(dstY,dstM,targetDate);
+    const newId=Date.now()+Math.random()*1e5;
+    D.sch.push({...l,id:newId,date:fD(nd)});
+    _undoCopyIds.push(newId);
+  });
+  // 翌月に移動
+  D.mo=dstM;D.yr=dstY;
+  const first=new Date(dstY,dstM,1);
+  D.ws=fD(gMon(first));
+  svLS();renderAll();updLbl();updSt();updMonthCount();
+  // Undoボタンを表示
+  const btn=document.getElementById('btn-undo-copy');
+  if(btn)btn.style.display='inline-flex';
+  tt(`${dstM+1}月に${_undoCopyIds.length}件コピー完了`);
+}
+
+function undoCopy(){
+  if(!_undoCopyIds.length){tt('取り消すコピーがありません');return;}
+  const cnt=_undoCopyIds.length;
+  if(!confirm(`直前のコピー（${cnt}件）を取り消しますか？`))return;
+  D.sch=D.sch.filter(s=>!_undoCopyIds.includes(s.id));
+  _undoCopyIds=[];
+  const btn=document.getElementById('btn-undo-copy');
+  if(btn)btn.style.display='none';
+  svLS();renderAll();updLbl();updSt();updMonthCount();
+  tt(`${cnt}件のコピーを取り消しました`);
+}
+
+function clearMonth(){
+  let tgtY,tgtM;
+  if(D.vw==='m'){tgtY=D.yr;tgtM=D.mo;}
+  else{const ws=pD(D.ws);tgtY=ws.getFullYear();tgtM=ws.getMonth();}
+  const tgtStart=new Date(tgtY,tgtM,1),tgtEnd=new Date(tgtY,tgtM+1,0);
+  const monthLessons=D.sch.filter(x=>{const d=pD(x.date);return d>=tgtStart&&d<=tgtEnd;});
+  if(!monthLessons.length){tt(`${tgtM+1}月にスケジュールなし`);return;}
+  let msg=`━━━━━━━━━━━━━━━━━━\n`;
+  msg+=`🗑 一括削除の確認\n`;
+  msg+=`━━━━━━━━━━━━━━━━━━\n\n`;
+  msg+=`${tgtY}年${tgtM+1}月のスケジュール ${monthLessons.length}件\n`;
+  msg+=`をすべて削除します。\n\n`;
+  msg+=`⚠ この操作は元に戻せません。\n`;
+  msg+=`本当に削除しますか？`;
+  if(!confirm(msg))return;
+  // 二重確認
+  if(!confirm(`最終確認: ${tgtM+1}月の${monthLessons.length}件を本当に削除しますか？`))return;
+  D.sch=D.sch.filter(x=>{const d=pD(x.date);return !(d>=tgtStart&&d<=tgtEnd);});
+  svLS();renderAll();updLbl();updSt();updMonthCount();
+  tt(`${tgtM+1}月の${monthLessons.length}件を削除しました`);
+}
+
+function updMonthCount(){
+  const el=document.getElementById('month-count');
+  if(!el)return;
+  let tgtY,tgtM;
+  if(D.vw==='m'){tgtY=D.yr;tgtM=D.mo;}
+  else{
+    // 週間表示: 週の中央(水曜)の月を使用
+    const ws=pD(D.ws);
+    const mid=new Date(ws);mid.setDate(mid.getDate()+3);
+    tgtY=mid.getFullYear();tgtM=mid.getMonth();
+  }
+  const tgtStart=new Date(tgtY,tgtM,1),tgtEnd=new Date(tgtY,tgtM+1,0);
+  const cnt=D.sch.filter(x=>{const d=pD(x.date);return d>=tgtStart&&d<=tgtEnd;}).length;
+  el.textContent=`${tgtM+1}月: ${cnt}件`;
+}
+
+// ===== SAMPLE =====
+function autoLoadSchedule(){
+// 初回起動時またはスケジュールが空の場合、自動的に4月サンプルデータを読み込む
+const fc=n=>D.cls.find(c=>c.n===n),fi=n=>D.inst.find(i=>i.name===n||i.name.replace(/\s/g,'')===n.replace(/\s/g,''));
+const apr=[
+{day:0,ls:[{s:'10:00',e:'11:00',c:'シンプル',i:'Eri'},{s:'11:15',e:'12:15',c:'ピラティス シンプル',i:'Eri'},{s:'12:45',e:'13:45',c:'Basic～hip～',i:'与沢 愛子'},{s:'14:00',e:'15:00',c:'Intermediate',i:'与沢 愛子'},{s:'18:30',e:'19:15',c:'ヴィンヤサフロー',i:'市川 ミカ'},{s:'19:30',e:'20:30',c:'ヒーリングフロー',i:'市川 ミカ'},{s:'21:00',e:'22:00',c:'Intermediate',i:'佐々木 美貴'}]},
+{day:1,ls:[{s:'10:00',e:'11:00',c:'シンプル',i:'西上 歩'},{s:'11:30',e:'12:30',c:'ダイエット★★',i:'竹内 恵'},{s:'13:00',e:'14:00',c:'ボディメンテナンス',i:'木村 絵美子'},{s:'19:00',e:'20:00',c:'ピラティス シンプル',i:'宮城 ゆみこ'},{s:'20:30',e:'21:30',c:'Basic～waist～',i:'宮城 ゆみこ',n:'【Waist】7・21日/【hip】14・28日'}]},
+{day:2,ls:[{s:'10:00',e:'11:00',c:'Beauty Yoga',i:'与沢 愛子'},{s:'11:30',e:'12:30',c:'美彩心',i:'与沢 愛子'},{s:'13:00',e:'14:00',c:'ヴィンヤサフロー',i:'ituco'},{s:'14:30',e:'15:30',c:'Basic',i:'高鳥 マノ',n:'【Back&Core】1・15日'},{s:'19:30',e:'20:30',c:'Back&Core',i:'鈴木 真由'},{s:'21:00',e:'22:00',c:'パワー',i:'鈴木 真由'}]},
+{day:3,ls:[{s:'10:00',e:'11:00',c:'Waist Shape',i:'蓮見 恵莉'},{s:'11:30',e:'12:30',c:'美Body',i:'峯岸 明美'},{s:'13:00',e:'14:00',c:'リラックス',i:'ピョンソンファ'},{s:'19:00',e:'20:00',c:'姿勢改善',i:'hitomi'},{s:'20:30',e:'21:30',c:'ピラティス シンプル',i:'夏海はるか'}]},
+{day:4,ls:[{s:'10:00',e:'11:00',c:'ハタ',i:'木村 絵美子'},{s:'11:15',e:'12:15',c:'デトックス',i:'木村 絵美子'},{s:'13:00',e:'14:00',c:'Intermediate',i:'与沢 愛子'},{s:'14:15',e:'15:15',c:'Basic',i:'与沢 愛子'},{s:'19:30',e:'20:30',c:'リラックス',i:'オン'},{s:'21:00',e:'22:00',c:'Basic',i:'えみ'}]},
+{day:5,ls:[{s:'10:00',e:'11:00',c:'朝ヨガ',i:'佐々木 美貴'},{s:'11:30',e:'12:30',c:'Basic～waist～',i:'佐々木 美貴'},{s:'13:00',e:'14:00',c:'リラックス',i:'竹内 里美'},{s:'14:15',e:'15:15',c:'ボディケア',i:'YOKO'},{s:'15:45',e:'16:45',c:'Jump Board',i:'YOKO'},{s:'17:00',e:'18:00',c:'Lower Body',i:'YOKO'}]},
+{day:6,ls:[{s:'10:00',e:'11:00',c:'ピラティス シンプル',i:'峯岸 明美'},{s:'11:30',e:'12:30',c:'デトックス',i:'オン'},{s:'13:00',e:'14:00',c:'シンプル',i:'西上 歩'},{s:'14:30',e:'15:30',c:'Waist Shape',i:'峯岸 明美'},{s:'15:45',e:'16:45',c:'Intermediate',i:'佐々木 美貴'},{s:'17:00',e:'18:00',c:'Basic～hip～',i:'長野 道子',n:'【hip】5・19日/【Basic】12・26日'}]}
+];
+for(let w=0;w<5;w++){apr.forEach(dd=>{const bm=new Date(2026,2,30);bm.setDate(bm.getDate()+w*7);const dt=new Date(bm);dt.setDate(dt.getDate()+dd.day);const m=dt.getMonth();if(m!==3&&m!==4)return;dd.ls.forEach(l=>{const c=fc(l.c),inst=fi(l.i);if(c&&inst)D.sch.push({id:Date.now()+Math.random()*1e5,date:fD(dt),st:l.s,et:l.e,cid:c.id,iid:inst.id,note:l.n||''});});});}
+D.ws=fD(new Date(2026,3,6));D.mo=3;D.yr=2026;svLS();
+}
+
+function loadSample(){if(!confirm('4月スケジュールを読込？\n※既存スケジュールに追加されます'))return;
+const fc=n=>D.cls.find(c=>c.n===n),fi=n=>D.inst.find(i=>i.name===n||i.name.replace(/\s/g,'')===n.replace(/\s/g,''));
+const apr=[
+{day:0,ls:[{s:'10:00',e:'11:00',c:'シンプル',i:'Eri'},{s:'11:15',e:'12:15',c:'ピラティス シンプル',i:'Eri'},{s:'12:45',e:'13:45',c:'Basic～hip～',i:'与沢 愛子'},{s:'14:00',e:'15:00',c:'Intermediate',i:'与沢 愛子'},{s:'18:30',e:'19:15',c:'ヴィンヤサフロー',i:'市川 ミカ'},{s:'19:30',e:'20:30',c:'ヒーリングフロー',i:'市川 ミカ'},{s:'21:00',e:'22:00',c:'Intermediate',i:'佐々木 美貴'}]},
+{day:1,ls:[{s:'10:00',e:'11:00',c:'シンプル',i:'西上 歩'},{s:'11:30',e:'12:30',c:'ダイエット★★',i:'竹内 恵'},{s:'13:00',e:'14:00',c:'ボディメンテナンス',i:'木村 絵美子'},{s:'19:00',e:'20:00',c:'ピラティス シンプル',i:'宮城 ゆみこ'},{s:'20:30',e:'21:30',c:'Basic～waist～',i:'宮城 ゆみこ',n:'【Waist】7・21日/【hip】14・28日'}]},
+{day:2,ls:[{s:'10:00',e:'11:00',c:'Beauty Yoga',i:'与沢 愛子'},{s:'11:30',e:'12:30',c:'美彩心',i:'与沢 愛子'},{s:'13:00',e:'14:00',c:'ヴィンヤサフロー',i:'ituco'},{s:'14:30',e:'15:30',c:'Basic',i:'高鳥 マノ',n:'【Back&Core】1・15日'},{s:'19:30',e:'20:30',c:'Back&Core',i:'鈴木 真由'},{s:'21:00',e:'22:00',c:'パワー',i:'鈴木 真由'}]},
+{day:3,ls:[{s:'10:00',e:'11:00',c:'Waist Shape',i:'蓮見 恵莉'},{s:'11:30',e:'12:30',c:'美Body',i:'峯岸 明美'},{s:'13:00',e:'14:00',c:'リラックス',i:'ピョンソンファ'},{s:'19:00',e:'20:00',c:'姿勢改善',i:'hitomi'},{s:'20:30',e:'21:30',c:'ピラティス シンプル',i:'夏海はるか'}]},
+{day:4,ls:[{s:'10:00',e:'11:00',c:'ハタ',i:'木村 絵美子'},{s:'11:15',e:'12:15',c:'デトックス',i:'木村 絵美子'},{s:'13:00',e:'14:00',c:'Intermediate',i:'与沢 愛子'},{s:'14:15',e:'15:15',c:'Basic',i:'与沢 愛子'},{s:'19:30',e:'20:30',c:'リラックス',i:'オン'},{s:'21:00',e:'22:00',c:'Basic',i:'えみ'}]},
+{day:5,ls:[{s:'10:00',e:'11:00',c:'朝ヨガ',i:'佐々木 美貴'},{s:'11:30',e:'12:30',c:'Basic～waist～',i:'佐々木 美貴'},{s:'13:00',e:'14:00',c:'リラックス',i:'竹内 里美'},{s:'14:15',e:'15:15',c:'ボディケア',i:'YOKO'},{s:'15:45',e:'16:45',c:'Jump Board',i:'YOKO'},{s:'17:00',e:'18:00',c:'Lower Body',i:'YOKO'}]},
+{day:6,ls:[{s:'10:00',e:'11:00',c:'ピラティス シンプル',i:'峯岸 明美'},{s:'11:30',e:'12:30',c:'デトックス',i:'オン'},{s:'13:00',e:'14:00',c:'シンプル',i:'西上 歩'},{s:'14:30',e:'15:30',c:'Waist Shape',i:'峯岸 明美'},{s:'15:45',e:'16:45',c:'Intermediate',i:'佐々木 美貴'},{s:'17:00',e:'18:00',c:'Basic～hip～',i:'長野 道子',n:'【hip】5・19日/【Basic】12・26日'}]}
+];
+for(let w=0;w<5;w++){apr.forEach(dd=>{const bm=new Date(2026,2,30);bm.setDate(bm.getDate()+w*7);const dt=new Date(bm);dt.setDate(dt.getDate()+dd.day);const m=dt.getMonth();if(m!==3&&m!==4)return;dd.ls.forEach(l=>{const c=fc(l.c),inst=fi(l.i);if(c&&inst)D.sch.push({id:Date.now()+Math.random()*1e5,date:fD(dt),st:l.s,et:l.e,cid:c.id,iid:inst.id,note:l.n||''});});});}
+D.ws=fD(new Date(2026,3,6));D.mo=3;D.yr=2026;svLS();renderAll();tt('4月スケジュール読込完了（'+D.sch.length+'件）');
+}
+
+// ===== STATS =====
+function updSt(){const s=pD(D.ws),e=new Date(s);e.setDate(e.getDate()+6);const wk=D.sch.filter(x=>{const d=pD(x.date);return d>=s&&d<=e;}).length;const n=new Date(),ms=new Date(n.getFullYear(),n.getMonth(),1),me=new Date(n.getFullYear(),n.getMonth()+1,0);const mo=D.sch.filter(x=>{const d=pD(x.date);return d>=ms&&d<=me;}).length;document.getElementById('s1').textContent=wk;document.getElementById('s2').textContent=D.inst.length;document.getElementById('s3').textContent=D.cls.length;document.getElementById('s4').textContent=mo;}
+
+// ===== STYLED EXCEL HELPERS =====
+const CAT_SHORT={'ホットヨガ':'ヨガ','ホットピラティス':'ピラティス','マシンピラティス':'マシンピラティス','ビューティーメソッド':'ビューティー','コラーゲンシャワー':'シャワー','パーソナル':'パーソナル'};
+const CAT_XL_FILL={'ホットヨガ':'FFE1FF','ホットピラティス':'FFFFCC','マシンピラティス':'CC99FF','ビューティーメソッド':'FFB3D9','パーソナル':'FFD9B3','コラーゲンシャワー':'B3FFD9','特別':'FFFFB3'};
+const CAT_URA_FILL={'ビューティーメソッド':'FFD9FF','ホットヨガ':'D5FFAB','ホットピラティス':'FFFFAB','マシンピラティス':'D9B3FF'};
+const sB={top:{style:'thin',color:{rgb:'999999'}},bottom:{style:'thin',color:{rgb:'999999'}},left:{style:'thin',color:{rgb:'999999'}},right:{style:'thin',color:{rgb:'999999'}}};
+const sBd={bottom:{style:'dotted',color:{rgb:'DDDDDD'}},left:{style:'thin',color:{rgb:'CCCCCC'}},right:{style:'thin',color:{rgb:'CCCCCC'}}};
+function xFont(sz,b,c){return{name:'BIZ UDPゴシック',sz:sz,bold:!!b,color:c?{rgb:c}:undefined}}
+function xFontU(sz,b){return{name:'游ゴシック',sz:sz,bold:!!b}}
+function xFill(c){return{fgColor:{rgb:c},patternType:'solid'}}
+function xAlign(h,v,w){return{horizontal:h||'center',vertical:v||'center',wrapText:!!w}}
+
+// ===== EXCEL: 配布用 表面+裏面 =====
+function exportFullExcel(){
+  const nm=D.se.name||'Lucina',start=pD(D.ws),dates=[];
+  for(let i=0;i<7;i++){const dd=new Date(start);dd.setDate(dd.getDate()+i);dates.push(dd);}
+  const slots=getSlots();
+
+  // ===== 表面 Sheet =====
+  const wb=XLSX.utils.book_new();
+  const wsData=[];
+
+  // Row 0: Title
+  wsData.push([{v:`　　ホットコラーゲンスタジオプログラム　${nm}`,s:{font:xFont(16,true,'FF00FF'),alignment:xAlign('center','center')}},'','','','','','','',{v:fD(start),s:{font:xFont(8),alignment:xAlign('right','center')}}]);
+
+  // Row 1: Day headers
+  const hdrRow=[{v:'時間',s:{font:xFont(8,true,'FFFFFF'),fill:xFill('FF6699'),alignment:xAlign(),border:sB}}];
+  dates.forEach((d,i)=>{hdrRow.push({v:`${DJ[i]}曜日`,s:{font:xFont(10,true,'FFFFFF'),fill:xFill('FF6699'),alignment:xAlign(),border:sB}});});
+  hdrRow.push({v:'時間',s:{font:xFont(8,true,'FFFFFF'),fill:xFill('FF6699'),alignment:xAlign(),border:sB}});
+  wsData.push(hdrRow);
+
+  // Schedule rows
+  const rowH=[];
+  slots.forEach(time=>{
+    const row=[{v:time,s:{font:xFont(7),alignment:xAlign(),border:sBd}}];
+    dates.forEach(d=>{
+      const fd=fD(d),ls=D.sch.filter(s=>s.date===fd&&s.st===time);
+      if(ls.length){
+        const l=ls[0],c=D.cls.find(x=>x.id===l.cid),inst=D.inst.find(x=>x.id===l.iid);
+        const cat=c?c.cat:'特別',fill=CAT_XL_FILL[cat]||'FFFFFF';
+        const intv=c&&c.int!=='-'?c.int:'',catS=CAT_SHORT[cat]||cat;
+        const line1=intv?`${catS}　${intv}`:catS;
+        const line2=c?c.n:'?';
+        const line3=`${l.st}-${l.et}`;
+        const line4=inst?inst.name:'';
+        const note=l.note?` (${l.note})`:'';
+        row.push({v:`${line1}\n${line2}${note}\n${line3}\n${line4}`,s:{font:xFont(9),fill:xFill(fill),alignment:xAlign('center','center',true),border:sB}});
+        rowH.push({r:wsData.length,h:56});
+      } else {
+        row.push({v:'',s:{border:sBd}});
+      }
+    });
+    row.push({v:time,s:{font:xFont(7),alignment:xAlign(),border:sBd}});
+    wsData.push(row);
+  });
+
+  // Info rows
+  wsData.push([]);
+  wsData.push(['','≪お客様へのご利用案内≫','','','','',`${nm}`]);
+  wsData.push(['','☆祝日・代行情報はアプリやホームページ、館内掲示版をご確認ください。','','','','',`営業時間　${D.se.open||'09:30'}～最終レッスン終了後30分後迄`]);
+  wsData.push(['','☆レッスン開始以降の入室はできません。','','','','',`休館日 ${D.se.hol||''}`]);
+
+  const ws1=XLSX.utils.aoa_to_sheet(wsData);
+  ws1['!cols']=[{wch:7},...dates.map(()=>({wch:18})),{wch:7}];
+  ws1['!merges']=[{s:{r:0,c:0},e:{r:0,c:7}}];
+  // Row heights
+  const rws={};rws[0]={hpt:28};rws[1]={hpt:20};
+  slots.forEach((_,i)=>{rws[i+2]={hpt:15};});
+  rowH.forEach(rh=>{rws[rh.r]={hpt:rh.h};});
+  ws1['!rows']=Object.keys(rws).sort((a,b)=>a-b).reduce((arr,k)=>{while(arr.length<parseInt(k))arr.push({});arr.push(rws[k]);return arr;},[]);
+  XLSX.utils.book_append_sheet(wb,ws1,'表面');
+
+  // ===== 裏面 Sheet =====
+  const usedIds=new Set(D.sch.map(s=>s.cid));
+  const catOrd=['ビューティーメソッド','ホットヨガ','ホットピラティス','マシンピラティス'];
+  const uraData=[];
+
+  uraData.push([{v:(D.se&&D.se.uraNote)||'',s:{font:xFontU(9)}}]);
+  uraData.push([
+    {v:'レッスン名',s:{font:xFontU(10,true),alignment:xAlign(),border:sB,fill:xFill('F0F0F0')}},
+    {v:'強度',s:{font:xFontU(10,true),alignment:xAlign(),border:sB,fill:xFill('F0F0F0')}},
+    {v:'難度',s:{font:xFontU(10,true),alignment:xAlign(),border:sB,fill:xFill('F0F0F0')}},
+    {v:'クラス内容',s:{font:xFontU(10,true),alignment:xAlign('left'),border:sB,fill:xFill('F0F0F0')}}
+  ]);
+
+  const uraRowH=[];
+  catOrd.forEach(cat=>{
+    const items=D.cls.filter(c=>c.cat===cat&&usedIds.has(c.id)).sort((a,b)=>(a.ord||0)-(b.ord||0));
+    if(!items.length)return;
+    const cf=CAT_URA_FILL[cat]||'EEEEEE',dn=URA_NAMES[cat]||cat;
+    const catColor=cat==='ビューティーメソッド'?'FF0066':'000000';
+    uraData.push([{v:dn,s:{font:xFontU(11,true),fill:xFill(cf),alignment:xAlign('left','center'),border:sB}},{v:'',s:{fill:xFill(cf),border:sB}},{v:'',s:{fill:xFill(cf),border:sB}},{v:'',s:{fill:xFill(cf),border:sB}}]);
+    items.forEach(c=>{
+      const nm=c.n;
+      const int2=c.int!=='-'?c.int:'',dif2=(c.dif||c.int)!=='-'?(c.dif||c.int):'';
+      const descH=c.desc?Math.max(20,Math.min(55,c.desc.length*0.3+14)):20;
+      uraRowH.push({r:uraData.length,h:descH});
+      uraData.push([
+        {v:nm,s:{font:xFontU(10),alignment:xAlign(),border:sB}},
+        {v:int2,s:{font:xFontU(10),alignment:xAlign(),border:sB}},
+        {v:dif2,s:{font:xFontU(10),alignment:xAlign(),border:sB}},
+        {v:c.desc||'',s:{font:xFontU(9),alignment:xAlign('left','center',true),border:sB}}
+      ]);
+    });
+    if(URA_NOTES[cat])uraData.push([{v:URA_NOTES[cat],s:{font:xFontU(8),alignment:{wrapText:true}}}]);
+  });
+  // パーソナル・シャワー
+  ['パーソナル','コラーゲンシャワー'].forEach(cat=>{
+    const items=D.cls.filter(c=>c.cat===cat&&usedIds.has(c.id));
+    items.forEach(c=>{uraData.push([{v:`${c.n}　　${c.desc||''}`,s:{font:xFontU(10),alignment:{wrapText:true}}}]);});
+  });
+
+  const ws2=XLSX.utils.aoa_to_sheet(uraData);
+  ws2['!cols']=[{wch:22},{wch:6},{wch:6},{wch:65}];
+  const uraRows2=[];
+  uraData.forEach((_,i)=>{const rh=uraRowH.find(x=>x.r===i);uraRows2.push(rh?{hpt:rh.h}:{hpt:20});});
+  ws2['!rows']=uraRows2;
+  // Merge category headers
+  let mr=[];uraData.forEach((row,i)=>{if(row.length===4&&row[1]&&row[1].v===''&&row[0].s&&row[0].s.fill){mr.push({s:{r:i,c:0},e:{r:i,c:3}});}});
+  ws2['!merges']=mr;
+  XLSX.utils.book_append_sheet(wb,ws2,'裏面');
+
+  XLSX.writeFile(wb,`スタジオスケジュール【${nm}】_配布用.xlsx`);tt('配布用Excel出力完了');
+}
+
+function exportWeeklyExcel(){exportFullExcel();}
+
+function exportMonthlyExcel(){
+  const y=D.yr,m=D.mo,nm=D.se.name||'Lucina',dim=new Date(y,m+1,0).getDate();
+  const wb=XLSX.utils.book_new();const uraData=[];
+
+  // リスト形式 月間
+  const listData=[];
+  listData.push([
+    {v:`${y}年${m+1}月 スタジオスケジュール【${nm}】`,s:{font:xFont(14,true,'FF00FF'),alignment:xAlign('left','center')}},
+    '','','','','','',''
+  ]);
+  listData.push([
+    {v:'日付',s:{font:xFont(9,true,'FFFFFF'),fill:xFill('FF6699'),alignment:xAlign(),border:sB}},
+    {v:'曜日',s:{font:xFont(9,true,'FFFFFF'),fill:xFill('FF6699'),alignment:xAlign(),border:sB}},
+    {v:'時間',s:{font:xFont(9,true,'FFFFFF'),fill:xFill('FF6699'),alignment:xAlign(),border:sB}},
+    {v:'カテゴリ',s:{font:xFont(9,true,'FFFFFF'),fill:xFill('FF6699'),alignment:xAlign(),border:sB}},
+    {v:'レッスン名',s:{font:xFont(9,true,'FFFFFF'),fill:xFill('FF6699'),alignment:xAlign(),border:sB}},
+    {v:'強度',s:{font:xFont(9,true,'FFFFFF'),fill:xFill('FF6699'),alignment:xAlign(),border:sB}},
+    {v:'インストラクター',s:{font:xFont(9,true,'FFFFFF'),fill:xFill('FF6699'),alignment:xAlign(),border:sB}},
+    {v:'備考',s:{font:xFont(9,true,'FFFFFF'),fill:xFill('FF6699'),alignment:xAlign(),border:sB}}
+  ]);
+  for(let d=1;d<=dim;d++){
+    const dd=new Date(y,m,d),fd=fD(dd),dow=DJ[(dd.getDay()+6)%7];
+    const ls=D.sch.filter(s=>s.date===fd).sort((a,b)=>a.st.localeCompare(b.st));
+    const isWeekend=dd.getDay()===0||dd.getDay()===6;
+    const dayFill=isWeekend?xFill('FFF0F0'):undefined;
+    if(ls.length){
+      ls.forEach(l=>{
+        const c=D.cls.find(x=>x.id===l.cid),inst=D.inst.find(x=>x.id===l.iid),cat=c?c.cat:'',fill=CAT_XL_FILL[cat]||'FFFFFF';
+        listData.push([
+          {v:`${m+1}/${d}`,s:{font:xFont(9),alignment:xAlign(),border:sB,...(dayFill?{fill:dayFill}:{})}},
+          {v:dow,s:{font:xFont(9),alignment:xAlign(),border:sB,...(dayFill?{fill:dayFill}:{})}},
+          {v:`${l.st}-${l.et}`,s:{font:xFont(9),alignment:xAlign(),border:sB}},
+          {v:cat,s:{font:xFont(8),fill:xFill(fill),alignment:xAlign(),border:sB}},
+          {v:c?c.n:'?',s:{font:xFont(9,true),alignment:xAlign('left'),border:sB}},
+          {v:c&&c.int!=='-'?c.int:'',s:{font:xFont(9),alignment:xAlign(),border:sB}},
+          {v:inst?inst.name:'',s:{font:xFont(9),alignment:xAlign(),border:sB}},
+          {v:l.note||'',s:{font:xFont(8),alignment:xAlign('left'),border:sB}}
+        ]);
+      });
+    } else {
+      listData.push([
+        {v:`${m+1}/${d}`,s:{font:xFont(9),alignment:xAlign(),border:sB,fill:xFill('F5F5F5')}},
+        {v:dow,s:{font:xFont(9),alignment:xAlign(),border:sB,fill:xFill('F5F5F5')}},
+        {v:'',s:{border:sB,fill:xFill('F5F5F5')}},{v:'',s:{border:sB,fill:xFill('F5F5F5')}},{v:'',s:{border:sB,fill:xFill('F5F5F5')}},{v:'',s:{border:sB,fill:xFill('F5F5F5')}},{v:'',s:{border:sB,fill:xFill('F5F5F5')}},{v:'',s:{border:sB,fill:xFill('F5F5F5')}}
+      ]);
+    }
+  }
+
+  const ws1=XLSX.utils.aoa_to_sheet(listData);
+  ws1['!cols']=[{wch:7},{wch:4},{wch:11},{wch:14},{wch:18},{wch:5},{wch:14},{wch:14}];
+  ws1['!merges']=[{s:{r:0,c:0},e:{r:0,c:7}}];
+  XLSX.utils.book_append_sheet(wb,ws1,'月間スケジュール');
+  XLSX.writeFile(wb,`${y}年${m+1}月スケジュール【${nm}】.xlsx`);tt('月間Excel出力完了');
+}
+
+// ===== SETTINGS =====
+// ===== 案内文の動的追加・削除 =====
+function renderGuideLines(){
+  const lines=D.se.guideLines||['≪お客様へのご利用案内≫','☆祝日・代行情報はアプリやホームページ、館内掲示版をご確認ください。','☆レッスン開始以降の入室はできません。'];
+  const el=document.getElementById('guide-lines');
+  if(!el)return;
+  el.innerHTML=lines.map((l,i)=>`<div style="display:flex;gap:4px;align-items:center;margin-bottom:4px"><input value="${esc(l)}" style="flex:1;padding:5px 8px;border:1px solid var(--bdr);border-radius:5px;font-size:12px" data-gi="${i}"><button class="btn bd bsm" onclick="removeGuideLine(${i})">×</button></div>`).join('');
+}
+function addGuideLine(){
+  if(!D.se.guideLines)D.se.guideLines=['≪お客様へのご利用案内≫','☆祝日・代行情報はアプリやホームページ、館内掲示版をご確認ください。','☆レッスン開始以降の入室はできません。'];
+  D.se.guideLines.push('');renderGuideLines();
+}
+function removeGuideLine(i){
+  if(!D.se.guideLines)return;
+  D.se.guideLines.splice(i,1);svLS();renderGuideLines();renderAll();
+}
+function collectGuideLines(){
+  const inputs=document.querySelectorAll('[data-gi]');
+  D.se.guideLines=[];
+  inputs.forEach(inp=>D.se.guideLines.push(inp.value));
+}
+
+// ===== 画像アップロード (Base64) =====
+let _pendingImgs={};
+function previewImg(type,event){
+  const file=event.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    _pendingImgs[type]=e.target.result;
+    renderImgPreview(true);
+    document.getElementById('img-save-area').style.display='block';
+  };
+  reader.readAsDataURL(file);
+}
+function confirmImgSave(){
+  if(!D.se.images)D.se.images={};
+  Object.keys(_pendingImgs).forEach(k=>{D.se.images[k]=_pendingImgs[k];});
+  _pendingImgs={};
+  document.getElementById('img-save-area').style.display='none';
+  document.getElementById('se-logo-file').value='';
+  document.getElementById('se-qr-file').value='';
+  svLS();renderImgPreview();renderAll();tt('画像を保存しました');
+}
+function cancelImgSave(){
+  _pendingImgs={};
+  document.getElementById('se-logo-file').value='';
+  document.getElementById('se-qr-file').value='';
+  document.getElementById('img-save-area').style.display='none';
+  renderImgPreview();
+}
+function removeImg(type){
+  if(D.se.images)delete D.se.images[type];
+  svLS();renderImgPreview();renderAll();tt('画像を削除しました');
+}
+function renderImgPreview(showPending){
+  const el=document.getElementById('img-preview');if(!el)return;
+  const saved=D.se.images||{};
+  const imgs={...saved,...(showPending?_pendingImgs:{})};
+  let h='';
+  if(imgs.logo){const isPending=_pendingImgs.logo;h+=`<div style="text-align:center"><img src="${imgs.logo}" style="max-height:50px;max-width:100px;border:1px solid ${isPending?'#27ae60':'#ddd'};border-radius:4px">${isPending?'<div style="font-size:9px;color:#27ae60;font-weight:700">未保存</div>':'<br><button class="btn bd bsm" onclick="removeImg(\'logo\')">削除</button>'}<div style="font-size:9px;color:var(--txt2)">ロゴ</div></div>`;}
+  if(imgs.qr){const isPending=_pendingImgs.qr;h+=`<div style="text-align:center"><img src="${imgs.qr}" style="max-height:50px;max-width:50px;border:1px solid ${isPending?'#27ae60':'#ddd'};border-radius:4px">${isPending?'<div style="font-size:9px;color:#27ae60;font-weight:700">未保存</div>':'<br><button class="btn bd bsm" onclick="removeImg(\'qr\')">削除</button>'}<div style="font-size:9px;color:var(--txt2)">QR</div></div>`;}
+  el.innerHTML=h;
+}
+
+// ===== CATEGORY MANAGEMENT =====
+function getCategories(){
+  // Default categories + custom ones from D.se.customCats
+  const defaults=['ホットヨガ','ホットピラティス','マシンピラティス','ビューティーメソッド','パーソナル','コラーゲンシャワー','特別'];
+  const custom=D.se.customCats||[];
+  return [...defaults,...custom.map(c=>c.name)];
+}
+
+function getCatColor(cat){
+  // Check custom colors first, then defaults
+  const custom=(D.se.customCats||[]).find(c=>c.name===cat);
+  if(custom) return custom.color;
+  return CH[cat]||'#999';
+}
+
+function addCategory(){
+  const name=document.getElementById('new-cat-name').value.trim();
+  const color=document.getElementById('new-cat-color').value;
+  if(!name){tt('カテゴリ名を入力してください');return;}
+  if(!D.se.customCats) D.se.customCats=[];
+  if(D.se.customCats.find(c=>c.name===name)||['ホットヨガ','ホットピラティス','マシンピラティス','ビューティーメソッド','パーソナル','コラーゲンシャワー','特別'].includes(name)){
+    tt('既に存在するカテゴリです');return;
+  }
+  D.se.customCats.push({name,color});
+  // Update CH (color hash) and CC (CSS color) maps
+  CH[name]=color;
+  CC[name]=color;
+  document.getElementById('new-cat-name').value='';
+  svLS();renderCatList();updateCatSelects();renderAll();
+  tt('カテゴリを追加しました');
+}
+
+function removeCategory(name){
+  if(!confirm(`「${name}」カテゴリを削除しますか？`))return;
+  D.se.customCats=(D.se.customCats||[]).filter(c=>c.name!==name);
+  delete CH[name];delete CC[name];
+  svLS();renderCatList();updateCatSelects();renderAll();
+}
+
+function renderCatList(){
+  const el=document.getElementById('cat-list');if(!el)return;
+  const defaults=['ホットヨガ','ホットピラティス','マシンピラティス','ビューティーメソッド','パーソナル','コラーゲンシャワー','特別'];
+  let html='<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px">';
+  // Default categories (not deletable)
+  defaults.forEach(cat=>{
+    html+=`<div style="display:flex;align-items:center;gap:3px;padding:3px 8px;border-radius:12px;background:${CH[cat]||'#999'};color:#fff;font-size:11px;font-weight:600">${esc(cat)}</div>`;
+  });
+  // Custom categories (deletable)
+  (D.se.customCats||[]).forEach((cat,idx)=>{
+    html+=`<div style="display:flex;align-items:center;gap:3px;padding:3px 8px;border-radius:12px;background:${cat.color};color:#fff;font-size:11px;font-weight:600">${esc(cat.name)} <button data-cat-name="${esc(cat.name)}" class="cat-del-btn" style="background:rgba(0,0,0,.2);border:none;color:#fff;border-radius:50%;width:14px;height:14px;font-size:9px;cursor:pointer;display:flex;align-items:center;justify-content:center">×</button></div>`;
+  });
+  html+='</div>';
+  el.innerHTML=html;
+  // Add event listeners for delete buttons
+  el.querySelectorAll('.cat-del-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>removeCategory(btn.dataset.catName));
+  });
+}
+
+function updateCatSelects(){
+  // Update all category <select> elements with current categories
+  const cats=getCategories();
+  const opts=cats.map(c=>`<option value="${c}">${c}</option>`).join('');
+  const sel=document.getElementById('c-cat');
+  if(sel){const cur=sel.value;sel.innerHTML=opts;if(cats.includes(cur))sel.value=cur;}
+}
+
+function saveSe(){
+  collectGuideLines();
+  D.se.name=document.getElementById('se-n').value;D.se.tel=document.getElementById('se-tel').value;D.se.addr=document.getElementById('se-addr').value;D.se.open=document.getElementById('se-o').value;D.se.close=document.getElementById('se-c').value;D.se.intv=15;D.se.hol=document.getElementById('se-h').value;D.se.note=document.getElementById('se-note').value;
+  svLS();renderAll();tt('保存完了');
+}
+function exportJSON(){const b=new Blob([JSON.stringify(D,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='lucina_data.json';a.click();tt('JSON出力完了');}
+function exportPdfData(){const nm=D.se?D.se.name:'Lucina';const b=new Blob([JSON.stringify(D,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=`schedule_${nm}_${D.ws||'data'}.json`;a.click();tt('PDF用データを出力しました。generate_pdf.py で変換してください');}
+function importJSON(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{Object.assign(D,JSON.parse(ev.target.result));svLS();renderAll();tt('読込完了');}catch(e){tt('エラー');}};r.readAsText(f);}
+function clearAll(){if(!confirm('全削除？'))return;localStorage.removeItem(LS_KEY);location.reload();}
+function restoreBackup(){
+  const bk=localStorage.getItem(LS_KEY+'_backup');
+  if(!bk){tt('バックアップがありません');return;}
+  try{
+    const d=JSON.parse(bk);
+    const schCount=d.sch?d.sch.length:0;
+    if(!confirm(`バックアップから復元？\nスケジュール${schCount}件のデータがあります`))return;
+    Object.assign(D,d);svLS();renderAll();tt('バックアップから復元しました');
+  }catch(e){tt('バックアップ復元に失敗');}
+}
+function restoreFromFile(e){
+  const f=e.target.files[0];if(!f)return;
+  const MAX_SIZE=1*1024*1024; // 1MB
+  if(f.size>MAX_SIZE){tt('⚠ ファイルが大きすぎます（最大1MB）');e.target.value='';return;}
+  if(!f.name.endsWith('.json')){tt('⚠ .jsonファイルのみ対応しています');e.target.value='';return;}
+  const r=new FileReader();
+  r.onload=ev=>{
+    try{
+      const d=JSON.parse(ev.target.result);
+      if(!Array.isArray(d.inst)||!Array.isArray(d.cls)||!Array.isArray(d.sch)){
+        tt('⚠ 正しいバックアップファイルではありません');return;
+      }
+      const schCnt=d.sch.length,instCnt=d.inst.length,clsCnt=d.cls.length;
+      let msg=`━━━━━━━━━━━━━━━━━━\n`;
+      msg+=`📂 バックアップから復元\n`;
+      msg+=`━━━━━━━━━━━━━━━━━━\n\n`;
+      msg+=`ファイル: ${f.name}\n\n`;
+      msg+=`含まれるデータ:\n`;
+      msg+=`　スケジュール: ${schCnt}件\n`;
+      msg+=`　インストラクター: ${instCnt}名\n`;
+      msg+=`　レッスン: ${clsCnt}種類\n\n`;
+      msg+=`現在のデータを上書きして復元しますか？`;
+      if(!confirm(msg))return;
+      Object.assign(D,d);D.ver=APP_VER;svLS();renderAll();
+      tt(`復元完了（スケジュール${schCnt}件）`);
+    }catch(err){
+      tt('⚠ ファイルの読み込みに失敗しました');
+    }
+  };
+  r.readAsText(f);
+  e.target.value=''; // 同じファイルを再選択可能に
+}
+function manualFileBackup(){
+  autoFileBackup();
+  tt('バックアップファイルを保存しました');
+}
+
+// ===== RENDER ALL =====
+function renderAll(){
+  // Load custom category colors
+  (D.se.customCats||[]).forEach(c=>{CH[c.name]=c.color;CC[c.name]=c.color;});
+  renderCatList();updateCatSelects();
+
+  renderWk();if(D.vw==='m')renderMo();renderIT();renderCT();updSt();updLbl();renderPrintUra();updBackupStatus();updMonthCount();
+  if(D.se){document.getElementById('se-n').value=D.se.name||'';document.getElementById('se-tel').value=D.se.tel||'';document.getElementById('se-addr').value=D.se.addr||'';document.getElementById('se-o').value=D.se.open||'09:30';document.getElementById('se-c').value=D.se.close||'22:00';document.getElementById('se-h').value=D.se.hol||'';document.getElementById('se-note').value=D.se.note||'';renderGuideLines();renderImgPreview();}
+  // 印刷用タイトル・フッター更新
+  const nm=D.se?D.se.name:'Lucina';
+  const s=pD(D.ws);
+  const pt=document.getElementById('print-title');if(pt)pt.textContent=`ホットコラーゲンスタジオプログラム　${nm}　　${s.getFullYear()}年${s.getMonth()+1}月`;
+  const pf=document.getElementById('print-footer');
+  if(pf){
+    const se2=D.se||{};
+    const pl=pf.querySelector('.pf-left');
+    const pr=pf.querySelector('.pf-right');
+    if(pl)pl.innerHTML=`${esc(nm)}${se2.tel?' ／ TEL '+esc(se2.tel):''}${se2.addr?' ／ '+esc(se2.addr):''}`;
+    if(pr)pr.innerHTML=`営業時間 ${esc(se2.open||'09:30')} ～ ${esc(se2.note||'最終レッスン終了後30分後迄')}　／　休館日 ${esc(se2.hol||'')}`;
+  }
+}
+
+function tt(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+document.querySelectorAll('.mo').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)clMo();}));
+
+// Cmd+P等でも印刷用レイアウトを適用
+window.addEventListener('beforeprint',()=>{
+  if(!document.body.classList.contains('printing')){
+    document.body.classList.add('printing');
+    renderWkPrint();renderPrintUra();updatePrintTitleForMonth();
+  }
+});
+window.addEventListener('afterprint',()=>{
+  document.body.classList.remove('printing');
+  renderWk();
+});
+
+init();
+</script>
+</body>
+</html>
