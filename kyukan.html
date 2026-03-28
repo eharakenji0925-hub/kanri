@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self';">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta name="referrer" content="no-referrer">
+<title>施設利用確認表</title>
+<style>
+  :root {
+    --primary: #6366f1;
+    --primary-dark: #4f46e5;
+    --primary-light: #e0e7ff;
+    --border: #e5e7eb;
+    --text: #1f2937;
+    --text-light: #6b7280;
+    --bg: #f8fafc;
+    --white: #ffffff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif; background: var(--bg); color: var(--text); font-size: 13px; }
+
+  /* TOP HEADER */
+  .top-header {
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    padding: 0 20px;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 56px;
+    box-shadow: 0 2px 8px rgba(79,70,229,0.3);
+    position: sticky; top: 0; z-index: 200;
+  }
+  .logo-area { display: flex; align-items: center; gap: 12px; }
+  .logo-icon { width: 38px; height: 38px; background: rgba(255,255,255,0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+  .logo-text h1 { color: white; font-size: 16px; font-weight: 700; }
+  .logo-text p { color: rgba(255,255,255,0.7); font-size: 11px; margin-top: 1px; }
+  .top-nav { display: flex; gap: 4px; }
+  .top-nav-btn { background: rgba(255,255,255,0.15); border: none; color: rgba(255,255,255,0.85); padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+  .top-nav-btn:hover { background: rgba(255,255,255,0.25); color: white; }
+  .top-nav-btn.active { background: white; color: var(--primary-dark); }
+
+  /* SUB HEADER */
+  .sub-header { background: var(--white); border-bottom: 1px solid var(--border); padding: 10px 16px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; position: sticky; top: 56px; z-index: 100; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+  .filter-select { border: 1px solid var(--border); border-radius: 6px; padding: 5px 10px; font-size: 12px; background: var(--white); cursor: pointer; color: var(--text); outline: none; }
+  .filter-select:focus { border-color: var(--primary); }
+  .search-input { border: 1px solid var(--border); border-radius: 6px; padding: 5px 10px; font-size: 12px; width: 180px; outline: none; }
+  .search-input:focus { border-color: var(--primary); }
+  .btn { border: none; border-radius: 6px; padding: 6px 14px; font-size: 12px; cursor: pointer; font-weight: 600; transition: all 0.2s; display: inline-flex; align-items: center; gap: 4px; }
+  .btn-primary { background: var(--primary); color: white; }
+  .btn-primary:hover { background: var(--primary-dark); }
+  .btn-secondary { background: var(--white); border: 1px solid var(--border); color: var(--text); }
+  .btn-secondary:hover { background: var(--bg); }
+  .btn-danger { background: #fee2e2; color: #dc2626; }
+  .btn-danger:hover { background: #fecaca; }
+  .stats { display: flex; gap: 5px; margin-left: auto; align-items: center; flex-wrap: wrap; }
+  .stat-badge { padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+
+  /* LEGEND */
+  .legend { display: flex; gap: 10px; align-items: center; padding: 7px 16px; background: var(--white); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text-light); }
+  .legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+  /* TABLE */
+  .table-container { overflow-x: auto; padding: 16px; }
+  table { border-collapse: collapse; width: 100%; min-width: 1100px; background: var(--white); border-radius: 12px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+  th, td { border: 1px solid var(--border); padding: 3px; vertical-align: top; }
+  thead th { background: var(--bg); font-size: 12px; font-weight: 600; text-align: center; padding: 8px 4px; }
+  .section-header { text-align: center; padding: 7px; font-weight: 700; font-size: 13px; border-bottom: 2px solid; }
+  .section-10 { background: #dbeafe; color: #1d4ed8; border-color: #93c5fd; }
+  .section-20 { background: #ede9fe; color: #6d28d9; border-color: #c4b5fd; }
+  .month-cell { background: var(--bg); text-align: center; padding: 6px 4px; }
+  .month-num { font-size: 15px; font-weight: 800; color: var(--primary-dark); }
+  .month-num span { font-size: 11px; }
+  .month-dates { font-size: 10px; color: var(--text-light); margin-top: 3px; line-height: 1.7; }
+  .sat { color: #2563eb; } .sun { color: #dc2626; }
+  .no-cell { background: #fafafa; text-align: center; color: var(--text-light); font-size: 11px; vertical-align: middle; }
+  .event-cell { min-height: 58px; cursor: pointer; transition: background 0.15s; }
+  .event-cell:hover { background: #f5f3ff; }
+
+  /* EVENT CARD */
+  .event-card { border-radius: 8px; padding: 6px 8px; margin: 3px; font-size: 11px; position: relative; border-left: 3px solid transparent; box-shadow: 0 1px 3px rgba(0,0,0,0.07); transition: transform 0.15s, box-shadow 0.15s; }
+  .event-card:hover { transform: translateY(-1px); box-shadow: 0 3px 8px rgba(0,0,0,0.12); }
+  .event-card.gr    { background: #e0e7ff; border-left-color: #4f46e5; color: #3730a3; }
+  .event-card.rr    { background: #fef3c7; border-left-color: #f59e0b; color: #92400e; }
+  .event-card.bi    { background: #fce7f3; border-left-color: #ec4899; color: #9d174d; }
+  .event-card.kari  { background: #f3f4f6; border-left-color: #9ca3af; color: #374151; border-left-style: dashed; }
+  .event-card.ir    { background: #d1fae5; border-left-color: #10b981; color: #065f46; }
+  .event-card.other { background: #f0fdf4; border-left-color: #22c55e; color: #166534; }
+  .event-title { font-weight: 700; margin-bottom: 3px; }
+  .event-meta { display: flex; align-items: center; gap: 3px; opacity: 0.85; line-height: 1.4; }
+  .event-meta + .event-meta { margin-top: 1px; }
+  .ev-icon { font-size: 9px; flex-shrink: 0; }
+  .ev-edit-btn { position: absolute; top: 4px; right: 4px; display: none; background: rgba(255,255,255,0.85); border: none; border-radius: 4px; width: 20px; height: 20px; cursor: pointer; font-size: 10px; align-items: center; justify-content: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+  .event-card:hover .ev-edit-btn { display: flex; }
+
+  /* MODAL */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(15,15,35,0.45); z-index: 300; align-items: center; justify-content: center; backdrop-filter: blur(2px); }
+  .modal-overlay.active { display: flex; }
+  .modal { background: var(--white); border-radius: 14px; padding: 24px; width: 440px; max-width: 95vw; box-shadow: 0 24px 60px rgba(0,0,0,0.18); animation: slideUp 0.2s ease; }
+  @keyframes slideUp { from { transform: translateY(12px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  .modal h2 { font-size: 15px; font-weight: 700; margin-bottom: 16px; color: var(--primary-dark); }
+  .form-group { margin-bottom: 11px; }
+  .form-label { display: block; font-size: 11px; font-weight: 700; color: var(--text-light); margin-bottom: 4px; }
+  .form-input, .form-select { width: 100%; border: 1.5px solid var(--border); border-radius: 8px; padding: 7px 10px; font-size: 13px; outline: none; transition: border-color 0.2s; }
+  .form-input:focus, .form-select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99,102,241,0.1); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .modal-footer { display: flex; gap: 8px; justify-content: flex-end; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--border); }
+
+  /* LIST VIEW */
+  .list-view { padding: 16px; display: none; }
+  .list-view.active { display: block; }
+  .list-table { width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+  .list-table th { background: var(--bg); text-align: left; padding: 10px 12px; font-size: 12px; font-weight: 700; color: var(--text-light); border-bottom: 1px solid var(--border); }
+  .list-table td { padding: 9px 12px; font-size: 12px; border-bottom: 1px solid var(--border); }
+  .list-table tr:last-child td { border-bottom: none; }
+  .list-table tr:hover td { background: var(--bg); }
+
+  /* HELP VIEW */
+  .help-view { padding: 24px; display: none; max-width: 680px; margin: 0 auto; }
+  .help-view.active { display: block; }
+  .help-view h2 { font-size: 18px; font-weight: 700; margin-bottom: 20px; color: var(--primary-dark); }
+  .help-card { background: white; border-radius: 12px; padding: 18px 20px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+  .help-card h3 { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+  .help-card ul { padding-left: 18px; }
+  .help-card li { font-size: 13px; line-height: 1.8; color: var(--text-light); }
+
+  /* NOTIFICATION */
+  .notif { position: fixed; top: 16px; right: 16px; background: #1f2937; color: white; padding: 10px 18px; border-radius: 10px; font-size: 13px; font-weight: 600; z-index: 400; transform: translateX(120%); transition: transform 0.3s cubic-bezier(0.175,0.885,0.32,1.275); box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
+  .notif.show { transform: translateX(0); }
+  .data-actions { display: flex; gap: 5px; }
+
+  /* LOGIN SCREEN */
+  .login-overlay { position: fixed; inset: 0; z-index: 500; background: linear-gradient(135deg, #312e81 0%, #4f46e5 40%, #7c3aed 100%); display: flex; align-items: center; justify-content: center; }
+  .login-overlay.hidden { display: none; }
+  .login-box { background: white; border-radius: 20px; padding: 40px 36px; width: 380px; max-width: 92vw; box-shadow: 0 25px 60px rgba(0,0,0,0.3); animation: loginIn 0.4s ease; }
+  @keyframes loginIn { from { transform: translateY(20px) scale(0.97); opacity: 0; } to { transform: translateY(0) scale(1); opacity: 1; } }
+  .login-logo { text-align: center; margin-bottom: 28px; }
+  .login-logo-icon { width: 56px; height: 56px; background: linear-gradient(135deg, #4f46e5, #7c3aed); border-radius: 16px; display: inline-flex; align-items: center; justify-content: center; font-size: 26px; margin-bottom: 12px; box-shadow: 0 4px 15px rgba(79,70,229,0.3); }
+  .login-logo h2 { font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+  .login-logo p { font-size: 12px; color: var(--text-light); }
+  .login-field { margin-bottom: 16px; }
+  .login-field label { display: block; font-size: 12px; font-weight: 700; color: var(--text-light); margin-bottom: 6px; }
+  .login-field input { width: 100%; border: 2px solid var(--border); border-radius: 10px; padding: 10px 14px; font-size: 14px; outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
+  .login-field input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99,102,241,0.15); }
+  .login-error { color: #dc2626; font-size: 12px; font-weight: 600; margin-top: 6px; display: none; }
+  .login-error.show { display: block; }
+  .login-btn { width: 100%; border: none; border-radius: 10px; padding: 11px; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px; }
+  .login-btn-admin { background: var(--primary); color: white; margin-bottom: 10px; }
+  .login-btn-admin:hover { background: var(--primary-dark); box-shadow: 0 4px 12px rgba(79,70,229,0.3); }
+  .login-btn-viewer { background: var(--bg); color: var(--text); border: 1.5px solid var(--border); }
+  .login-btn-viewer:hover { background: #e5e7eb; }
+  .login-divider { display: flex; align-items: center; gap: 12px; margin: 18px 0; }
+  .login-divider::before, .login-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .login-divider span { font-size: 11px; color: var(--text-light); font-weight: 600; }
+
+  /* VIEWER MODE BADGE */
+  .viewer-badge { background: #fef3c7; color: #92400e; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; display: none; align-items: center; gap: 4px; }
+  .viewer-badge.show { display: inline-flex; }
+  .logout-btn { background: rgba(255,255,255,0.15); border: none; color: rgba(255,255,255,0.85); padding: 5px 12px; border-radius: 8px; font-size: 11px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: none; }
+  .logout-btn:hover { background: rgba(255,255,255,0.25); color: white; }
+  .logout-btn.show { display: inline-block; }
+
+  /* READONLY MODE: hide edit controls */
+  body.readonly .btn-primary, body.readonly .btn-danger,
+  body.readonly .ev-edit-btn, body.readonly .data-actions,
+  body.readonly #deleteBtn { display: none !important; }
+  body.readonly .event-cell { cursor: default; }
+  body.readonly .event-cell:hover { background: transparent; }
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="login-logo-icon">🔐</div>
+      <h2>施設利用確認表</h2>
+      <p>ログインしてください</p>
+    </div>
+    <div class="login-field">
+      <label>パスワード</label>
+      <input type="password" id="loginPassword" placeholder="パスワードを入力" autocomplete="off">
+      <div class="login-error" id="loginError">パスワードが正しくありません</div>
+    </div>
+    <button class="login-btn login-btn-admin" id="loginBtn" onclick="attemptLogin()">🔓 管理者ログイン</button>
+    <div class="login-divider"><span>または</span></div>
+    <button class="login-btn login-btn-viewer" onclick="enterViewerMode()">👁 閲覧専用モードで見る</button>
+  </div>
+</div>
+
+<!-- TOP HEADER -->
+<div class="top-header">
+  <div class="logo-area">
+    <div class="logo-icon">📋</div>
+    <div class="logo-text">
+      <h1>施設利用確認表</h1>
+      <p>直営店休館日利用計画 ー スタジオレンタル</p>
+    </div>
+  </div>
+  <div class="top-nav">
+    <span class="viewer-badge" id="viewerBadge">👁 閲覧専用</span>
+    <button class="top-nav-btn active" onclick="switchView('calendar',this)">📅 カレンダー</button>
+    <button class="top-nav-btn" onclick="switchView('list',this)">📄 リスト</button>
+    <button class="top-nav-btn" onclick="openCategoryModal()">⚙️ カテゴリ管理</button>
+    <button class="top-nav-btn" onclick="switchView('help',this)">❓ 使い方</button>
+    <button class="logout-btn" id="logoutBtn" onclick="logout()">🚪 ログアウト</button>
+  </div>
+</div>
+
+<!-- SUB HEADER -->
+<div class="sub-header">
+  <select class="filter-select" id="yearFilter">
+    <option>2025年</option><option selected>2026年</option><option>2027年</option>
+  </select>
+  <select class="filter-select" id="locationFilter">
+    <option value="">全拠点</option>
+    <option>北小金</option><option>北浦和</option><option>東久留米</option><option>三ノ輪</option>
+  </select>
+  <select class="filter-select" id="categoryFilter">
+    <option value="">全カテゴリ</option>
+    <option value="gr">GR新規養成</option><option value="rr">RR</option><option value="bi">美更</option>
+    <option value="kari">仮押さえ</option><option value="ir">IRオーディション</option><option value="other">その他</option>
+  </select>
+  <input class="search-input" id="searchInput" placeholder="🔍 検索...">
+  <button class="btn btn-primary" onclick="openAddModal()">＋ 新規追加</button>
+  <button class="btn btn-secondary" onclick="openCategoryModal()">📋 カテゴリ管理</button>
+  <div class="stats" id="statsArea"></div>
+  <div class="data-actions">
+    <button class="btn btn-secondary" onclick="exportData()">⬇ 保存</button>
+    <label class="btn btn-secondary" style="cursor:pointer">⬆ 読込<input type="file" accept=".json" onchange="importData(event)" style="display:none"></label>
+  </div>
+</div>
+
+<!-- LEGEND -->
+<div class="legend" id="legendBar">
+  <span style="font-size:11px;font-weight:700;color:var(--text-light)">凡例：</span>
+  <div class="legend-item"><div class="legend-dot" style="background:#6366f1"></div>GR新規養成</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div>RR</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#ec4899"></div>美更</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#d1d5db;border:1px dashed #9ca3af"></div>仮押さえ</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#10b981"></div>IRオーディション</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#22c55e"></div>その他</div>
+</div>
+
+<!-- CALENDAR VIEW -->
+<div id="calendarView">
+  <div class="table-container">
+    <table id="mainTable">
+      <thead>
+        <tr>
+          <th style="width:68px" rowspan="2">月</th>
+          <th style="width:34px" rowspan="2">No.</th>
+          <th colspan="4" class="section-header section-10">📅 10日</th>
+          <th colspan="4" class="section-header section-20">📅 20日</th>
+        </tr>
+        <tr>
+          <th>北小金</th><th>北浦和</th><th>東久留米</th><th>三ノ輪</th>
+          <th>北小金</th><th>北浦和</th><th>東久留米</th><th>三ノ輪</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- LIST VIEW -->
+<div class="list-view" id="listView">
+  <table class="list-table">
+    <thead><tr><th>月</th><th>日程</th><th>施設</th><th>No.</th><th>タイトル</th><th>カテゴリ</th><th>担当者</th><th>時間</th><th>操作</th></tr></thead>
+    <tbody id="listBody"></tbody>
+  </table>
+</div>
+
+<!-- HELP VIEW -->
+<div class="help-view" id="helpView">
+  <h2>❓ 使い方ガイド</h2>
+  <div class="help-card"><h3>📅 カレンダー表示</h3><ul><li>毎月10日・20日の休館日に4拠点のスタジオ利用予定を管理します</li><li>曜日は自動計算されます（土曜＝青、日曜＝赤）</li></ul></div>
+  <div class="help-card"><h3>➕ 予定の追加</h3><ul><li>「新規追加」ボタン、またはカレンダーの空きセルをクリック</li><li>タイトル・月・日程・施設・担当者・時間を入力して「保存」</li></ul></div>
+  <div class="help-card"><h3>✏️ 編集・削除</h3><ul><li>カードにマウスを乗せると編集ボタン（✏️）が表示されます</li><li>編集モーダルの「削除」ボタンで削除できます</li></ul></div>
+  <div class="help-card"><h3>💾 データの共有</h3><ul><li>「保存」ボタンでJSONファイルとしてエクスポート</li><li>「読込」ボタンでJSONファイルをインポート</li><li>データはブラウザに自動保存されます</li></ul></div>
+</div>
+
+<!-- EVENT MODAL -->
+<div class="modal-overlay" id="eventModal">
+  <div class="modal">
+    <h2 id="modalTitle">➕ 新規追加</h2>
+    <div class="form-group"><label class="form-label">タイトル *</label><input class="form-input" id="fTitle" placeholder="例：新規養成"></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">月 *</label>
+        <select class="form-select" id="fMonth">
+          <option value="1">1月</option><option value="2">2月</option><option value="3">3月</option><option value="4">4月</option><option value="5">5月</option><option value="6">6月</option>
+          <option value="7">7月</option><option value="8">8月</option><option value="9">9月</option><option value="10">10月</option><option value="11">11月</option><option value="12">12月</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">日程 *</label>
+        <select class="form-select" id="fDate"><option value="10">10日</option><option value="20">20日</option></select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">施設 *</label>
+        <select class="form-select" id="fFacility"><option>北小金</option><option>北浦和</option><option>東久留米</option><option>三ノ輪</option></select>
+      </div>
+      <div class="form-group"><label class="form-label">No.</label>
+        <select class="form-select" id="fNo"><option value="1">1</option><option value="2">2</option></select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">カテゴリ</label>
+        <select class="form-select" id="fCategory">
+          <option value="gr">GR新規養成</option><option value="rr">RR</option><option value="bi">美更</option>
+          <option value="kari">仮押さえ</option><option value="ir">IRオーディション</option><option value="other">その他</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">担当者</label><input class="form-input" id="fPerson" placeholder="例：GR渡見"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">開始時間</label><input class="form-input" id="fStart" type="time" value="10:00"></div>
+      <div class="form-group"><label class="form-label">終了時間</label><input class="form-input" id="fEnd" type="time" value="17:00"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger" id="deleteBtn" onclick="deleteEvent()" style="display:none;margin-right:auto">🗑 削除</button>
+      <button class="btn btn-secondary" onclick="closeModal()">キャンセル</button>
+      <button class="btn btn-primary" onclick="saveEvent()">💾 保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- CATEGORY MODAL -->
+<div class="modal-overlay" id="categoryModal">
+  <div class="modal">
+    <h2>📋 カテゴリ管理</h2>
+    <ul style="list-style:none" id="catList"></ul>
+    <div class="modal-footer"><button class="btn btn-secondary" onclick="closeCategoryModal()">閉じる</button></div>
+  </div>
+</div>
+
+<div class="notif" id="notif"></div>
+
+<script>
+'use strict';
+
+/* ========================================
+   認証システム
+   ======================================== */
+const ADMIN_HASH = '28a530fd3d3873ea882fe4abd4b3b09d1e735db954ea16e372a8842f65a8e5ba';
+let isAuthenticated = false;
+let isViewerMode = false;
+
+async function sha256(message) {
+  const msgBuffer = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function attemptLogin() {
+  const pw = document.getElementById('loginPassword').value;
+  if (!pw) { document.getElementById('loginPassword').focus(); return; }
+  const hash = await sha256(pw);
+  if (hash === ADMIN_HASH) {
+    isAuthenticated = true;
+    isViewerMode = false;
+    sessionStorage.setItem('authMode', 'admin');
+    showApp();
+  } else {
+    const errEl = document.getElementById('loginError');
+    errEl.classList.add('show');
+    document.getElementById('loginPassword').value = '';
+    document.getElementById('loginPassword').focus();
+    setTimeout(() => errEl.classList.remove('show'), 3000);
+  }
+}
+
+function enterViewerMode() {
+  isAuthenticated = false;
+  isViewerMode = true;
+  sessionStorage.setItem('authMode', 'viewer');
+  showApp();
+}
+
+function showApp() {
+  document.getElementById('loginOverlay').classList.add('hidden');
+  document.getElementById('logoutBtn').classList.add('show');
+  if (isViewerMode) {
+    document.body.classList.add('readonly');
+    document.getElementById('viewerBadge').classList.add('show');
+  } else {
+    document.body.classList.remove('readonly');
+    document.getElementById('viewerBadge').classList.remove('show');
+  }
+  renderAll();
+}
+
+function logout() {
+  sessionStorage.removeItem('authMode');
+  isAuthenticated = false;
+  isViewerMode = false;
+  document.body.classList.remove('readonly');
+  document.getElementById('loginOverlay').classList.remove('hidden');
+  document.getElementById('logoutBtn').classList.remove('show');
+  document.getElementById('viewerBadge').classList.remove('show');
+  document.getElementById('loginPassword').value = '';
+}
+
+/* セッション復元 */
+(function restoreSession() {
+  const mode = sessionStorage.getItem('authMode');
+  if (mode === 'admin') { isAuthenticated = true; isViewerMode = false; showApp(); }
+  else if (mode === 'viewer') { isAuthenticated = false; isViewerMode = true; showApp(); }
+})();
+
+/* Enterキーでログイン */
+document.getElementById('loginPassword').addEventListener('keydown', e => {
+  if (e.key === 'Enter') attemptLogin();
+});
+
+/* 閲覧モード時はセルクリックを無効化 */
+const origOpenAddModal_ref = null;
+
+const FACILITIES = ['北小金','北浦和','東久留米','三ノ輪'];
+const MONTHS = [1,2,3,4,5,6,7,8,9,10,11,12];
+const WD = ['日','月','火','水','木','金','土'];
+const VALID_CATEGORIES = ['gr','rr','bi','kari','ir','other'];
+const VALID_FACILITIES_SET = new Set(FACILITIES);
+const CATS = {
+  gr:    {label:'GR新規養成',   color:'#4f46e5', bg:'#e0e7ff'},
+  rr:    {label:'RR',          color:'#f59e0b', bg:'#fef3c7'},
+  bi:    {label:'美更',         color:'#ec4899', bg:'#fce7f3'},
+  kari:  {label:'仮押さえ',     color:'#9ca3af', bg:'#f3f4f6'},
+  ir:    {label:'IRオーディション',color:'#10b981',bg:'#d1fae5'},
+  other: {label:'その他',       color:'#22c55e', bg:'#f0fdf4'},
+};
+const SAMPLE = [
+  {id:1, title:'YMデ ax PP',month:2,date:10,facility:'三ノ輪',no:1,category:'other',person:'中田',start:'10:00',end:'17:00',year:2026},
+  {id:2, title:'YMデ ax PP',month:2,date:20,facility:'三ノ輪',no:1,category:'other',person:'中田',start:'10:00',end:'17:00',year:2026},
+  {id:3, title:'新規養成',month:3,date:10,facility:'北小金',no:1,category:'gr',person:'GR渡見',start:'10:00',end:'17:00',year:2026},
+  {id:4, title:'更新研修',month:3,date:10,facility:'東久留米',no:1,category:'gr',person:'コマリ',start:'10:00',end:'13:00',year:2026},
+  {id:5, title:'モデル撮影朝比奈さん',month:3,date:10,facility:'北浦和',no:2,category:'other',person:'',start:'',end:'',year:2026},
+  {id:6, title:'IRオーディション',month:3,date:10,facility:'三ノ輪',no:2,category:'ir',person:'高橋',start:'10:00',end:'12:00',year:2026},
+  {id:7, title:'新規養成',month:3,date:20,facility:'北小金',no:1,category:'gr',person:'GR渡見',start:'10:00',end:'17:00',year:2026},
+  {id:8, title:'美更',month:3,date:20,facility:'北浦和',no:1,category:'bi',person:'業務',start:'10:00',end:'13:00',year:2026},
+  {id:9, title:'GR更新研修',month:3,date:20,facility:'北浦和',no:2,category:'gr',person:'コマリ',start:'14:00',end:'17:00',year:2026},
+  {id:10,title:'IRオーディション',month:3,date:20,facility:'三ノ輪',no:1,category:'ir',person:'高橋',start:'10:00',end:'18:00',year:2026},
+  {id:11,title:'新規養成',month:4,date:10,facility:'北小金',no:1,category:'gr',person:'GR渡見',start:'10:00',end:'18:00',year:2026},
+  {id:12,title:'仮押さえ：田淵さん',month:4,date:10,facility:'北浦和',no:1,category:'kari',person:'田淵',start:'',end:'',year:2026},
+  {id:13,title:'新規養成',month:4,date:20,facility:'北小金',no:1,category:'gr',person:'GR渡見',start:'10:00',end:'18:00',year:2026},
+  {id:14,title:'仮押さえ：田淵さん',month:4,date:20,facility:'北浦和',no:1,category:'kari',person:'田淵',start:'',end:'',year:2026},
+  {id:15,title:'新規養成',month:5,date:10,facility:'北小金',no:1,category:'gr',person:'GR渡見',start:'10:00',end:'17:00',year:2026},
+  {id:16,title:'仮押さえ：田淵さん',month:5,date:10,facility:'北浦和',no:1,category:'kari',person:'田淵',start:'',end:'',year:2026},
+  {id:17,title:'リズム新規養成 2日目',month:5,date:20,facility:'北浦和',no:1,category:'gr',person:'',start:'',end:'',year:2026},
+  {id:18,title:'新規養成',month:6,date:10,facility:'北小金',no:1,category:'gr',person:'GR comari',start:'10:00',end:'17:00',year:2026},
+  {id:19,title:'新規養成',month:6,date:20,facility:'北小金',no:1,category:'gr',person:'GR comari',start:'10:00',end:'17:00',year:2026},
+  {id:20,title:'新規養成',month:7,date:10,facility:'北小金',no:1,category:'gr',person:'GR comari',start:'10:00',end:'18:00',year:2026},
+  {id:21,title:'新規養成',month:7,date:20,facility:'北小金',no:1,category:'gr',person:'GR comari',start:'10:00',end:'18:00',year:2026},
+  {id:22,title:'新規養成',month:8,date:10,facility:'北小金',no:1,category:'gr',person:'GR comari',start:'10:00',end:'17:00',year:2026},
+  {id:23,title:'新規養成',month:9,date:10,facility:'北小金',no:1,category:'gr',person:'GR 田淵',start:'10:00',end:'17:00',year:2026},
+  {id:24,title:'新規養成',month:9,date:20,facility:'北小金',no:1,category:'gr',person:'GR 田淵',start:'10:00',end:'17:00',year:2026},
+  {id:25,title:'新規養成',month:10,date:10,facility:'北小金',no:1,category:'gr',person:'GR 田淵',start:'10:00',end:'18:00',year:2026},
+  {id:26,title:'新規養成',month:10,date:20,facility:'北小金',no:1,category:'gr',person:'GR 田淵',start:'10:00',end:'18:00',year:2026},
+  {id:27,title:'新規養成',month:11,date:10,facility:'北小金',no:1,category:'gr',person:'GR 田淵',start:'10:00',end:'17:00',year:2026},
+];
+
+/* === セキュリティ: HTMLエスケープ関数 === */
+function escapeHTML(str) {
+  if (typeof str !== 'string') return '';
+  const div = document.createElement('div');
+  div.appendChild(document.createTextNode(str));
+  return div.innerHTML;
+}
+
+/* === セキュリティ: 入力値サニタイズ === */
+function sanitizeString(str, maxLen) {
+  if (typeof str !== 'string') return '';
+  return str.replace(/[<>"'&]/g, c => ({'<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;','&':'&amp;'})[c]).substring(0, maxLen || 100);
+}
+
+/* === セキュリティ: 時刻バリデーション === */
+function isValidTime(t) {
+  return t === '' || /^([01]\d|2[0-3]):[0-5]\d$/.test(t);
+}
+
+/* === セキュリティ: イベントデータバリデーション === */
+function validateEvent(ev) {
+  if (!ev || typeof ev !== 'object') return false;
+  if (typeof ev.id !== 'number' || !Number.isFinite(ev.id)) return false;
+  if (typeof ev.title !== 'string' || ev.title.trim().length === 0 || ev.title.length > 100) return false;
+  if (typeof ev.year !== 'number' || ev.year < 2020 || ev.year > 2100) return false;
+  if (typeof ev.month !== 'number' || ev.month < 1 || ev.month > 12) return false;
+  if (ev.date !== 10 && ev.date !== 20) return false;
+  if (!VALID_FACILITIES_SET.has(ev.facility)) return false;
+  if (ev.no !== 1 && ev.no !== 2) return false;
+  if (!VALID_CATEGORIES.includes(ev.category)) return false;
+  if (typeof ev.person !== 'string' || ev.person.length > 50) return false;
+  if (!isValidTime(ev.start) || !isValidTime(ev.end)) return false;
+  return true;
+}
+
+/* === セキュリティ: CSSカラー値のホワイトリスト検証 === */
+function isSafeColor(c) { return /^#[0-9a-fA-F]{6}$/.test(c); }
+function isSafeCategory(c) { return VALID_CATEGORIES.includes(c); }
+
+let events = [];
+try {
+  const stored = JSON.parse(localStorage.getItem('facilityV3') || 'null');
+  if (Array.isArray(stored) && stored.every(validateEvent)) {
+    events = stored;
+  } else {
+    events = SAMPLE.slice();
+  }
+} catch { events = SAMPLE.slice(); }
+
+let editingId = null;
+let nextId = Math.max(...events.map(e => e.id), 0) + 1;
+
+function save() { localStorage.setItem('facilityV3', JSON.stringify(events)); }
+
+function wday(y, m, d) { const w = new Date(y, m - 1, d).getDay(); return { l: WD[w], c: w === 0 ? 'sun' : w === 6 ? 'sat' : '' }; }
+
+function getFiltered() {
+  const year = parseInt(document.getElementById('yearFilter').value);
+  const loc = document.getElementById('locationFilter').value;
+  const cat = document.getElementById('categoryFilter').value;
+  const q = document.getElementById('searchInput').value.toLowerCase().substring(0, 50);
+  return events.filter(e => {
+    if (e.year !== year) return false;
+    if (loc && e.facility !== loc) return false;
+    if (cat && e.category !== cat) return false;
+    if (q && !e.title.toLowerCase().includes(q) && !(e.person || '').toLowerCase().includes(q)) return false;
+    return true;
+  });
+}
+
+function renderAll() { renderCalendar(); renderList(); renderStats(getFiltered()); }
+
+/* === セキュリティ: DOM APIでカレンダー構築（innerHTML排除） === */
+function renderCalendar() {
+  const year = parseInt(document.getElementById('yearFilter').value);
+  const filtered = getFiltered();
+  const tbody = document.getElementById('tableBody');
+  tbody.innerHTML = '';
+  MONTHS.forEach(month => {
+    [1, 2].forEach(no => {
+      const tr = document.createElement('tr');
+      if (no === 1) {
+        const td = document.createElement('td');
+        td.rowSpan = 2; td.className = 'month-cell';
+        const w10 = wday(year, month, 10), w20 = wday(year, month, 20);
+        const monthNum = document.createElement('div');
+        monthNum.className = 'month-num';
+        monthNum.textContent = month;
+        const monthSpan = document.createElement('span');
+        monthSpan.textContent = '月';
+        monthNum.appendChild(monthSpan);
+        const monthDates = document.createElement('div');
+        monthDates.className = 'month-dates';
+        const span10 = document.createElement('span');
+        span10.className = w10.c;
+        span10.textContent = '10日(' + w10.l + ')';
+        const br = document.createElement('br');
+        const span20 = document.createElement('span');
+        span20.className = w20.c;
+        span20.textContent = '20日(' + w20.l + ')';
+        monthDates.appendChild(span10);
+        monthDates.appendChild(br);
+        monthDates.appendChild(span20);
+        td.appendChild(monthNum);
+        td.appendChild(monthDates);
+        tr.appendChild(td);
+      }
+      const noTd = document.createElement('td'); noTd.className = 'no-cell'; noTd.textContent = no; tr.appendChild(noTd);
+      [10, 20].forEach(date => {
+        FACILITIES.forEach(facility => {
+          const td = document.createElement('td'); td.className = 'event-cell';
+          td.onclick = (e) => { if (!e.target.closest('.ev-edit-btn')) openAddModal(month, date, facility, no); };
+          const ev = filtered.find(e => e.month === month && e.date === date && e.facility === facility && e.no === no);
+          if (ev) {
+            const card = document.createElement('div');
+            card.className = 'event-card ' + (isSafeCategory(ev.category) ? ev.category : 'other');
+            const titleDiv = document.createElement('div');
+            titleDiv.className = 'event-title';
+            titleDiv.textContent = ev.title;
+            card.appendChild(titleDiv);
+            if (ev.person) {
+              const metaP = document.createElement('div');
+              metaP.className = 'event-meta';
+              const iconP = document.createElement('span');
+              iconP.className = 'ev-icon'; iconP.textContent = '\uD83D\uDC64';
+              metaP.appendChild(iconP);
+              metaP.appendChild(document.createTextNode(ev.person));
+              card.appendChild(metaP);
+            }
+            if (ev.start) {
+              const metaT = document.createElement('div');
+              metaT.className = 'event-meta';
+              const iconT = document.createElement('span');
+              iconT.className = 'ev-icon'; iconT.textContent = '\uD83D\uDD50';
+              metaT.appendChild(iconT);
+              metaT.appendChild(document.createTextNode(ev.start + (ev.end ? '-' + ev.end : '')));
+              card.appendChild(metaT);
+            }
+            const editBtn = document.createElement('button');
+            editBtn.className = 'ev-edit-btn';
+            editBtn.textContent = '\u270F\uFE0F';
+            editBtn.addEventListener('click', () => openEditModal(ev.id));
+            card.appendChild(editBtn);
+            td.appendChild(card);
+          }
+          tr.appendChild(td);
+        });
+      });
+      tbody.appendChild(tr);
+    });
+  });
+}
+
+/* === セキュリティ: DOM APIでリスト構築（innerHTML排除） === */
+function renderList() {
+  const filtered = getFiltered().sort((a, b) => a.month - b.month || a.date - b.date || a.no - b.no);
+  const listBody = document.getElementById('listBody');
+  listBody.innerHTML = '';
+  filtered.forEach(ev => {
+    const cat = CATS[ev.category] || CATS.other;
+    const time = ev.start ? (ev.start + (ev.end ? '\uFF5E' + ev.end : '')) : '-';
+    const tr = document.createElement('tr');
+    const cells = [ev.month + '月', ev.date + '日', ev.facility, ev.no];
+    cells.forEach(text => { const td = document.createElement('td'); td.textContent = text; tr.appendChild(td); });
+    const tdTitle = document.createElement('td');
+    const strong = document.createElement('strong');
+    strong.textContent = ev.title;
+    tdTitle.appendChild(strong);
+    tr.appendChild(tdTitle);
+    const tdCat = document.createElement('td');
+    const catSpan = document.createElement('span');
+    catSpan.style.cssText = 'padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700';
+    if (isSafeColor(cat.bg)) catSpan.style.background = cat.bg;
+    if (isSafeColor(cat.color)) catSpan.style.color = cat.color;
+    catSpan.textContent = cat.label;
+    tdCat.appendChild(catSpan);
+    tr.appendChild(tdCat);
+    const tdPerson = document.createElement('td'); tdPerson.textContent = ev.person || '\u2015';
+    tr.appendChild(tdPerson);
+    const tdTime = document.createElement('td'); tdTime.textContent = time;
+    tr.appendChild(tdTime);
+    const tdAction = document.createElement('td');
+    const btn = document.createElement('button');
+    btn.className = 'btn btn-secondary'; btn.style.cssText = 'padding:3px 8px;font-size:11px'; btn.textContent = '\u270F\uFE0F';
+    btn.addEventListener('click', () => openEditModal(ev.id));
+    tdAction.appendChild(btn);
+    tr.appendChild(tdAction);
+    listBody.appendChild(tr);
+  });
+}
+
+/* === セキュリティ: DOM APIで統計構築 === */
+function renderStats(f) {
+  const c = {}; f.forEach(e => { c[e.category] = (c[e.category] || 0) + 1; });
+  const area = document.getElementById('statsArea');
+  area.innerHTML = '';
+  const totalBadge = document.createElement('span');
+  totalBadge.className = 'stat-badge';
+  totalBadge.style.cssText = 'background:#f1f5f9;color:#374151';
+  totalBadge.textContent = '\u5408\u8A08' + f.length + '\u4EF6';
+  area.appendChild(totalBadge);
+  Object.entries(c).forEach(([k, v]) => {
+    const cat = CATS[k]; if (!cat) return;
+    const s = cat.label.replace('\u65B0\u898F\u990A\u6210', '').replace('\u30AA\u30FC\u30C7\u30A3\u30B7\u30E7\u30F3', '').trim().substring(0, 4);
+    const badge = document.createElement('span');
+    badge.className = 'stat-badge';
+    if (isSafeColor(cat.bg)) badge.style.background = cat.bg;
+    if (isSafeColor(cat.color)) badge.style.color = cat.color;
+    badge.textContent = s + ' ' + v;
+    area.appendChild(badge);
+  });
+}
+
+function openAddModal(month, date, facility, no) {
+  if (isViewerMode) return;
+  editingId = null;
+  document.getElementById('modalTitle').textContent = '\u2795 \u65B0\u898F\u8FFD\u52A0';
+  document.getElementById('deleteBtn').style.display = 'none';
+  document.getElementById('fTitle').value = '';
+  document.getElementById('fMonth').value = month || new Date().getMonth() + 1;
+  document.getElementById('fDate').value = date || 10;
+  document.getElementById('fFacility').value = facility || '\u5317\u5C0F\u91D1';
+  document.getElementById('fNo').value = no || 1;
+  document.getElementById('fCategory').value = 'gr';
+  document.getElementById('fPerson').value = '';
+  document.getElementById('fStart').value = '10:00';
+  document.getElementById('fEnd').value = '17:00';
+  document.getElementById('eventModal').classList.add('active');
+  setTimeout(() => document.getElementById('fTitle').focus(), 100);
+}
+
+function openEditModal(id) {
+  if (isViewerMode) return;
+  if (typeof id !== 'number') return;
+  const ev = events.find(e => e.id === id); if (!ev) return;
+  editingId = id;
+  document.getElementById('modalTitle').textContent = '\u270F\uFE0F \u7DE8\u96C6';
+  document.getElementById('deleteBtn').style.display = 'block';
+  document.getElementById('fTitle').value = ev.title;
+  document.getElementById('fMonth').value = ev.month;
+  document.getElementById('fDate').value = ev.date;
+  document.getElementById('fFacility').value = ev.facility;
+  document.getElementById('fNo').value = ev.no;
+  document.getElementById('fCategory').value = ev.category;
+  document.getElementById('fPerson').value = ev.person || '';
+  document.getElementById('fStart').value = ev.start || '10:00';
+  document.getElementById('fEnd').value = ev.end || '17:00';
+  document.getElementById('eventModal').classList.add('active');
+}
+
+function closeModal() { document.getElementById('eventModal').classList.remove('active'); }
+
+/* === セキュリティ: 保存時にバリデーション === */
+function saveEvent() {
+  if (isViewerMode) return;
+  const title = document.getElementById('fTitle').value.trim().substring(0, 100);
+  if (!title) { document.getElementById('fTitle').focus(); return; }
+  const year = parseInt(document.getElementById('yearFilter').value);
+  const startVal = document.getElementById('fStart').value;
+  const endVal = document.getElementById('fEnd').value;
+  if (!isValidTime(startVal) || !isValidTime(endVal)) { notify('\u26A0 \u6642\u523B\u306E\u5F62\u5F0F\u304C\u4E0D\u6B63\u3067\u3059'); return; }
+  const category = document.getElementById('fCategory').value;
+  if (!VALID_CATEGORIES.includes(category)) { notify('\u26A0 \u4E0D\u6B63\u306A\u30AB\u30C6\u30B4\u30EA\u3067\u3059'); return; }
+  const facility = document.getElementById('fFacility').value;
+  if (!VALID_FACILITIES_SET.has(facility)) { notify('\u26A0 \u4E0D\u6B63\u306A\u65BD\u8A2D\u3067\u3059'); return; }
+  const ev = {
+    id: editingId || nextId++,
+    title: title,
+    year: year,
+    month: parseInt(document.getElementById('fMonth').value),
+    date: parseInt(document.getElementById('fDate').value),
+    facility: facility,
+    no: parseInt(document.getElementById('fNo').value),
+    category: category,
+    person: document.getElementById('fPerson').value.substring(0, 50),
+    start: startVal,
+    end: endVal,
+  };
+  if (!validateEvent(ev)) { notify('\u26A0 \u5165\u529B\u5024\u306B\u554F\u984C\u304C\u3042\u308A\u307E\u3059'); return; }
+  if (editingId) { events[events.findIndex(e => e.id === editingId)] = ev; notify('\u2705 \u66F4\u65B0\u3057\u307E\u3057\u305F'); }
+  else { events.push(ev); notify('\u2705 \u8FFD\u52A0\u3057\u307E\u3057\u305F'); }
+  save(); closeModal(); renderAll();
+}
+
+function deleteEvent() {
+  if (isViewerMode) return;
+  if (!confirm('\u3053\u306E\u30A4\u30D9\u30F3\u30C8\u3092\u524A\u9664\u3057\u307E\u3059\u304B\uFF1F')) return;
+  events = events.filter(e => e.id !== editingId);
+  save(); closeModal(); renderAll(); notify('\uD83D\uDDD1 \u524A\u9664\u3057\u307E\u3057\u305F');
+}
+
+/* === セキュリティ: カテゴリモーダルもDOM API化 === */
+function openCategoryModal() {
+  const f = getFiltered(), c = {};
+  f.forEach(e => { c[e.category] = (c[e.category] || 0) + 1; });
+  const catList = document.getElementById('catList');
+  catList.innerHTML = '';
+  Object.entries(CATS).forEach(([k, v]) => {
+    const li = document.createElement('li');
+    li.style.cssText = 'display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;margin-bottom:4px;background:var(--bg)';
+    const dot = document.createElement('div');
+    dot.style.cssText = 'width:12px;height:12px;border-radius:3px;flex-shrink:0';
+    if (isSafeColor(v.color)) dot.style.background = v.color;
+    const label = document.createElement('span');
+    label.style.cssText = 'flex:1;font-size:13px;font-weight:600';
+    label.textContent = v.label;
+    const count = document.createElement('span');
+    count.style.cssText = 'font-size:12px;font-weight:700;color:var(--text-light)';
+    count.textContent = (c[k] || 0) + '\u4EF6';
+    li.appendChild(dot); li.appendChild(label); li.appendChild(count);
+    catList.appendChild(li);
+  });
+  document.getElementById('categoryModal').classList.add('active');
+}
+function closeCategoryModal() { document.getElementById('categoryModal').classList.remove('active'); }
+
+function switchView(view, btn) {
+  const validViews = ['calendar', 'list', 'help'];
+  if (!validViews.includes(view)) return;
+  document.querySelectorAll('.top-nav-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  document.getElementById('calendarView').style.display = view === 'calendar' ? '' : 'none';
+  document.getElementById('listView').classList.toggle('active', view === 'list');
+  document.getElementById('helpView').classList.toggle('active', view === 'help');
+  document.getElementById('legendBar').style.display = view === 'calendar' ? '' : 'none';
+  if (view === 'list') renderList();
+}
+
+function exportData() {
+  const blob = new Blob([JSON.stringify(events, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = '\u65BD\u8A2D\u5229\u7528\u78BA\u8A8D\u8868_' + new Date().toISOString().slice(0, 10) + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  notify('\u2B07 \u30A8\u30AF\u30B9\u30DD\u30FC\u30C8\u3057\u307E\u3057\u305F');
+}
+
+/* === セキュリティ: インポート時にスキーマ検証 === */
+function importData(e) {
+  const file = e.target.files[0]; if (!file) return;
+  if (file.size > 1024 * 1024) { alert('\u30D5\u30A1\u30A4\u30EB\u30B5\u30A4\u30BA\u304C\u5927\u304D\u3059\u304E\u307E\u3059\uFF081MB\u4EE5\u4E0B\uFF09'); e.target.value = ''; return; }
+  if (!file.name.endsWith('.json')) { alert('JSON\u30D5\u30A1\u30A4\u30EB\u306E\u307F\u8AAD\u307F\u8FBC\u3081\u307E\u3059'); e.target.value = ''; return; }
+  const r = new FileReader();
+  r.onload = ev => {
+    try {
+      const d = JSON.parse(ev.target.result);
+      if (!Array.isArray(d)) throw new Error('\u914D\u5217\u3067\u306F\u3042\u308A\u307E\u305B\u3093');
+      if (d.length > 1000) throw new Error('\u30C7\u30FC\u30BF\u6570\u304C\u591A\u3059\u304E\u307E\u3059');
+      const validData = d.filter(validateEvent);
+      if (validData.length === 0) throw new Error('\u6709\u52B9\u306A\u30C7\u30FC\u30BF\u304C\u3042\u308A\u307E\u305B\u3093');
+      if (validData.length < d.length) {
+        if (!confirm(d.length + '\u4EF6\u4E2D' + validData.length + '\u4EF6\u304C\u6709\u52B9\u3067\u3059\u3002\u6709\u52B9\u306A\u30C7\u30FC\u30BF\u306E\u307F\u8AAD\u307F\u8FBC\u307F\u307E\u3059\u304B\uFF1F')) return;
+      }
+      events = validData;
+      nextId = Math.max(...events.map(e => e.id), 0) + 1;
+      save(); renderAll();
+      notify('\u2B06 ' + validData.length + '\u4EF6\u3092\u8AAD\u307F\u8FBC\u307F\u307E\u3057\u305F');
+    } catch (err) { alert('\u8AAD\u307F\u8FBC\u307F\u306B\u5931\u6557\u3057\u307E\u3057\u305F: ' + (err.message || '')); }
+  };
+  r.readAsText(file); e.target.value = '';
+}
+
+function notify(msg) {
+  const n = document.getElementById('notif'); n.textContent = msg; n.classList.add('show');
+  clearTimeout(n._t); n._t = setTimeout(() => n.classList.remove('show'), 2500);
+}
+
+document.getElementById('eventModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
+document.getElementById('categoryModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeCategoryModal(); });
+['yearFilter', 'locationFilter', 'categoryFilter'].forEach(id => document.getElementById(id).addEventListener('change', renderAll));
+document.getElementById('searchInput').addEventListener('input', renderAll);
+
+renderAll();
+</script>
+</body>
+</html>
