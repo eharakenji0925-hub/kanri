@@ -1,0 +1,1549 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src *; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self';">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta name="referrer" content="no-referrer">
+<title>SNS Post Composer — Lucina Group</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Noto Sans JP', sans-serif; }
+  #root { min-height: 100vh; }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+</head>
+<body>
+<!-- ===== Login Screen ===== -->
+<div id="login-screen" style="position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);display:flex;align-items:center;justify-content:center;z-index:99999;">
+  <div style="background:#fff;border-radius:16px;padding:40px 36px;box-shadow:0 20px 60px rgba(0,0,0,.3);text-align:center;max-width:380px;width:90%;">
+    <div style="font-size:28px;margin-bottom:6px;">🔐</div>
+    <h2 style="margin:0 0 4px;font-size:20px;color:#333;font-family:'Noto Sans JP',sans-serif;">SNS Post Composer</h2>
+    <p style="margin:0 0 24px;font-size:13px;color:#999;font-family:'Noto Sans JP',sans-serif;">Lucina Group — 管理画面</p>
+    <input id="login-pw" type="password" placeholder="パスワードを入力"
+      style="width:100%;padding:12px 16px;border:2px solid #e0e0e0;border-radius:8px;font-size:15px;outline:none;transition:border .2s;font-family:'Noto Sans JP',sans-serif;"
+      onfocus="this.style.borderColor='#667eea'" onblur="this.style.borderColor='#e0e0e0'">
+    <p id="login-err" style="color:#e53e3e;font-size:13px;margin:8px 0 0;min-height:20px;font-family:'Noto Sans JP',sans-serif;"></p>
+    <button onclick="checkLoginPw()" style="width:100%;margin-top:12px;padding:12px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:8px;font-size:15px;cursor:pointer;font-family:'Noto Sans JP',sans-serif;font-weight:bold;transition:opacity .2s;"
+      onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">ログイン</button>
+  </div>
+</div>
+<script>
+'use strict';
+(function(){
+  var TOP_HASH='28a530fd3d3873ea882fe4abd4b3b09d1e735db954ea16e372a8842f65a8e5ba';
+  var SK='sns_composer_auth';
+  function sha256(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,'0')}).join('')});}
+  if(sessionStorage.getItem(SK)==='1'){document.getElementById('login-screen').style.display='none';}
+  document.getElementById('login-pw').addEventListener('keydown',function(e){if(e.key==='Enter')checkLoginPw();});
+  window.checkLoginPw=function(){
+    var v=document.getElementById('login-pw').value;
+    if(!v){document.getElementById('login-err').textContent='パスワードを入力してください';return;}
+    sha256(v).then(function(h){
+      if(h===TOP_HASH){sessionStorage.setItem(SK,'1');document.getElementById('login-screen').style.display='none';}
+      else{document.getElementById('login-err').textContent='パスワードが違います';document.getElementById('login-pw').value='';}
+    });
+  };
+})();
+</script>
+<!-- ===== End Login Screen ===== -->
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useRef, useEffect, useCallback } = React;
+
+/* ═══════════════════════════════════════════
+   API PROXY — Vercelの相対パス（変更不要）
+   ═══════════════════════════════════════════ */
+var PROXY_URL = "/api/proxy";
+
+/* ═══════════════════════════════════════════
+   DATA - 各店舗に strengths (強み/USP) を追加
+   ═══════════════════════════════════════════ */
+var SUBS_HC=["コラーゲンビューティーメソッド","Beauty Yoga（ビューティーヨガ）","Rhythm Flow（リズムフロー）","美彩心（リンパケア）","シンプルヨガ","ダイエットヨガ","骨盤ビューティー","シンプルピラティス","グループリフォーマー®","コラーゲントリートメントランプ","コラーゲンドリンク HADAKOI","セルフエステ","スムージーバー","体験レッスン","五感×癒し"];
+
+var BRANDS=[
+  {id:"hc",name:"HC Lucina",sn:"HC",tag:"ホットコラーゲンlucina",color:"#E8A0BF",accent:"#C47A9F",
+   tagline:"運動しながらキレイを補給",
+   desc:"女性専用ホットヨガ＆コラーゲンスタジオ（本部）",subs:SUBS_HC,grp:"brand",logoId:"hc",
+   strengths:["コラーゲンランプ×ホットヨガの独自メソッド","女性専用の安心空間","美肌・デトックス・リラックスの三位一体","初心者でも安心の丁寧指導","スムージーバー＆HADAKOIドリンク完備"]},
+
+  {id:"fit",name:"FIT Lucina",sn:"FIT",tag:"FITLucina",color:"#F5A623",accent:"#D8900B",
+   tagline:"ココロとカラダも生まれ変わろう！",
+   desc:"総合フィットネスクラブ｜熱海パールスターホテル3F",
+   subs:["マシンジム・ウェイトトレーニング","パーソナルトレーニング","スタジオ（ヨガ・ピラティス）","ピラティスリフォーマー","パワープレート","ゴルフシミュレーター","コンディショニングエリア","ラウンジ・リラクゼーション","インフィニティバス・サウナ","会員募集・入会案内","体験レッスン"],grp:"brand",logoId:"fit",
+   strengths:["熱海パールスターホテル内の好アクセス","ジム＋スタジオ＋スパの複合型フィットネス","Technogym社製最新マシン完備","初心者でも続けやすいサポート体制","インフィニティバス・サウナが宿泊者無料"]},
+
+  {id:"psga",name:"PSGA Japan",sn:"PSGA",tag:"PSGAJapan",color:"#8B5CF6",accent:"#7C3AED",
+   tagline:"正統は、静かに語り継がれる。",
+   desc:"クラシカルピラティス教育・養成（Second Generation Academy）",
+   subs:["マット養成コース I&II","リフォーマー養成コース I&II","キャデラック養成コース","チェアバレル養成コース","グランドマスターコンプリヘンシブ","養成コース体験会・説明会","ブラッシュアップセミナー","ワークショップ","インターン制度","認定資格・ライセンス","クラシカルピラティス6原則","基礎解剖学・姿勢分析"],grp:"brand",logoId:"psga",
+   strengths:["Second Generation直系の本格カリキュラム","国際基準の認定資格が取得可能","少人数制で一人ひとりに丁寧な指導","マット＆全マシン対応の総合養成","卒業後も継続教育(CEC)でスキルアップ"]},
+
+  {id:"axis",name:"axiscore",sn:"axis",tag:"axiscore",color:"#374151",accent:"#111827",
+   tagline:"PilatesをDesignする",
+   desc:"ピラティスマシン販売・スタジオ開業支援",
+   subs:["ピラティスマシン販売","スタジオ開業支援","設計・レイアウト","機器導入サポート","メンテナンス","トレーニング機器販売","プロ向け教育","リハビリ機器提案","新規養成サポート","ワークショップサポート"],grp:"brand",logoId:"axis",
+   strengths:["高品質ピラティスマシンの国内正規販売","スタジオ開業のワンストップ支援","設計・レイアウトから運営まで伴走","導入後の手厚いメンテナンス体制","プロ向け教育＆養成サポート"]},
+
+  {id:"assoc",name:"コラーゲンスタジオ協会",sn:"協会",tag:"コラーゲンスタジオ協会",color:"#BE185D",accent:"#9D174D",
+   tagline:"運動しながら、キレイを補給",
+   desc:"日本初コラーゲンスタジオ認定・教育団体",
+   subs:["Collagen Beauty Method","美彩心（びさいしん）リンパケア","グループリフォーマー®︎","コラーゲントリートメントランプ","ホットスタジオプログラム","HADAKOI コラーゲンサプリ","グループリフォーマー養成コース","パーソナルインストラクター養成","更新研修","導入店舗・フランチャイズ","エビデンス・大学共同研究","マスター教育者"],grp:"brand",logoId:"assoc",
+   strengths:["業界唯一のコラーゲンスタジオ認定機関","大学共同研究によるエビデンスベースの美容メソッド","光トリートメント×ホットスタジオ×エクササイズの独自融合","グループリフォーマー＆パーソナル両方の養成体制","加盟スタジオへのフランチャイズ支援"]},
+
+  {id:"kitako",name:"HC Lucina 北小金",sn:"北小金",tag:"ルキナ北小金",color:"#E8A0BF",accent:"#C47A9F",
+   tagline:"運動しながらキレイを補給",
+   desc:"HC Lucina直営｜JR北小金駅前",subs:SUBS_HC,grp:"hc",logoId:"hc",
+   strengths:["JR北小金駅から徒歩すぐの好立地","コラーゲンランプ完備のホットスタジオ","子育て世代にも通いやすいスケジュール","常連メンバー同士の温かいコミュニティ","経験豊富なインストラクター陣"]},
+
+  {id:"kitaura",name:"HC Lucina 北浦和",sn:"北浦和",tag:"ルキナ北浦和",color:"#E8A0BF",accent:"#C47A9F",
+   tagline:"運動しながらキレイを補給",
+   desc:"HC Lucina直営｜JR北浦和駅",subs:SUBS_HC,grp:"hc",logoId:"hc",
+   strengths:["JR北浦和駅近くでアクセス抜群","広々としたスタジオで快適レッスン","朝ヨガから夜ヨガまで多彩な時間帯","ホットヨガ初心者専用クラスあり","地域密着のアットホームな雰囲気"]},
+
+  {id:"higaku",name:"HC Lucina 東久留米",sn:"東久留米",tag:"ルキナ東久留米",color:"#E8A0BF",accent:"#C47A9F",
+   tagline:"運動しながらキレイを補給",
+   desc:"HC Lucina直営｜西武池袋線東久留米駅",subs:SUBS_HC,grp:"hc",logoId:"hc",
+   strengths:["西武池袋線で都心からもアクセス便利","コラーゲンランプの美肌効果が人気","リラクゼーション系レッスンが充実","丁寧なカウンセリングで個別サポート","クリーンで清潔感のある施設"]},
+
+  {id:"minowa",name:"HC Lucina 三ノ輪",sn:"三ノ輪",tag:"ルキナ三ノ輪",color:"#E8A0BF",accent:"#C47A9F",
+   tagline:"運動しながらキレイを補給",
+   desc:"HC Lucina直営｜日比谷線三ノ輪駅",subs:SUBS_HC,grp:"hc",logoId:"hc",
+   strengths:["日比谷線三ノ輪駅すぐの好アクセス","下町エリア唯一のコラーゲンホットヨガ","少人数制で一人ひとりに目が届く指導","デトックス×美肌の相乗効果プログラム","アットホームで通い続けやすい環境"]},
+
+  {id:"atami",name:"フィットネス ルキナ熱海",sn:"熱海",tag:"フィットネスルキナ熱海",color:"#1E6B8A",accent:"#0E4D6B",
+   tagline:"心と体も生まれ変わる",
+   desc:"熱海パールスターホテル3F｜ホテルフィットネス",
+   subs:["マシンジム・トレーニング","コンディショニングエリア","スタジオ（ヨガ・ピラティス）","パーソナルプログラム","ゴルフシミュレーター","パワープレート","ラウンジ・リラクゼーション","インフィニティバス・サウナ","ピラティスリフォーマー","会員募集・入会案内","宿泊者向けフィットネス","施設内覧"],grp:"hc",logoId:"hc",
+   strengths:["熱海パールスターホテル内の上質なフィットネス空間","750㎡の広々としたフィットネスエリア","Technogym社製最新マシン完備","インフィニティバス・サウナが利用可能","ゴルフシミュレーター2台設置","プロトレーナーによるパーソナル指導"]},
+
+  {id:"cps",name:"CPS 那覇新都心",sn:"CPS",tag:"コラーゲンピラティススタジオ那覇新都心",color:"#14B8A6",accent:"#0D9488",
+   tagline:"私に還る、私を磨く。グループも、パーソナルも、思いのままに。── Pilates Specialty Studio",
+   desc:"コラーゲンランプ×ピラティス専門｜おもろまち駅",
+   subs:["コラーゲンランプトレーニング","マシンピラティス","マットピラティス","リフォーマー","キャデラック","チェア","バレル","ボディメイク","美肌プログラム","姿勢改善","体質改善","パーソナルトレーニング"],grp:"ps",logoId:"cps",
+   strengths:["グループピラティス×パーソナル指導の二刀流","少人数グループで一人ひとり丁寧にサポート","結果が出やすい独自のサポート体制","沖縄唯一のコラーゲンランプ×ピラティス融合","おもろまち駅近くで通いやすい立地","美肌＆ボディメイクを同時に叶える"]},
+
+  {id:"kiyosumi",name:"PS 清澄白河",sn:"清澄",tag:"ピラティススタジオ清澄白河",color:"#14B8A6",accent:"#0D9488",
+   tagline:"",
+   desc:"新規オープン｜清澄白河駅",
+   subs:["マシンピラティス","マットピラティス","リフォーマー","キャデラック","チェア","バレル","パーソナルトレーニング","グループレッスン","ボディメイク","姿勢改善","体質改善","初心者向けプログラム"],grp:"ps",logoId:"kiyosumi",
+   strengths:["清澄白河エリア注目の新規オープン店","全マシン完備の本格ピラティススタジオ","初心者専用プログラムで未経験でも安心","おしゃれな街並みにマッチした洗練空間","パーソナル＆グループ両方選べる柔軟さ","姿勢改善・体質改善の実績多数"]},
+];
+
+/* ロゴグループ定義 — logoIdが同じブランドは1つのロゴを共有 */
+var LOGO_GROUPS=[
+  {id:"hc",name:"HC Lucina",desc:"HC本部 + 全直営店共通",color:"#E8A0BF",accent:"#C47A9F",
+   stores:["HC Lucina","北小金","北浦和","東久留米","三ノ輪","熱海"]},
+  {id:"fit",name:"FIT Lucina",desc:"FIT Lucina",color:"#F5A623",accent:"#D8900B",stores:["FIT Lucina"]},
+  {id:"psga",name:"PSGA Japan",desc:"PSGA Japan",color:"#8B5CF6",accent:"#7C3AED",stores:["PSGA Japan"]},
+  {id:"axis",name:"axiscore",desc:"axiscore",color:"#374151",accent:"#111827",stores:["axiscore"]},
+  {id:"assoc",name:"コラーゲンスタジオ協会",desc:"協会",color:"#BE185D",accent:"#9D174D",stores:["コラーゲンスタジオ協会"]},
+  {id:"cps",name:"CPS 那覇新都心",desc:"コラーゲンピラティス",color:"#14B8A6",accent:"#0D9488",stores:["CPS 那覇新都心"]},
+  {id:"kiyosumi",name:"PS 清澄白河",desc:"ピラティススタジオ",color:"#14B8A6",accent:"#0D9488",stores:["PS 清澄白河"]},
+];
+
+var PURPOSES=[
+  {id:"attract",name:"集客・宣伝",tone:"魅力的・説得力",icon:"📣",color:"#F59E0B"},
+  {id:"awareness",name:"認知拡大",tone:"有益・フレンドリー",icon:"🌐",color:"#3B82F6"},
+  {id:"branding",name:"ブランディング",tone:"情熱的・誠実",icon:"💫",color:"#8B5CF6"},
+  {id:"engage",name:"交流・相談",tone:"カジュアル・親しみ",icon:"💬",color:"#10B981"},
+  {id:"recruit",name:"募集",tone:"明確・ワクワク",icon:"🎯",color:"#EF4444"},
+];
+var AUDIENCES=[
+  {id:"20f",name:"20代女性",icon:"👩",desc:"美容・トレンドに敏感",tone:"トレンド感・共感",color:"#F472B6"},
+  {id:"30f",name:"30代女性",icon:"👩‍💼",desc:"仕事と育児の両立",tone:"共感・実用的",color:"#FB923C"},
+  {id:"40f",name:"40代女性",icon:"💐",desc:"エイジングケア・自分磨き",tone:"上品・知的",color:"#A78BFA"},
+  {id:"50p",name:"50代以上",icon:"🌸",desc:"健康寿命・QOL向上",tone:"穏やか・丁寧",color:"#34D399"},
+  {id:"beg",name:"初心者",icon:"🔰",desc:"運動未経験で不安",tone:"やさしい・励まし",color:"#60A5FA"},
+  {id:"exp",name:"経験者",icon:"💪",desc:"レベルアップ志向",tone:"専門的・挑戦",color:"#FBBF24"},
+  {id:"ins",name:"インストラクター",icon:"🎓",desc:"指導者・スキルアップ",tone:"プロフェッショナル",color:"#818CF8"},
+  {id:"own",name:"経営者",icon:"🏢",desc:"スタジオ開業・運営",tone:"ビジネス・戦略的",color:"#2DD4BF"},
+];
+var SIZES=[
+  {id:"sq",name:"正方形",desc:"フィード",w:1080,h:1080,icon:"⬜"},
+  {id:"port",name:"縦長4:5",desc:"フィード推奨",w:1080,h:1350,icon:"📐"},
+  {id:"reel",name:"リール",desc:"9:16",w:1080,h:1920,icon:"📱"},
+  {id:"story",name:"ストーリー",desc:"9:16",w:1080,h:1920,icon:"⭕"},
+  {id:"land",name:"横長",desc:"16:9",w:1080,h:608,icon:"🖥"},
+];
+var OSTYLES=[
+  {id:"bottom",name:"⬇ 下部グラデ",pos:"bottom"},
+  {id:"center",name:"🔲 中央ボックス",pos:"center"},
+  {id:"top",name:"⬆ 上部バナー",pos:"top"},
+  {id:"full",name:"🔳 全面",pos:"full"},
+];
+var FF="'Noto Sans JP',system-ui,-apple-system,sans-serif";
+var KW={"コラーゲンランプトレーニング":"collagen light therapy beauty woman","シンプルヨガ":"simple yoga beginner relaxing woman stretch","ダイエットヨガ":"diet yoga fitness woman exercise sweating","骨盤ビューティー":"pelvis alignment yoga beauty posture woman","シンプルピラティス":"simple pilates beginner core woman toning","グループリフォーマー®":"group pilates reformer class women exercise","セルフエステ":"self care beauty treatment facial woman","Beauty Yoga（ビューティーヨガ）":"beauty yoga woman stretching ball flexibility collagen","Rhythm Flow（リズムフロー）":"rhythm flow yoga music exercise dynamic woman","マシンピラティス":"pilates reformer machine woman","マットピラティス":"pilates mat exercise woman studio","ボディメイク":"body fitness woman sculpting","ストレッチ":"stretching flexibility woman yoga","リラクゼーション":"relaxation spa wellness calm","美肌プログラム":"skincare beauty glowing woman","女性専用フィットネス":"women only fitness gym class","温活":"warm therapy wellness woman relax","姿勢改善":"posture correction yoga woman","体質改善":"healthy lifestyle woman wellness","パーソナルトレーニング":"personal training woman gym","グループレッスン":"group fitness class women exercise","フィットネスジム":"fitness gym modern equipment","機能改善トレーニング":"functional training exercise","コンディショニング":"body conditioning fitness","有酸素トレーニング":"cardio exercise running","筋力トレーニング":"weight training strength gym","シニアフィットネス":"senior fitness elderly exercise","健康増進プログラム":"health wellness program","クラシカルピラティス":"classical pilates exercise","インストラクター養成":"fitness instructor teaching","マット養成コース":"pilates mat training course","マット養成コース I&II":"pilates mat instructor training certification","マシン養成コース":"pilates machine training","リフォーマー養成コース I&II":"pilates reformer instructor training","キャデラック養成コース":"pilates cadillac trapeze training instructor","チェアバレル養成コース":"pilates chair barrel training instructor","グランドマスターコンプリヘンシブ":"pilates master comprehensive training professional","養成コース体験会・説明会":"pilates trial lesson workshop experience","ブラッシュアップセミナー":"pilates workshop skill improvement seminar","インターン制度":"pilates internship teaching practice","認定資格・ライセンス":"pilates certification license professional","クラシカルピラティス6原則":"classical pilates principles exercise","基礎解剖学・姿勢分析":"anatomy posture analysis pilates education","ワークショップ":"workshop training seminar","継続教育（CEC）":"continuing education fitness","スキルアップ研修":"skill training professional","指導者教育":"instructor education teaching","解剖学教育":"anatomy education body","Second Generation Pilates":"pilates classical exercise","リフォーマー":"pilates reformer exercise","キャデラック":"pilates cadillac trapeze","チェア":"pilates chair exercise","バレル":"pilates barrel exercise","ピラティスマシン販売":"pilates equipment studio","スタジオ開業支援":"fitness studio design","設計・レイアウト":"studio interior design","機器導入サポート":"fitness equipment setup","メンテナンス":"equipment maintenance service","トレーニング機器販売":"training equipment fitness","プロ向け教育":"professional education seminar","リハビリ機器提案":"rehabilitation equipment therapy","新規養成サポート":"new instructor training","ワークショップサポート":"workshop event support","認定制度":"certification professional badge","インストラクター教育":"instructor education training","研修・講習会":"seminar training workshop","加盟スタジオ支援":"studio franchise support","美容ウェルネス研究":"beauty wellness research","イベント開催":"event planning wellness","資格更新":"certification renewal education","運営基準策定":"business standard planning","ブランド普及活動":"brand promotion marketing","会員コミュニティ":"community wellness group","初心者向けプログラム":"beginner pilates yoga first time woman","マシンジム・トレーニング":"gym fitness machine training weight equipment","コンディショニングエリア":"stretching core conditioning training turf","スタジオ（ヨガ・ピラティス）":"yoga pilates studio class wellness","パーソナルプログラム":"personal training fitness coach program","ゴルフシミュレーター":"golf simulator indoor sport luxury","パワープレート":"power plate vibration training fitness","ラウンジ・リラクゼーション":"luxury lounge relaxation massage chair","インフィニティバス・サウナ":"infinity hot spring ocean view sauna bath","ピラティスリフォーマー":"pilates reformer machine exercise studio","会員募集・入会案内":"fitness membership gym join community","宿泊者向けフィットネス":"hotel fitness guest luxury resort workout","施設内覧":"fitness facility tour modern gym","マシンジム・ウェイトトレーニング":"gym weight training machine fitness equipment","体験レッスン":"trial lesson fitness first time experience","Collagen Beauty Method":"collagen beauty skincare wellness method","美彩心（びさいしん）リンパケア":"lymph massage body care beauty detox","グループリフォーマー®︎":"group pilates reformer class fitness","コラーゲントリートメントランプ":"collagen light therapy lamp beauty skin","ホットスタジオプログラム":"hot studio exercise yoga warm wellness","HADAKOI コラーゲンサプリ":"collagen supplement drink beauty health","グループリフォーマー養成コース":"group reformer instructor training course","パーソナルインストラクター養成":"personal pilates instructor training certification","更新研修":"instructor renewal training workshop","導入店舗・フランチャイズ":"franchise studio business opening","エビデンス・大学共同研究":"evidence research university collagen science","マスター教育者":"master instructor educator pilates training"};
+
+/* ═══════ COMPONENTS ═══════ */
+function Glass(p){var s=Object.assign({background:"rgba(255,255,255,0.92)",backdropFilter:"blur(24px)",WebkitBackdropFilter:"blur(24px)",border:"1px solid rgba(255,255,255,0.6)",borderRadius:18,padding:20,transition:"all 0.3s cubic-bezier(.4,0,.2,1)",boxShadow:"0 1px 4px rgba(0,0,0,0.03), 0 4px 16px rgba(0,0,0,0.025)",boxSizing:"border-box",minWidth:0},p.glow?{boxShadow:"0 0 0 1px "+p.glow+"18, 0 4px 20px "+p.glow+"10",borderColor:p.glow+"30"}:{},p.style||{});return <div className="glass-card" style={s} onDragOver={p.onDragOver} onDragLeave={p.onDragLeave} onDrop={p.onDrop}>{p.children}</div>;}
+function Badge(p){return <span style={Object.assign({display:"inline-flex",alignItems:"center",gap:4,padding:"4px 11px",borderRadius:8,fontSize:11,fontWeight:600,background:(p.c||"#888")+"12",color:p.c||"#888",letterSpacing:0.2,transition:"all 0.25s",lineHeight:1.3,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",maxWidth:"100%",minWidth:0},p.style||{})}>{p.children}</span>;}
+function Btn(p){var base=p.ghost?{background:"transparent",border:"1.5px solid "+(p.c||"#888")+"40",color:p.c||"#888"}:{background:"linear-gradient(135deg,"+(p.c||"#818CF8")+","+(p.c2||p.c||"#818CF8")+")",color:"#fff",boxShadow:"0 4px 16px "+(p.c||"#818CF8")+"22, 0 1px 3px rgba(0,0,0,0.08)"};return <button onClick={p.onClick} disabled={p.disabled} className="btn-hover" style={Object.assign({padding:"10px 20px",borderRadius:12,border:"none",fontWeight:700,fontSize:13,cursor:"pointer",transition:"all 0.25s cubic-bezier(.4,0,.2,1)",outline:"none",position:"relative",overflow:"hidden",letterSpacing:0.1},base,p.disabled?{opacity:0.35,cursor:"default",boxShadow:"none"}:{},p.style||{})}>{p.children}</button>;}
+
+/* ═══════ IMAGE FILTER PRESETS ═══════ */
+var FILTER_PRESETS=[
+  {id:"none",name:"オリジナル",icon:"🔲",bri:100,con:100,sat:100,warm:0,tint:0,vig:0},
+  {id:"brand",name:"ブランド統一",icon:"🏷",bri:105,con:110,sat:90,warm:5,tint:15,vig:10},
+  {id:"bright",name:"明るく統一",icon:"☀",bri:115,con:105,sat:95,warm:3,tint:0,vig:5},
+  {id:"warm",name:"ウォーム",icon:"🌅",bri:105,con:105,sat:105,warm:15,tint:5,vig:8},
+  {id:"cool",name:"クール",icon:"❄",bri:100,con:112,sat:85,warm:-10,tint:8,vig:5},
+  {id:"soft",name:"ソフト",icon:"🌸",bri:108,con:92,sat:90,warm:8,tint:10,vig:12},
+  {id:"vivid",name:"ビビッド",icon:"🎨",bri:102,con:118,sat:125,warm:0,tint:0,vig:3},
+  {id:"mono",name:"モノクロ",icon:"⚫",bri:105,con:115,sat:0,warm:0,tint:0,vig:8},
+];
+
+/* ═══════ CANVAS ═══════ */
+function drawOverlay(cv,imgs,idx,txt,sz,sty,clr,nm,logo,logoPos,flt,tl,txtOpt){
+  if(!cv)return;var ctx=cv.getContext("2d"),W=sz.w,H=sz.h;cv.width=W;cv.height=H;
+  ctx.fillStyle="#e8e7ef";ctx.fillRect(0,0,W,H);
+  if(!flt)flt={bri:100,con:100,sat:100,warm:0,tint:0,vig:0};
+  if(!txtOpt)txtOpt={size:100,color:"#ffffff",weight:900};
+  var im=imgs[idx];
+  if(im&&im.el&&im.el.complete&&im.el.naturalWidth>0){
+    /* Apply CSS filter for brightness/contrast/saturation */
+    ctx.filter="brightness("+flt.bri+"%) contrast("+flt.con+"%) saturate("+flt.sat+"%)";
+    var sc=Math.max(W/im.el.naturalWidth,H/im.el.naturalHeight),iw=im.el.naturalWidth*sc,ih=im.el.naturalHeight*sc;
+    ctx.drawImage(im.el,(W-iw)/2,(H-ih)/2,iw,ih);
+    ctx.filter="none";
+
+    /* Warmth overlay (orange for warm, blue for cool) */
+    if(flt.warm!==0){
+      ctx.globalAlpha=Math.abs(flt.warm)/100;
+      ctx.fillStyle=flt.warm>0?"rgba(255,140,50,0.25)":"rgba(50,100,255,0.2)";
+      ctx.fillRect(0,0,W,H);
+      ctx.globalAlpha=1;
+    }
+
+    /* Brand color tint overlay */
+    if(flt.tint>0){
+      ctx.globalAlpha=flt.tint/100;
+      ctx.fillStyle=clr;
+      ctx.globalCompositeOperation="soft-light";
+      ctx.fillRect(0,0,W,H);
+      ctx.globalCompositeOperation="source-over";
+      ctx.globalAlpha=1;
+    }
+
+    /* Vignette */
+    if(flt.vig>0){
+      var vr=Math.max(W,H)*0.7;
+      var vg=ctx.createRadialGradient(W/2,H/2,vr*0.4,W/2,H/2,vr);
+      vg.addColorStop(0,"transparent");
+      vg.addColorStop(1,"rgba(0,0,0,"+(flt.vig/100*0.6)+")");
+      ctx.fillStyle=vg;ctx.fillRect(0,0,W,H);
+    }
+  }
+  else{var bg=ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,clr+"30");bg.addColorStop(1,"#e8e7ef");ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);ctx.fillStyle="rgba(0,0,0,0.06)";ctx.font="bold "+Math.floor(W*.12)+"px sans-serif";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("📷",W/2,H/2);}
+
+  /* ── ロゴ描画（鮮明・枠近く配置・自動配置対応） ── */
+  if(logo&&logo.complete&&logo.naturalWidth>0){
+    var lMax=W*0.24;
+    var lRatio=logo.naturalWidth/logo.naturalHeight;
+    var lw=Math.min(lMax,logo.naturalWidth);
+    var lhh=lw/lRatio;
+    if(lhh>lMax){lhh=lMax;lw=lhh*lRatio;}
+    /* 枠ギリギリに配置（パディング極小） */
+    var lpadEdge=Math.floor(W*0.015);
+    /* 自動配置：テキスト位置に応じてロゴを反対側に配置 */
+    var pos=logoPos||"auto";
+    if(pos==="auto"){
+      var tp=sty&&sty.pos?sty.pos:"bottom";
+      if(tp==="bottom") pos="top-center";
+      else if(tp==="top") pos="bottom-center";
+      else if(tp==="center") pos="top-center";
+      else pos="top-center"; /* full overlay */
+    }
+    var lx,ly;
+    if(pos==="top-left"){lx=lpadEdge;ly=lpadEdge;}
+    else if(pos==="top-right"){lx=W-lw-lpadEdge;ly=lpadEdge;}
+    else if(pos==="top-center"){lx=(W-lw)/2;ly=lpadEdge;}
+    else if(pos==="bottom-left"){lx=lpadEdge;ly=H-lhh-lpadEdge;}
+    else if(pos==="bottom-right"){lx=W-lw-lpadEdge;ly=H-lhh-lpadEdge;}
+    else if(pos==="bottom-center"){lx=(W-lw)/2;ly=H-lhh-lpadEdge;}
+    else{lx=(W-lw)/2;ly=lpadEdge;}
+    /* 高解像度中間キャンバスで鮮明に描画 */
+    var hiRes=document.createElement("canvas");
+    var hiS=4;
+    hiRes.width=Math.ceil(lw*hiS);hiRes.height=Math.ceil(lhh*hiS);
+    var hiCtx=hiRes.getContext("2d");
+    hiCtx.imageSmoothingEnabled=true;
+    hiCtx.imageSmoothingQuality="high";
+    hiCtx.drawImage(logo,0,0,hiRes.width,hiRes.height);
+    ctx.save();
+    ctx.imageSmoothingEnabled=true;
+    ctx.imageSmoothingQuality="high";
+    /* 白グロー（暗い背景でも視認性を確保） */
+    ctx.shadowColor="rgba(255,255,255,0.8)";
+    ctx.shadowBlur=10;
+    ctx.drawImage(hiRes,lx,ly,lw,lhh);
+    /* 重ねて描画でくっきり */
+    ctx.shadowColor="rgba(0,0,0,0.25)";
+    ctx.shadowBlur=4;
+    ctx.shadowOffsetX=1;
+    ctx.shadowOffsetY=1;
+    ctx.drawImage(hiRes,lx,ly,lw,lhh);
+    ctx.restore();
+  }
+
+  if(!txt&&!tl)return;
+  /* フォントサイズ基本値（1080px幅で約70px → SNS視認性◎） */
+  var baseFsRatio=0.065*(txtOpt.size/100);
+  var hasTL=tl&&tl.length>0;
+
+  /* ── 自動フォントサイズ調整 ── */
+  /* テキストが長い場合は段階的に縮小し、最大3行を目標にする */
+  function calcLines(fsize,text,maxW){
+    ctx.font=txtOpt.weight+" "+fsize+"px 'Noto Sans JP',sans-serif";
+    var ls=[],c="";
+    for(var i=0;i<text.length;i++){
+      var ch=text[i];
+      if(ch==="\n"){ls.push(c);c="";continue;}
+      var t2=c+ch;
+      if(ctx.measureText(t2).width>maxW&&c){ls.push(c);c=ch;}else c=t2;
+    }
+    if(c)ls.push(c);
+    return ls;
+  }
+  /* 孤立文字の防止: 最終行が2文字以下なら前の行から文字を移動 */
+  function balanceLines(ls){
+    if(ls.length<2)return ls;
+    var last=ls[ls.length-1];
+    if(last.length<=2){
+      var prev=ls[ls.length-2];
+      /* 前の行の末尾から3文字を最終行に移す */
+      var move=Math.min(3,Math.floor(prev.length/3));
+      if(move>0){
+        ls[ls.length-2]=prev.slice(0,-move);
+        ls[ls.length-1]=prev.slice(-move)+last;
+      }
+    }
+    return ls;
+  }
+
+  var pad=Math.floor(W*.06);
+  var mx=W-pad*2;
+  var fs=Math.max(36,Math.floor(W*baseFsRatio));
+  var lines=[];
+  if(txt){
+    lines=calcLines(fs,txt,mx);
+    /* 4行以上になったらフォントを段階的に縮小 */
+    var minFs=Math.max(28,Math.floor(W*0.038));
+    while(lines.length>3&&fs>minFs){
+      fs=Math.max(minFs,fs-2);
+      lines=calcLines(fs,txt,mx);
+    }
+    lines=balanceLines(lines);
+  }
+
+  var tlFs=Math.max(16,Math.floor(fs*.35));
+  var tlH=hasTL?tlFs*1.8:0;
+  ctx.font=txtOpt.weight+" "+fs+"px 'Noto Sans JP',sans-serif";ctx.textAlign="center";ctx.textBaseline="middle";
+  var lh=fs*1.4,bH=lines.length*lh+pad+tlH;
+  /* アウトライン太さ強化（視認性向上） */
+  var ol=Math.max(4,Math.floor(fs*0.09));
+
+  function drawTxt(x,y,txt2){
+    ctx.save();
+    ctx.font=txtOpt.weight+" "+fs+"px 'Noto Sans JP',sans-serif";
+    ctx.textAlign="center";ctx.textBaseline="middle";
+    /* 二重アウトライン（外側暗＋内側やや暗）で文字くっきり */
+    ctx.lineWidth=ol*2.5;ctx.strokeStyle="rgba(0,0,0,0.5)";ctx.lineJoin="round";ctx.miterLimit=2;
+    ctx.strokeText(txt2,x,y);
+    ctx.lineWidth=ol*1.5;ctx.strokeStyle="rgba(0,0,0,0.8)";
+    ctx.strokeText(txt2,x,y);
+    ctx.fillStyle=txtOpt.color;
+    ctx.fillText(txt2,x,y);
+    ctx.restore();
+  }
+  function drawTagline(x,y){
+    if(!hasTL)return;
+    ctx.save();
+    /* タグラインが長い場合はフォント縮小 */
+    var actTlFs=tlFs;
+    var tlText="— "+tl+" —";
+    ctx.font="700 "+actTlFs+"px 'Noto Sans JP',sans-serif";
+    while(ctx.measureText(tlText).width>W-pad*1.5&&actTlFs>12){
+      actTlFs--;
+      ctx.font="700 "+actTlFs+"px 'Noto Sans JP',sans-serif";
+    }
+    ctx.textAlign="center";ctx.textBaseline="middle";
+    /* タグラインも二重アウトライン */
+    ctx.lineWidth=Math.max(3,actTlFs*0.12);ctx.strokeStyle="rgba(0,0,0,0.5)";ctx.lineJoin="round";
+    ctx.strokeText(tlText,x,y);
+    ctx.fillStyle=clr;
+    ctx.shadowColor="rgba(0,0,0,0.6)";ctx.shadowBlur=8;
+    ctx.fillText(tlText,x,y);
+    ctx.restore();
+  }
+
+  if(sty.pos==="bottom"){
+    var gy=H-bH-pad*2;
+    var g=ctx.createLinearGradient(0,gy-pad*2,0,H);
+    g.addColorStop(0,"transparent");g.addColorStop(0.15,"rgba(0,0,0,.3)");g.addColorStop(0.45,"rgba(0,0,0,.65)");g.addColorStop(1,"rgba(0,0,0,.92)");
+    ctx.fillStyle=g;ctx.fillRect(0,gy-pad*2,W,H-gy+pad*2);
+    lines.forEach(function(l,j){drawTxt(W/2,H-bH-pad/2+j*lh+lh/2+16,l);});
+    var btmY=H-bH-pad/2+lines.length*lh+lh/2+16;
+    drawTagline(W/2,btmY+tlFs*1.3);
+  }
+  else if(sty.pos==="center"){
+    var cy=H/2,bx=pad*1.2,bw=W-pad*2.4,bh=bH+pad*1.8,r=20;
+    ctx.fillStyle="rgba(0,0,0,.72)";
+    ctx.beginPath();ctx.moveTo(bx+r,cy-bh/2);ctx.lineTo(bx+bw-r,cy-bh/2);ctx.quadraticCurveTo(bx+bw,cy-bh/2,bx+bw,cy-bh/2+r);ctx.lineTo(bx+bw,cy+bh/2-r);ctx.quadraticCurveTo(bx+bw,cy+bh/2,bx+bw-r,cy+bh/2);ctx.lineTo(bx+r,cy+bh/2);ctx.quadraticCurveTo(bx,cy+bh/2,bx,cy+bh/2-r);ctx.lineTo(bx,cy-bh/2+r);ctx.quadraticCurveTo(bx,cy-bh/2,bx+r,cy-bh/2);ctx.closePath();ctx.fill();
+    ctx.strokeStyle=clr+"90";ctx.lineWidth=3;ctx.stroke();
+    var sy2=cy-((lines.length-1)*lh)/2-(hasTL?tlH/2:0);
+    lines.forEach(function(l,j){drawTxt(W/2,sy2+j*lh,l);});
+    drawTagline(W/2,sy2+lines.length*lh+tlFs*0.7);
+  }
+  else if(sty.pos==="top"){
+    var g2=ctx.createLinearGradient(0,0,0,bH+pad*4);
+    g2.addColorStop(0,"rgba(0,0,0,.92)");g2.addColorStop(0.45,"rgba(0,0,0,.65)");g2.addColorStop(0.8,"rgba(0,0,0,.3)");g2.addColorStop(1,"transparent");
+    ctx.fillStyle=g2;ctx.fillRect(0,0,W,bH+pad*4);
+    lines.forEach(function(l,j){drawTxt(W/2,pad+j*lh+lh/2+8,l);});
+    drawTagline(W/2,pad+lines.length*lh+lh/2+8+tlFs*1.3);
+  }
+  else{
+    ctx.fillStyle="rgba(0,0,0,.4)";ctx.fillRect(0,0,W,H);
+    var sy3=H/2-((lines.length-1)*lh)/2-(hasTL?tlH/2:0);
+    lines.forEach(function(l,j){drawTxt(W/2,sy3+j*lh,l);});
+    drawTagline(W/2,sy3+lines.length*lh+tlFs*0.7);
+  }
+  ctx.shadowColor="transparent";ctx.shadowBlur=0;
+}
+
+/* ═══════════════════════════════════════════
+   MAIN APP
+   ═══════════════════════════════════════════ */
+function App(){
+  var _b=useState(0),bi=_b[0],setBI=_b[1];
+  var _s=useState(0),si=_s[0],setSI=_s[1];
+  var _p=useState(0),pi=_p[0],setPI=_p[1];
+  var _a=useState(0),ai2=_a[0],setAI=_a[1];
+  var _tab=useState("create"),tab=_tab[0],setTab=_tab[1];
+  var _catch=useState(""),catchCopy=_catch[0],setCatch=_catch[1];
+  var _caption=useState(""),caption=_caption[0],setCaption=_caption[1];
+  var _imgs=useState([]),images=_imgs[0],setImages=_imgs[1];
+  var _dragging=useState(false),dragging=_dragging[0],setDragging=_dragging[1];
+  var _slidePause=useState(false),slidePause=_slidePause[0],setSlidePause=_slidePause[1];
+  var _ai=useState(0),activeImg=_ai[0],setActiveImg=_ai[1];
+  var _sz=useState(0),sizeIdx=_sz[0],setSizeIdx=_sz[1];
+  var _st=useState(0),styleIdx=_st[0],setStyleIdx=_st[1];
+  var _toast=useState(null),toast=_toast[0],setToast=_toast[1];
+  var _busy=useState(false),busy=_busy[0],setBusy=_busy[1];
+  var _dl=useState(false),dlLoading=_dl[0],setDlLoading=_dl[1];
+  var _vidSec=useState(3),vidSec=_vidSec[0],setVidSec=_vidSec[1];
+  var _vidProg=useState(""),vidProg=_vidProg[0],setVidProg=_vidProg[1];
+  var _ukey=useState(""),unsplashKey=_ukey[0],setUnsplashKey=_ukey[1];
+  var _photos=useState([]),photos=_photos[0],setPhotos=_photos[1];
+  var _pLoading=useState(false),photoLoading=_pLoading[0],setPhotoLoading=_pLoading[1];
+  // 選択中の強み (index set)
+  var _selStr=useState(new Set([0,1,2])),selStr=_selStr[0],setSelStr=_selStr[1];
+  var _logos=useState({}),logos=_logos[0],setLogos=_logos[1]; // { brandId: {el, src} }
+  var _logoPos=useState("auto"),logoPos=_logoPos[0],setLogoPos=_logoPos[1];
+  var _fltIdx=useState(1),filterIdx=_fltIdx[0],setFilterIdx=_fltIdx[1]; // default: "ブランド統一"
+  var _showHelp=useState(true),showHelpHint=_showHelp[0],setShowHelpHint=_showHelp[1];
+  var _txtSize=useState(100),txtSize=_txtSize[0],setTxtSize=_txtSize[1];
+  var _txtColor=useState("#ffffff"),txtColor=_txtColor[0],setTxtColor=_txtColor[1];
+  var _txtWeight=useState(900),txtWeight=_txtWeight[0],setTxtWeight=_txtWeight[1];
+  var _copyText=useState(null),copyText=_copyText[0],setCopyText=_copyText[1];
+  var _winW=useState(typeof window!=="undefined"?window.innerWidth:1400),winW=_winW[0],setWinW=_winW[1];
+  var copyAreaRef=useRef(null);
+  var cvRef=useRef(null),fiRef=useRef(null),prevKeyRef=useRef("");
+
+  var brand=BRANDS[bi],sub=brand.subs[si]||brand.subs[0],purpose=PURPOSES[pi],aud=AUDIENCES[ai2];
+  var bc=brand.color,ba=brand.accent;
+  var size=SIZES[sizeIdx],oStyle=OSTYLES[styleIdx];
+  var INP={width:"100%",padding:"12px 16px",borderRadius:12,border:"1.5px solid rgba(0,0,0,0.08)",background:"rgba(255,255,255,0.95)",color:"#1a1a2e",fontSize:14,outline:"none",boxSizing:"border-box",transition:"border-color 0.25s,box-shadow 0.25s",fontFamily:FF,lineHeight:1.6};
+
+  function notify(m){setToast(m);setTimeout(function(){setToast(null);},3200);}
+  /* ── コピー：execCommand優先 → 失敗時はバナー表示 ── */
+  function smartCopy(text){
+    if(!text||!text.trim()){notify("⚠ まだテキストが生成されていません");return;}
+    var ta=document.createElement("textarea");
+    ta.value=text;
+    ta.style.cssText="position:fixed;left:-9999px;top:0;opacity:0";
+    document.body.appendChild(ta);
+    ta.focus();ta.select();
+    var ok=false;
+    try{ok=document.execCommand("copy");}catch(e){}
+    document.body.removeChild(ta);
+    if(ok){notify("📋 コピー完了！SNSに貼り付けてください");setCopyText(null);}
+    else{setCopyText(text);}
+  }
+  useEffect(function(){
+    if(copyText&&copyAreaRef.current){
+      try{copyAreaRef.current.focus();copyAreaRef.current.select();}catch(e){}
+      var el=document.getElementById("copy-banner");
+      if(el)el.scrollIntoView({behavior:"smooth",block:"start"});
+    }
+  },[copyText]);
+  useEffect(function(){
+    function onResize(){setWinW(window.innerWidth);}
+    window.addEventListener("resize",onResize);
+    return function(){window.removeEventListener("resize",onResize);};
+  },[]);
+  function toggleStrength(idx){setSelStr(function(prev){var n=new Set(prev);if(n.has(idx))n.delete(idx);else n.add(idx);return n;});}
+
+  // 現在のブランドのロゴ（logoIdで共有）
+  var curLogo=logos[brand.logoId]||null;
+  var logoEl=curLogo?curLogo.el:null;
+  var logoSrc=curLogo?curLogo.src:"";
+  var logoCount=Object.keys(logos).length;
+
+  /* ── ロゴ白背景を自動除去 ── */
+  function removeWhiteBG(img){
+    var c=document.createElement("canvas");
+    c.width=img.naturalWidth;c.height=img.naturalHeight;
+    var cx=c.getContext("2d");
+    cx.drawImage(img,0,0);
+    var d=cx.getImageData(0,0,c.width,c.height);
+    var px=d.data;
+    for(var i=0;i<px.length;i+=4){
+      var r=px[i],g=px[i+1],b=px[i+2];
+      /* 純白に近い部分のみ透過（RGB各240以上） */
+      if(r>240&&g>240&&b>240){
+        var lum=(r+g+b)/3;
+        var alpha=Math.max(0, Math.round((255-lum)*17) );
+        px[i+3]=Math.min(px[i+3],alpha);
+      }
+      /* 白寄り（235-240）は軽く透過 */
+      else if(r>235&&g>235&&b>235){
+        px[i+3]=Math.min(px[i+3],120);
+      }
+    }
+    cx.putImageData(d,0,0);
+    return c.toDataURL("image/png");
+  }
+
+  function loadLogo(logoId,file){
+    var rd=new FileReader();
+    rd.onload=function(ev){
+      var raw=new Image();
+      raw.onload=function(){
+        /* 白背景を除去した画像を生成 */
+        var cleanSrc=removeWhiteBG(raw);
+        var el=new Image();
+        el.onload=function(){
+          setLogos(function(prev){
+            var n=Object.assign({},prev);
+            n[logoId]={el:el,src:cleanSrc,rawSrc:ev.target.result};
+            return n;
+          });
+          var lg=LOGO_GROUPS.find(function(g){return g.id===logoId;});
+          notify("✅ "+(lg?lg.name:logoId)+" のロゴを設定（白背景を自動除去）");
+        };
+        el.src=cleanSrc;
+      };
+      raw.src=ev.target.result;
+    };
+    rd.readAsDataURL(file);
+  }
+  function removeLogo(logoId){
+    setLogos(function(prev){
+      var n=Object.assign({},prev);
+      delete n[logoId];
+      return n;
+    });
+    notify("🗑 ロゴを削除しました");
+  }
+
+  // 選択中の強みテキスト
+  var selectedStrengths=brand.strengths.filter(function(_,i){return selStr.has(i);});
+
+  /* ── Canvas ── */
+  var imgFilter=FILTER_PRESETS[filterIdx];
+  var txtOpt={size:txtSize,color:txtColor,weight:txtWeight};
+  var draw=useCallback(function(){drawOverlay(cvRef.current,images,activeImg,catchCopy,size,oStyle,bc,brand.name,logoEl,logoPos,imgFilter,brand.tagline,{size:txtSize,color:txtColor,weight:txtWeight});},[images,activeImg,catchCopy,size,oStyle,bc,brand.name,logoEl,logoPos,imgFilter,brand.tagline,txtSize,txtColor,txtWeight]);
+  useEffect(function(){var t=setTimeout(draw,50);return function(){clearTimeout(t);};},[draw]);
+
+  /* ── Auto slideshow ── */
+  useEffect(function(){
+    if(images.length<2||slidePause||busy)return;
+    var iv=setInterval(function(){setActiveImg(function(c){return(c+1)%images.length;});},3500);
+    return function(){clearInterval(iv);};
+  },[images.length,slidePause,busy]);
+
+  /* ── Image ── */
+  function addImages(files){Array.from(files).forEach(function(f){var rd=new FileReader();rd.onload=function(ev){var el=new Image();el.onload=function(){setImages(function(p){var n=p.concat([{id:Date.now()+Math.random(),src:ev.target.result,el:el,name:f.name}]);return n;});};el.src=ev.target.result;};rd.readAsDataURL(f);});}
+  function removeImage(idx){setImages(function(p){var n=p.filter(function(_,i){return i!==idx;});if(activeImg>=n.length)setActiveImg(Math.max(0,n.length-1));return n;});}
+  function moveImage(idx,dir){setImages(function(p){if(idx+dir<0||idx+dir>=p.length)return p;var n=p.slice();var t=n[idx];n[idx]=n[idx+dir];n[idx+dir]=t;setActiveImg(idx+dir);return n;});}
+
+  /* ── Unsplash ── */
+  var fetchPhotos=async function(){
+    if(!unsplashKey){notify("⚠ UnsplashのAPIキーを設定してください");setTab("settings");return;}
+    setPhotoLoading(true);setPhotos([]);
+    var kw=KW[sub]||"fitness wellness";
+    try{
+      var res=await fetch("https://api.unsplash.com/search/photos?query="+encodeURIComponent(kw)+"&per_page=12&orientation=squarish",{headers:{Authorization:"Client-ID "+unsplashKey}});
+      var d=await res.json();
+      if(d.results&&d.results.length>0){
+        var list=d.results.map(function(r){return {id:r.id,thumb:r.urls.small,full:r.urls.regular,alt:r.alt_description||"",user:r.user.name};});
+        setPhotos(list);notify("📷 "+list.length+"枚の写真を取得");
+      }else{notify("写真が見つかりません");}
+    }catch(e){notify("⚠ Unsplash取得エラー");}
+    setPhotoLoading(false);
+  };
+  function selectPhoto(url,userName){
+    var el=new Image();el.crossOrigin="anonymous";
+    el.onload=function(){
+      setImages(function(p){
+        var n=p.concat([{id:Date.now()+Math.random(),src:url,el:el,name:"Unsplash: "+userName}]);
+        setActiveImg(n.length-1);
+        return n;
+      });
+      notify("✅ 写真を追加しました");
+    };
+    el.src=url;
+  }
+  /* ── AI Generate ── */
+  /* ── AI共通コンテキスト ── */
+  function aiContext(){
+    var b=BRANDS[bi],s=b.subs[si]||b.subs[0],p=PURPOSES[pi],au=AUDIENCES[ai2];
+    var strs=b.strengths.filter(function(_,i){return selStr.has(i);});
+    var strText=strs.length>0?"\n\n【この店舗の強み・訴求ポイント（必ず反映）】\n"+strs.map(function(s){return"・"+s;}).join("\n"):"";
+    var tl=b.tagline?"\n【ブランドキャッチ】「"+b.tagline+"」 ← このブランドの世界観・コアメッセージ。投稿全体のトーンに反映してください。ただし【重要】キャッチコピーにブランドキャッチをそのまま使わないでください。画像にはブランドキャッチが別途表示されるため、キャッチコピーは必ず別の新しい表現で作成してください。":"";
+    var purposeGuide={"attract":"行動喚起を強調。体験・来店・予約に直結する言葉を使う","awareness":"知名度向上。ブランドの独自性・新しさ・話題性を前面に","branding":"世界観を伝える。感情に訴え、共感・憧れを生む表現","engage":"双方向の交流。質問形や共感フレーズで反応を誘う","recruit":"募集・採用。ワクワク感と具体的なメリットを明示"};
+    var audienceGuide={"20f":"トレンドワード、SNS映え要素、共感フレーズを活用","30f":"忙しい日常からの解放感、時短・効率的な自分磨きを訴求","40f":"上質さ・知的好奇心に響く表現。エイジングケアは前向きに","50p":"安心感・丁寧さ重視。健康寿命や生活の質向上を温かく","beg":"不安を払拭する言葉。「初めてでも」「やさしい」で安心感","exp":"専門性・本格派を示す。レベルアップ・深化を匂わせる","ins":"プロとしての成長、キャリア、スキル向上の具体像を提示","own":"ビジネス成長、投資対効果、市場優位性を論理的に訴求"};
+    var pg=purposeGuide[p.id]||"";
+    var ag=audienceGuide[au.id]||"";
+    return "【ブランド】"+b.name+"（"+b.desc+"）\n【カテゴリ】"+s+"\n【投稿目的】"+p.name+"（トーン: "+p.tone+"）\n → 目的別ガイド: "+pg+"\n【ターゲット】"+au.name+"（"+au.desc+"、文体: "+au.tone+"）\n → ターゲット別ガイド: "+ag+tl+strText;
+  }
+
+  /* ── AI全体生成 ── */
+  var aiGenerate=useCallback(async function(){
+    setBusy(true);notify("🪄 AI生成中...");
+    var b=BRANDS[bi];
+    try{
+      var res=await fetch(PROXY_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,messages:[{role:"user",content:
+        "あなたはSNSマーケティングの専門家です。以下の条件でInstagram・X・Facebook向けの投稿を生成してください。\n\n"+
+        aiContext()+
+        "\n\n【重要：キャッチコピーとキャプションの関係】\n"+
+        "キャッチコピー（画像上テキスト）とキャプション（本文）は1つのストーリーとして連動させること。\n"+
+        "1. キャッチコピー = 『問い・衝撃・感情の引き金』。ターゲットが思わず手を止める一言\n"+
+        "2. キャプション = キャッチの『答え・具体・解決策』。キャッチで生まれた興味に応える本文\n"+
+        "3. 投稿目的がキャッチの方向性を決め、ターゲットがキャプションの文体を決める\n"+
+        "4. キャッチで投げかけた問い→キャプション冒頭で回収→強みで裏付け→CTAで行動促進\n"+
+        "\n上記の強みを自然に盛り込み、ターゲットに響く投稿を作成してください。"+
+        "\n\nJSON形式のみ出力（説明不要）:\n"+
+        '{"catchCopy":"画像キャッチコピー。15-30字。絵文字なし。改行\\\\nは1回まで。目的に応じた問いや感情の引き金を凝縮","caption":"キャプション本文。200-300字。冒頭でキャッチの問いに応答し具体的な価値と強みを展開。ハッシュタグ10-15個。#'+b.tag+'必須。絵文字OK。CTA含む"}'
+      }]})});
+      var d=await res.json(),raw="";
+      if(d.content)d.content.forEach(function(c){if(c.type==="text")raw+=c.text;});
+      var j=JSON.parse(raw.replace(/```json|```/g,"").trim());
+      setCatch((j.catchCopy||"").replace(/\\n/g,"\n"));
+      setCaption(j.caption||"");
+      notify("✅ 生成完了!");
+    }catch(e){notify("⚠ エラー: "+e.message);}
+    setBusy(false);
+  },[bi,si,pi,ai2,selStr]);
+
+  /* ── AI キャッチコピーのみ再生成 ── */
+  var _busyC=useState(false),busyC=_busyC[0],setBusyC=_busyC[1];
+  var aiRegenCatch=async function(){
+    setBusyC(true);notify("🪄 キャッチ再生成中...");
+    var b=BRANDS[bi];
+    var prev=catchCopy?"現在のキャッチ:「"+catchCopy+"」\nこれとは違う表現で。":"";
+    try{
+      var res=await fetch(PROXY_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:300,messages:[{role:"user",content:
+        "SNSマーケティングの専門家として、以下の条件でキャッチコピーだけを1つ生成。\n\n"+
+        aiContext()+"\n\n"+prev+
+        (caption?"\n\n【現在のキャプション冒頭】"+caption.substring(0,100)+"\nこのキャプションと連動するキャッチを作成。キャッチ=問い・感情の引き金、キャプション=その答え・具体。":"") +
+        "\n\n条件: 15-30字。絵文字なし。改行\\nは1回まで。投稿目的に応じた問いや感情の引き金を凝縮。\nJSON形式のみ出力: {\"catchCopy\":\"...\"}"
+      }]})});
+      var d=await res.json(),raw="";
+      if(d.content)d.content.forEach(function(c){if(c.type==="text")raw+=c.text;});
+      var j=JSON.parse(raw.replace(/```json|```/g,"").trim());
+      setCatch((j.catchCopy||"").replace(/\\n/g,"\n"));
+      notify("✅ キャッチ再生成完了!");
+    }catch(e){notify("⚠ エラー: "+e.message);}
+    setBusyC(false);
+  };
+
+  /* ── AI キャプションのみ再生成 ── */
+  var _busyP=useState(false),busyP=_busyP[0],setBusyP=_busyP[1];
+  var aiRegenCaption=async function(){
+    setBusyP(true);notify("🪄 キャプション再生成中...");
+    var b=BRANDS[bi];
+    var curCatch=catchCopy?"【現在のキャッチコピー】「"+catchCopy+"」\nこのキャッチが『問い・感情の引き金』。キャプションはその『答え・具体・解決策』として連動させてください。\nキャプション冒頭でキャッチの問いに応答→強みで裏付け→CTAで行動促進の流れで。":"";
+    try{
+      var res=await fetch(PROXY_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:800,messages:[{role:"user",content:
+        "SNSマーケティングの専門家として、以下の条件でキャプションだけを1つ生成。\n\n"+
+        aiContext()+"\n\n"+curCatch+
+        "\n\n条件: 200-300字。キャッチコピーと連動したストーリーで強みを訴求。ハッシュタグ10-15個。#"+b.tag+"必須。絵文字OK。CTA含む。\nJSON形式のみ出力: {\"caption\":\"...\"}"
+      }]})});
+      var d=await res.json(),raw="";
+      if(d.content)d.content.forEach(function(c){if(c.type==="text")raw+=c.text;});
+      var j=JSON.parse(raw.replace(/```json|```/g,"").trim());
+      setCaption(j.caption||"");
+      notify("✅ キャプション再生成完了!");
+    }catch(e){notify("⚠ エラー: "+e.message);}
+    setBusyP(false);
+  };
+
+  // 選択変更時に自動トリガー
+  useEffect(function(){
+    var key=bi+"-"+si+"-"+pi+"-"+ai2+"-"+Array.from(selStr).sort().join(",");
+    if(prevKeyRef.current&&prevKeyRef.current!==key){aiGenerate();}
+    prevKeyRef.current=key;
+  },[bi,si,pi,ai2,selStr,aiGenerate]);
+
+  // ブランド変更時に強み選択をリセット
+  var prevBiRef=useRef(bi);
+  useEffect(function(){
+    if(prevBiRef.current!==bi){
+      var def=new Set();
+      for(var i=0;i<Math.min(3,BRANDS[bi].strengths.length);i++)def.add(i);
+      setSelStr(def);
+    }
+    prevBiRef.current=bi;
+  },[bi]);
+
+  /* ── Download ── */
+  function dlImage(imgIdx){setDlLoading(true);var fullText=(catchCopy?catchCopy+"\n\n":"")+caption;drawOverlay(cvRef.current,images,imgIdx,catchCopy,size,oStyle,bc,brand.name,logoEl,logoPos,imgFilter,brand.tagline,txtOpt);setTimeout(function(){cvRef.current.toBlob(function(blob){if(!blob){setDlLoading(false);return;}var u=URL.createObjectURL(blob),a=document.createElement("a");a.href=u;a.download=brand.sn+"_"+sub+"_"+(imgIdx+1)+"_"+size.id+".png";document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(u);setDlLoading(false);if(fullText&&fullText.trim())smartCopy(fullText);else notify("📥 画像をDLしました");},"image/png");},120);}
+  function dlAll(){if(images.length===0){dlImage(0);return;}setDlLoading(true);var fullText=(catchCopy?catchCopy+"\n\n":"")+caption;var idx=0;function next(){if(idx>=images.length){setDlLoading(false);setActiveImg(0);if(fullText&&fullText.trim())smartCopy(fullText);else notify("📥 全"+images.length+"枚DLしました");return;}setActiveImg(idx);drawOverlay(cvRef.current,images,idx,catchCopy,size,oStyle,bc,brand.name,logoEl,logoPos,imgFilter,brand.tagline,txtOpt);setTimeout(function(){cvRef.current.toBlob(function(blob){if(blob){var u=URL.createObjectURL(blob),a=document.createElement("a");a.href=u;a.download=brand.sn+"_"+(idx+1)+"_"+size.id+".png";document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(u);}idx++;setTimeout(next,200);},"image/png");},150);}next();}
+
+  /* ── Share to X ── */
+  function shareToX(){
+    drawOverlay(cvRef.current,images,activeImg,catchCopy,size,oStyle,bc,brand.name,logoEl,logoPos,imgFilter,brand.tagline,txtOpt);
+    setTimeout(function(){
+      cvRef.current.toBlob(function(blob){
+        if(!blob)return;
+        /* キャプションからハッシュタグだけ抽出 */
+        var tags=(caption.match(/#[^\s#]+/g)||[]).slice(0,5).join(" ");
+        var text=catchCopy.replace(/\n/g," ")+(tags?" "+tags:"");
+        /* Web Share API対応ならファイルごと共有 */
+        if(navigator.share&&navigator.canShare){
+          var file=new File([blob],brand.sn+"_post.png",{type:"image/png"});
+          if(navigator.canShare({files:[file]})){
+            navigator.share({text:text,files:[file]}).then(function(){
+              notify("✅ 共有完了!");
+            }).catch(function(){});
+            return;
+          }
+        }
+        /* フォールバック: 画像DL + X intent */
+        var u=URL.createObjectURL(blob),a=document.createElement("a");
+        a.href=u;a.download=brand.sn+"_post.png";document.body.appendChild(a);a.click();document.body.removeChild(a);
+        setTimeout(function(){URL.revokeObjectURL(u);},1000);
+        var xUrl="https://twitter.com/intent/tweet?text="+encodeURIComponent(text);
+        window.open(xUrl,"_blank","noopener");
+        notify("📥 画像DL済み → X投稿画面で画像を添付してください");
+      },"image/png");
+    },120);
+  }
+  function copyCaption(){
+    var fullText=(catchCopy?catchCopy+"\n\n":"")+caption;
+    smartCopy(fullText);
+  }
+  function shareToFB(){
+    drawOverlay(cvRef.current,images,activeImg,catchCopy,size,oStyle,bc,brand.name,logoEl,logoPos,imgFilter,brand.tagline,txtOpt);
+    setTimeout(function(){
+      cvRef.current.toBlob(function(blob){
+        if(!blob)return;
+        var tags=(caption.match(/#[^\s#]+/g)||[]).slice(0,5).join(" ");
+        var text=catchCopy.replace(/\n/g," ")+(tags?" "+tags:"");
+        /* Web Share API対応ならファイルごと共有 */
+        if(navigator.share&&navigator.canShare){
+          var file=new File([blob],brand.sn+"_post.png",{type:"image/png"});
+          if(navigator.canShare({files:[file]})){
+            navigator.share({text:text,files:[file]}).then(function(){
+              notify("✅ 共有完了!");
+            }).catch(function(){});
+            return;
+          }
+        }
+        /* フォールバック: 画像DL + テキストコピー + FB投稿画面 */
+        var u=URL.createObjectURL(blob),a=document.createElement("a");
+        a.href=u;a.download=brand.sn+"_post.png";document.body.appendChild(a);a.click();document.body.removeChild(a);
+        setTimeout(function(){URL.revokeObjectURL(u);},1000);
+        smartCopy(text);
+        window.open("https://www.facebook.com/","_blank","noopener");
+      },"image/png");
+    },120);
+  }
+
+  /* ── Video Export ── */
+  function dlVideo(){
+    if(images.length<2){notify("⚠ 動画には2枚以上の画像が必要です");return;}
+    setDlLoading(true);setVidProg("準備中...");
+    var vc=document.createElement("canvas");
+    vc.width=size.w;vc.height=size.h;
+    var vctx=vc.getContext("2d");
+    var tmpA=document.createElement("canvas");tmpA.width=size.w;tmpA.height=size.h;
+    var tmpB=document.createElement("canvas");tmpB.width=size.w;tmpB.height=size.h;
+    var fps=30;
+    var framesPerSlide=vidSec*fps;
+    var fadeFrames=Math.min(Math.floor(fps*0.4),Math.floor(framesPerSlide/3));
+    var totalFrames=images.length*framesPerSlide;
+    var stream=vc.captureStream(fps);
+    var mimeType="video/webm;codecs=vp9";
+    if(!MediaRecorder.isTypeSupported(mimeType))mimeType="video/webm";
+    var recorder=new MediaRecorder(stream,{mimeType:mimeType,videoBitsPerSecond:8000000});
+    var chunks=[];
+    recorder.ondataavailable=function(e){if(e.data.size>0)chunks.push(e.data);};
+    recorder.onstop=function(){
+      var blob=new Blob(chunks,{type:"video/webm"});
+      var u=URL.createObjectURL(blob);
+      var a=document.createElement("a");
+      a.href=u;a.download=brand.sn+"_slideshow_"+size.id+".webm";
+      document.body.appendChild(a);a.click();document.body.removeChild(a);
+      URL.revokeObjectURL(u);setDlLoading(false);setVidProg("");
+      notify("🎬 動画DL完了! ("+images.length+"枚×"+vidSec+"秒)");
+    };
+    recorder.start();
+    var frame=0;
+    function renderFrame(){
+      if(frame>=totalFrames){recorder.stop();return;}
+      var slideIdx=Math.min(Math.floor(frame/framesPerSlide),images.length-1);
+      var posInSlide=frame-slideIdx*framesPerSlide;
+      if(frame%(fps*1)===0)setVidProg("🎬 "+(slideIdx+1)+"/"+images.length+"枚目");
+      if(slideIdx>0&&posInSlide<fadeFrames){
+        var alpha=posInSlide/fadeFrames;
+        drawOverlay(tmpA,images,slideIdx-1,catchCopy,size,oStyle,bc,brand.name,logoEl,logoPos,imgFilter,brand.tagline,txtOpt);
+        drawOverlay(tmpB,images,slideIdx,catchCopy,size,oStyle,bc,brand.name,logoEl,logoPos,imgFilter,brand.tagline,txtOpt);
+        vctx.globalAlpha=1;
+        vctx.drawImage(tmpA,0,0);
+        vctx.globalAlpha=alpha;
+        vctx.drawImage(tmpB,0,0);
+        vctx.globalAlpha=1;
+      }else{
+        drawOverlay(vc,images,slideIdx,catchCopy,size,oStyle,bc,brand.name,logoEl,logoPos,imgFilter,brand.tagline,txtOpt);
+      }
+      frame++;
+      requestAnimationFrame(renderFrame);
+    }
+    renderFrame();
+  }
+
+  var tags=(caption.match(/#[^\s#]+/g)||[]);
+  function Chip(p){var sel=p.sel;return <button onClick={p.onClick} style={{padding:"8px 10px",borderRadius:12,border:sel?"2px solid "+p.c+"45":"2px solid transparent",background:sel?p.c+"08":"transparent",cursor:"pointer",textAlign:"left",display:"flex",alignItems:"center",gap:8,width:"100%",transition:"all 0.2s cubic-bezier(.4,0,.2,1)",marginBottom:2,boxSizing:"border-box",overflow:"hidden"}}>{p.children}</button>;}
+  function BrandList(p){return BRANDS.filter(function(b){return b.grp===p.grp;}).map(function(b){var i=BRANDS.indexOf(b),sel=bi===i;return <Chip key={b.id} sel={sel} c={b.color} onClick={function(){setBI(i);setSI(0);}}>
+    <div style={{width:24,minWidth:24,height:24,minHeight:24,borderRadius:7,background:sel?"linear-gradient(135deg,"+b.color+","+b.accent+")":"linear-gradient(135deg,"+b.color+"60,"+b.accent+"60)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:8,fontWeight:900,color:"#fff",flexShrink:0,transition:"all 0.3s",boxShadow:sel?"0 2px 8px "+b.color+"30":"none",lineHeight:1}}>{b.sn.slice(0,2)}</div>
+    <div style={{flex:1,minWidth:0,fontSize:11,fontWeight:sel?700:500,color:sel?"#333":"#777",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",transition:"all 0.2s"}}>{b.name}</div>
+    {sel&&<div style={{width:6,height:6,borderRadius:3,background:b.color,flexShrink:0}}/>}
+  </Chip>;});}
+
+
+  /* ── Completion check ── */
+  var checks=[
+    {ok:images.length>0,l:"画像",w:1},
+    {ok:!!logoEl,l:"ロゴ",w:1},
+    {ok:!!catchCopy,l:"キャッチ",w:2},
+    {ok:caption.length>50,l:"キャプション",w:2},
+    {ok:tags.length>=5,l:"タグ5+",w:1},
+    {ok:caption.includes("#"+brand.tag),l:"必須タグ",w:1},
+  ];
+  var totalW=checks.reduce(function(s,c){return s+c.w;},0);
+  var doneW=checks.reduce(function(s,c){return c.ok?s+c.w:s;},0);
+  var pct=Math.round(doneW/totalW*100);
+  var allDone=pct===100;
+
+  /* ── Sidebar collapse ── */
+  var _col=useState({cat:false,pur:false,str:false}),collapsed=_col[0],setCollapsed=_col[1];
+  function tog(k){setCollapsed(function(p){var n=Object.assign({},p);n[k]=!n[k];return n;});}
+  function SecHead(p){
+    var c1=p.c||bc,c2=p.c2||ba;
+    return <div onClick={p.onToggle} style={{cursor:"pointer",marginBottom:p.open?8:0,transition:"margin 0.2s"}}>
+    <div style={{display:"flex",alignItems:"center",gap:8,minHeight:32}}>
+      <svg width="26" height="26" viewBox="0 0 26 26" style={{flexShrink:0,display:"block"}}>
+        <defs><linearGradient id={"sg"+p.step} x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stopColor={c1}/><stop offset="100%" stopColor={c2}/></linearGradient></defs>
+        <circle cx="13" cy="13" r="13" fill={"url(#sg"+p.step+")"}/>
+        <text x="13" y="13" textAnchor="middle" dominantBaseline="central" fill="#fff" fontSize="12" fontWeight="900" fontFamily="'Noto Sans JP',sans-serif">{p.step}</text>
+      </svg>
+      <div style={{fontSize:13,fontWeight:700,color:"#1a1a2e",flex:1,minWidth:0}}>{p.title}</div>
+      <div style={{fontSize:11,color:"#bbb",transform:p.open?"rotate(0)":"rotate(-90deg)",transition:"transform 0.25s",flexShrink:0}}>▼</div>
+    </div>
+    {p.badge&&<div style={{marginTop:4,paddingLeft:34}}>{p.badge}</div>}
+  </div>;}
+
+  return(
+    <div style={{minHeight:"100vh",background:"linear-gradient(160deg,#f5f4fa 0%,#eeedf6 30%,#f0eff7 60%,#f8f7fc 100%)",color:"#334",fontFamily:FF,fontSize:13}}>
+      <style dangerouslySetInnerHTML={{__html:
+        "@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700;900&display=swap');"+
+        "*{box-sizing:border-box}"+
+        "*::-webkit-scrollbar{width:5px;height:5px}*::-webkit-scrollbar-track{background:transparent}*::-webkit-scrollbar-thumb{background:rgba(0,0,0,0.1);border-radius:4px}*::-webkit-scrollbar-thumb:hover{background:rgba(0,0,0,0.18)}"+
+        "input:focus,textarea:focus{border-color:"+bc+"50!important;box-shadow:0 0 0 3px "+bc+"10!important}"+
+        "@keyframes fadeIn{from{opacity:0;transform:translateY(-8px) scale(0.98)}to{opacity:1;transform:translateY(0) scale(1)}}"+
+        "@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}"+
+        "@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}"+
+        "@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}"+
+        "@keyframes progGlow{0%,100%{box-shadow:0 0 6px "+bc+"30}50%{box-shadow:0 0 14px "+bc+"50}}"+
+        "@keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}"+
+        ".btn-hover:not(:disabled):hover{transform:translateY(-1px);filter:brightness(1.05)}.btn-hover:not(:disabled):active{transform:translateY(0) scale(0.98)}"+
+        ".glass-card:hover{box-shadow:0 2px 8px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.03)}"+
+        "textarea{font-family:"+FF+"}"+
+        "button{font-family:"+FF+"}"
+      }}/>
+
+      {toast&&<div style={{position:"fixed",top:16,left:"50%",transform:"translateX(-50%)",zIndex:999,padding:"12px 28px",borderRadius:14,background:"rgba(255,255,255,0.97)",backdropFilter:"blur(24px)",color:"#333",border:"1px solid rgba(0,0,0,0.06)",fontSize:13,fontWeight:600,boxShadow:"0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.04)",animation:"fadeIn 0.35s cubic-bezier(.4,0,.2,1)",display:"flex",alignItems:"center",gap:8}}><div style={{width:4,height:20,borderRadius:3,background:"linear-gradient(135deg,"+bc+","+ba+")",flexShrink:0}}/>{toast}</div>}
+
+      {/* ═══ HEADER ═══ */}
+      <div style={{borderBottom:"1px solid rgba(0,0,0,0.05)",background:"rgba(255,255,255,0.92)",backdropFilter:"blur(24px)",WebkitBackdropFilter:"blur(24px)",position:"sticky",top:0,zIndex:50}}>
+        <div style={{padding:"10px 24px",display:"flex",justifyContent:"space-between",alignItems:"center",maxWidth:1600,margin:"0 auto"}}>
+          <div style={{display:"flex",alignItems:"center",gap:14}}>
+            <div style={{width:42,minWidth:42,height:42,minHeight:42,borderRadius:14,background:"linear-gradient(135deg,"+bc+","+ba+")",display:"flex",alignItems:"center",justifyContent:"center",fontSize:14,fontWeight:900,color:"#fff",boxShadow:"0 4px 16px "+bc+"25",transition:"all 0.4s",letterSpacing:-0.5,flexShrink:0,lineHeight:1}}>{brand.sn.slice(0,2)}</div>
+            <div>
+              <div style={{display:"flex",alignItems:"baseline",gap:8}}>
+                <span style={{fontSize:17,fontWeight:800,color:"#1a1a2e",letterSpacing:-.5}}>SNS Post Composer</span>
+                {brand.tagline&&<span style={{fontSize:9,fontWeight:600,color:bc,fontStyle:"italic",opacity:.7}}>「{brand.tagline}」</span>}
+              </div>
+              <div style={{display:"flex",gap:4,marginTop:3,flexWrap:"wrap",alignItems:"center"}}>
+                {[{t:brand.name,c:bc},{t:sub,c:bc},{t:purpose.icon+" "+purpose.name,c:purpose.color},{t:aud.icon+" "+aud.name,c:aud.color}].map(function(x,i){return <Badge key={i} c={x.c}>{x.t}</Badge>;})}
+                {logoEl&&<Badge c="#34D399">🏷 ロゴON</Badge>}
+                {!logoEl&&logoCount>0&&<Badge c="#F59E0B">🏷 未設定</Badge>}
+              </div>
+            </div>
+          </div>
+          <div style={{display:"flex",alignItems:"center",gap:12}}>
+            {/* Progress ring */}
+            {tab==="create"&&<div style={{position:"relative",width:48,minWidth:48,height:48,minHeight:48,flexShrink:0}}>
+              <svg width="48" height="48" style={{transform:"rotate(-90deg)"}}>
+                <circle cx="24" cy="24" r="19" fill="none" stroke="rgba(0,0,0,0.06)" strokeWidth="3.5"/>
+                <circle cx="24" cy="24" r="19" fill="none" stroke={allDone?"#34D399":bc} strokeWidth="3.5" strokeDasharray={String(2*Math.PI*19)} strokeDashoffset={String(2*Math.PI*19*(1-pct/100))} strokeLinecap="round" style={{transition:"all 0.5s"}}/>
+              </svg>
+              <div style={{position:"absolute",top:0,left:0,width:48,height:48,display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,fontWeight:800,color:allDone?"#34D399":bc}}>{pct}%</div>
+            </div>}
+            {(busy||busyC||busyP)&&<Badge c="#FBBF24" style={{animation:"pulse 1.2s infinite"}}>{busy?"🪄 全体生成中":busyC?"🪄 キャッチ生成中":"🪄 キャプション生成中"}</Badge>}
+            <div style={{display:"flex",gap:2,background:"rgba(0,0,0,0.04)",borderRadius:12,padding:3}}>
+              {[["create","✏ 作成"],["settings","⚙ 設定"],["guide","❓ 使い方"]].map(function(x){var a=tab===x[0];var isGuide=x[0]==="guide";return <button key={x[0]} onClick={function(){setTab(x[0]);if(isGuide)setShowHelpHint(false);}} style={{padding:"8px 18px",borderRadius:9,border:"none",background:a?bc+"18":isGuide&&showHelpHint?"rgba(52,211,153,0.12)":"transparent",color:a?bc:isGuide&&showHelpHint?"#10B981":"#666",fontSize:12,fontWeight:a?700:isGuide&&showHelpHint?600:500,cursor:"pointer",transition:"all 0.2s",position:"relative"}}>{x[1]}{isGuide&&showHelpHint&&<span style={{position:"absolute",top:-2,right:-2,width:8,height:8,borderRadius:4,background:"#10B981",boxShadow:"0 0 6px rgba(16,185,129,0.4)"}}/>}</button>;})}
+            </div>
+          </div>
+        </div>
+        {/* Progress bar */}
+        {tab==="create"&&<div style={{height:3,background:"rgba(0,0,0,0.03)"}}>
+          <div style={{height:3,borderRadius:2,background:allDone?"#34D399":"linear-gradient(90deg,"+bc+","+ba+")",width:pct+"%",transition:"width 0.5s",animation:allDone?"none":"progGlow 2s infinite"}}/>
+        </div>}
+      </div>
+
+      {/* ═══ コピー用バナー（ヘッダー直下） ═══ */}
+      {copyText!==null&&copyText!==undefined&&(
+        <div id="copy-banner" style={{background:"#fff",borderBottom:"3px solid "+bc,padding:20,boxShadow:"0 4px 20px rgba(0,0,0,0.15)"}}>
+          <div style={{maxWidth:600,margin:"0 auto"}}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
+              <span style={{fontSize:17,fontWeight:800,color:"#1a1a2e"}}>📋 テキストをコピーしてSNSに貼り付け</span>
+              <button onClick={function(){setCopyText(null);}} style={{width:34,height:34,borderRadius:17,background:"#f0f0f0",border:"none",fontSize:16,cursor:"pointer",color:"#666",display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>
+            </div>
+            <div style={{fontSize:13,color:"#92400E",lineHeight:1.5,background:"#FEF3C7",padding:"10px 14px",borderRadius:10,border:"1px solid #FDE68A",fontWeight:600,marginBottom:10}}>
+              👆 下の枠内をタップ →「全選択」→ コピー（Ctrl+C / ⌘+C）→ SNSに貼り付け
+            </div>
+            <textarea ref={copyAreaRef} readOnly value={copyText} onFocus={function(e){e.target.select();}} onClick={function(e){e.target.select();}} style={{width:"100%",minHeight:180,padding:14,borderRadius:12,border:"3px solid "+bc,background:"#FAFAFA",fontSize:14,lineHeight:1.8,fontFamily:FF,resize:"vertical",boxSizing:"border-box",color:"#222",marginBottom:10}}/>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+              <button onClick={function(){if(copyAreaRef.current){copyAreaRef.current.focus();copyAreaRef.current.select();}}} style={{padding:14,borderRadius:14,border:"2.5px solid "+bc,background:bc+"15",color:bc,fontSize:15,fontWeight:800,cursor:"pointer"}}>📝 全選択</button>
+              <button onClick={function(){setCopyText(null);}} style={{padding:14,borderRadius:14,border:"none",background:"linear-gradient(135deg,#1a1a2e,#16213e)",color:"#fff",fontSize:15,fontWeight:800,cursor:"pointer"}}>✅ 完了</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div style={{padding:"16px 20px",maxWidth:1600,margin:"0 auto"}}>
+
+      {tab==="create"&&(
+        <div style={{display:winW>1100?"grid":"flex",gridTemplateColumns:winW>1400?"260px 1fr 370px":winW>1100?"240px 1fr 340px":undefined,flexDirection:winW<=1100?"column":undefined,gap:16,alignItems:"start"}}>
+
+          {/* ═══ LEFT ═══ */}
+          <div style={{display:"flex",flexDirection:"column",gap:10,maxHeight:"calc(100vh - 100px)",overflowY:"auto",overflowX:"hidden",paddingRight:6,minWidth:0,width:winW<=1100?"100%":undefined}}>
+
+            {/* STEP 1 — Brand (always open) */}
+            <Glass glow={bc} style={{padding:14}}>
+              <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10,minHeight:32}}>
+                <svg width="26" height="26" viewBox="0 0 26 26" style={{flexShrink:0,display:"block"}}>
+                  <defs><linearGradient id="sg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stopColor={bc}/><stop offset="100%" stopColor={ba}/></linearGradient></defs>
+                  <circle cx="13" cy="13" r="13" fill="url(#sg1)"/>
+                  <text x="13" y="13" textAnchor="middle" dominantBaseline="central" fill="#fff" fontSize="12" fontWeight="900" fontFamily="'Noto Sans JP',sans-serif">1</text>
+                </svg>
+                <div style={{fontSize:13,fontWeight:700,color:"#333"}}>ブランド / 店舗</div>
+              </div>
+              <div style={{fontSize:8,fontWeight:700,color:"#aaa",letterSpacing:1.5,marginBottom:4,textTransform:"uppercase"}}>ブランド</div>
+              <BrandList grp="brand"/>
+              <div style={{fontSize:8,fontWeight:700,color:"#E8A0BF",letterSpacing:1.2,marginTop:8,marginBottom:3,display:"flex",alignItems:"center",gap:4}}><div style={{width:12,height:2,borderRadius:1,background:"#E8A0BF"}}/>HC直営店</div>
+              <BrandList grp="hc"/>
+              <div style={{fontSize:8,fontWeight:700,color:"#14B8A6",letterSpacing:1.2,marginTop:8,marginBottom:3,display:"flex",alignItems:"center",gap:4}}><div style={{width:12,height:2,borderRadius:1,background:"#14B8A6"}}/>ピラティス</div>
+              <BrandList grp="ps"/>
+              {brand.tagline&&<div style={{marginTop:10,padding:"8px 12px",borderRadius:10,background:"linear-gradient(135deg,"+bc+"06,"+bc+"0C)",border:"1px solid "+bc+"18",textAlign:"center"}}>
+                <div style={{fontSize:8,fontWeight:600,color:"#aaa",marginBottom:3,letterSpacing:.5}}>ブランドキャッチ</div>
+                <div style={{fontSize:11,fontWeight:700,color:bc,fontStyle:"italic",lineHeight:1.5}}>「{brand.tagline}」</div>
+                <div style={{fontSize:7,color:"#bbb",marginTop:3,display:"flex",alignItems:"center",justifyContent:"center",gap:3}}>💡 AI生成・画像に自動反映</div>
+              </div>}
+            </Glass>
+
+            {/* STEP 2 — Category (collapsible) */}
+            <Glass style={{padding:14}}>
+              <SecHead step="2" title="カテゴリ" open={!collapsed.cat} onToggle={function(){tog("cat");}} badge={<Badge c={bc}>{sub}</Badge>}/>
+              {!collapsed.cat&&<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:4,maxHeight:180,overflowY:"auto",paddingTop:2}}>
+                {brand.subs.map(function(s,i){var sel=si===i;return <button key={s} onClick={function(){setSI(i);}} style={{padding:"7px 10px",borderRadius:10,border:sel?"1.5px solid "+bc+"45":"1.5px solid transparent",background:sel?bc+"0A":"transparent",fontSize:12,fontWeight:sel?700:500,color:sel?bc:"#555",textAlign:"left",cursor:"pointer",transition:"all 0.15s"}}>{s}</button>;})}
+              </div>}
+            </Glass>
+
+            {/* STEP 3 — Purpose & Audience (collapsible) */}
+            <Glass style={{padding:14}}>
+              <SecHead step="3" title="目的 & ターゲット" c={purpose.color} c2={aud.color} open={!collapsed.pur} onToggle={function(){tog("pur");}} badge={<span style={{display:"flex",gap:3}}><Badge c={purpose.color}>{purpose.icon}</Badge><Badge c={aud.color}>{aud.icon}</Badge></span>}/>
+              {!collapsed.pur&&(<div>
+                <div style={{fontSize:12,fontWeight:700,color:"#888",marginBottom:6,letterSpacing:.5}}>🎯 目的</div>
+                {PURPOSES.map(function(x,i){var sel=pi===i;return <button key={x.id} onClick={function(){setPI(i);}} style={{display:"flex",alignItems:"center",gap:8,width:"100%",padding:"8px 12px",borderRadius:10,border:sel?"1.5px solid "+x.color+"45":"1.5px solid transparent",background:sel?x.color+"08":"transparent",cursor:"pointer",marginBottom:2,textAlign:"left",transition:"all 0.15s"}}><span style={{fontSize:18}}>{x.icon}</span><span style={{fontSize:13,fontWeight:sel?700:500,color:sel?x.color:"#555"}}>{x.name}</span>{sel&&<span style={{fontSize:11,color:x.color+"80",marginLeft:"auto",fontWeight:500}}>{x.tone}</span>}</button>;})}
+                <div style={{fontSize:12,fontWeight:700,color:"#888",marginTop:14,marginBottom:6,letterSpacing:.5}}>👥 ターゲット</div>
+                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:3}}>
+                  {AUDIENCES.map(function(a,i){var sel=ai2===i;return <button key={a.id} onClick={function(){setAI(i);}} style={{padding:"8px 10px",borderRadius:10,border:sel?"1.5px solid "+a.color+"45":"1.5px solid transparent",background:sel?a.color+"08":"transparent",cursor:"pointer",textAlign:"left",display:"flex",alignItems:"center",gap:6,transition:"all 0.15s"}}><span style={{fontSize:16}}>{a.icon}</span><span style={{fontSize:12,fontWeight:sel?700:500,color:sel?a.color:"#555"}}>{a.name}</span></button>;})}
+                </div>
+              </div>)}
+            </Glass>
+
+            {/* STEP 4 — Strengths (collapsible) */}
+            <Glass glow={bc+"50"} style={{padding:14,borderColor:bc+"25"}}>
+              <SecHead step="4" title="強み・USP" c={bc} c2={ba} open={!collapsed.str} onToggle={function(){tog("str");}} badge={<Badge c={bc}>{selectedStrengths.length}/{brand.strengths.length}</Badge>}/>
+              {!collapsed.str&&(<div>
+                <div style={{display:"flex",flexDirection:"column",gap:4}}>
+                  {brand.strengths.map(function(str,i){
+                    var sel=selStr.has(i);
+                    return <button key={i} onClick={function(){toggleStrength(i);}} style={{display:"flex",alignItems:"flex-start",gap:10,padding:"9px 12px",borderRadius:12,border:sel?"1.5px solid "+bc+"45":"1.5px solid rgba(0,0,0,0.05)",background:sel?bc+"0A":"rgba(0,0,0,0.015)",cursor:"pointer",textAlign:"left",transition:"all 0.2s cubic-bezier(.4,0,.2,1)"}}>
+                      <div style={{width:20,minWidth:20,height:20,minHeight:20,borderRadius:6,border:sel?"2px solid "+bc:"2px solid rgba(0,0,0,0.12)",background:sel?"linear-gradient(135deg,"+bc+","+ba+")":"transparent",display:"flex",alignItems:"center",justifyContent:"center",fontSize:8,color:"#fff",flexShrink:0,marginTop:1,transition:"all 0.2s",lineHeight:1}}>{sel?"✓":""}</div>
+                      <span style={{fontSize:12,fontWeight:sel?600:400,color:sel?"#333":"#777",lineHeight:1.6}}>{str}</span>
+                    </button>;
+                  })}
+                </div>
+                <div style={{display:"flex",gap:6,marginTop:8}}>
+                  <button onClick={function(){var all=new Set();for(var i=0;i<brand.strengths.length;i++)all.add(i);setSelStr(all);}} style={{flex:1,padding:"7px",borderRadius:10,border:"1px solid "+bc+"30",background:"transparent",color:bc,fontSize:11,fontWeight:600,cursor:"pointer",transition:"all 0.15s"}}>全選択</button>
+                  <button onClick={function(){setSelStr(new Set());}} style={{flex:1,padding:"7px",borderRadius:10,border:"1px solid rgba(0,0,0,0.08)",background:"transparent",color:"#999",fontSize:11,fontWeight:600,cursor:"pointer",transition:"all 0.15s"}}>全解除</button>
+                </div>
+              </div>)}
+            </Glass>
+
+            {/* AI Generate Button — enhanced */}
+            <button onClick={aiGenerate} disabled={busy} className="btn-hover" style={{width:"100%",padding:"14px 18px",borderRadius:16,border:"none",background:busy?"linear-gradient(135deg,#555,#444)":"linear-gradient(135deg,#1a1a2e,#16213e)",color:"#fff",fontSize:15,fontWeight:800,cursor:busy?"default":"pointer",boxShadow:busy?"none":"0 6px 20px rgba(0,0,0,0.2), 0 2px 6px rgba(0,0,0,0.1)",transition:"all 0.3s cubic-bezier(.4,0,.2,1)",display:"flex",alignItems:"center",justifyContent:"center",gap:8,letterSpacing:.3,position:"relative",overflow:"hidden"}}>
+              {busy&&<div style={{position:"absolute",inset:0,background:"linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent)",backgroundSize:"200% 100%",animation:"shimmer 1.5s infinite"}}/>}
+              <span style={{position:"relative"}}>{busy?"⏳ AI生成中...":"🪄 AI一括生成"}</span>
+            </button>
+            <div style={{textAlign:"center",fontSize:11,color:"#999",marginTop:-2}}>キャッチコピー＋キャプション＋ハッシュタグを自動生成</div>
+          </div>
+
+          {/* ═══ CENTER — プレビュー ═══ */}
+          <div style={{display:"flex",flexDirection:"column",gap:12}}>
+
+            {/* Size & Style */}
+            <Glass style={{padding:12}}>
+              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:8}}>
+                <span style={{fontSize:13,fontWeight:700,color:"#555",letterSpacing:.3}}>📐 サイズ & 配置</span>
+                <Badge c={bc}>{size.w}×{size.h}</Badge>
+              </div>
+              <div style={{display:"flex",gap:4,marginBottom:10}}>
+                {SIZES.map(function(s,i){var sel=sizeIdx===i;return <button key={s.id} onClick={function(){setSizeIdx(i);}} className="btn-hover" style={{flex:sel?"1 1 auto":"0 1 auto",padding:"10px 16px",borderRadius:12,border:sel?"2px solid "+bc:"2px solid rgba(0,0,0,0.04)",background:sel?"linear-gradient(135deg,"+bc+"08,"+bc+"04)":"rgba(0,0,0,0.01)",cursor:"pointer",transition:"all 0.2s cubic-bezier(.4,0,.2,1)",display:"flex",alignItems:"center",gap:6,whiteSpace:"nowrap"}}>
+                  <span style={{fontSize:18}}>{s.icon}</span>
+                  <div>
+                    <div style={{fontSize:13,fontWeight:sel?700:500,color:sel?bc:"#555",lineHeight:1.3}}>{s.name}</div>
+                    <div style={{fontSize:11,color:sel?bc+"80":"#aaa"}}>{s.desc}</div>
+                  </div>
+                </button>;})}
+              </div>
+              <div style={{display:"flex",gap:4}}>
+                {OSTYLES.map(function(s,i){var sel=styleIdx===i;return <button key={s.id} onClick={function(){setStyleIdx(i);}} className="btn-hover" style={{flex:1,padding:"10px 12px",borderRadius:12,border:sel?"2px solid "+bc:"2px solid rgba(0,0,0,0.04)",background:sel?"linear-gradient(135deg,"+bc+"08,"+bc+"04)":"rgba(0,0,0,0.01)",fontSize:13,fontWeight:sel?700:500,color:sel?bc:"#555",cursor:"pointer",transition:"all 0.2s cubic-bezier(.4,0,.2,1)",whiteSpace:"nowrap"}}>{s.name}</button>;})}
+              </div>
+            </Glass>
+
+            {/* Canvas — enhanced preview frame */}
+            <div style={{position:"relative"}}>
+              <div style={{borderRadius:16,overflow:"hidden",border:"2px solid "+bc+"15",boxShadow:"0 8px 32px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04)",background:"#f0f0f5",transition:"border-color 0.4s"}}>
+                <canvas ref={cvRef} style={{width:"100%",aspectRatio:size.w+"/"+size.h,display:"block"}}/>
+              </div>
+              {images.length>1&&<div style={{position:"absolute",bottom:14,left:"50%",transform:"translateX(-50%)",display:"flex",gap:6,padding:"6px 14px",borderRadius:14,background:"rgba(0,0,0,0.55)",backdropFilter:"blur(12px)"}}>
+                {images.map(function(_,i){var sel=activeImg===i;return <button key={i} onClick={function(){setActiveImg(i);}} style={{width:sel?20:8,height:8,borderRadius:4,background:sel?"#fff":"rgba(255,255,255,0.35)",border:"none",cursor:"pointer",transition:"all 0.25s cubic-bezier(.4,0,.2,1)",padding:0}}/>;})}
+              </div>}
+              {images.length>0&&<div style={{position:"absolute",top:12,right:12,padding:"4px 12px",borderRadius:10,background:"rgba(0,0,0,0.55)",backdropFilter:"blur(12px)",color:"#fff",fontSize:10,fontWeight:700,letterSpacing:.5}}>{activeImg+1}/{images.length}</div>}
+            </div>
+
+            {/* 🎨 Image Filter — ブランド統一フィルタ */}
+            <Glass style={{padding:10}}>
+              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:6}}>
+                <div style={{display:"flex",alignItems:"center",gap:6}}>
+                  <span style={{fontSize:13,fontWeight:700,color:"#555"}}>🎨 画像フィルタ</span>
+                  <Badge c={bc}>{imgFilter.name}</Badge>
+                </div>
+                <span style={{fontSize:11,color:"#aaa"}}>ブランド統一感</span>
+              </div>
+              <div style={{display:"flex",gap:4,overflowX:"auto",paddingBottom:2}}>
+                {FILTER_PRESETS.map(function(f,i){var sel=filterIdx===i;return <button key={f.id} onClick={function(){setFilterIdx(i);}} style={{flex:"0 0 auto",padding:"8px 14px",borderRadius:10,border:sel?"2px solid "+bc:"2px solid rgba(0,0,0,0.05)",background:sel?bc+"0C":"rgba(0,0,0,0.01)",cursor:"pointer",transition:"all 0.15s",textAlign:"center",minWidth:72}}>
+                  <div style={{fontSize:18,marginBottom:2}}>{f.icon}</div>
+                  <div style={{fontSize:11,fontWeight:sel?700:500,color:sel?bc:"#555",whiteSpace:"nowrap"}}>{f.name}</div>
+                  {sel&&f.id!=="none"&&<div style={{fontSize:10,color:bc+"90",marginTop:1}}>
+                    {f.bri!==100?"明"+f.bri+"% ":""}
+                    {f.con!==100?"対"+f.con+"% ":""}
+                    {f.sat!==100?"彩"+f.sat+"%":""}
+                  </div>}
+                </button>;})}
+              </div>
+              {filterIdx>0&&<div style={{marginTop:6,fontSize:11,color:"#999",lineHeight:1.5}}>
+                💡 アップロードした画像の明るさ・コントラスト・彩度を自動で統一。{imgFilter.tint>0?"ブランドカラーのティントが加わります。":""}
+                {imgFilter.vig>0?"周辺を暗くして中央に視線を集中。":""}
+              </div>}
+            </Glass>
+
+            {/* Image strip */}
+            <Glass style={{padding:12,border:dragging?"2px solid "+bc:"1px solid rgba(255,255,255,0.6)",background:dragging?bc+"08":"rgba(255,255,255,0.92)"}}
+              onDragOver={function(e){e.preventDefault();e.stopPropagation();setDragging(true);}}
+              onDragLeave={function(e){e.preventDefault();e.stopPropagation();setDragging(false);}}
+              onDrop={function(e){e.preventDefault();e.stopPropagation();setDragging(false);if(e.dataTransfer.files&&e.dataTransfer.files.length>0){addImages(e.dataTransfer.files);}}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
+                <span style={{fontSize:13,fontWeight:700,color:"#555",display:"flex",alignItems:"center",gap:8}}>🖼 画像 <Badge c={bc}>{images.length}枚</Badge></span>
+                <div style={{display:"flex",gap:5}}>
+                  <input type="file" ref={fiRef} accept="image/*" multiple onChange={function(e){if(e.target.files)addImages(e.target.files);e.target.value="";}} style={{display:"none"}}/>
+                  <Btn ghost c={bc} onClick={function(){fiRef.current&&fiRef.current.click();}} style={{padding:"7px 14px",fontSize:12,borderRadius:10}}>➕ 追加</Btn>
+                  <Btn ghost c="#818CF8" onClick={fetchPhotos} disabled={photoLoading} style={{padding:"7px 14px",fontSize:12,borderRadius:10}}>{photoLoading?"⏳":"📷 フリー素材"}</Btn>
+                  {images.length>0&&<Btn ghost c="#F87171" onClick={function(){setImages([]);setActiveImg(0);}} style={{padding:"7px 12px",fontSize:12,borderRadius:10}}>🗑</Btn>}
+                </div>
+              </div>
+              {images.length===0?(
+                <div onClick={function(){fiRef.current&&fiRef.current.click();}} style={{border:"2px dashed "+(dragging?bc:bc+"25"),borderRadius:14,padding:"28px 14px",textAlign:"center",cursor:"pointer",background:dragging?"linear-gradient(135deg,"+bc+"08,"+bc+"12)":"linear-gradient(135deg,"+bc+"03,"+bc+"06)",transition:"all 0.2s"}}>
+                  <div style={{fontSize:36,opacity:dragging?0.4:0.15,marginBottom:4}}>📷</div>
+                  <div style={{fontSize:13,color:dragging?bc:"#666",fontWeight:600}}>{dragging?"ここにドロップして追加":"クリックまたはドラッグ＆ドロップで画像を選択"}</div>
+                  <div style={{fontSize:12,color:"#aaa",marginTop:8}}>複数選択OK ・ 2枚以上で動画スライドショーも対応 🎬</div>
+                </div>
+              ):(
+                <div>
+                  {dragging&&<div style={{padding:"12px",borderRadius:12,border:"2px dashed "+bc,background:bc+"08",textAlign:"center",marginBottom:8,fontSize:12,color:bc,fontWeight:600}}>ここにドロップして追加</div>}
+                  <div style={{display:"flex",gap:6,overflowX:"auto",paddingBottom:4}}>
+                    {images.map(function(img,idx){var sel=activeImg===idx;return <div key={img.id} style={{position:"relative",flexShrink:0}}>
+                      <button onClick={function(){setActiveImg(idx);setSlidePause(true);setTimeout(function(){setSlidePause(false);},8000);}} style={{width:68,height:68,borderRadius:12,overflow:"hidden",border:sel?"2.5px solid "+bc:"2px solid rgba(0,0,0,0.06)",padding:0,cursor:"pointer",boxShadow:sel?"0 0 12px "+bc+"25":"none",transition:"all 0.2s cubic-bezier(.4,0,.2,1)"}}>
+                        <img src={img.src} alt="" style={{width:"100%",height:"100%",objectFit:"cover",display:"block"}}/>
+                      </button>
+                      <button onClick={function(){removeImage(idx);}} style={{position:"absolute",top:-4,right:-4,width:16,height:16,borderRadius:8,background:"#F87171",border:"2px solid #fff",color:"#fff",fontSize:8,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,boxShadow:"0 2px 6px rgba(0,0,0,0.15)"}}>×</button>
+                      {images.length>1&&<div style={{position:"absolute",bottom:-2,left:"50%",transform:"translateX(-50%)",display:"flex",gap:2}}>
+                        {idx>0&&<button onClick={function(e){e.stopPropagation();moveImage(idx,-1);}} style={{width:18,height:16,borderRadius:4,background:"rgba(0,0,0,0.5)",border:"none",color:"#fff",fontSize:9,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",padding:0}}>◀</button>}
+                        {idx<images.length-1&&<button onClick={function(e){e.stopPropagation();moveImage(idx,1);}} style={{width:18,height:16,borderRadius:4,background:"rgba(0,0,0,0.5)",border:"none",color:"#fff",fontSize:9,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",padding:0}}>▶</button>}
+                      </div>}
+                    </div>;})}
+                    <button onClick={function(){fiRef.current&&fiRef.current.click();}} style={{width:68,height:68,borderRadius:12,border:"2px dashed rgba(0,0,0,0.1)",background:"transparent",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,color:"#bbb",flexShrink:0}}>+</button>
+                  </div>
+                  {images.length===1&&<div style={{marginTop:6,padding:"6px 10px",borderRadius:8,background:"rgba(129,140,248,0.05)",border:"1px solid rgba(129,140,248,0.1)",fontSize:12,color:"#818CF8",display:"flex",alignItems:"center",gap:6,fontWeight:500}}>
+                    <span>🎬</span>もう1枚追加すると動画スライドショー(WebM)もDLできます
+                  </div>}
+                  {images.length>=2&&<div style={{marginTop:6,padding:"6px 10px",borderRadius:8,background:"rgba(129,140,248,0.05)",border:"1px solid rgba(129,140,248,0.1)",fontSize:12,color:"#818CF8",display:"flex",alignItems:"center",gap:6,fontWeight:500}}>
+                    <span>🎬</span>{images.length}枚 → 動画スライドショー対応（右パネルからDL）
+                  </div>}
+                </div>
+              )}
+            </Glass>
+
+            {/* Unsplash */}
+            {photos.length>0&&(
+              <Glass glow="#818CF8" style={{padding:10}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
+                  <span style={{fontSize:11,fontWeight:700,color:"#818CF8"}}>📷 「{sub}」のフリー素材 <Badge c="#818CF8">{photos.length}枚</Badge></span>
+                  <button onClick={function(){setPhotos([]);}} style={{padding:"3px 10px",borderRadius:7,border:"1px solid rgba(129,140,248,0.2)",background:"transparent",color:"#818CF8",fontSize:9,cursor:"pointer",fontWeight:600}}>✕ 閉じる</button>
+                </div>
+                <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:6}}>
+                  {photos.map(function(p){return (
+                    <button key={p.id} onClick={function(){selectPhoto(p.full,p.user);}} style={{position:"relative",aspectRatio:"1",borderRadius:10,overflow:"hidden",border:"2px solid transparent",cursor:"pointer",padding:0,background:"none"}}>
+                      <img src={p.thumb} alt={p.alt} style={{width:"100%",height:"100%",objectFit:"cover",display:"block",borderRadius:8}} />
+                      <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"4px 6px",background:"linear-gradient(transparent,rgba(0,0,0,0.7))",fontSize:8,color:"rgba(255,255,255,0.7)",textAlign:"left"}}>📷 {p.user}</div>
+                    </button>
+                  );})}
+                </div>
+              </Glass>
+            )}
+          </div>
+
+          {/* ═══ RIGHT — 編集 & エクスポート ═══ */}
+          <div style={{display:"flex",flexDirection:"column",gap:10,maxHeight:"calc(100vh - 100px)",overflowY:"auto",paddingLeft:2}}>
+
+            {/* Quick Status — enhanced with better visual */}
+            <div style={{display:"flex",gap:4,flexWrap:"wrap"}}>
+              {checks.map(function(c,i){return <div key={i} style={{padding:"5px 12px",borderRadius:10,fontSize:11,fontWeight:600,background:c.ok?"#34D39908":"rgba(0,0,0,0.02)",color:c.ok?"#34D399":"#ccc",border:"1px solid "+(c.ok?"#34D39915":"rgba(0,0,0,0.04)"),display:"flex",alignItems:"center",gap:4,transition:"all 0.3s"}}><span style={{fontSize:c.ok?11:9}}>{c.ok?"✓":"○"}</span>{c.l}</div>;})}
+            </div>
+
+            {/* Active Strengths compact */}
+            {selectedStrengths.length>0&&(
+              <div style={{padding:"8px 12px",borderRadius:12,background:bc+"06",border:"1px solid "+bc+"15"}}>
+                <div style={{display:"flex",gap:3,flexWrap:"wrap"}}>
+                  <span style={{fontSize:11,fontWeight:700,color:bc,padding:"1px 0"}}>💎</span>
+                  {selectedStrengths.map(function(s,i){return <span key={i} style={{fontSize:11,padding:"5px 10px",borderRadius:8,background:bc+"12",color:bc}}>{s}</span>;})}
+                </div>
+              </div>
+            )}
+
+            {/* Catch Copy — enhanced editor */}
+            <Glass glow={catchCopy?bc:undefined} style={{padding:14}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
+                <span style={{fontSize:15,fontWeight:700,color:"#1a1a2e",display:"flex",alignItems:"center",gap:6}}>✨ キャッチコピー</span>
+                <div style={{display:"flex",alignItems:"center",gap:6}}>
+                  <div style={{display:"flex",alignItems:"center",gap:3}}>
+                    <div style={{width:48,height:5,borderRadius:3,background:"rgba(0,0,0,0.05)",overflow:"hidden"}}>
+                      <div style={{height:5,borderRadius:3,background:catchCopy.length>40?"#F87171":catchCopy.length>20?"linear-gradient(90deg,"+bc+","+ba+")":"#ddd",width:Math.min(100,catchCopy.length/40*100)+"%",transition:"all 0.4s cubic-bezier(.4,0,.2,1)"}}/>
+                    </div>
+                    <span style={{fontSize:12,fontWeight:700,color:catchCopy.length>40?"#F87171":catchCopy.length>0?bc:"#ccc",minWidth:32,textAlign:"right"}}>{catchCopy.length}字</span>
+                  </div>
+                  {catchCopy&&<button onClick={function(){smartCopy(catchCopy);}} style={{fontSize:11,color:"#888",background:"rgba(0,0,0,0.04)",border:"1px solid rgba(0,0,0,0.06)",borderRadius:8,padding:"4px 10px",cursor:"pointer",transition:"all 0.15s"}}>📋</button>}
+                </div>
+              </div>
+              <textarea value={catchCopy} onChange={function(e){setCatch(e.target.value);}} placeholder="画像に表示されるキャッチコピー..." rows={2} style={Object.assign({},INP,{fontSize:18,fontWeight:700,lineHeight:"1.6",resize:"none",borderRadius:14,padding:"14px 16px"})}/>
+              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginTop:8}}>
+                <div style={{display:"flex",gap:5}}>
+                  <button onClick={aiRegenCatch} disabled={busyC||busy} className="btn-hover" style={{padding:"8px 16px",borderRadius:10,border:"1.5px solid "+bc+"40",background:busyC?bc+"08":"transparent",color:bc,fontSize:12,fontWeight:700,cursor:busyC?"default":"pointer",opacity:busyC?0.6:1,display:"flex",alignItems:"center",gap:5,transition:"all 0.2s"}}>
+                    {busyC?"⏳ 生成中...":"🪄 別の案を生成"}
+                  </button>
+                  {catchCopy&&<button onClick={function(){setCatch("");}} style={{padding:"8px 12px",borderRadius:10,border:"1px solid rgba(0,0,0,0.06)",background:"transparent",color:"#aaa",fontSize:11,cursor:"pointer",transition:"all 0.15s"}}>✕ クリア</button>}
+                </div>
+              </div>
+              <div style={{fontSize:11,color:"#aaa",marginTop:6}}>💡 画像にリアルタイム反映 / 改行で2行表示</div>
+            </Glass>
+
+            {/* Text Style Controls — 文字サイズ・色・太さ */}
+            <Glass style={{padding:14}}>
+              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:10}}>
+                <span style={{fontSize:14,fontWeight:700,color:"#1a1a2e",display:"flex",alignItems:"center",gap:6}}>🔤 テキストスタイル</span>
+                <button onClick={function(){setTxtSize(100);setTxtColor("#ffffff");setTxtWeight(900);}} style={{fontSize:10,color:"#aaa",background:"rgba(0,0,0,0.04)",border:"1px solid rgba(0,0,0,0.06)",borderRadius:8,padding:"4px 10px",cursor:"pointer",fontWeight:600}}>↺ リセット</button>
+              </div>
+              {/* 文字サイズ */}
+              <div style={{marginBottom:12}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
+                  <span style={{fontSize:12,fontWeight:600,color:"#666"}}>📏 文字サイズ</span>
+                  <Badge c={bc}>{txtSize}%</Badge>
+                </div>
+                <div style={{display:"flex",alignItems:"center",gap:8}}>
+                  <input type="range" min="50" max="200" step="5" value={txtSize} onChange={function(e){setTxtSize(Number(e.target.value));}} style={{flex:1,accentColor:bc,height:6,cursor:"pointer"}}/>
+                  <div style={{display:"flex",gap:3}}>
+                    {[70,85,100,120,150].map(function(v){var sel=txtSize===v;return <button key={v} onClick={function(){setTxtSize(v);}} style={{padding:"4px 8px",borderRadius:7,border:sel?"1.5px solid "+bc:"1.5px solid rgba(0,0,0,0.06)",background:sel?bc+"0C":"transparent",fontSize:10,fontWeight:sel?700:500,color:sel?bc:"#888",cursor:"pointer",transition:"all 0.15s"}}>{v===100?"標準":v+"%"}</button>;})}
+                  </div>
+                </div>
+              </div>
+              {/* 文字色 */}
+              <div style={{marginBottom:12}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
+                  <span style={{fontSize:12,fontWeight:600,color:"#666"}}>🎨 文字色</span>
+                  <div style={{display:"flex",alignItems:"center",gap:6}}>
+                    <div style={{width:20,height:20,borderRadius:6,background:txtColor,border:"2px solid rgba(0,0,0,0.12)",boxShadow:"0 1px 4px rgba(0,0,0,0.1)"}}/>
+                    <span style={{fontSize:11,fontWeight:600,color:"#888",fontFamily:"monospace"}}>{txtColor}</span>
+                  </div>
+                </div>
+                <div style={{display:"flex",gap:4,flexWrap:"wrap",alignItems:"center"}}>
+                  {[
+                    {c:"#ffffff",n:"白"},
+                    {c:"#000000",n:"黒"},
+                    {c:"#F5F5F5",n:"オフ白"},
+                    {c:"#FFD700",n:"ゴールド"},
+                    {c:"#FF6B6B",n:"レッド"},
+                    {c:"#4ECDC4",n:"ミント"},
+                    {c:bc,n:"ブランド"},
+                  ].map(function(x){var sel=txtColor===x.c;return <button key={x.c} onClick={function(){setTxtColor(x.c);}} style={{display:"flex",alignItems:"center",gap:5,padding:"5px 10px",borderRadius:9,border:sel?"2px solid "+bc:"2px solid rgba(0,0,0,0.06)",background:sel?bc+"08":"rgba(0,0,0,0.01)",cursor:"pointer",transition:"all 0.15s"}}>
+                    <div style={{width:16,height:16,borderRadius:5,background:x.c,border:"1.5px solid rgba(0,0,0,0.15)",boxShadow:"inset 0 1px 2px rgba(0,0,0,0.1)"}}/>
+                    <span style={{fontSize:10,fontWeight:sel?700:500,color:sel?bc:"#666"}}>{x.n}</span>
+                  </button>;})}
+                  <div style={{position:"relative",display:"flex",alignItems:"center"}}>
+                    <input type="color" value={txtColor} onChange={function(e){setTxtColor(e.target.value);}} style={{width:28,height:28,border:"none",borderRadius:7,cursor:"pointer",padding:0,background:"transparent"}}/>
+                    <span style={{fontSize:10,color:"#aaa",marginLeft:2}}>カスタム</span>
+                  </div>
+                </div>
+              </div>
+              {/* 文字太さ */}
+              <div>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
+                  <span style={{fontSize:12,fontWeight:600,color:"#666"}}>💪 文字太さ</span>
+                  <Badge c={bc}>{txtWeight===400?"Regular":txtWeight===600?"Semi Bold":txtWeight===700?"Bold":"Extra Bold"}</Badge>
+                </div>
+                <div style={{display:"flex",gap:4}}>
+                  {[
+                    {w:400,n:"Regular",sample:"Aa あ"},
+                    {w:600,n:"Semi Bold",sample:"Aa あ"},
+                    {w:700,n:"Bold",sample:"Aa あ"},
+                    {w:900,n:"Extra Bold",sample:"Aa あ"},
+                  ].map(function(x){var sel=txtWeight===x.w;return <button key={x.w} onClick={function(){setTxtWeight(x.w);}} style={{flex:1,padding:"8px 6px",borderRadius:10,border:sel?"2px solid "+bc:"2px solid rgba(0,0,0,0.05)",background:sel?bc+"08":"rgba(0,0,0,0.01)",cursor:"pointer",textAlign:"center",transition:"all 0.15s"}}>
+                    <div style={{fontSize:16,fontWeight:x.w,color:sel?"#333":"#888",lineHeight:1.2}}>{x.sample}</div>
+                    <div style={{fontSize:9,fontWeight:sel?700:500,color:sel?bc:"#aaa",marginTop:3}}>{x.n}</div>
+                  </button>;})}
+                </div>
+              </div>
+            </Glass>
+
+            {/* Caption — enhanced editor */}
+            <Glass glow={caption?bc:undefined} style={{flex:1,display:"flex",flexDirection:"column",padding:14}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
+                <span style={{fontSize:15,fontWeight:700,color:"#1a1a2e",display:"flex",alignItems:"center",gap:6}}>📝 キャプション</span>
+                <div style={{display:"flex",alignItems:"center",gap:6}}>
+                  <span style={{fontSize:12,fontWeight:700,color:caption.length>2200?"#F87171":caption.length>50?bc:"#ccc"}}>{caption.length}字</span>
+                  <Badge c={tags.length>=10?"#34D399":tags.length>=5?"#FBBF24":"#ccc"}>#{tags.length}</Badge>
+                  {caption&&<button onClick={function(){var t=(catchCopy?catchCopy+"\n\n":"")+caption;smartCopy(t);}} style={{fontSize:11,color:"#888",background:"rgba(0,0,0,0.04)",border:"1px solid rgba(0,0,0,0.06)",borderRadius:8,padding:"4px 10px",cursor:"pointer",transition:"all 0.15s"}}>📋</button>}
+                </div>
+              </div>
+              <textarea value={caption} onChange={function(e){setCaption(e.target.value);}} placeholder={"キャプション本文...\n\n#"+brand.tag} style={Object.assign({},INP,{flex:1,minHeight:160,fontSize:13,lineHeight:"1.9",resize:"vertical",borderRadius:14,padding:"14px 16px"})}/>
+
+              {/* Regen + hashtag row */}
+              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginTop:8}}>
+                <button onClick={aiRegenCaption} disabled={busyP||busy} className="btn-hover" style={{padding:"8px 16px",borderRadius:10,border:"1.5px solid "+bc+"40",background:busyP?bc+"08":"transparent",color:bc,fontSize:12,fontWeight:700,cursor:busyP?"default":"pointer",opacity:busyP?0.6:1,display:"flex",alignItems:"center",gap:5,transition:"all 0.2s"}}>
+                  {busyP?"⏳ 生成中...":"🪄 別の案を生成"}
+                </button>
+                {!caption.includes("#"+brand.tag)&&<button onClick={function(){setCaption(function(p){return p+(p?"\n\n":"")+"\n#"+brand.tag;});}} className="btn-hover" style={{fontSize:9,padding:"8px 14px",borderRadius:10,border:"1px solid "+bc+"28",background:"transparent",color:bc,cursor:"pointer",fontWeight:700}}>+ #{brand.tag}</button>}
+              </div>
+
+              {/* Hashtag bar — improved */}
+              {tags.length>0&&<div style={{marginTop:8,padding:"8px 10px",borderRadius:10,background:"rgba(0,0,0,0.02)",border:"1px solid rgba(0,0,0,0.04)"}}>
+                <div style={{fontSize:11,fontWeight:700,color:"#888",marginBottom:6,display:"flex",alignItems:"center",gap:6}}>ハッシュタグ <Badge c={tags.length>=10?"#34D399":tags.length>=5?"#FBBF24":"#ccc"} style={{fontSize:10,padding:"2px 8px"}}>{tags.length}個</Badge>{tags.length<10&&tags.length>=5&&<span style={{fontSize:11,color:"#aaa"}}>あと{10-tags.length}個で推奨</span>}</div>
+                <div style={{display:"flex",gap:4,flexWrap:"wrap"}}>
+                  {tags.slice(0,25).map(function(t,i){var isBrand=t==="#"+brand.tag;return <span key={i} style={{fontSize:11,padding:"5px 10px",borderRadius:8,background:isBrand?bc+"18":"rgba(0,0,0,0.04)",color:isBrand?bc:"#666",fontWeight:isBrand?700:400,transition:"all 0.15s"}}>{t}</span>;})}
+                </div>
+              </div>}
+            </Glass>
+
+            {/* Download & Share Panel */}
+            <Glass style={{padding:12}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
+                <span style={{fontSize:14,fontWeight:700,color:"#1a1a2e",display:"flex",alignItems:"center",gap:6}}>📥 エクスポート</span>
+                {vidProg&&<Badge c="#818CF8" style={{animation:"pulse 1.2s infinite"}}>{vidProg}</Badge>}
+              </div>
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6,marginBottom:4}}>
+                <Btn c="#1a1a2e" c2="#16213e" onClick={function(){dlImage(activeImg);}} disabled={dlLoading} style={{padding:"12px",fontSize:13,borderRadius:14}}>📥 画像DL＋文章コピー</Btn>
+                <Btn ghost c={bc} onClick={dlAll} disabled={dlLoading||images.length<2} style={{padding:"12px",fontSize:13,borderRadius:14}}>📦 全{images.length}枚DL</Btn>
+              </div>
+              <div style={{fontSize:11,color:"#999",marginBottom:12,lineHeight:1.6,paddingLeft:2}}>💡 画像DL時にキャプション全文が自動コピーされます → SNSに貼り付けるだけ！</div>
+              {/* SNS Share — polished */}
+              <div style={{padding:10,borderRadius:12,background:"linear-gradient(135deg,rgba(0,0,0,0.02),rgba(0,0,0,0.04))",border:"1px solid rgba(0,0,0,0.04)",marginBottom:images.length>=2?10:0}}>
+                <div style={{fontSize:12,fontWeight:700,color:"#444",marginBottom:10,display:"flex",alignItems:"center",gap:6}}>📤 SNS共有<span style={{fontSize:11,fontWeight:500,color:"#999"}}>画像＋テキストをそのまま投稿</span></div>
+                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:6}}>
+                  <button onClick={shareToX} disabled={dlLoading} className="btn-hover" style={{padding:"11px 8px",borderRadius:12,border:"none",background:"linear-gradient(135deg,#000,#1a1a1a)",color:"#fff",fontSize:13,fontWeight:700,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:5,opacity:dlLoading?.4:1,boxShadow:"0 2px 8px rgba(0,0,0,0.15)",transition:"all 0.2s"}}>𝕏 ポスト</button>
+                  <button onClick={shareToFB} disabled={dlLoading} className="btn-hover" style={{padding:"11px 8px",borderRadius:12,border:"none",background:"linear-gradient(135deg,#1877F2,#0D65D9)",color:"#fff",fontSize:13,fontWeight:700,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:5,opacity:dlLoading?.4:1,boxShadow:"0 2px 8px rgba(24,119,242,0.25)",transition:"all 0.2s"}}>f Facebook</button>
+                  <button onClick={copyCaption} className="btn-hover" style={{padding:"11px 8px",borderRadius:12,border:"1px solid rgba(0,0,0,0.08)",background:"rgba(255,255,255,0.9)",color:"#444",fontSize:12,fontWeight:600,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:5,transition:"all 0.2s"}}>📋 文章コピー</button>
+                </div>
+                <div style={{fontSize:11,color:"#aaa",marginTop:8,lineHeight:1.5,textAlign:"center"}}>モバイル: 直接共有 ／ PC: 画像DL→テキストをコピーして貼り付け</div>
+              </div>
+              {images.length>=2&&(
+                <div style={{padding:8,borderRadius:10,background:"rgba(129,140,248,0.04)",border:"1px solid rgba(129,140,248,0.1)"}}>
+                  <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:6}}>
+                    <span style={{fontSize:13,fontWeight:700,color:"#818CF8"}}>🎬 動画スライドショー</span>
+                    <Badge c="#818CF8">{images.length}枚 → {images.length*vidSec}秒</Badge>
+                  </div>
+                  <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:8}}>
+                    <span style={{fontSize:12,color:"#888",whiteSpace:"nowrap"}}>間隔</span>
+                    {[2,3,4,5,7].map(function(s){var sel=vidSec===s;return <button key={s} onClick={function(){setVidSec(s);}} style={{padding:"5px 10px",borderRadius:8,border:sel?"1.5px solid #818CF8":"1.5px solid rgba(0,0,0,0.06)",background:sel?"rgba(129,140,248,0.08)":"transparent",fontSize:10,fontWeight:sel?700:500,color:sel?"#818CF8":"#888",cursor:"pointer"}}>{s}秒</button>;})}
+                  </div>
+                  <Btn c="#818CF8" c2="#6366F1" onClick={dlVideo} disabled={dlLoading} style={{width:"100%",padding:"10px",fontSize:11}}>
+                    {dlLoading&&vidProg?"⏳ レンダリング中...":"🎬 動画DL (WebM)"}
+                  </Btn>
+                </div>
+              )}
+            </Glass>
+
+          </div>
+        </div>
+      )}
+      {/* ════ SETTINGS ════ */}
+      {tab==="settings"&&(
+        <div style={{maxWidth:700,margin:"0 auto"}}>
+          <div style={{fontSize:20,fontWeight:800,color:"#1a1a2e",marginBottom:20}}>⚙ 設定</div>
+
+          {/* Logo per brand */}
+          <Glass glow={bc} style={{marginBottom:16,padding:14}}>
+            <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:6}}>
+              <div style={{width:38,height:38,borderRadius:12,background:"linear-gradient(135deg,"+bc+","+ba+")",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18}}>🏷</div>
+              <div style={{flex:1}}>
+                <div style={{fontSize:16,fontWeight:700,color:bc}}>ブランドロゴ設定</div>
+                <div style={{fontSize:12,color:"#888",marginTop:3}}>ロゴを登録すると画像に自動合成されます</div>
+              </div>
+              <Badge c={bc}>{logoCount}/{LOGO_GROUPS.length}</Badge>
+            </div>
+            <div style={{fontSize:11,color:"#999",marginBottom:14}}>PNG（透過推奨）・SVG・WebP対応 — 同ブランドの全店舗でロゴを共有します</div>
+
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+              {LOGO_GROUPS.map(function(g){
+                var lg=logos[g.id];
+                var hasSrc=lg&&lg.src;
+                return (<div key={g.id} style={{padding:10,borderRadius:12,border:hasSrc?"1.5px solid "+g.color+"40":"1.5px solid rgba(0,0,0,0.06)",background:hasSrc?g.color+"06":"rgba(0,0,0,0.01)",transition:"all 0.2s"}}>
+                  <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:4}}>
+                    <div style={{width:24,minWidth:24,height:24,minHeight:24,borderRadius:7,background:"linear-gradient(135deg,"+g.color+","+g.accent+")",display:"flex",alignItems:"center",justifyContent:"center",fontSize:9,fontWeight:900,color:"#fff",flexShrink:0,lineHeight:1}}>{g.name.slice(0,2)}</div>
+                    <div style={{flex:1,minWidth:0}}>
+                      <div style={{fontSize:12,fontWeight:700,color:"#444",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{g.name}</div>
+                    </div>
+                    {hasSrc&&<Badge c="#34D399" style={{fontSize:8}}>✅</Badge>}
+                  </div>
+                  {g.stores.length>1&&(
+                    <div style={{marginBottom:6,display:"flex",gap:3,flexWrap:"wrap"}}>
+                      {g.stores.map(function(s,i){return <Badge key={i} c={g.color} style={{fontSize:7,padding:"1px 5px"}}>{s}</Badge>;})}
+                    </div>
+                  )}
+                  {hasSrc?(
+                    <div style={{display:"flex",alignItems:"center",gap:8}}>
+                      <div style={{width:52,height:52,borderRadius:8,background:"repeating-conic-gradient(#e8e8e8 0% 25%, #fff 0% 50%) 50% / 8px 8px",display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden",flexShrink:0,border:"1px solid rgba(0,0,0,0.04)"}}>
+                        <img src={lg.src} alt="" style={{maxWidth:"100%",maxHeight:"100%",objectFit:"contain"}}/>
+                      </div>
+                      <div style={{display:"flex",gap:4,flex:1,flexDirection:"column"}}>
+                        <label style={{padding:"5px 0",borderRadius:7,border:"1px solid "+g.color+"30",background:"transparent",color:g.color,fontSize:9,fontWeight:600,cursor:"pointer",textAlign:"center"}}>
+                          🔄 変更
+                          <input type="file" accept="image/png,image/svg+xml,image/webp" onChange={function(e){if(e.target.files&&e.target.files[0])loadLogo(g.id,e.target.files[0]);e.target.value="";}} style={{display:"none"}}/>
+                        </label>
+                        <button onClick={function(){removeLogo(g.id);}} style={{padding:"5px 0",borderRadius:7,border:"1px solid rgba(239,68,68,0.2)",background:"transparent",color:"#F87171",fontSize:9,fontWeight:600,cursor:"pointer"}}>🗑 削除</button>
+                      </div>
+                    </div>
+                  ):(
+                    <label style={{display:"block",border:"2px dashed rgba(0,0,0,0.08)",borderRadius:10,padding:"14px 8px",textAlign:"center",cursor:"pointer"}}>
+                      <div style={{fontSize:18,opacity:0.15,marginBottom:2}}>🏷</div>
+                      <div style={{fontSize:9,color:"#aaa"}}>ロゴをアップロード</div>
+                      <input type="file" accept="image/png,image/svg+xml,image/webp" onChange={function(e){if(e.target.files&&e.target.files[0])loadLogo(g.id,e.target.files[0]);e.target.value="";}} style={{display:"none"}}/>
+                    </label>
+                  )}
+                </div>);
+              })}
+            </div>
+          </Glass>
+
+          {/* Logo position */}
+          <Glass style={{marginBottom:16,padding:14}}>
+            <div style={{fontSize:14,fontWeight:700,color:"#444",marginBottom:10}}>📍 ロゴ配置（全ブランド共通）</div>
+            {/* 自動配置ボタン */}
+            <button onClick={function(){setLogoPos("auto");}} style={{width:"100%",padding:"10px",borderRadius:10,border:logoPos==="auto"?"1.5px solid "+bc+"60":"1.5px solid rgba(0,0,0,0.08)",background:logoPos==="auto"?"linear-gradient(135deg,"+bc+"12,"+bc+"06)":"transparent",color:logoPos==="auto"?bc:"#888",fontSize:12,fontWeight:logoPos==="auto"?700:500,cursor:"pointer",transition:"all 0.15s",marginBottom:8}}>✨ 自動（テキスト配置に応じて最適位置）</button>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:5}}>
+              {[
+                {id:"top-left",name:"↖ 左上"},
+                {id:"top-center",name:"↑ 中央上"},
+                {id:"top-right",name:"↗ 右上"},
+                {id:"bottom-left",name:"↙ 左下"},
+                {id:"bottom-center",name:"↓ 中央下"},
+                {id:"bottom-right",name:"↘ 右下"},
+              ].map(function(lp){var sel=logoPos===lp.id;return <button key={lp.id} onClick={function(){setLogoPos(lp.id);}} style={{padding:"10px",borderRadius:10,border:sel?"1.5px solid "+bc+"60":"1.5px solid rgba(0,0,0,0.08)",background:sel?bc+"0C":"transparent",color:sel?bc:"#888",fontSize:12,fontWeight:sel?700:500,cursor:"pointer",transition:"all 0.15s"}}>{lp.name}</button>;})}
+            </div>
+          </Glass>
+
+          {/* Unsplash */}
+          <Glass glow="#818CF8" style={{marginBottom:16,padding:14}}>
+            <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:12}}>
+              <div style={{width:38,height:38,borderRadius:12,background:"linear-gradient(135deg,#818CF8,#6366F1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18}}>📷</div>
+              <div style={{flex:1}}>
+                <div style={{fontSize:16,fontWeight:700,color:"#818CF8"}}>Unsplash フリー素材API</div>
+                <div style={{fontSize:12,color:"#888",marginTop:3}}>カテゴリに合った写真を自動検索・取得</div>
+              </div>
+              <Badge c={unsplashKey?"#34D399":"#F87171"} style={{padding:"4px 12px"}}>{unsplashKey?"✅ 設定済":"⚠ 未設定"}</Badge>
+            </div>
+            <div style={{fontSize:12,fontWeight:600,color:"#888",marginBottom:6}}>Unsplash Access Key</div>
+            <div style={{display:"flex",gap:6,alignItems:"center"}}>
+              <input type="text" value={unsplashKey} onChange={function(e){setUnsplashKey(e.target.value);}} placeholder="Access Key を貼り付け" style={Object.assign({},INP,{flex:1})} />
+              <a href="https://unsplash.com/developers" target="_blank" rel="noopener noreferrer" style={{padding:"12px 18px",borderRadius:12,background:"rgba(129,140,248,0.1)",color:"#818CF8",fontSize:13,fontWeight:700,textDecoration:"none",whiteSpace:"nowrap",border:"1px solid rgba(129,140,248,0.2)"}}>🔗 APIキー取得</a>
+            </div>
+            <div style={{marginTop:10,padding:10,borderRadius:10,background:"rgba(129,140,248,0.05)",border:"1px solid rgba(129,140,248,0.08)",fontSize:13,color:"#666",lineHeight:2}}>
+              <strong style={{color:"#818CF8"}}>取得手順:</strong><br/>
+              1. <a href="https://unsplash.com/developers" target="_blank" rel="noopener noreferrer" style={{color:"#818CF8",fontWeight:700}}>unsplash.com/developers</a> にアクセス<br/>
+              2. 無料アカウント作成 → 「New Application」<br/>
+              3. 「Access Key」をコピーして上に貼り付け<br/>
+              ※ 無料で50リクエスト/時間
+            </div>
+          </Glass>
+        </div>
+      )}
+
+      {/* ════ GUIDE — 使い方 ════ */}
+      {tab==="guide"&&(
+        <div style={{maxWidth:800,margin:"0 auto"}}>
+          <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:24}}>
+            <div style={{width:48,height:48,borderRadius:16,background:"linear-gradient(135deg,"+bc+","+ba+")",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,color:"#fff",boxShadow:"0 4px 16px "+bc+"30"}}>❓</div>
+            <div>
+              <div style={{fontSize:22,fontWeight:800,color:"#1a1a2e",letterSpacing:-.5}}>使い方ガイド</div>
+              <div style={{fontSize:13,color:"#888",marginTop:2}}>SNS Post Composerの基本操作を確認できます</div>
+            </div>
+          </div>
+
+          {/* ステップ一覧 */}
+          {[
+            {step:"1",icon:"🏢",title:"ブランド / 店舗を選ぶ",color:"#E8A0BF",
+             desc:"左パネルからブランドまたは店舗を選択します。選択すると、カラーテーマやタグラインが自動で反映されます。",
+             tips:["HC Lucina本部と各直営店は同じロゴを共有します","ピラティス系ブランド（CPS・清澄白河）も選べます"]},
+            {step:"2",icon:"📂",title:"カテゴリを選ぶ",color:"#F5A623",
+             desc:"投稿に関連するレッスンやサービスを選択します。Unsplashのフリー素材検索にも使われます。",
+             tips:["選んだカテゴリに合ったハッシュタグがAI生成に反映されます"]},
+            {step:"3",icon:"🎯",title:"目的 & ターゲットを設定",color:"#3B82F6",
+             desc:"「集客・宣伝」「認知拡大」などの目的と、「20代女性」「初心者」などのターゲット層を選びます。AIが文体やトーンを自動で最適化します。",
+             tips:["目的＝キャッチコピーの方向性","ターゲット＝キャプションの文体"]},
+            {step:"4",icon:"💎",title:"強み・USPを選択",color:"#8B5CF6",
+             desc:"投稿で訴求したい店舗の強みをチェックします。選択した強みがAI生成のキャッチコピーとキャプションに反映されます。",
+             tips:["3つ程度が推奨（多すぎると焦点がぼやけます）","全選択/全解除ボタンで一括操作OK"]},
+            {step:"5",icon:"🪄",title:"AI一括生成",color:"#1a1a2e",
+             desc:"左パネル下部の「AI一括生成」ボタンでキャッチコピー＋キャプション＋ハッシュタグを自動生成します。各項目を変更すると自動で再生成もされます。",
+             tips:["キャッチコピー・キャプションそれぞれ個別に「別の案を生成」も可能","手動編集ももちろんOK"]},
+            {step:"6",icon:"🖼",title:"画像をアップロード",color:"#10B981",
+             desc:"中央パネルの「➕追加」ボタンで画像をアップロード。複数枚もOKです。「📷 フリー素材」でUnsplashから検索・追加もできます。",
+             tips:["2枚以上で動画スライドショー(WebM)の書き出しが可能","画像はドット付きナビで切り替え"]},
+            {step:"7",icon:"📐",title:"サイズ & 配置を設定",color:"#F59E0B",
+             desc:"正方形（フィード）・縦長4:5・リール・ストーリー・横長から選択。テキストオーバーレイの配置（下部/中央/上部/全面）も設定します。",
+             tips:["Instagramフィードには「縦長4:5」が推奨","リール・ストーリーは「9:16」"]},
+            {step:"8",icon:"🔤",title:"テキストスタイルを調整",color:"#E8A0BF",
+             desc:"キャッチコピーの文字サイズ（50%〜200%）、文字色（プリセット7色＋カスタム）、文字太さ（Regular〜Extra Bold）をリアルタイムプレビューで調整します。",
+             tips:["「リセット」ボタンで初期値（白・Extra Bold・100%）に戻せます","暗い背景には白、明るい背景には黒がおすすめ"]},
+            {step:"9",icon:"🎨",title:"画像フィルタを適用",color:"#818CF8",
+             desc:"「ブランド統一」「ウォーム」「クール」など8種類のフィルタプリセットから選んで、投稿画像のトーンを統一できます。",
+             tips:["ブランドカラーのティントやビネットも自動調整","「オリジナル」でフィルタなしに"]},
+            {step:"10",icon:"📥",title:"エクスポート & 共有",color:"#EF4444",
+             desc:"右パネル下部から画像DL・全枚DL・動画DL・SNS共有ができます。画像DL時にキャプション全文が自動コピーされるので、そのままSNSに貼り付けるだけ！",
+             tips:["𝕏・Facebookの共有ボタンで直接投稿画面へ","「📋 文章コピー」でテキストだけコピーも可能","モバイルではWeb Share APIで直接共有"]},
+          ].map(function(s){
+            return <Glass key={s.step} glow={s.color+"40"} style={{marginBottom:12,padding:16}}>
+              <div style={{display:"flex",alignItems:"flex-start",gap:14}}>
+                <div style={{width:44,height:44,borderRadius:14,background:"linear-gradient(135deg,"+s.color+","+s.color+"CC)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,color:"#fff",boxShadow:"0 3px 12px "+s.color+"25",flexShrink:0}}>
+                  {s.icon}
+                </div>
+                <div style={{flex:1,minWidth:0}}>
+                  <div style={{display:"flex",alignItems:"baseline",gap:8,marginBottom:6}}>
+                    <Badge c={s.color} style={{fontSize:10,padding:"2px 8px"}}>STEP {s.step}</Badge>
+                    <span style={{fontSize:16,fontWeight:700,color:"#1a1a2e"}}>{s.title}</span>
+                  </div>
+                  <div style={{fontSize:13,color:"#555",lineHeight:1.8,marginBottom:s.tips.length>0?10:0}}>{s.desc}</div>
+                  {s.tips.length>0&&<div style={{padding:"8px 12px",borderRadius:10,background:"rgba(0,0,0,0.02)",border:"1px solid rgba(0,0,0,0.04)"}}>
+                    {s.tips.map(function(t,i){return <div key={i} style={{fontSize:12,color:"#888",lineHeight:1.8,display:"flex",alignItems:"flex-start",gap:6}}>
+                      <span style={{color:s.color,flexShrink:0,fontSize:10,marginTop:3}}>💡</span>{t}
+                    </div>;})}
+                  </div>}
+                </div>
+              </div>
+            </Glass>;
+          })}
+
+          {/* 設定セクション */}
+          <Glass glow="#818CF8" style={{marginBottom:12,padding:16}}>
+            <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:12}}>
+              <div style={{width:44,height:44,borderRadius:14,background:"linear-gradient(135deg,#818CF8,#6366F1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,color:"#fff",boxShadow:"0 3px 12px rgba(129,140,248,0.25)"}}>⚙</div>
+              <div style={{fontSize:16,fontWeight:700,color:"#1a1a2e"}}>設定タブについて</div>
+            </div>
+            <div style={{fontSize:13,color:"#555",lineHeight:1.8}}>
+              「⚙ 設定」タブでは以下の設定ができます：
+            </div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginTop:10}}>
+              {[
+                {icon:"🏷",title:"ブランドロゴ",desc:"PNG/SVG/WebPでロゴを登録。白背景は自動除去されます。同ブランドの全店舗で共有。"},
+                {icon:"📍",title:"ロゴ配置",desc:"画像上のロゴの位置を6箇所（左上/中央上/右上/左下/中央下/右下）から選択。"},
+                {icon:"📷",title:"Unsplash API",desc:"フリー素材検索のAPIキーを設定。無料で50リクエスト/時間。"},
+              ].map(function(x,i){return <div key={i} style={{padding:12,borderRadius:12,background:"rgba(129,140,248,0.04)",border:"1px solid rgba(129,140,248,0.08)"}}>
+                <div style={{fontSize:18,marginBottom:4}}>{x.icon}</div>
+                <div style={{fontSize:13,fontWeight:700,color:"#444",marginBottom:4}}>{x.title}</div>
+                <div style={{fontSize:12,color:"#888",lineHeight:1.6}}>{x.desc}</div>
+              </div>;})}
+            </div>
+          </Glass>
+
+          {/* クイックスタート */}
+          <Glass glow="#34D399" style={{marginBottom:12,padding:16}}>
+            <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
+              <div style={{width:44,height:44,borderRadius:14,background:"linear-gradient(135deg,#34D399,#10B981)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,color:"#fff",boxShadow:"0 3px 12px rgba(52,211,153,0.25)"}}>🚀</div>
+              <div style={{fontSize:16,fontWeight:700,color:"#1a1a2e"}}>最短フロー（3ステップ）</div>
+            </div>
+            <div style={{display:"flex",gap:8}}>
+              {[
+                {n:"1",t:"ブランド＋カテゴリ選択",sub:"左パネル"},
+                {n:"2",t:"AI一括生成ボタン",sub:"左パネル下部"},
+                {n:"3",t:"画像追加 → DL",sub:"中央＋右パネル"},
+              ].map(function(x){return <div key={x.n} style={{flex:1,padding:14,borderRadius:14,background:"linear-gradient(135deg,rgba(52,211,153,0.06),rgba(16,185,129,0.03))",border:"1px solid rgba(52,211,153,0.15)",textAlign:"center"}}>
+                <div style={{width:32,height:32,borderRadius:10,background:"linear-gradient(135deg,#34D399,#10B981)",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:14,fontWeight:900,color:"#fff",marginBottom:6}}>{x.n}</div>
+                <div style={{fontSize:13,fontWeight:700,color:"#333",lineHeight:1.4}}>{x.t}</div>
+                <div style={{fontSize:11,color:"#aaa",marginTop:3}}>{x.sub}</div>
+              </div>;})}
+            </div>
+          </Glass>
+
+          <div style={{textAlign:"center",marginTop:16,marginBottom:32}}>
+            <Btn c={bc} c2={ba} onClick={function(){setTab("create");}} style={{padding:"14px 40px",fontSize:14,borderRadius:14}}>✏ 作成画面へ</Btn>
+          </div>
+        </div>
+      )}
+
+      </div>
+
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));
+</script>
+</body>
+</html>
