@@ -1881,7 +1881,7 @@ function loadData(){
 loadData();
 
 /* ===== EDIT MODE ===== */
-// ?edit がURLにある場合のみ編集機能を有効化
+// ?edit がURLにある場合、またはローカルファイルで開いた場合に編集機能を有効化
 if(window.location.search.indexOf('edit')!==-1 || window.location.protocol==='file:'){
   document.body.classList.add('edit-allowed');
 }
@@ -2014,15 +2014,92 @@ function closeImgModal(){
   editTarget=null;
 }
 
-function saveEditedData(){
+// GitHub API設定
+var GH_OWNER='eharakenji0925-hub';
+var GH_REPO='kanri';
+var GH_PATH='lineup.html';
+var GH_BRANCH='main';
+
+function getGHToken(){
+  return sessionStorage.getItem('gh_pat')||'';
+}
+function setGHToken(token){
+  sessionStorage.setItem('gh_pat',token);
+}
+
+function buildUpdatedHTML(){
   var scriptEl=document.getElementById('machine-data');
-  if(!scriptEl){editToast('エラー: scriptタグが見つかりません');return;}
-  // Update the script content with new MACHINE_DATA
+  if(!scriptEl) return null;
   var newData='if(typeof MACHINE_DATA===\'undefined\'){\nvar MACHINE_DATA = '+JSON.stringify(MACHINE_DATA,null,2)+';\n}';
   scriptEl.textContent='/* inline fallback — remove this block if machine-data.js is always present */\n'+newData;
-  // Build full HTML
   var lang=document.documentElement.getAttribute('lang');
-  var html='<!DOCTYPE html>\n<html'+(lang?' lang="'+lang+'"':'')+'>\n'+document.head.outerHTML+'\n'+document.body.outerHTML+'\n</html>';
+  return '<!DOCTYPE html>\n<html'+(lang?' lang="'+lang+'"':'')+'>\n'+document.head.outerHTML+'\n'+document.body.outerHTML+'\n</html>';
+}
+
+function saveEditedData(){
+  var token=getGHToken();
+  if(!token){
+    openGHTokenModal(function(){saveToGitHub();});
+    return;
+  }
+  saveToGitHub();
+}
+
+function saveToGitHub(){
+  var token=getGHToken();
+  if(!token){editToast('GitHubトークンが設定されていません');return;}
+  var html=buildUpdatedHTML();
+  if(!html){editToast('エラー: scriptタグが見つかりません');return;}
+
+  var saveBtn=document.querySelector('.edit-btn-save');
+  if(saveBtn){saveBtn.textContent='保存中...';saveBtn.disabled=true;}
+
+  // Step 1: Get current file SHA
+  fetch('https://api.github.com/repos/'+GH_OWNER+'/'+GH_REPO+'/contents/'+GH_PATH+'?ref='+GH_BRANCH,{
+    headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
+  })
+  .then(function(res){
+    if(!res.ok) throw new Error('ファイル取得エラー ('+res.status+')');
+    return res.json();
+  })
+  .then(function(data){
+    var sha=data.sha;
+    // Step 2: Update file
+    var content=btoa(unescape(encodeURIComponent(html)));
+    return fetch('https://api.github.com/repos/'+GH_OWNER+'/'+GH_REPO+'/contents/'+GH_PATH,{
+      method:'PUT',
+      headers:{
+        'Authorization':'token '+token,
+        'Accept':'application/vnd.github.v3+json',
+        'Content-Type':'application/json'
+      },
+      body:JSON.stringify({
+        message:'Update lineup images',
+        content:content,
+        sha:sha,
+        branch:GH_BRANCH
+      })
+    });
+  })
+  .then(function(res){
+    if(!res.ok) throw new Error('保存エラー ('+res.status+')');
+    return res.json();
+  })
+  .then(function(){
+    editToast('GitHubに保存しました！数分後にサイトに反映されます');
+  })
+  .catch(function(err){
+    editToast('エラー: '+err.message+'　— トークンを確認してください');
+    console.error('GitHub save error:',err);
+  })
+  .finally(function(){
+    if(saveBtn){saveBtn.textContent='保存（GitHub）';saveBtn.disabled=false;}
+  });
+}
+
+function saveAsDownload(){
+  var html=buildUpdatedHTML();
+  if(!html){editToast('エラー: scriptタグが見つかりません');return;}
   var blob=new Blob([html],{type:'text/html;charset=utf-8'});
   var a=document.createElement('a');
   a.href=URL.createObjectURL(blob);
@@ -2031,7 +2108,28 @@ function saveEditedData(){
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(a.href);
-  editToast('保存しました — ダウンロードフォルダのlineup.htmlで元ファイルを上書きしてください');
+  editToast('ダウンロードしました');
+}
+
+function openGHTokenModal(callback){
+  var modal=document.getElementById('ghTokenModal');
+  var input=document.getElementById('ghTokenInput');
+  input.value=getGHToken();
+  modal.classList.add('open');
+  modal._callback=callback||null;
+}
+function closeGHTokenModal(){
+  document.getElementById('ghTokenModal').classList.remove('open');
+}
+function saveGHToken(){
+  var input=document.getElementById('ghTokenInput');
+  var token=input.value.trim();
+  if(!token){editToast('トークンを入力してください');return;}
+  setGHToken(token);
+  var cb=document.getElementById('ghTokenModal')._callback;
+  closeGHTokenModal();
+  editToast('トークンを保存しました');
+  if(cb) cb();
 }
 
 function editToast(msg){
@@ -2048,9 +2146,10 @@ function editToast(msg){
 </button>
 <div class="edit-toolbar">
 <span class="edit-toolbar-label">編集モード</span>
-<span style="font-size:10px;color:#999;margin:0 8px">※ 保存後、ダウンロードされたファイルで元のlineup.htmlを上書きしてください</span>
+<button class="edit-btn" onclick="openGHTokenModal(null)" title="GitHubトークン設定">⚙</button>
 <button class="edit-btn" onclick="toggleEditMode()">終了</button>
-<button class="edit-btn edit-btn-save" onclick="saveEditedData()">保存（ダウンロード）</button>
+<button class="edit-btn" onclick="saveAsDownload()">ダウンロード</button>
+<button class="edit-btn edit-btn-save" onclick="saveEditedData()">保存（GitHub）</button>
 </div>
 <div class="edit-toast" id="editToast"></div>
 
@@ -2071,6 +2170,30 @@ function editToast(msg){
 <div class="img-modal-grid" id="imgModalGrid"></div>
 <div class="img-modal-upload" style="margin-top:16px">
 <button class="img-modal-upload-btn" onclick="uploadLocalImage()">ファイルから選択...</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- GitHub Token Modal -->
+<div class="img-modal" id="ghTokenModal" onclick="if(event.target===this)closeGHTokenModal()">
+<div class="img-modal-box" style="max-width:480px">
+<div class="img-modal-header">
+<span class="img-modal-title">GitHub設定</span>
+<button class="img-modal-close" onclick="closeGHTokenModal()">&times;</button>
+</div>
+<div style="padding:24px 20px">
+<p style="font-size:13px;color:#666;margin:0 0 16px;line-height:1.7">
+編集内容をGitHubに直接保存するには、Personal Access Token（PAT）が必要です。<br>
+<a href="https://github.com/settings/tokens/new?scopes=repo&description=lineup-editor" target="_blank" rel="noopener" style="color:#8a7868">こちらからトークンを作成</a>（repoスコープが必要）
+</p>
+<input id="ghTokenInput" type="password" placeholder="ghp_xxxxxxxxxxxx" style="width:100%;padding:12px;border:1px solid #d0ccc8;border-radius:6px;font-size:14px;font-family:monospace;box-sizing:border-box">
+<p style="font-size:11px;color:#999;margin:8px 0 0;line-height:1.5">
+※ トークンはこのブラウザセッション中のみ保持されます（タブを閉じると消えます）
+</p>
+<div style="display:flex;gap:8px;margin-top:20px;justify-content:flex-end">
+<button class="edit-btn" onclick="closeGHTokenModal()">キャンセル</button>
+<button class="edit-btn edit-btn-save" onclick="saveGHToken()">設定</button>
 </div>
 </div>
 </div>
