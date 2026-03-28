@@ -1,0 +1,2208 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self';">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta name="referrer" content="no-referrer">
+    <title>スタジオ代行管理 - Lucina</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary:#e11d63; --primary-dark:#be185d; --primary-light:#fce7f3; --primary-bg:#fdf2f8;
+            --gray-50:#f9fafb; --gray-100:#f3f4f6; --gray-200:#e5e7eb; --gray-300:#d1d5db;
+            --gray-400:#9ca3af; --gray-500:#6b7280; --gray-600:#4b5563; --gray-700:#374151; --gray-800:#1f2937;
+            --green:#059669; --green-bg:#d1fae5; --green-text:#065f46;
+            --amber:#d97706; --amber-bg:#fef3c7; --amber-text:#92400e;
+            --red:#dc2626; --red-bg:#fee2e2; --red-text:#7f1d1d;
+            --cyan:#0891b2; --cyan-bg:#cffafe; --cyan-text:#155e75;
+            --radius:10px; --radius-lg:14px;
+        }
+        * {margin:0; padding:0; box-sizing:border-box;}
+        body {font-family:'Noto Sans JP',sans-serif; background:var(--gray-100); min-height:100vh; color:var(--gray-800);}
+        .container {max-width:960px; margin:0 auto; background:#fff; box-shadow:0 1px 3px rgba(0,0,0,0.06); overflow:hidden;}
+
+        /* ── Header ── */
+        .header {background:#fff; padding:16px 20px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--gray-200); gap:12px;}
+        .header-content {display:flex; align-items:center; gap:12px; flex:0 0 auto;}
+        .header h1 {font-size:1.15rem; font-weight:700; color:var(--primary); margin:0;}
+        .header p {font-size:0.75rem; color:var(--gray-500); margin:0; display:none;}
+        .header-user-section {display:flex; gap:10px; align-items:center; margin-left:auto;}
+        .user-avatar {width:34px; height:34px; border-radius:50%; background:var(--primary); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.85rem;}
+        .user-info {text-align:right;}
+        .user-info strong {display:block; font-size:0.85rem; color:var(--gray-800); font-weight:600;}
+        .user-info small {color:var(--gray-500); font-size:0.7rem;}
+        .header button {padding:8px 12px; background:var(--gray-100); color:var(--gray-700); border:1px solid var(--gray-300); border-radius:var(--radius); cursor:pointer; font-size:0.8rem; font-weight:500; transition:background 0.15s; font-family:inherit;}
+        .header button:hover {background:var(--gray-200);}
+        .header button.logout {background:var(--red); color:#fff; border:none; padding:8px 14px;}
+        .header button.logout:hover {background:#b91c1c;}
+        .help-button {background:transparent !important; color:var(--primary) !important; border:none !important; border-radius:50% !important; width:34px !important; height:34px !important; padding:0 !important; display:flex; align-items:center; justify-content:center; font-size:1rem !important; font-weight:700 !important;}
+
+        /* ── Tab Navigation ── */
+        .tabs {display:flex; background:#fff; border-bottom:1px solid var(--gray-200); padding:0 16px; gap:0; overflow-x:auto; -webkit-overflow-scrolling:touch;}
+        .tab-button {padding:12px 14px; background:transparent; border:none; cursor:pointer; font-size:0.82rem; font-weight:500; color:var(--gray-500); transition:color 0.15s; white-space:nowrap; border-bottom:2px solid transparent; font-family:inherit; position:relative;}
+        .tab-button:hover {color:var(--primary);}
+        .tab-button.active {color:var(--primary); border-bottom-color:var(--primary); font-weight:600;}
+        .tab-button.hidden {display:none;}
+        .tab-button::before {content:attr(data-icon); margin-right:4px; font-size:0.9rem;}
+
+        .tabs-content {padding:20px; min-height:400px;}
+        .tab-content {display:none;}
+        .tab-content.active {display:block; animation:fadeIn 0.2s ease;}
+        .tab-description {background:var(--primary-bg); border-left:3px solid var(--primary); padding:12px 14px; margin-bottom:20px; border-radius:var(--radius); color:var(--primary-dark); font-size:0.85rem; line-height:1.5;}
+        @keyframes fadeIn {from {opacity:0; transform:translateY(6px);} to {opacity:1; transform:translateY(0);}}
+
+        /* ── Login Modal ── */
+        .login-modal {display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); z-index:2000; align-items:center; justify-content:center;}
+        .login-modal.active {display:flex;}
+        .login-card {background:#fff; padding:24px 20px; border-radius:var(--radius-lg); box-shadow:0 16px 48px rgba(0,0,0,0.25); max-width:480px; width:92%; max-height:88vh; display:flex; flex-direction:column; overflow-y:auto; -webkit-overflow-scrolling:touch;}
+        .login-title {font-size:1.3rem; font-weight:700; text-align:center; margin-bottom:6px; color:var(--gray-800); flex-shrink:0;}
+        .login-subtitle {font-size:0.8rem; text-align:center; color:var(--gray-500); margin-bottom:14px; flex-shrink:0;}
+        .login-role-selector {display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:14px; flex-shrink:0;}
+        .login-role-btn {padding:11px 12px; border-radius:var(--radius); cursor:pointer; font-weight:600; font-size:0.85rem; transition:all 0.15s; font-family:inherit; text-align:center; display:flex; align-items:center; justify-content:center; gap:6px; border:2px solid var(--gray-200); background:#fff; color:var(--gray-500);}
+        .login-role-btn.active {border-color:var(--primary); background:var(--primary-bg); color:var(--primary);}
+        .login-role-btn:hover {border-color:var(--primary); background:var(--primary-bg);}
+        .login-instructor-area {flex:1; overflow-y:auto; min-height:0; -webkit-overflow-scrolling:touch;}
+        .instructor-grid {display:grid; grid-template-columns:repeat(3,1fr); gap:8px; padding:2px;}
+        .instructor-button {padding:12px 6px; background:var(--primary); color:#fff; border:none; border-radius:var(--radius); cursor:pointer; font-weight:600; font-size:0.75rem; transition:opacity 0.15s; font-family:inherit; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px;}
+        .instructor-button::before {font-size:1.1rem; content:attr(data-avatar);}
+        .instructor-button:hover {opacity:0.85;}
+        .instructor-button:active {opacity:0.7;}
+        .admin-button {padding:12px 16px; background:#fff; color:var(--primary); border:2px solid var(--primary); border-radius:var(--radius); cursor:pointer; font-weight:600; font-size:0.9rem; transition:all 0.15s; font-family:inherit; text-align:center; display:flex; align-items:center; justify-content:center; gap:8px; width:100%; flex-shrink:0;}
+        .admin-button::before {font-size:1.2rem; content:'⚙️';}
+        .admin-button:hover {background:var(--primary); color:#fff;}
+
+        /* ── Store Selection ── */
+        .store-button {padding:14px 16px; background:linear-gradient(135deg,#e11d63,#f472b6); color:#fff; border:none; border-radius:var(--radius); cursor:pointer; font-weight:600; font-size:0.95rem; transition:opacity 0.15s,transform 0.1s; font-family:inherit; text-align:center; width:100%;}
+        .store-button:hover {opacity:0.9; transform:translateY(-1px);}
+        .store-button:active {opacity:0.8; transform:translateY(0);}
+
+        /* ── Dashboard ── */
+        .dashboard-grid {display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:20px;}
+        .stat-card {background:#fff; padding:16px; border-radius:var(--radius); box-shadow:0 1px 2px rgba(0,0,0,0.06); border-left:3px solid; display:flex; align-items:center; gap:12px;}
+        .stat-card.total {border-left-color:var(--primary);}
+        .stat-card.recruiting {border-left-color:var(--gray-400);}
+        .stat-card.pending {border-left-color:var(--amber);}
+        .stat-card.approved {border-left-color:var(--green);}
+        .stat-card.notified {border-left-color:var(--cyan);}
+        .stat-card.rejected {border-left-color:var(--red);}
+        .stat-icon {font-size:1.6rem; flex-shrink:0;}
+        .stat-content {flex:1;}
+        .stat-number {font-size:1.5rem; font-weight:700; line-height:1; margin-bottom:2px;}
+        .stat-label {font-size:0.75rem; color:var(--gray-500);}
+
+        /* ── Activity ── */
+        .recent-activity {background:var(--gray-50); padding:20px; border-radius:var(--radius);}
+        .recent-activity h3 {margin-bottom:12px; color:var(--gray-800); font-size:0.95rem; font-weight:600;}
+        .activity-item {padding:12px; background:#fff; margin-bottom:8px; border-left:3px solid var(--primary); border-radius:var(--radius); font-size:0.85rem; box-shadow:0 1px 2px rgba(0,0,0,0.04);}
+        .activity-item:last-child {margin-bottom:0;}
+
+        /* ── Form ── */
+        .form-section {background:var(--gray-50); padding:20px; border-radius:var(--radius); margin-bottom:16px;}
+        .form-section h3 {margin-bottom:14px; color:var(--gray-800); font-size:0.95rem; font-weight:600; padding-bottom:12px; border-bottom:1px solid var(--gray-200);}
+        .form-row {display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; margin-bottom:14px;}
+        .form-group {display:flex; flex-direction:column;}
+        .form-group label {margin-bottom:6px; font-weight:500; color:var(--gray-700); font-size:0.85rem;}
+        .form-group label .required {color:var(--red); margin-left:2px;}
+        .form-group label .optional {color:var(--gray-400); font-size:0.75rem; margin-left:4px;}
+        .form-group input, .form-group select, .form-group textarea {padding:10px 12px; border:1px solid var(--gray-300); border-radius:var(--radius); font-family:inherit; font-size:0.9rem; transition:border-color 0.15s; background:#fff;}
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {outline:none; border-color:var(--primary); box-shadow:0 0 0 3px rgba(37,99,235,0.1);}
+        .form-group input:disabled, .form-group select:disabled {background:var(--gray-100); color:var(--gray-400); cursor:not-allowed;}
+        .form-group textarea {resize:vertical; min-height:80px;}
+        .button-group {display:flex; gap:10px; justify-content:flex-end; flex-wrap:wrap;}
+
+        /* ── Progress ── */
+        .progress-bar {display:flex; gap:8px; margin-bottom:14px; align-items:center; justify-content:center;}
+        .progress-step {display:flex; align-items:center; gap:4px; font-size:0.78rem; color:var(--gray-400);}
+        .progress-step.active {font-weight:700; color:var(--primary);}
+        .progress-circle {width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.75rem; background:var(--gray-100); color:var(--gray-500);}
+        .progress-step.active .progress-circle {background:var(--primary); color:#fff;}
+        .progress-arrow {color:var(--gray-300); font-size:1rem;}
+
+        /* ── Substitute Card ── */
+        .substitute-card {background:#fff; border:1px solid var(--gray-200); border-radius:var(--radius); padding:16px; margin-bottom:12px; box-shadow:0 1px 2px rgba(0,0,0,0.04);}
+        .substitute-card.status-recruiting {border-left:3px solid var(--gray-400);}
+        .substitute-card.status-pending {border-left:3px solid var(--amber); background:#fffbeb;}
+        .substitute-card.status-approved {border-left:3px solid var(--green); background:#f0fdf4;}
+        .substitute-card.status-notified {border-left:3px solid var(--cyan);}
+        .substitute-card.status-rejected {border-left:3px solid var(--red); background:#fef2f2;}
+        .card-header {display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px;}
+        .card-title {font-weight:600; color:var(--gray-800); margin-bottom:4px; font-size:0.9rem;}
+        .card-meta {font-size:0.8rem; color:var(--gray-500);}
+        .card-status {display:inline-block; padding:4px 10px; border-radius:6px; font-size:0.75rem; font-weight:600;}
+        .card-status.recruiting {background:var(--gray-200); color:var(--gray-700);}
+        .card-status.pending {background:var(--amber-bg); color:var(--amber-text);}
+        .card-status.approved {background:var(--green-bg); color:var(--green-text);}
+        .card-status.notified {background:var(--cyan-bg); color:var(--cyan-text);}
+        .card-status.rejected {background:var(--red-bg); color:var(--red-text);}
+        .card-body {margin-bottom:12px;}
+        .card-row {display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:8px; font-size:0.85rem;}
+        .card-field {display:flex; flex-direction:column;}
+        .card-field-label {color:var(--gray-500); font-size:0.78rem; margin-bottom:2px;}
+        .card-field-value {font-weight:600; color:var(--gray-800);}
+        .card-actions {display:flex; gap:6px; flex-wrap:wrap;}
+        .card-actions button {padding:7px 14px; font-size:0.8rem; white-space:nowrap;}
+
+        /* ── Button ── */
+        button {padding:10px 20px; background:var(--primary); color:#fff; border:none; border-radius:var(--radius); cursor:pointer; font-weight:500; font-family:inherit; transition:opacity 0.15s; font-size:0.85rem;}
+        button:hover {opacity:0.88;}
+        button:active {opacity:0.75;}
+        button.secondary {background:var(--gray-100); color:var(--gray-700); border:1px solid var(--gray-300);}
+        button.secondary:hover {background:var(--gray-200); opacity:1;}
+        button.danger {background:var(--red);}
+        button.success {background:var(--green);}
+        .print-button {background:#3B82F6 !important; padding:7px 14px !important;}
+
+        /* ── Table ── */
+        .table-container {overflow-x:auto; margin:16px 0; border-radius:var(--radius); box-shadow:0 1px 2px rgba(0,0,0,0.06);}
+        table {width:100%; border-collapse:collapse;}
+        th {background:var(--gray-50); padding:12px; text-align:left; font-weight:600; color:var(--gray-800); border-bottom:2px solid var(--gray-200); font-size:0.85rem;}
+        td {padding:12px; border-bottom:1px solid var(--gray-200); font-size:0.85rem;}
+
+        /* ── Badge ── */
+        .badge {display:inline-block; padding:5px 10px; border-radius:16px; font-size:0.75rem; font-weight:600; text-align:center; min-width:70px;}
+        .badge.recruiting {background:var(--gray-200); color:var(--gray-700);}
+        .badge.pending {background:var(--amber-bg); color:var(--amber-text);}
+        .badge.approved {background:var(--green-bg); color:var(--green-text);}
+        .badge.notified {background:var(--cyan-bg); color:var(--cyan-text);}
+        .badge.rejected {background:var(--red-bg); color:var(--red-text);}
+
+        .action-buttons {display:flex; gap:6px;}
+        .action-buttons button {padding:7px 10px; font-size:0.78rem; white-space:nowrap; min-width:auto;}
+
+        /* ── Calendar ── */
+        .calendar-header {display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; gap:12px;}
+        .calendar-header h3 {font-size:1.1rem; color:var(--gray-800); font-weight:600;}
+        .calendar-nav {display:flex; gap:6px;}
+        .calendar-grid {display:grid; grid-template-columns:repeat(7,1fr); gap:4px; margin-bottom:16px;}
+        .calendar-day-header {text-align:center; font-weight:600; padding:8px; color:var(--primary); font-size:0.78rem;}
+        .calendar-day {min-height:80px; padding:8px; border:1px solid var(--gray-200); border-radius:6px; background:#fff; cursor:pointer; transition:box-shadow 0.15s;}
+        .calendar-day:hover {box-shadow:0 2px 8px rgba(0,0,0,0.1);}
+        .calendar-day.other-month {background:var(--gray-50); color:var(--gray-400);}
+        .calendar-day.today {background:var(--primary-bg); border:2px solid var(--primary);}
+        .day-number {font-weight:600; margin-bottom:4px; color:var(--gray-800); font-size:0.82rem;}
+        .day-events {font-size:0.68rem;}
+        .day-event {padding:2px 6px; margin-bottom:2px; border-radius:3px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; background:var(--primary); color:#fff; font-size:0.65rem;}
+        .day-event.recruiting {background:var(--gray-400);}
+        .day-event.pending {background:var(--amber);}
+        .day-event.approved {background:var(--green);}
+        .day-event.notified {background:var(--cyan);}
+        .day-event.rejected {background:var(--red);}
+
+        /* ── Filter ── */
+        .filter-bar {display:flex; gap:12px; margin-bottom:16px; flex-wrap:wrap; align-items:flex-end;}
+        .filter-group {display:flex; flex-direction:column;}
+        .filter-group label {margin-bottom:6px; font-weight:500; color:var(--gray-700); font-size:0.82rem;}
+        .filter-group input, .filter-group select {padding:8px 10px; border:1px solid var(--gray-300); border-radius:var(--radius); font-family:inherit; font-size:0.85rem;}
+
+        /* ── Master ── */
+        .master-section {display:grid; grid-template-columns:1fr; gap:20px; margin-bottom:20px;}
+        .master-box {background:var(--gray-50); padding:20px; border-radius:var(--radius);}
+        .master-box h3 {margin-bottom:14px; color:var(--gray-800); font-size:0.95rem; font-weight:600;}
+        .master-input-group {display:flex; gap:10px; margin-bottom:14px;}
+        .master-input-group input {flex:1; padding:8px 12px; border:1px solid var(--gray-300); border-radius:var(--radius); font-family:inherit;}
+        .master-list {background:#fff; border-radius:var(--radius); max-height:320px; overflow-y:auto; border:1px solid var(--gray-200);}
+        .master-item {padding:10px 14px; border-bottom:1px solid var(--gray-200); display:flex; justify-content:space-between; align-items:center; font-size:0.85rem;}
+        .master-item:last-child {border-bottom:none;}
+        .master-item.empty {padding:20px; text-align:center; color:var(--gray-400);}
+        .master-item-actions {display:flex; gap:6px;}
+        .master-item-actions button {padding:5px 10px; font-size:0.75rem;}
+
+        /* ── Modal ── */
+        .modal {display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:1000; align-items:center; justify-content:center;}
+        .modal.active {display:flex; animation:fadeIn 0.2s ease;}
+        .modal-content {background:#fff; padding:24px; border-radius:var(--radius-lg); max-width:560px; width:92%; max-height:88vh; overflow-y:auto; box-shadow:0 16px 48px rgba(0,0,0,0.25);}
+        .modal-header {font-size:1.15rem; font-weight:700; margin-bottom:16px; color:var(--gray-800);}
+        .modal-footer {margin-top:20px; display:flex; gap:10px; justify-content:flex-end;}
+
+        /* ── Guide ── */
+        .guide-step {margin-bottom:20px; padding:16px; background:var(--gray-50); border-radius:var(--radius); border-left:3px solid var(--primary);}
+        .guide-step-number {display:inline-block; background:var(--primary); color:#fff; width:32px; height:32px; border-radius:50%; text-align:center; line-height:32px; font-weight:700; margin-right:10px; flex-shrink:0; font-size:0.82rem;}
+        .guide-step h4 {color:var(--gray-800); font-size:0.9rem; margin-bottom:8px; font-weight:600;}
+        .guide-step p {color:var(--gray-500); font-size:0.82rem; line-height:1.5;}
+        .status-descriptions {background:var(--gray-50); padding:16px; border-radius:var(--radius); margin-top:16px; border:1px solid var(--gray-200);}
+        .status-desc-item {margin-bottom:10px; font-size:0.82rem; display:flex; align-items:center; gap:10px;}
+        .status-desc-item:last-child {margin-bottom:0;}
+        .status-badge-small {display:inline-block; padding:3px 8px; border-radius:10px; font-size:0.7rem; font-weight:600; flex-shrink:0; min-width:56px; text-align:center;}
+
+        /* ── Alert ── */
+        .alert {padding:12px 14px; border-radius:var(--radius); margin-bottom:12px; display:none; animation:slideIn 0.2s ease; border-left:3px solid; font-size:0.85rem;}
+        @keyframes slideIn {from {opacity:0; transform:translateY(-6px);} to {opacity:1; transform:translateY(0);}}
+        .alert.active {display:block;}
+        .alert.success {background:var(--green-bg); color:var(--green-text); border-left-color:var(--green);}
+        .alert.error {background:var(--red-bg); color:var(--red-text); border-left-color:var(--red);}
+        .alert.info {background:var(--primary-light); color:#1e3a5f; border-left-color:var(--primary);}
+
+        .empty-state {text-align:center; padding:40px 20px; color:var(--gray-400);}
+        .empty-state-icon {font-size:2.5rem; margin-bottom:12px;}
+        .empty-state p {font-size:0.85rem;}
+        .hidden {display:none !important;}
+
+        /* ── Mobile ── */
+        @media (max-width:768px) {
+            .header {padding:12px 16px; gap:8px;}
+            .header h1 {font-size:1.05rem;}
+            .header-user-section {gap:8px;}
+            .user-info strong {font-size:0.8rem;}
+            .tabs {padding:0 12px;}
+            .tab-button {padding:10px 10px; font-size:0.78rem;}
+            .tab-button::before {margin-right:2px; font-size:0.82rem;}
+            .tabs-content {padding:14px;}
+            .tab-description {padding:10px; margin-bottom:14px; font-size:0.8rem;}
+            .form-row {grid-template-columns:1fr;}
+            .dashboard-grid {grid-template-columns:repeat(2,1fr); gap:8px;}
+            .stat-card {padding:12px; gap:8px;}
+            .stat-icon {font-size:1.3rem;}
+            .stat-number {font-size:1.2rem;}
+            .stat-label {font-size:0.7rem;}
+            .calendar-grid {gap:2px;}
+            .calendar-day {min-height:60px; padding:4px; font-size:0.7rem;}
+            .calendar-day-header {font-size:0.7rem; padding:4px;}
+            .filter-bar {flex-direction:column; gap:8px;}
+            .filter-group {width:100%;}
+            .instructor-grid {grid-template-columns:repeat(3,1fr); gap:6px;}
+            .instructor-button {padding:10px 4px; font-size:0.72rem;}
+            .instructor-button::before {font-size:1rem;}
+            .login-card {padding:16px 12px; max-height:92vh;}
+            .login-title {font-size:1.1rem; margin-bottom:2px;}
+            .login-subtitle {font-size:0.75rem; margin-bottom:10px;}
+            .login-role-selector {gap:6px; margin-bottom:8px;}
+            .login-role-btn {padding:8px 8px; font-size:0.78rem;}
+            .modal-content {padding:18px; width:95%; max-height:90vh;}
+            .button-group {flex-direction:column-reverse;}
+            button {width:100%;}
+            .progress-bar {gap:4px; flex-wrap:wrap;}
+            .progress-arrow {font-size:0.8rem;}
+            .card-row {grid-template-columns:1fr;}
+            .form-section {padding:14px;}
+        }
+        @media (max-width:480px) {
+            .dashboard-grid {grid-template-columns:1fr 1fr; gap:6px;}
+            .stat-card {padding:10px;}
+        }
+        @media (min-width:769px) {
+            .header p {display:block;}
+            .dashboard-grid {grid-template-columns:repeat(3,1fr);}
+        }
+    </style>
+</head>
+<body>
+    <!-- ===== 第1段階: トップレベルログイン画面 ===== -->
+    <div id="topLoginScreen" class="login-modal active">
+        <div class="login-card" style="max-width:380px; text-align:center;">
+            <div style="font-size:2rem; margin-bottom:8px;">🔐</div>
+            <div style="font-size:1.3rem; font-weight:700; color:#be185d; margin-bottom:4px;">Lucina 管理システム</div>
+            <div style="font-size:0.82rem; color:#6b7280; margin-bottom:20px;">管理者パスワードを入力してください</div>
+            <input id="topPwInput" type="password" placeholder="管理者パスワード"
+                style="width:100%; padding:12px 16px; border:2px solid #e5e7eb; border-radius:8px; font-size:15px; outline:none; margin-bottom:12px; box-sizing:border-box; transition:.2s; font-family:inherit;"
+                onfocus="this.style.borderColor='#e11d63'" onblur="this.style.borderColor='#e5e7eb'"
+                onkeydown="if(event.key==='Enter')checkTopPassword()">
+            <button onclick="checkTopPassword()"
+                style="width:100%; padding:12px; background:linear-gradient(135deg,#e11d63,#f472b6); color:#fff; border:none; border-radius:8px; font-size:15px; font-weight:700; cursor:pointer; transition:.2s; font-family:inherit;"
+                onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='1'">ログイン</button>
+            <p id="topPwErr" style="color:#dc2626; font-size:0.82rem; margin-top:8px; display:none;">パスワードが正しくありません</p>
+        </div>
+    </div>
+
+    <!-- ===== 第2段階: 店舗選択画面 ===== -->
+    <div id="storeSelectModal" class="login-modal">
+        <div class="login-card" style="max-width:420px; text-align:center;">
+            <div style="font-size:1.5rem; font-weight:700; color:#be185d; margin-bottom:4px;">Lucina</div>
+            <div style="font-size:0.85rem; color:#6b7280; margin-bottom:6px;">代行講師管理システム</div>
+            <div class="login-subtitle">店舗を選択してください</div>
+            <div id="storeSelectGrid" style="display:flex; flex-direction:column; gap:8px;"></div>
+        </div>
+    </div>
+
+    <!-- ===== 第3段階: 店舗別パスワード画面 ===== -->
+    <div id="storePwScreen" class="login-modal">
+        <div class="login-card" style="max-width:380px; text-align:center;">
+            <div style="font-size:1.8rem; margin-bottom:8px;">🔒</div>
+            <div style="font-size:1.1rem; font-weight:700; color:#be185d; margin-bottom:4px;">Lucina 代行管理</div>
+            <p id="storePwName" style="color:#e11d63; font-size:0.9rem; font-weight:700; margin-bottom:4px;"></p>
+            <div style="font-size:0.82rem; color:#6b7280; margin-bottom:20px;">店舗パスワードを入力してください</div>
+            <input id="storePwInput" type="password" placeholder="店舗パスワード"
+                style="width:100%; padding:12px 16px; border:2px solid #e5e7eb; border-radius:8px; font-size:15px; outline:none; margin-bottom:12px; box-sizing:border-box; transition:.2s; font-family:inherit;"
+                onfocus="this.style.borderColor='#e11d63'" onblur="this.style.borderColor='#e5e7eb'"
+                onkeydown="if(event.key==='Enter')checkStorePassword()">
+            <button onclick="checkStorePassword()"
+                style="width:100%; padding:12px; background:linear-gradient(135deg,#e11d63,#f472b6); color:#fff; border:none; border-radius:8px; font-size:15px; font-weight:700; cursor:pointer; transition:.2s; font-family:inherit;"
+                onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='1'">ログイン</button>
+            <p id="storePwErr" style="color:#dc2626; font-size:0.82rem; margin-top:8px; display:none;">パスワードが正しくありません</p>
+            <a href="javascript:void(0)" onclick="backToStoreSelectFromPw()" style="display:inline-block; margin-top:12px; color:#6b7280; font-size:0.78rem; text-decoration:none;">← 店舗選択に戻る</a>
+        </div>
+    </div>
+
+    <!-- ログイン画面 -->
+    <div id="loginModal" class="login-modal">
+        <div class="login-card">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px; justify-content:center;">
+                <div class="login-title" id="loginStoreTitle">スタジオ代行管理</div>
+            </div>
+            <div class="login-subtitle">ログイン方法を選択してください</div>
+
+            <div style="background:#fdf2f8; border-radius:10px; padding:10px 14px; margin-bottom:14px;">
+                <div style="font-weight:700; font-size:0.78rem; margin-bottom:6px; text-align:center; color:#9d174d;">このアプリの流れ</div>
+                <div style="display:flex; align-items:center; justify-content:center; gap:4px; font-size:0.68rem;">
+                    <span style="background:#fff; padding:3px 6px; border-radius:5px; border:1px solid #fbcfe8; color:#374151; white-space:nowrap;">①申請</span>
+                    <span style="color:#e11d63; font-weight:700;">→</span>
+                    <span style="background:#fff; padding:3px 6px; border-radius:5px; border:1px solid #fbcfe8; color:#374151; white-space:nowrap;">②代行者登録</span>
+                    <span style="color:#e11d63; font-weight:700;">→</span>
+                    <span style="background:#fff; padding:3px 6px; border-radius:5px; border:1px solid #fbcfe8; color:#374151; white-space:nowrap;">③承認</span>
+                    <span style="color:#e11d63; font-weight:700;">→</span>
+                    <span style="background:#fff; padding:3px 6px; border-radius:5px; border:1px solid #fbcfe8; color:#374151; white-space:nowrap;">④告知</span>
+                </div>
+            </div>
+
+            <div class="login-role-selector">
+                <button class="login-role-btn active" onclick="showLoginPanel('instructor')" id="loginRoleBtnInstructor">👨‍🏫 インストラクター</button>
+                <button class="login-role-btn" onclick="showLoginPanel('admin')" id="loginRoleBtnAdmin">⚙️ 管理者</button>
+            </div>
+
+            <div id="loginPanelInstructor">
+                <div style="font-size:0.82rem; color:#6b7280; text-align:center; margin-bottom:10px;">名前をタップしてログイン</div>
+                <div class="login-instructor-area">
+                    <div class="instructor-grid" id="instructorLoginGrid"></div>
+                </div>
+            </div>
+
+            <div id="loginPanelAdmin" style="display:none;">
+                <div style="background:#fdf2f8; border-radius:10px; padding:20px; text-align:center;">
+                    <div style="font-size:2rem; margin-bottom:10px;">⚙️</div>
+                    <div style="font-size:0.9rem; color:#374151; margin-bottom:4px; font-weight:600;">管理者としてログイン</div>
+                    <div style="font-size:0.78rem; color:#6b7280; margin-bottom:14px;">代行申請の承認・却下、マスタ管理が行えます</div>
+                    <div id="adminLoginError" style="display:none; background:#fee2e2; color:#7f1d1d; padding:8px 12px; border-radius:8px; font-size:0.8rem; margin-bottom:10px;">パスワードが正しくありません</div>
+                    <div style="margin-bottom:12px; text-align:left;">
+                        <label style="font-size:0.82rem; color:#374151; font-weight:500; display:block; margin-bottom:4px;">パスワード</label>
+                        <input type="password" id="adminPasswordInput" placeholder="パスワードを入力" style="width:100%; padding:10px 12px; border:1px solid #d1d5db; border-radius:8px; font-family:inherit; font-size:0.9rem;" onkeydown="if(event.key==='Enter') loginAsAdmin()">
+                    </div>
+                    <button class="admin-button" onclick="loginAsAdmin()" style="margin:0 auto;">管理者でログイン</button>
+                </div>
+            </div>
+
+            <div style="margin-top:12px; text-align:center;">
+                <button class="secondary" onclick="backToStoreSelect()" style="font-size:0.78rem; padding:8px 16px; width:auto;">← 店舗選択に戻る</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="confirmModal" class="modal">
+        <div class="modal-content" style="max-width:400px;">
+            <div class="modal-header" id="confirmTitle">確認</div>
+            <div style="padding:20px; text-align:center; font-size:0.95rem; color:#374151;">
+                <p id="confirmMessage"></p>
+            </div>
+            <div class="modal-footer" style="justify-content:flex-end; gap:12px;">
+                <button class="secondary" onclick="closeConfirmModal()">キャンセル</button>
+                <button id="confirmOkBtn" onclick="confirmAction()">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="registerSubstituteModal" class="modal">
+        <div class="modal-content" style="max-width:500px;">
+            <div class="modal-header">代行者を登録</div>
+            <div style="padding:24px;">
+                <div class="form-section">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>代行講師 <span class="required">*</span></label>
+                            <select id="regSubstituteInstructorModal" required>
+                                <option value="">選択してください</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>代行プログラム <span class="optional">(省略可)</span></label>
+                            <select id="regSubstituteProgramModal">
+                                <option value="">元のプログラムと同じ</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="secondary" onclick="closeRegisterSubstituteModal()">キャンセル</button>
+                <button onclick="submitRegisterSubstitute()">登録して承認依頼</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="notificationModal" class="modal">
+        <div class="modal-content" style="max-width:500px;">
+            <div class="modal-header">代行告知</div>
+            <div style="padding:24px; margin-bottom:20px;">
+                <div style="background:#f9fafb; padding:16px; border-radius:8px; margin-bottom:16px;">
+                    <div style="font-size:0.85rem; color:#6b7280; margin-bottom:12px;">
+                        <strong id="notifDate"></strong>
+                    </div>
+                    <div style="margin-bottom:8px; font-size:0.9rem;">
+                        <span style="color:#6b7280;">プログラム:</span> <strong id="notifProgram"></strong>
+                    </div>
+                    <div style="margin-bottom:8px; font-size:0.9rem;">
+                        <span style="color:#6b7280;">元の講師:</span> <strong id="notifOriginal"></strong>
+                    </div>
+                    <div style="font-size:0.9rem;">
+                        <span style="color:#6b7280;">代行講師:</span> <strong id="notifSubstitute"></strong>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="flex-direction:column; gap:10px; justify-content:flex-start;">
+                <button style="width:100%; display:flex; align-items:center; justify-content:center; gap:8px;" onclick="handleNotificationPrint()">
+                    <span>🖨</span> 館内告知を印刷
+                </button>
+                <button style="width:100%; display:flex; align-items:center; justify-content:center; gap:8px;" class="secondary" onclick="handleNotificationSNS()">
+                    <span>📱</span> SNS用テキストをコピー
+                </button>
+                <button style="width:100%;" class="secondary" onclick="markAsNotified()">✅ 告知済みにする</button>
+                <button style="width:100%;" class="secondary" onclick="closeNotificationModal()">閉じる</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="helpModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">使い方ガイド</div>
+
+            <div style="background:#fdf2f8; border-radius:10px; padding:14px; margin-bottom:16px; text-align:center;">
+                <div style="font-weight:700; color:#be185d; font-size:0.9rem; margin-bottom:8px;">代行申請の流れ</div>
+                <div style="display:flex; align-items:center; justify-content:center; gap:4px; flex-wrap:wrap; font-size:0.75rem;">
+                    <span style="background:#e11d63; color:#fff; padding:4px 10px; border-radius:20px; font-weight:600;">①申請</span>
+                    <span style="color:#e11d63; font-weight:700;">→</span>
+                    <span style="background:#059669; color:#fff; padding:4px 10px; border-radius:20px; font-weight:600;">②代行者登録</span>
+                    <span style="color:#e11d63; font-weight:700;">→</span>
+                    <span style="background:#d97706; color:#fff; padding:4px 10px; border-radius:20px; font-weight:600;">③管理者承認</span>
+                    <span style="color:#e11d63; font-weight:700;">→</span>
+                    <span style="background:#0891b2; color:#fff; padding:4px 10px; border-radius:20px; font-weight:600;">④お客様告知</span>
+                </div>
+            </div>
+
+            <div style="font-weight:700; color:#be185d; font-size:0.9rem; margin-bottom:10px; border-bottom:2px solid #fce7f3; padding-bottom:6px;">インストラクターの方へ</div>
+
+            <div class="guide-step">
+                <div style="display:flex; align-items:flex-start; gap:12px;">
+                    <div class="guide-step-number">1</div>
+                    <div>
+                        <h4>店舗を選んで、自分の名前をタップ</h4>
+                        <p>アプリを開いたら、まず自分のスタジオを選び、「インストラクター」タブから自分の名前をタップしてログインします。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="guide-step">
+                <div style="display:flex; align-items:flex-start; gap:12px;">
+                    <div class="guide-step-number">2</div>
+                    <div>
+                        <h4>「代行申請」タブから申請を出す</h4>
+                        <p>代行が必要になったら、日付・時間・プログラムを選んで申請します。<strong>代行者がまだ見つかっていなくてもOK！</strong>まずは申請を出しましょう。申請すると管理者に自動でメール通知されます。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="guide-step">
+                <div style="display:flex; align-items:flex-start; gap:12px;">
+                    <div class="guide-step-number">3</div>
+                    <div>
+                        <h4>代行者が見つかったら「代行者を登録」</h4>
+                        <p>自分で代行してくれる方を見つけたら、「一覧」タブの該当カードにある<strong>「代行者を登録」ボタン</strong>をタップして、代行講師名を登録します。管理者に承認依頼が送られます。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="guide-step">
+                <div style="display:flex; align-items:flex-start; gap:12px;">
+                    <div class="guide-step-number">4</div>
+                    <div>
+                        <h4>あとは管理者の承認を待つだけ</h4>
+                        <p>管理者が承認すると、ステータスが「承認済」に変わります。その後、管理者がお客様向けの告知（館内掲示・SNS）を行います。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="font-weight:700; color:#be185d; font-size:0.9rem; margin:16px 0 10px; border-bottom:2px solid #fce7f3; padding-bottom:6px;">管理者の方へ</div>
+
+            <div class="guide-step">
+                <div style="display:flex; align-items:flex-start; gap:12px;">
+                    <div class="guide-step-number">A</div>
+                    <div>
+                        <h4>「承認待ち」の申請を確認して承認・却下</h4>
+                        <p>ログイン時に承認待ちがあればポップアップで通知されます。一覧画面で「✅ 承認」または「❌ 却下」を行ってください。急ぎの場合は、管理者が代行者の登録や内容の編集もできます。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="guide-step">
+                <div style="display:flex; align-items:flex-start; gap:12px;">
+                    <div class="guide-step-number">B</div>
+                    <div>
+                        <h4>承認後、お客様への告知を行う</h4>
+                        <p>承認済の申請には「📢 告知する」ボタンが表示されます。「館内告知を印刷」（A4用紙にA5×2枚）または「SNS用テキストをコピー」で告知を行い、「告知済みにする」を押して完了です。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="status-descriptions">
+                <strong style="display:block; margin-bottom:16px; color:#1f2937;">ステータスについて</strong>
+                <div class="status-desc-item"><span class="status-badge-small" style="background:#e5e7eb; color:#374151;">代行募集中</span><span>代行者を探している状態（まだ見つかっていない）</span></div>
+                <div class="status-desc-item"><span class="status-badge-small" style="background:#fef3c7; color:#92400e;">承認待ち</span><span>代行者が決まり、管理者の承認を待っている</span></div>
+                <div class="status-desc-item"><span class="status-badge-small" style="background:#d1fae5; color:#065f46;">承認済</span><span>管理者が承認した（お客様告知の準備OK）</span></div>
+                <div class="status-desc-item"><span class="status-badge-small" style="background:#cffafe; color:#155e75;">告知済</span><span>お客様への告知が完了した</span></div>
+                <div class="status-desc-item"><span class="status-badge-small" style="background:#fee2e2; color:#7f1d1d;">却下</span><span>管理者が申請を却下した</span></div>
+            </div>
+            <div class="modal-footer">
+                <button class="secondary" onclick="closeHelpModal()">閉じる</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="emailNotifyModal" class="modal">
+        <div class="modal-content" style="max-width:420px;">
+            <div class="modal-header" style="background:linear-gradient(135deg,#e11d63,#f472b6); color:#fff;" id="emailNotifyTitle">登録完了</div>
+            <div style="padding:20px;">
+                <div style="text-align:center; font-size:2rem; margin-bottom:8px;">✅</div>
+                <div id="emailNotifySummary" style="background:#f9fafb; padding:12px; border-radius:8px; font-size:0.85rem; color:#374151; margin-bottom:16px; text-align:center;"></div>
+                <div style="font-size:0.85rem; color:#6b7280; text-align:center; margin-bottom:14px;">管理者への通知方法を選んでください</div>
+                <div style="display:flex; flex-direction:column; gap:10px;">
+                    <button id="emailNotifyMailBtn" style="width:100%; display:flex; align-items:center; justify-content:center; gap:8px; padding:12px;">📧 メールで通知する</button>
+                    <button id="emailNotifyLineBtn" class="secondary" style="width:100%; display:flex; align-items:center; justify-content:center; gap:8px; padding:12px; background:#06C755; color:#fff; border-color:#06C755;">💬 LINEで送る</button>
+                    <button id="emailNotifyCopyBtn" class="secondary" style="width:100%; display:flex; align-items:center; justify-content:center; gap:8px; padding:12px;">📋 テキストをコピーして送る</button>
+                    <button id="emailNotifySkipBtn" class="secondary" style="width:100%; padding:12px; color:#6b7280;">通知せずに閉じる</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="adminPendingPopup" class="modal">
+        <div class="modal-content" style="max-width:520px; border-top:6px solid #D97706;">
+            <div style="text-align:center; padding:8px 0 20px;">
+                <div style="font-size:3rem; margin-bottom:12px;">⚠️</div>
+                <div class="modal-header" style="margin-bottom:8px;">承認待ちの申請があります</div>
+                <div id="adminPendingPopupCount" style="font-size:1.1rem; color:#92400e; font-weight:600; margin-bottom:20px;"></div>
+            </div>
+            <div id="adminPendingPopupList" style="max-height:300px; overflow-y:auto; margin-bottom:20px;"></div>
+            <div class="modal-footer" style="justify-content:center; gap:12px;">
+                <button onclick="closeAdminPendingPopup(); switchTab('list'); document.getElementById('filterStatus').value='承認待ち'; filterSubstitutes();" style="background:linear-gradient(135deg,#D97706 0%,#b45309 100%);">承認待ち一覧を確認</button>
+                <button class="secondary" onclick="closeAdminPendingPopup()">後で確認</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toastNotification" style="position:fixed; bottom:20px; right:20px; background:#059669; color:#fff; padding:12px 20px; border-radius:8px; display:none; z-index:3000; box-shadow:0 4px 12px rgba(0,0,0,0.15); animation:slideUp 0.3s ease;">
+        <span id="toastMessage"></span>
+    </div>
+
+    <style>
+        @keyframes slideUp {from {transform:translateY(20px); opacity:0;} to {transform:translateY(0); opacity:1;}}
+    </style>
+
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <div>
+                    <h1 id="headerTitle">スタジオ代行管理</h1>
+                    <p id="headerSubtitle">Lucina 代行講師管理システム</p>
+                </div>
+            </div>
+            <div class="header-user-section">
+                <div class="user-avatar" id="userAvatar">-</div>
+                <div class="user-info">
+                    <strong id="currentUserDisplay">ゲスト</strong>
+                    <small id="userRoleDisplay"></small>
+                </div>
+                <button class="help-button" onclick="openHelpModal()" title="使い方ガイド">?</button>
+                <button class="logout" onclick="logout()">ログアウト</button>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-button active" data-tab="dashboard" data-icon="📊">ダッシュボード</button>
+            <button class="tab-button" data-tab="calendar" data-icon="📅">カレンダー</button>
+            <button class="tab-button" data-tab="list" data-icon="📋">一覧</button>
+            <button class="tab-button" data-tab="register" data-icon="✏️">代行申請</button>
+            <button class="tab-button" data-tab="master" data-icon="⚙️">マスタ管理</button>
+        </div>
+
+        <div class="tabs-content">
+            <div id="dashboard" class="tab-content active">
+                <div class="tab-description" id="dashboardDescription">代行申請の進捗状況の概要を確認できます。管理者は「承認待ち」の項目に注力が必要です。</div>
+                <div class="alert" id="dashboardAlert"></div>
+                <div class="dashboard-grid">
+                    <div class="stat-card total">
+                        <div class="stat-icon">📊</div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="totalCount">0</div>
+                            <div class="stat-label">合計申請数</div>
+                        </div>
+                    </div>
+                    <div class="stat-card recruiting">
+                        <div class="stat-icon">🔍</div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="recruitingCount">0</div>
+                            <div class="stat-label">代行募集中</div>
+                        </div>
+                    </div>
+                    <div class="stat-card pending">
+                        <div class="stat-icon">⏳</div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="pendingCount">0</div>
+                            <div class="stat-label">承認待ち</div>
+                        </div>
+                    </div>
+                    <div class="stat-card approved">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="approvedCount">0</div>
+                            <div class="stat-label">承認済</div>
+                        </div>
+                    </div>
+                    <div class="stat-card notified">
+                        <div class="stat-icon">📢</div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="notifiedCount">0</div>
+                            <div class="stat-label">告知済</div>
+                        </div>
+                    </div>
+                    <div class="stat-card rejected">
+                        <div class="stat-icon">❌</div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="rejectedCount">0</div>
+                            <div class="stat-label">却下</div>
+                        </div>
+                    </div>
+                </div>
+                <div id="pendingApprovals" style="display:none; background:linear-gradient(135deg,#fffbeb 0%,#fef3c7 100%); border:2px solid #f59e0b; border-radius:12px; padding:28px; margin-bottom:24px;">
+                    <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px;">
+                        <span style="font-size:2rem;">🔔</span>
+                        <div>
+                            <h3 style="color:#92400e; font-size:1.2rem; font-weight:700; margin:0;">承認待ちの申請</h3>
+                            <div style="color:#b45309; font-size:0.85rem;" id="pendingApprovalsSubtitle">管理者の承認が必要です</div>
+                        </div>
+                    </div>
+                    <div id="pendingApprovalsList"></div>
+                </div>
+                <div class="recent-activity">
+                    <h3>📌 最近の活動</h3>
+                    <div id="recentActivityList"></div>
+                </div>
+            </div>
+
+            <div id="calendar" class="tab-content">
+                <div class="tab-description" id="calendarDescription">月別カレンダーで代行スケジュールを視覚的に確認できます。日付をクリックすると詳細が表示されます。</div>
+                <div class="calendar-header">
+                    <h3><span id="currentMonth"></span></h3>
+                    <div class="calendar-nav">
+                        <button id="prevMonth" class="secondary">← 前月</button>
+                        <button id="todayBtn" class="secondary">今月</button>
+                        <button id="nextMonth" class="secondary">次月 →</button>
+                    </div>
+                </div>
+                <div class="calendar-grid" id="calendarGrid"></div>
+                <div id="dayDetailsModal" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header"><span id="detailDate"></span>の代行</div>
+                        <div id="dayDetailsList"></div>
+                        <div class="modal-footer">
+                            <button class="secondary" onclick="closeDayDetails()">閉じる</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="list" class="tab-content">
+                <div class="tab-description" id="listTabDescription">代行申請の一覧を確認・管理できます。各ステータスに応じた操作が可能です。</div>
+                <div class="alert" id="listAlert"></div>
+                <div class="filter-bar">
+                    <div class="filter-group">
+                        <label>ステータス</label>
+                        <select id="filterStatus">
+                            <option value="">すべて</option>
+                            <option value="代行募集中">代行募集中</option>
+                            <option value="承認待ち">承認待ち</option>
+                            <option value="承認済">承認済</option>
+                            <option value="告知済">告知済</option>
+                            <option value="却下">却下</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>開始日</label>
+                        <input type="date" id="filterStartDate">
+                    </div>
+                    <div class="filter-group">
+                        <label>終了日</label>
+                        <input type="date" id="filterEndDate">
+                    </div>
+                    <button id="filterBtn" style="align-self:flex-end;">検索</button>
+                    <button id="clearFilterBtn" class="secondary" style="align-self:flex-end;">リセット</button>
+                </div>
+                <div id="substituteCardsContainer"></div>
+                <div id="listEmptyState" class="empty-state hidden">
+                    <div class="empty-state-icon">📭</div>
+                    <p>代行申請がありません</p>
+                </div>
+            </div>
+
+            <div id="register" class="tab-content">
+                <div class="tab-description" id="registerDescription">新しい代行申請を登録します。代行講師は後から追加できるため、まず申請を登録してください。送信時に管理者にメール通知が送られます。</div>
+                <div class="alert" id="registerAlert"></div>
+
+                <div class="form-section">
+                    <h3>ステップ 1 - 📅 日時を選択</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>日付 <span class="required">*</span></label>
+                            <input type="date" id="regDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label>時間帯 <span class="required">*</span></label>
+                            <select id="regTimeSlot" required>
+                                <option value="">選択してください</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>ステップ 2 - 📚 クラス情報を入力</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>プログラム <span class="required">*</span></label>
+                            <select id="regProgram" required>
+                                <option value="">選択してください</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>ステップ 3 - 👥 代行講師（後から登録できます）</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>元の講師</label>
+                            <div id="regOriginalInstructorDisplay" style="padding:12px; background:#f3f4f6; border-radius:8px; color:#374151; font-weight:500; border:1px solid #d1d5db;"></div>
+                            <input type="hidden" id="regOriginalInstructor">
+                        </div>
+                    </div>
+                    <div style="background:#f0fdf4; border-left:4px solid #059669; padding:12px; border-radius:8px; color:#065f46; font-size:0.9rem; margin-top:12px;">
+                        💡 代行講師はまず申請を登録してから、後で一覧画面で「代行者を登録」ボタンから追加できます。
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>ステップ 4 - 📝 理由を入力</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>理由 <span class="required">*</span></label>
+                            <textarea id="regReason" placeholder="例：講師が体調不良のため" required></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button type="button" class="secondary" onclick="resetRegisterForm()">リセット</button>
+                    <button type="button" onclick="submitRegister()">申請を登録</button>
+                </div>
+            </div>
+
+            <div id="master" class="tab-content">
+                <div class="tab-description">代行申請で使うインストラクター名やプログラム名を管理する画面です。ここで登録した内容が、申請フォームの選択肢に表示されます。</div>
+                <div class="alert" id="masterAlert"></div>
+
+                <!-- マスタ管理のタブ切り替え -->
+                <div style="display:flex; gap:0; margin-bottom:16px; border-bottom:2px solid #e5e7eb;">
+                    <button class="master-tab-btn active" data-master-tab="instructors" onclick="switchMasterTab('instructors')" style="padding:10px 16px; background:transparent; color:#2563eb; border:none; border-bottom:2px solid #2563eb; font-weight:600; font-size:0.82rem; cursor:pointer; font-family:inherit;">
+                        👨‍🏫 イントラ <span id="instructorCountBadge" style="background:#2563eb; color:#fff; padding:1px 6px; border-radius:10px; font-size:0.7rem; margin-left:4px;">0</span>
+                    </button>
+                    <button class="master-tab-btn" data-master-tab="programs" onclick="switchMasterTab('programs')" style="padding:10px 16px; background:transparent; color:#6b7280; border:none; border-bottom:2px solid transparent; font-weight:500; font-size:0.82rem; cursor:pointer; font-family:inherit;">
+                        📚 プログラム <span id="programCountBadge" style="background:#6b7280; color:#fff; padding:1px 6px; border-radius:10px; font-size:0.7rem; margin-left:4px;">0</span>
+                    </button>
+                    <button class="master-tab-btn" data-master-tab="settings" onclick="switchMasterTab('settings')" style="padding:10px 16px; background:transparent; color:#6b7280; border:none; border-bottom:2px solid transparent; font-weight:500; font-size:0.82rem; cursor:pointer; font-family:inherit;">
+                        ⚙️ 設定
+                    </button>
+                </div>
+
+                <!-- インストラクター管理パネル -->
+                <div id="masterPanel_instructors" class="master-panel">
+                    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+                        <div style="font-size:0.82rem; color:#6b7280;">申請フォームの講師選択肢に表示されます</div>
+                        <div style="background:#eff6ff; padding:4px 10px; border-radius:8px; font-size:0.8rem; font-weight:700; color:#2563eb;"><span id="instructorTotalCount">0</span>名</div>
+                    </div>
+                    <div class="master-input-group">
+                        <input type="text" id="newInstructorName" placeholder="インストラクター名を入力...">
+                        <button onclick="addInstructor()">追加</button>
+                    </div>
+                    <div class="master-list" id="instructorList"></div>
+                </div>
+
+                <!-- プログラム管理パネル -->
+                <div id="masterPanel_programs" class="master-panel" style="display:none;">
+                    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+                        <div style="font-size:0.82rem; color:#6b7280;">申請フォームのプログラム選択肢に表示されます</div>
+                        <div style="background:#f0fdf4; padding:4px 10px; border-radius:8px; font-size:0.8rem; font-weight:700; color:#059669;"><span id="programTotalCount">0</span>件</div>
+                    </div>
+                    <div class="master-input-group">
+                        <input type="text" id="newProgramName" placeholder="プログラム名を入力...">
+                        <button onclick="addProgram()" class="success">追加</button>
+                    </div>
+                    <div class="master-list" id="programList"></div>
+                </div>
+
+                <!-- 店舗設定パネル -->
+                <div id="masterPanel_settings" class="master-panel" style="display:none;">
+                    <div class="form-section" style="margin-bottom:16px;">
+                        <h3>📧 管理者メールアドレス</h3>
+                        <div style="font-size:0.82rem; color:#6b7280; margin-bottom:12px;">代行申請・承認依頼時の通知先です</div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>メールアドレス</label>
+                                <input type="email" id="managerEmail" placeholder="manager@example.com">
+                            </div>
+                        </div>
+                        <div class="button-group">
+                            <button onclick="saveManagerEmail()" style="margin-left:auto;">💾 保存</button>
+                        </div>
+                    </div>
+
+                    <div class="form-section" style="margin-bottom:16px;">
+                        <h3>🔑 管理者パスワード変更</h3>
+                        <div style="font-size:0.82rem; color:#6b7280; margin-bottom:12px;">管理者ログイン時のパスワードを変更します</div>
+                        <div id="passwordChangeAlert" style="display:none; padding:8px 12px; border-radius:8px; font-size:0.82rem; margin-bottom:10px;"></div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>現在のパスワード</label>
+                                <input type="password" id="currentPassword" placeholder="現在のパスワード">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>新しいパスワード</label>
+                                <input type="password" id="newPassword" placeholder="新しいパスワード">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>新しいパスワード（確認）</label>
+                                <input type="password" id="newPasswordConfirm" placeholder="もう一度入力">
+                            </div>
+                        </div>
+                        <div class="button-group">
+                            <button onclick="changeAdminPassword()" style="margin-left:auto;">🔑 パスワードを変更</button>
+                        </div>
+                    </div>
+
+                    <div class="form-section" style="background:#fef2f2; border:1px solid #fecaca;">
+                        <h3>🔄 データリセット</h3>
+                        <div style="font-size:0.82rem; color:#6b7280; margin-bottom:12px;">インストラクターとプログラムを初期データに戻します。代行申請データには影響しません。</div>
+                        <button class="secondary" onclick="resetMasterData()" style="font-size:0.82rem; border-color:#fca5a5; color:#b91c1c;">🔄 初期データにリセット</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        'use strict';
+        // ===== セキュリティユーティリティ =====
+        function esc(s){
+            if(typeof s!=='string')return '';
+            return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+        }
+        function limit(s,max){return typeof s==='string'?s.substring(0,max||200):'';}
+        async function sha256(str){const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(str));return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');}
+
+        // ===== トップレベルパスワード (SHA-256ハッシュ) =====
+        const _TOP_PW_HASH='28a530fd3d3873ea882fe4abd4b3b09d1e735db954ea16e372a8842f65a8e5ba';
+
+        // ===== 店舗定義（店舗別パスワードハッシュ付き） =====
+        const _STORE_AUTH={
+            '北小金':  {id:'kitakogane',    pwHash:'71b48f7d15260ca6f16cd3f6d93899fa4a3c5d02f5a5470f9aeca3b30d1ad113'},
+            '北浦和':  {id:'kitaurawa',     pwHash:'8d27cf8b308dd863301d586380212d308bf0546b22094d7732e58426863c8008'},
+            '東久留米':{id:'higashikurume', pwHash:'22479e169f2c7cb58c34dd783ba5a71306b7449a6333071951ad3773cbeaaf7b'},
+            '那覇新都心':{id:'naha',        pwHash:'a87f564636784358fec4024c179fd301ee986420d178ea13de3da17b229c50d5'},
+            '熱海':    {id:'atami',         pwHash:'0eb850721e75e8649945307a294757178bc39c05bddcabb9589d16246cdb5eef'},
+            '清澄白河':{id:'kiyosumi',     pwHash:'1381483061ae14283cbfdd719ed811de916f43563816f115e6640050a75e6247'},
+            '三ノ輪':  {id:'minowa',        pwHash:'aaf6a45768fca66334760d7d2f81dbf3b35753ba42fff791496d06ab70782e06'}
+        };
+        const STORES = Object.keys(_STORE_AUTH);
+
+        // ===== 第1段階: トップレベル認証 =====
+        async function checkTopPassword(){
+            const input=document.getElementById('topPwInput').value;
+            const hash=await sha256(input);
+            if(hash===_TOP_PW_HASH){
+                sessionStorage.setItem('daiko_top_auth','1');
+                document.getElementById('topLoginScreen').classList.remove('active');
+                document.getElementById('topPwInput').value='';
+                document.getElementById('storeSelectModal').classList.add('active');
+            } else {
+                document.getElementById('topPwErr').style.display='block';
+                document.getElementById('topPwInput').style.borderColor='#dc2626';
+                document.getElementById('topPwInput').value='';
+                document.getElementById('topPwInput').focus();
+            }
+        }
+        // トップ認証済みならスキップ
+        if(sessionStorage.getItem('daiko_top_auth')==='1'){
+            document.getElementById('topLoginScreen').classList.remove('active');
+            document.getElementById('storeSelectModal').classList.add('active');
+        }
+
+        // ===== 第3段階: 店舗別パスワード認証 =====
+        let _pendingStore = null;
+        async function checkStorePassword(){
+            if(!_pendingStore) return;
+            const input=document.getElementById('storePwInput').value;
+            const hash=await sha256(input);
+            const auth=_STORE_AUTH[_pendingStore];
+            if(auth&&hash===auth.pwHash){
+                sessionStorage.setItem('daiko_store_auth_'+auth.id,'1');
+                document.getElementById('storePwScreen').classList.remove('active');
+                document.getElementById('storePwInput').value='';
+                selectStore(_pendingStore);
+                _pendingStore=null;
+            } else {
+                document.getElementById('storePwErr').style.display='block';
+                document.getElementById('storePwInput').style.borderColor='#dc2626';
+                document.getElementById('storePwInput').value='';
+                document.getElementById('storePwInput').focus();
+            }
+        }
+        function backToStoreSelectFromPw(){
+            _pendingStore=null;
+            document.getElementById('storePwScreen').classList.remove('active');
+            document.getElementById('storePwInput').value='';
+            document.getElementById('storePwErr').style.display='none';
+            document.getElementById('storeSelectModal').classList.add('active');
+        }
+
+        let currentUser = null;
+        let isAdmin = false;
+        let currentCalendarDate = new Date();
+        let pendingSubstituteEditId = null;
+        let currentStore = null;
+
+        function getKeys() {
+            const prefix = currentStore ? 'daiko_' + currentStore + '_' : 'daiko_';
+            return {
+                INSTRUCTORS: prefix + 'instructors',
+                PROGRAMS: prefix + 'programs',
+                SUBSTITUTES: prefix + 'substitutes',
+                MANAGER_EMAIL: prefix + 'manager_email',
+                ADMIN_PASS: prefix + 'admin_password'
+            };
+        }
+        // Keep KEYS as a getter for backward compatibility
+        let KEYS = getKeys();
+
+        const DEFAULT_INSTRUCTORS = ['Eri','YOKO','hitomi','ituco','えみ','オン','ピョンソンファ','与沢 愛子','夏海はるか','宮城 ゆみこ','峯岸 明美','市川 ミカ','木村 絵美子','佐々木 美貴','竹内 恵','竹内 里美','蓮見 恵莉','西上 歩','鈴木 真由','長野 道子','高鳥 マノ'];
+        const DEFAULT_PROGRAMS = ['ヨガ シンプル','ヨガ ハタ','ヨガ リラックス','ヨガ ボディメンテナンス','ヨガ ヒーリングフロー','ヨガ デトックスフロー','ヨガ ダイエット','ヨガ Beauty Yoga','ヨガ パワー','ヨガ デトックス','ヨガ 姿勢改善','ヨガ コア','ヨガ ヴィンヤサフロー','ヨガ ハードダイエット','ピラティス シンプル','ピラティス Rhythm Flow','ピラティス 美Body','ピラティス ボディケア','ビューティーメソッド 美彩心','ビューティーメソッド 流美身','マシンピラティス Intro','マシンピラティス Basic','マシンピラティス Basic～waist～','マシンピラティス Basic～hip～','マシンピラティス Intermediate（中級）','マシンピラティス Back&Core（中級）','マシンピラティス Lower Body（中級）','マシンピラティス Waist Shape（中級）','マシンピラティス Jump Board（中級）','パーソナルピラティス'];
+
+        function loadOrCreateData() {
+            KEYS = getKeys();
+            const existingInstructors = JSON.parse(localStorage.getItem(KEYS.INSTRUCTORS)||'[]');
+            if (!existingInstructors || existingInstructors.length === 0) {
+                // Only 北小金 gets default instructor data
+                if (currentStore === '北小金') {
+                    localStorage.setItem(KEYS.INSTRUCTORS,JSON.stringify(DEFAULT_INSTRUCTORS));
+                } else {
+                    localStorage.setItem(KEYS.INSTRUCTORS,JSON.stringify([]));
+                }
+            }
+            const existingPrograms = JSON.parse(localStorage.getItem(KEYS.PROGRAMS)||'[]');
+            if (!existingPrograms || existingPrograms.length === 0) {
+                // Only 北小金 gets default program data
+                if (currentStore === '北小金') {
+                    localStorage.setItem(KEYS.PROGRAMS,JSON.stringify(DEFAULT_PROGRAMS));
+                } else {
+                    localStorage.setItem(KEYS.PROGRAMS,JSON.stringify([]));
+                }
+            }
+            if (!localStorage.getItem(KEYS.SUBSTITUTES)) {
+                localStorage.setItem(KEYS.SUBSTITUTES,JSON.stringify([]));
+            }
+            if (!localStorage.getItem(KEYS.MANAGER_EMAIL)) {
+                localStorage.setItem(KEYS.MANAGER_EMAIL,'');
+            }
+            if (!localStorage.getItem(KEYS.ADMIN_PASS)) {
+                // デフォルト管理者パスワード 'admin' のSHA-256ハッシュ
+                localStorage.setItem(KEYS.ADMIN_PASS,'8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918');
+            }
+        }
+
+        function getInstructors() { return JSON.parse(localStorage.getItem(KEYS.INSTRUCTORS)||'[]'); }
+        function getPrograms() { return JSON.parse(localStorage.getItem(KEYS.PROGRAMS)||'[]'); }
+        function getManagerEmail() { return localStorage.getItem(KEYS.MANAGER_EMAIL)||''; }
+        function getSubstitutes() {
+            const all = JSON.parse(localStorage.getItem(KEYS.SUBSTITUTES)||'[]');
+            if (!isAdmin && currentUser) return all.filter(s => s.originalInstructor === currentUser);
+            return all;
+        }
+
+        function populateLoginGrid() {
+            const grid = document.getElementById('instructorLoginGrid');
+            grid.innerHTML = '';
+            getInstructors().forEach(instructor => {
+                const button = document.createElement('button');
+                button.className = 'instructor-button';
+                button.setAttribute('data-avatar', instructor.charAt(0));
+                button.textContent = instructor;
+                button.onclick = () => loginAsInstructor(instructor);
+                grid.appendChild(button);
+            });
+        }
+
+        function showLoginPanel(role) {
+            document.getElementById('loginPanelInstructor').style.display = role === 'instructor' ? 'block' : 'none';
+            document.getElementById('loginPanelAdmin').style.display = role === 'admin' ? 'block' : 'none';
+            document.getElementById('loginRoleBtnInstructor').classList.toggle('active', role === 'instructor');
+            document.getElementById('loginRoleBtnAdmin').classList.toggle('active', role === 'admin');
+        }
+
+        function loginAsInstructor(name) {
+            currentUser = name;
+            isAdmin = false;
+            updateUIForLogin();
+            document.getElementById('loginModal').classList.remove('active');
+        }
+
+        async function loginAsAdmin() {
+            const inputPass = document.getElementById('adminPasswordInput').value;
+            const inputHash = await sha256(inputPass);
+            const storedHash = localStorage.getItem(KEYS.ADMIN_PASS) || '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918';
+            if (inputHash !== storedHash) {
+                document.getElementById('adminLoginError').style.display = 'block';
+                document.getElementById('adminPasswordInput').value = '';
+                document.getElementById('adminPasswordInput').focus();
+                return;
+            }
+            document.getElementById('adminLoginError').style.display = 'none';
+            document.getElementById('adminPasswordInput').value = '';
+            currentUser = '管理者';
+            isAdmin = true;
+            updateUIForLogin();
+            document.getElementById('loginModal').classList.remove('active');
+            checkPendingApprovalsPopup();
+        }
+
+        function logout() {
+            currentUser = null;
+            isAdmin = false;
+            document.getElementById('loginModal').classList.add('active');
+            document.getElementById('adminPasswordInput').value = '';
+            document.getElementById('adminLoginError').style.display = 'none';
+            setupTabVisibility();
+        }
+
+        function populateStoreGrid() {
+            const grid = document.getElementById('storeSelectGrid');
+            grid.innerHTML = '';
+            STORES.forEach(store => {
+                const btn = document.createElement('button');
+                btn.className = 'store-button';
+                btn.textContent = 'Lucina ' + store;
+                btn.onclick = () => onStoreSelect(store);
+                grid.appendChild(btn);
+            });
+        }
+
+        function onStoreSelect(storeName) {
+            const auth = _STORE_AUTH[storeName];
+            if (!auth) return;
+            // 既に店舗認証済みならスキップ
+            if (sessionStorage.getItem('daiko_store_auth_' + auth.id) === '1') {
+                document.getElementById('storeSelectModal').classList.remove('active');
+                selectStore(storeName);
+                return;
+            }
+            // 店舗パスワード画面を表示
+            _pendingStore = storeName;
+            document.getElementById('storePwName').textContent = 'Lucina ' + storeName;
+            document.getElementById('storePwErr').style.display = 'none';
+            document.getElementById('storePwInput').value = '';
+            document.getElementById('storePwInput').style.borderColor = '#e5e7eb';
+            document.getElementById('storeSelectModal').classList.remove('active');
+            document.getElementById('storePwScreen').classList.add('active');
+            document.getElementById('storePwInput').focus();
+        }
+
+        function selectStore(storeName) {
+            currentStore = storeName;
+            KEYS = getKeys();
+            document.getElementById('storeSelectModal').classList.remove('active');
+            document.getElementById('loginStoreTitle').textContent = 'Lucina ' + storeName;
+            document.getElementById('headerTitle').textContent = 'Lucina ' + storeName;
+            document.getElementById('headerSubtitle').textContent = 'Lucina ' + storeName + ' 代行講師管理システム';
+            document.title = 'スタジオ代行管理 - Lucina ' + storeName;
+            loadOrCreateData();
+            populateLoginGrid();
+            generateTimeSlots();
+            populateSelectOptions();
+            renderInstructorList();
+            renderProgramList();
+            const managerEmail = getManagerEmail();
+            document.getElementById('managerEmail').value = managerEmail;
+            document.getElementById('loginModal').classList.add('active');
+            showLoginPanel('instructor');
+        }
+
+        function backToStoreSelect() {
+            currentUser = null;
+            isAdmin = false;
+            currentStore = null;
+            document.getElementById('loginModal').classList.remove('active');
+            document.getElementById('storeSelectModal').classList.add('active');
+            document.getElementById('adminPasswordInput').value = '';
+            document.getElementById('adminLoginError').style.display = 'none';
+        }
+
+        function updateUIForLogin() {
+            const userDisplay = document.getElementById('currentUserDisplay');
+            const userRoleDisplay = document.getElementById('userRoleDisplay');
+            const userAvatar = document.getElementById('userAvatar');
+            if (isAdmin) {
+                userDisplay.textContent = '管理者';
+                userRoleDisplay.textContent = '(管理者ユーザー)';
+                userAvatar.textContent = '⚙';
+                userAvatar.style.background = '#e11d63';
+            } else {
+                userDisplay.textContent = currentUser;
+                userRoleDisplay.textContent = '(インストラクター)';
+                userAvatar.textContent = currentUser.charAt(0);
+                userAvatar.style.background = '#e11d63';
+            }
+            setupTabVisibility();
+            populateSelectOptions();
+            resetRegisterForm();
+            renderSubstituteList();
+            renderCalendar();
+            updateDashboard();
+            updateDescriptionsForRole();
+            if (!isAdmin && currentUser) {
+                switchTab('register');
+            } else if (isAdmin) {
+                switchTab('dashboard');
+            }
+        }
+
+        function updateDescriptionsForRole() {
+            if (isAdmin) {
+                document.getElementById('dashboardDescription').innerHTML = '全インストラクターの代行申請状況を一覧で確認できます。<strong>「承認待ち」の申請を優先的に確認</strong>してください。';
+                document.getElementById('calendarDescription').textContent = '月別カレンダーで全店舗の代行スケジュールを確認できます。日付をクリックすると詳細が表示されます。';
+                document.getElementById('listTabDescription').textContent = '全インストラクターの代行申請を確認・管理できます。承認・却下の操作が行えます。';
+                document.getElementById('registerDescription').innerHTML = '管理者として代行申請を代理登録できます。通常はインストラクターが自分で申請します。';
+            } else {
+                document.getElementById('dashboardDescription').textContent = 'あなたの代行申請の進捗状況を確認できます。';
+                document.getElementById('calendarDescription').textContent = 'あなたの代行スケジュールをカレンダーで確認できます。日付をタップすると詳細が表示されます。';
+                document.getElementById('listTabDescription').innerHTML = 'あなたの代行申請の一覧です。<strong>「代行募集中」の申請には、代行者が見つかったら「代行者を登録」ボタン</strong>から登録してください。';
+                document.getElementById('registerDescription').innerHTML = '代行が必要な場合にここから申請します。<strong>代行講師が未定でもまず申請できます。</strong>代行者が見つかったら、一覧画面から後で登録できます。';
+            }
+        }
+
+        function setupTabVisibility() {
+            const masterBtn = document.querySelector('[data-tab="master"]');
+            masterBtn.classList.toggle('hidden', !isAdmin);
+        }
+
+        function generateTimeSlots() {
+            const select = document.getElementById('regTimeSlot');
+            for (let h = 6; h <= 22; h++) {
+                for (let m = 0; m < 60; m += 5) {
+                    const time = String(h).padStart(2,'0')+':'+String(m).padStart(2,'0');
+                    const opt = document.createElement('option');
+                    opt.value = time;
+                    opt.textContent = time;
+                    select.appendChild(opt);
+                }
+            }
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+            const content = document.getElementById(tabName);
+            if (content) content.classList.add('active');
+            const button = document.querySelector(`[data-tab="${tabName}"]`);
+            if (button) button.classList.add('active');
+        }
+
+        function setupEventListeners() {
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    if (!e.target.classList.contains('hidden')) switchTab(e.target.dataset.tab);
+                });
+            });
+            document.getElementById('filterBtn').addEventListener('click', filterSubstitutes);
+            document.getElementById('clearFilterBtn').addEventListener('click', clearFilters);
+            document.getElementById('prevMonth').addEventListener('click', () => { currentCalendarDate.setMonth(currentCalendarDate.getMonth()-1); renderCalendar(); });
+            document.getElementById('nextMonth').addEventListener('click', () => { currentCalendarDate.setMonth(currentCalendarDate.getMonth()+1); renderCalendar(); });
+            document.getElementById('todayBtn').addEventListener('click', () => { currentCalendarDate = new Date(); renderCalendar(); });
+            document.getElementById('dayDetailsModal').addEventListener('click', (e) => { if (e.target.id === 'dayDetailsModal') closeDayDetails(); });
+            document.getElementById('helpModal').addEventListener('click', (e) => { if (e.target.id === 'helpModal') closeHelpModal(); });
+            document.getElementById('confirmModal').addEventListener('click', (e) => { if (e.target.id === 'confirmModal') closeConfirmModal(); });
+            document.getElementById('notificationModal').addEventListener('click', (e) => { if (e.target.id === 'notificationModal') closeNotificationModal(); });
+            document.getElementById('registerSubstituteModal').addEventListener('click', (e) => { if (e.target.id === 'registerSubstituteModal') closeRegisterSubstituteModal(); });
+            document.getElementById('adminPendingPopup').addEventListener('click', (e) => { if (e.target.id === 'adminPendingPopup') closeAdminPendingPopup(); });
+        }
+
+        function renderInstructorList() {
+            const list = document.getElementById('instructorList');
+            const instructors = getInstructors();
+            if (instructors.length === 0) {
+                list.innerHTML = '<div class="master-item empty">講師が登録されていません</div>';
+            } else {
+                list.innerHTML = instructors.map(i => `<div class="master-item"><span>${esc(i)}</span><div class="master-item-actions"><button class="danger" onclick="deleteInstructor('${esc(i)}')">削除</button></div></div>`).join('');
+            }
+            populateLoginGrid();
+            updateMasterCounts();
+        }
+
+        function renderProgramList() {
+            const list = document.getElementById('programList');
+            const programs = getPrograms();
+            if (programs.length === 0) {
+                list.innerHTML = '<div class="master-item empty">プログラムが登録されていません</div>';
+            } else {
+                list.innerHTML = programs.map(p => `<div class="master-item"><span>${esc(p)}</span><div class="master-item-actions"><button class="danger" onclick="deleteProgram('${esc(p)}')">削除</button></div></div>`).join('');
+            }
+            updateMasterCounts();
+        }
+
+        function addInstructor() {
+            const input = document.getElementById('newInstructorName');
+            const name = input.value.trim();
+            if (!name) { showAlert('masterAlert','講師名を入力してください','error'); return; }
+            const instructors = getInstructors();
+            if (instructors.includes(name)) { showAlert('masterAlert','この講師は既に登録されています','error'); return; }
+            instructors.push(name);
+            localStorage.setItem(KEYS.INSTRUCTORS,JSON.stringify(instructors));
+            input.value = '';
+            renderInstructorList();
+            populateSelectOptions();
+            showAlert('masterAlert','講師を追加しました','success');
+        }
+
+        function deleteInstructor(name) {
+            showConfirm(`${name}を削除しますか？`, () => {
+                const instructors = getInstructors().filter(i => i !== name);
+                localStorage.setItem(KEYS.INSTRUCTORS,JSON.stringify(instructors));
+                renderInstructorList();
+                populateSelectOptions();
+                showAlert('masterAlert','講師を削除しました','success');
+            });
+        }
+
+        function addProgram() {
+            const input = document.getElementById('newProgramName');
+            const name = input.value.trim();
+            if (!name) { showAlert('masterAlert','プログラム名を入力してください','error'); return; }
+            const programs = getPrograms();
+            if (programs.includes(name)) { showAlert('masterAlert','このプログラムは既に登録されています','error'); return; }
+            programs.push(name);
+            localStorage.setItem(KEYS.PROGRAMS,JSON.stringify(programs));
+            input.value = '';
+            renderProgramList();
+            populateSelectOptions();
+            showAlert('masterAlert','プログラムを追加しました','success');
+        }
+
+        function deleteProgram(name) {
+            showConfirm(`${name}を削除しますか？`, () => {
+                const programs = getPrograms().filter(p => p !== name);
+                localStorage.setItem(KEYS.PROGRAMS,JSON.stringify(programs));
+                renderProgramList();
+                populateSelectOptions();
+                showAlert('masterAlert','プログラムを削除しました','success');
+            });
+        }
+
+        function switchMasterTab(tabName) {
+            document.querySelectorAll('.master-panel').forEach(p => p.style.display = 'none');
+            document.querySelectorAll('.master-tab-btn').forEach(b => {
+                b.style.color = '#6b7280';
+                b.style.borderBottom = '3px solid transparent';
+                b.style.fontWeight = '500';
+            });
+            const panel = document.getElementById('masterPanel_' + tabName);
+            if (panel) panel.style.display = 'block';
+            const btn = document.querySelector(`.master-tab-btn[data-master-tab="${tabName}"]`);
+            if (btn) {
+                btn.style.color = '#2563eb';
+                btn.style.borderBottom = '3px solid #2563eb';
+                btn.style.fontWeight = '600';
+            }
+        }
+
+        function updateMasterCounts() {
+            const iCount = getInstructors().length;
+            const pCount = getPrograms().length;
+            document.getElementById('instructorCountBadge').textContent = iCount;
+            document.getElementById('programCountBadge').textContent = pCount;
+            document.getElementById('instructorTotalCount').textContent = iCount;
+            document.getElementById('programTotalCount').textContent = pCount;
+        }
+
+        function resetMasterData() {
+            const msg = currentStore === '北小金'
+                ? 'インストラクターとプログラムを初期データにリセットしますか？（既存の代行申請データは保持されます）'
+                : 'インストラクターとプログラムを空にリセットしますか？（既存の代行申請データは保持されます）';
+            showConfirm(msg, () => {
+                if (currentStore === '北小金') {
+                    localStorage.setItem(KEYS.INSTRUCTORS,JSON.stringify(DEFAULT_INSTRUCTORS));
+                    localStorage.setItem(KEYS.PROGRAMS,JSON.stringify(DEFAULT_PROGRAMS));
+                } else {
+                    localStorage.setItem(KEYS.INSTRUCTORS,JSON.stringify([]));
+                    localStorage.setItem(KEYS.PROGRAMS,JSON.stringify([]));
+                }
+                renderInstructorList();
+                renderProgramList();
+                populateSelectOptions();
+                populateLoginGrid();
+                showAlert('masterAlert','リセットしました','success');
+            });
+        }
+
+        async function changeAdminPassword() {
+            const current = document.getElementById('currentPassword').value;
+            const newPass = document.getElementById('newPassword').value;
+            const newPassConfirm = document.getElementById('newPasswordConfirm').value;
+            const alertEl = document.getElementById('passwordChangeAlert');
+
+            const currentHash = await sha256(current);
+            const storedHash = localStorage.getItem(KEYS.ADMIN_PASS) || '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918';
+            if (currentHash !== storedHash) {
+                alertEl.style.display = 'block';
+                alertEl.style.background = '#fee2e2';
+                alertEl.style.color = '#7f1d1d';
+                alertEl.textContent = '現在のパスワードが正しくありません';
+                return;
+            }
+            if (!newPass || newPass.length < 1) {
+                alertEl.style.display = 'block';
+                alertEl.style.background = '#fee2e2';
+                alertEl.style.color = '#7f1d1d';
+                alertEl.textContent = '新しいパスワードを入力してください';
+                return;
+            }
+            if (newPass !== newPassConfirm) {
+                alertEl.style.display = 'block';
+                alertEl.style.background = '#fee2e2';
+                alertEl.style.color = '#7f1d1d';
+                alertEl.textContent = '新しいパスワードが一致しません';
+                return;
+            }
+            const newHash = await sha256(newPass);
+            localStorage.setItem(KEYS.ADMIN_PASS, newHash);
+            alertEl.style.display = 'block';
+            alertEl.style.background = '#d1fae5';
+            alertEl.style.color = '#065f46';
+            alertEl.textContent = 'パスワードを変更しました';
+            document.getElementById('currentPassword').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('newPasswordConfirm').value = '';
+            setTimeout(() => { alertEl.style.display = 'none'; }, 3000);
+        }
+
+        function saveManagerEmail() {
+            const email = document.getElementById('managerEmail').value.trim();
+            if (!email) { showAlert('masterAlert','メールアドレスを入力してください','error'); return; }
+            localStorage.setItem(KEYS.MANAGER_EMAIL,email);
+            showAlert('masterAlert','管理者メールアドレスを保存しました','success');
+        }
+
+        function populateSelectOptions() {
+            const instructors = getInstructors();
+            const programs = getPrograms();
+
+            document.getElementById('regSubstituteInstructorModal').innerHTML = '<option value="">選択してください</option>';
+            instructors.forEach(i => {
+                const opt = document.createElement('option');
+                opt.value = i;
+                opt.textContent = i;
+                document.getElementById('regSubstituteInstructorModal').appendChild(opt);
+            });
+
+            const regProgramSelect = document.getElementById('regProgram');
+            const regProgValue = regProgramSelect.value;
+            regProgramSelect.innerHTML = '<option value="">選択してください</option>';
+            programs.forEach(p => {
+                const opt = document.createElement('option');
+                opt.value = p;
+                opt.textContent = p;
+                regProgramSelect.appendChild(opt);
+            });
+            regProgramSelect.value = regProgValue;
+
+            const subProgramSelect = document.getElementById('regSubstituteProgramModal');
+            const subProgValue = subProgramSelect.value;
+            subProgramSelect.innerHTML = '<option value="">元のプログラムと同じ</option>';
+            programs.forEach(p => {
+                const opt = document.createElement('option');
+                opt.value = p;
+                opt.textContent = p;
+                subProgramSelect.appendChild(opt);
+            });
+            subProgramSelect.value = subProgValue;
+        }
+
+        function submitRegister() {
+            const date = document.getElementById('regDate').value;
+            const timeSlot = document.getElementById('regTimeSlot').value;
+            const program = document.getElementById('regProgram').value;
+            const originalInstructor = document.getElementById('regOriginalInstructor').value;
+            const reason = document.getElementById('regReason').value;
+
+            if (!date || !timeSlot || !program || !reason) {
+                showAlert('registerAlert','すべての必須項目を入力してください','error');
+                return;
+            }
+
+            const substitute = {
+                id:Date.now(),
+                date,
+                timeSlot,
+                program,
+                originalInstructor,
+                substituteInstructor:'',
+                substituteProgram:'',
+                reason,
+                status:'代行募集中',
+                createdAt:new Date().toISOString(),
+                updatedAt:new Date().toISOString()
+            };
+
+            const all = JSON.parse(localStorage.getItem(KEYS.SUBSTITUTES)||'[]');
+            all.push(substitute);
+            localStorage.setItem(KEYS.SUBSTITUTES,JSON.stringify(all));
+
+            sendManagerNotification(substitute, 'phase1');
+            renderSubstituteList();
+            renderCalendar();
+            updateDashboard();
+            showSuccessAndOptions();
+            resetRegisterForm();
+        }
+
+        function showSuccessAndOptions() {
+            const alert = document.getElementById('registerAlert');
+            alert.innerHTML = '<div style="padding:16px; background:#d1fae5; color:#065f46; border-radius:8px; margin-bottom:16px;"><strong>✅ 代行申請を登録しました！</strong><div style="margin-top:12px; display:flex; gap:12px; flex-wrap:wrap;"><button style="background:#059669; color:#fff; border:none; padding:8px 16px; border-radius:6px; cursor:pointer; font-size:0.85rem;" onclick="resetRegisterForm(); showAlert(\'registerAlert\',\'\',\'\');">続けて申請</button><button style="background:#fff; color:#059669; border:2px solid #059669; padding:8px 16px; border-radius:6px; cursor:pointer; font-size:0.85rem;" onclick="switchTab(\'list\'); showAlert(\'registerAlert\',\'\',\'\');">一覧を確認</button></div></div>';
+            setTimeout(() => {
+                if (alert.innerHTML.includes('代行申請を登録しました')) {
+                    alert.innerHTML = '';
+                }
+            }, 6000);
+        }
+
+        function resetRegisterForm() {
+            document.getElementById('regDate').value = '';
+            document.getElementById('regTimeSlot').value = '';
+            document.getElementById('regProgram').value = '';
+            document.getElementById('regReason').value = '';
+            if (!isAdmin && currentUser) {
+                document.getElementById('regOriginalInstructor').value = currentUser;
+                document.getElementById('regOriginalInstructorDisplay').textContent = currentUser;
+            } else {
+                document.getElementById('regOriginalInstructor').value = '';
+                document.getElementById('regOriginalInstructorDisplay').textContent = '';
+            }
+        }
+
+        function getStatusColor(status) {
+            const colors = {
+                '代行募集中':'recruiting',
+                '承認待ち':'pending',
+                '承認済':'approved',
+                '告知済':'notified',
+                '却下':'rejected'
+            };
+            return colors[status] || 'recruiting';
+        }
+
+        function getProgressStep(status) {
+            const steps = {
+                '代行募集中':1,
+                '承認待ち':2,
+                '承認済':3,
+                '告知済':4,
+                '却下':0
+            };
+            return steps[status] || 0;
+        }
+
+        function renderSubstituteList() {
+            const substitutes = getSubstitutes();
+            const container = document.getElementById('substituteCardsContainer');
+            const emptyState = document.getElementById('listEmptyState');
+
+            if (substitutes.length === 0) {
+                container.innerHTML = '';
+                emptyState.classList.remove('hidden');
+            } else {
+                emptyState.classList.add('hidden');
+                container.innerHTML = substitutes.map(sub => {
+                    const statusColor = getStatusColor(sub.status);
+                    const step = getProgressStep(sub.status);
+
+                    let actionButtons = '';
+                    if (sub.status === '代行募集中') {
+                        if (isAdmin) {
+                            actionButtons = `<span style="padding:8px 12px; background:#e5e7eb; color:#374151; border-radius:6px; font-size:0.85rem; font-weight:600;">依頼者が代行者を探し中</span><button class="secondary" onclick="editSubstitute(${sub.id})" style="margin-left:6px;">編集</button><button onclick="openRegisterSubstituteModal(${sub.id})" style="background:#059669; border:none; margin-left:6px;">代行者を登録</button>`;
+                        } else {
+                            actionButtons = `<button onclick="openRegisterSubstituteModal(${sub.id})" style="background:#059669; border:none;">代行者を登録</button><button class="secondary" onclick="editSubstitute(${sub.id})">編集</button><button class="danger" onclick="deleteSubstitute(${sub.id})">削除</button>`;
+                        }
+                    } else if (sub.status === '承認待ち') {
+                        if (isAdmin) {
+                            actionButtons = `<button class="success" onclick="approveSubstitute(${sub.id})">✅ 承認</button><button class="danger" onclick="rejectSubstitute(${sub.id})">❌ 却下</button><button class="secondary" onclick="editSubstitute(${sub.id})">編集</button>`;
+                        } else {
+                            actionButtons = '<span style="padding:8px 12px; background:#fef3c7; color:#92400e; border-radius:6px; font-size:0.85rem; font-weight:600;">承認待ち中です</span>';
+                        }
+                    } else if (sub.status === '承認済') {
+                        actionButtons = `<button class="print-button" onclick="openNotificationModal(${sub.id})">📢 告知する</button><button class="secondary" onclick="editSubstitute(${sub.id})">編集</button><button class="danger" onclick="deleteSubstitute(${sub.id})">削除</button>`;
+                    } else if (sub.status === '告知済') {
+                        actionButtons = `<span style="padding:6px 10px; background:#cffafe; color:#155e75; border-radius:6px; font-size:0.78rem; font-weight:600;">✅ 告知済</span><button class="secondary" onclick="openNotificationModal(${sub.id})" style="padding:6px 10px; font-size:0.78rem;">🖨 再印刷 / SNS</button>`;
+                    } else if (sub.status === '却下') {
+                        actionButtons = `<button class="secondary" onclick="editSubstitute(${sub.id})">編集</button><button class="danger" onclick="deleteSubstitute(${sub.id})">削除</button>`;
+                    }
+
+                    return `<div class="substitute-card status-${statusColor}">
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">${esc(sub.date)} ${esc(sub.timeSlot)} - ${esc(sub.program)}</div>
+                                <div class="card-meta">${esc(sub.originalInstructor)}</div>
+                            </div>
+                            <div class="card-status ${statusColor}">${esc(sub.status)}</div>
+                        </div>
+                        <div class="progress-bar" style="justify-content:center; margin-bottom:16px; font-size:0.8rem;">
+                            <span class="${step >= 1 ? 'progress-step active' : 'progress-step'}">①申請</span>
+                            <span class="progress-arrow">${step > 1 ? '→' : '・'}</span>
+                            <span class="${step >= 2 ? 'progress-step active' : 'progress-step'}">②代行者決定</span>
+                            <span class="progress-arrow">${step > 2 ? '→' : '・'}</span>
+                            <span class="${step >= 3 ? 'progress-step active' : 'progress-step'}">③承認</span>
+                            <span class="progress-arrow">${step > 3 ? '→' : '・'}</span>
+                            <span class="${step >= 4 ? 'progress-step active' : 'progress-step'}">④告知</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-row">
+                                <div class="card-field">
+                                    <div class="card-field-label">理由</div>
+                                    <div class="card-field-value">${esc(sub.reason)}</div>
+                                </div>
+                                <div class="card-field">
+                                    <div class="card-field-label">代行講師</div>
+                                    <div class="card-field-value">${esc(sub.substituteInstructor || '未定')}</div>
+                                </div>
+                            </div>
+                            ${sub.substituteProgram ? `<div class="card-row">
+                                <div class="card-field">
+                                    <div class="card-field-label">代行プログラム</div>
+                                    <div class="card-field-value">${esc(sub.substituteProgram)}</div>
+                                </div>
+                            </div>` : ''}
+                        </div>
+                        <div class="card-actions">
+                            ${actionButtons}
+                        </div>
+                    </div>`;
+                }).join('');
+            }
+        }
+
+        function openRegisterSubstituteModal(id) {
+            pendingSubstituteEditId = id;
+            document.getElementById('registerSubstituteModal').classList.add('active');
+        }
+
+        function closeRegisterSubstituteModal() {
+            document.getElementById('registerSubstituteModal').classList.remove('active');
+            pendingSubstituteEditId = null;
+        }
+
+        function submitRegisterSubstitute() {
+            const substituteInstructor = document.getElementById('regSubstituteInstructorModal').value;
+            const substituteProgram = document.getElementById('regSubstituteProgramModal').value;
+
+            if (!substituteInstructor) {
+                showAlert('registerAlert','代行講師を選択してください','error');
+                return;
+            }
+
+            const all = JSON.parse(localStorage.getItem(KEYS.SUBSTITUTES)||'[]');
+            const sub = all.find(s => s.id === pendingSubstituteEditId);
+            if (!sub) return;
+
+            if (substituteInstructor === sub.originalInstructor) {
+                showAlert('registerAlert','元の講師と代行講師は異なる講師を選択してください','error');
+                return;
+            }
+
+            sub.substituteInstructor = substituteInstructor;
+            sub.substituteProgram = substituteProgram;
+            sub.status = '承認待ち';
+            sub.updatedAt = new Date().toISOString();
+
+            localStorage.setItem(KEYS.SUBSTITUTES,JSON.stringify(all));
+            sendManagerNotification(sub, 'phase2');
+
+            renderSubstituteList();
+            renderCalendar();
+            updateDashboard();
+            closeRegisterSubstituteModal();
+            showAlert('listAlert','代行者を登録し、承認依頼を送信しました','success');
+        }
+
+        function approveSubstitute(id) {
+            const all = JSON.parse(localStorage.getItem(KEYS.SUBSTITUTES)||'[]');
+            const sub = all.find(s => s.id === id);
+            if (!sub) return;
+
+            sub.status = '承認済';
+            sub.updatedAt = new Date().toISOString();
+            localStorage.setItem(KEYS.SUBSTITUTES,JSON.stringify(all));
+
+            renderSubstituteList();
+            renderCalendar();
+            updateDashboard();
+            showAlert('listAlert','代行を承認しました','success');
+
+            setTimeout(() => openNotificationModal(id), 500);
+        }
+
+        function rejectSubstitute(id) {
+            showConfirm('この申請を却下しますか？', () => {
+                const all = JSON.parse(localStorage.getItem(KEYS.SUBSTITUTES)||'[]');
+                const sub = all.find(s => s.id === id);
+                if (!sub) return;
+
+                sub.status = '却下';
+                sub.updatedAt = new Date().toISOString();
+                localStorage.setItem(KEYS.SUBSTITUTES,JSON.stringify(all));
+
+                renderSubstituteList();
+                renderCalendar();
+                updateDashboard();
+                showAlert('listAlert','申請を却下しました','success');
+            });
+        }
+
+        function editSubstitute(id) {
+            const all = JSON.parse(localStorage.getItem(KEYS.SUBSTITUTES)||'[]');
+            const sub = all.find(s => s.id === id);
+            if (!sub) return;
+
+            document.getElementById('regDate').value = sub.date;
+            document.getElementById('regTimeSlot').value = sub.timeSlot;
+            document.getElementById('regProgram').value = sub.program;
+            document.getElementById('regOriginalInstructor').value = sub.originalInstructor;
+            document.getElementById('regOriginalInstructorDisplay').textContent = sub.originalInstructor;
+            document.getElementById('regReason').value = sub.reason;
+
+            removeSubstituteById(id);
+            switchTab('register');
+            showAlert('registerAlert','編集モードで読み込みました','info');
+        }
+
+        function removeSubstituteById(id) {
+            const all = JSON.parse(localStorage.getItem(KEYS.SUBSTITUTES)||'[]');
+            localStorage.setItem(KEYS.SUBSTITUTES,JSON.stringify(all.filter(s => s.id !== id)));
+            renderSubstituteList();
+            renderCalendar();
+            updateDashboard();
+        }
+
+        function deleteSubstitute(id) {
+            showConfirm('この代行申請を削除しますか？', () => {
+                const all = JSON.parse(localStorage.getItem(KEYS.SUBSTITUTES)||'[]');
+                const filtered = all.filter(s => s.id !== id);
+                localStorage.setItem(KEYS.SUBSTITUTES,JSON.stringify(filtered));
+                renderSubstituteList();
+                renderCalendar();
+                updateDashboard();
+                showAlert('listAlert','申請を削除しました','success');
+            });
+        }
+
+        function filterSubstitutes() {
+            const status = document.getElementById('filterStatus').value;
+            const startDate = document.getElementById('filterStartDate').value;
+            const endDate = document.getElementById('filterEndDate').value;
+
+            let substitutes = getSubstitutes();
+            if (status) substitutes = substitutes.filter(s => s.status === status);
+            if (startDate) substitutes = substitutes.filter(s => s.date >= startDate);
+            if (endDate) substitutes = substitutes.filter(s => s.date <= endDate);
+
+            renderFilteredSubstitutes(substitutes);
+        }
+
+        function clearFilters() {
+            document.getElementById('filterStatus').value = '';
+            document.getElementById('filterStartDate').value = '';
+            document.getElementById('filterEndDate').value = '';
+            renderSubstituteList();
+        }
+
+        function renderFilteredSubstitutes(substitutes) {
+            const container = document.getElementById('substituteCardsContainer');
+            const emptyState = document.getElementById('listEmptyState');
+
+            if (substitutes.length === 0) {
+                container.innerHTML = '';
+                emptyState.classList.remove('hidden');
+            } else {
+                emptyState.classList.add('hidden');
+                container.innerHTML = substitutes.map(sub => {
+                    const statusColor = getStatusColor(sub.status);
+                    const step = getProgressStep(sub.status);
+
+                    let actionButtons = '';
+                    if (sub.status === '代行募集中') {
+                        if (isAdmin) {
+                            actionButtons = `<span style="padding:8px 12px; background:#e5e7eb; color:#374151; border-radius:6px; font-size:0.85rem; font-weight:600;">依頼者が代行者を探し中</span><button class="secondary" onclick="editSubstitute(${sub.id})" style="margin-left:6px;">編集</button><button onclick="openRegisterSubstituteModal(${sub.id})" style="background:#059669; border:none; margin-left:6px;">代行者を登録</button>`;
+                        } else {
+                            actionButtons = `<button onclick="openRegisterSubstituteModal(${sub.id})" style="background:#059669; border:none;">代行者を登録</button><button class="secondary" onclick="editSubstitute(${sub.id})">編集</button><button class="danger" onclick="deleteSubstitute(${sub.id})">削除</button>`;
+                        }
+                    } else if (sub.status === '承認待ち') {
+                        if (isAdmin) {
+                            actionButtons = `<button class="success" onclick="approveSubstitute(${sub.id})">✅ 承認</button><button class="danger" onclick="rejectSubstitute(${sub.id})">❌ 却下</button><button class="secondary" onclick="editSubstitute(${sub.id})">編集</button>`;
+                        } else {
+                            actionButtons = '<span style="padding:8px 12px; background:#fef3c7; color:#92400e; border-radius:6px; font-size:0.85rem; font-weight:600;">承認待ち中です</span>';
+                        }
+                    } else if (sub.status === '承認済') {
+                        actionButtons = `<button class="print-button" onclick="openNotificationModal(${sub.id})">📢 告知する</button><button class="secondary" onclick="editSubstitute(${sub.id})">編集</button><button class="danger" onclick="deleteSubstitute(${sub.id})">削除</button>`;
+                    } else if (sub.status === '告知済') {
+                        actionButtons = `<span style="padding:6px 10px; background:#cffafe; color:#155e75; border-radius:6px; font-size:0.78rem; font-weight:600;">✅ 告知済</span><button class="secondary" onclick="openNotificationModal(${sub.id})" style="padding:6px 10px; font-size:0.78rem;">🖨 再印刷 / SNS</button>`;
+                    } else if (sub.status === '却下') {
+                        actionButtons = `<button class="secondary" onclick="editSubstitute(${sub.id})">編集</button><button class="danger" onclick="deleteSubstitute(${sub.id})">削除</button>`;
+                    }
+
+                    return `<div class="substitute-card status-${statusColor}">
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">${esc(sub.date)} ${esc(sub.timeSlot)} - ${esc(sub.program)}</div>
+                                <div class="card-meta">${esc(sub.originalInstructor)}</div>
+                            </div>
+                            <div class="card-status ${statusColor}">${esc(sub.status)}</div>
+                        </div>
+                        <div class="progress-bar" style="justify-content:center; margin-bottom:16px; font-size:0.8rem;">
+                            <span class="${step >= 1 ? 'progress-step active' : 'progress-step'}">①申請</span>
+                            <span class="progress-arrow">${step > 1 ? '→' : '・'}</span>
+                            <span class="${step >= 2 ? 'progress-step active' : 'progress-step'}">②代行者決定</span>
+                            <span class="progress-arrow">${step > 2 ? '→' : '・'}</span>
+                            <span class="${step >= 3 ? 'progress-step active' : 'progress-step'}">③承認</span>
+                            <span class="progress-arrow">${step > 3 ? '→' : '・'}</span>
+                            <span class="${step >= 4 ? 'progress-step active' : 'progress-step'}">④告知</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-row">
+                                <div class="card-field">
+                                    <div class="card-field-label">理由</div>
+                                    <div class="card-field-value">${esc(sub.reason)}</div>
+                                </div>
+                                <div class="card-field">
+                                    <div class="card-field-label">代行講師</div>
+                                    <div class="card-field-value">${esc(sub.substituteInstructor || '未定')}</div>
+                                </div>
+                            </div>
+                            ${sub.substituteProgram ? `<div class="card-row">
+                                <div class="card-field">
+                                    <div class="card-field-label">代行プログラム</div>
+                                    <div class="card-field-value">${esc(sub.substituteProgram)}</div>
+                                </div>
+                            </div>` : ''}
+                        </div>
+                        <div class="card-actions">
+                            ${actionButtons}
+                        </div>
+                    </div>`;
+                }).join('');
+            }
+        }
+
+        function updateDashboard() {
+            const substitutes = getSubstitutes();
+            const total = substitutes.length;
+            const recruiting = substitutes.filter(s => s.status === '代行募集中').length;
+            const pending = substitutes.filter(s => s.status === '承認待ち').length;
+            const approved = substitutes.filter(s => s.status === '承認済').length;
+            const notified = substitutes.filter(s => s.status === '告知済').length;
+            const rejected = substitutes.filter(s => s.status === '却下').length;
+
+            document.getElementById('totalCount').textContent = total;
+            document.getElementById('recruitingCount').textContent = recruiting;
+            document.getElementById('pendingCount').textContent = pending;
+            document.getElementById('approvedCount').textContent = approved;
+            document.getElementById('notifiedCount').textContent = notified;
+            document.getElementById('rejectedCount').textContent = rejected;
+
+            if (isAdmin && pending > 0) {
+                document.getElementById('pendingApprovals').style.display = 'block';
+                document.getElementById('pendingApprovalsSubtitle').textContent = `${pending} 件の承認が必要です`;
+                const pendingApprovalsList = document.getElementById('pendingApprovalsList');
+                const pendingSubs = substitutes.filter(s => s.status === '承認待ち');
+                pendingApprovalsList.innerHTML = pendingSubs.map(sub => {
+                    const dateParts = sub.date.split('-');
+                    const dateFormatted = parseInt(dateParts[1]) + '月' + parseInt(dateParts[2]) + '日';
+                    const dayOfWeek = ['日','月','火','水','木','金','土'][new Date(sub.date).getDay()];
+                    return `<div style="background:#fff; border-radius:10px; padding:16px; margin-bottom:10px; box-shadow:0 1px 3px rgba(0,0,0,0.08); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+                        <div style="flex:1; min-width:200px;">
+                            <div style="font-weight:700; color:#1f2937; font-size:1rem; margin-bottom:6px;">📅 ${esc(dateFormatted)}（${esc(dayOfWeek)}）${esc(sub.timeSlot)}</div>
+                            <div style="font-size:0.9rem; color:#374151; margin-bottom:4px;">📚 ${esc(sub.program)}</div>
+                            <div style="font-size:0.85rem; color:#6b7280;">👤 ${esc(sub.originalInstructor)} → <strong style="color:#059669;">${esc(sub.substituteInstructor)}</strong></div>
+                        </div>
+                        <div style="display:flex; gap:8px; flex-shrink:0;">
+                            <button class="success" onclick="approveSubstitute(${sub.id})" style="padding:10px 20px; font-size:0.9rem; font-weight:600;">✅ 承認</button>
+                            <button class="danger" onclick="rejectSubstitute(${sub.id})" style="padding:10px 20px; font-size:0.9rem; font-weight:600;">❌ 却下</button>
+                        </div>
+                    </div>`;
+                }).join('');
+            } else {
+                document.getElementById('pendingApprovals').style.display = 'none';
+            }
+
+            const recentSubstitutes = substitutes.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0,5);
+            const activityList = document.getElementById('recentActivityList');
+            if (recentSubstitutes.length === 0) {
+                activityList.innerHTML = '<div class="activity-item">最近の活動がありません</div>';
+            } else {
+                activityList.innerHTML = recentSubstitutes.map(sub => `<div class="activity-item"><strong>${esc(sub.date)} ${esc(sub.timeSlot)}</strong> - ${esc(sub.program)}<br>${esc(sub.originalInstructor)} → ${esc(sub.substituteInstructor || '未定')}<span class="badge ${getStatusColor(sub.status)}" style="margin-left:10px;">${esc(sub.status)}</span></div>`).join('');
+            }
+        }
+
+        function renderCalendar() {
+            const year = currentCalendarDate.getFullYear();
+            const month = currentCalendarDate.getMonth();
+            const monthNames = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+            document.getElementById('currentMonth').textContent = `${year}年 ${monthNames[month]}`;
+
+            const firstDay = new Date(year,month,1).getDay();
+            const daysInMonth = new Date(year,month+1,0).getDate();
+            const daysInPrevMonth = new Date(year,month,0).getDate();
+            const calendarGrid = document.getElementById('calendarGrid');
+            calendarGrid.innerHTML = '';
+
+            const dayHeaders = ['日','月','火','水','木','金','土'];
+            dayHeaders.forEach(day => {
+                const header = document.createElement('div');
+                header.className = 'calendar-day-header';
+                header.textContent = day;
+                calendarGrid.appendChild(header);
+            });
+
+            for (let i = firstDay - 1; i >= 0; i--) {
+                const day = document.createElement('div');
+                day.className = 'calendar-day other-month';
+                day.innerHTML = `<div class="day-number">${daysInPrevMonth - i}</div>`;
+                calendarGrid.appendChild(day);
+            }
+
+            const substitutes = getSubstitutes();
+            const today = new Date();
+            today.setHours(0,0,0,0);
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const date = new Date(year,month,day);
+                const dateStr = date.toISOString().split('T')[0];
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-day';
+                if (date.toDateString() === today.toDateString()) dayElement.classList.add('today');
+
+                const daySubstitutes = substitutes.filter(s => s.date === dateStr);
+                let html = `<div class="day-number">${day}</div><div class="day-events">`;
+                daySubstitutes.forEach(sub => {
+                    html += `<div class="day-event ${getStatusColor(sub.status)}">${esc(sub.program)}</div>`;
+                });
+                html += '</div>';
+                dayElement.innerHTML = html;
+                dayElement.addEventListener('click', () => showDayDetails(dateStr,daySubstitutes));
+                calendarGrid.appendChild(dayElement);
+            }
+
+            const remainingDays = 42 - (firstDay + daysInMonth);
+            for (let i = 1; i <= remainingDays; i++) {
+                const day = document.createElement('div');
+                day.className = 'calendar-day other-month';
+                day.innerHTML = `<div class="day-number">${i}</div>`;
+                calendarGrid.appendChild(day);
+            }
+        }
+
+        function showDayDetails(dateStr, daySubstitutes) {
+            document.getElementById('detailDate').textContent = dateStr;
+            const dayDetailsList = document.getElementById('dayDetailsList');
+            if (daySubstitutes.length === 0) {
+                dayDetailsList.innerHTML = '<div class="empty-state"><p>この日の代行申請がありません</p></div>';
+            } else {
+                dayDetailsList.innerHTML = daySubstitutes.map(sub => `<div class="form-section"><div style="margin-bottom:10px;"><strong>${esc(sub.timeSlot)}</strong> - <strong>${esc(sub.program)}</strong>${sub.substituteProgram && sub.substituteProgram !== sub.program ? ' → <strong>'+esc(sub.substituteProgram)+'</strong>' : ''}<span class="badge ${getStatusColor(sub.status)}" style="margin-left:10px;">${esc(sub.status)}</span></div><div style="margin-bottom:8px;"><strong>元の講師:</strong> ${esc(sub.originalInstructor)}</div><div style="margin-bottom:8px;"><strong>代行講師:</strong> ${esc(sub.substituteInstructor || '未定')}</div>${sub.reason?`<div style="margin-bottom:8px;"><strong>理由:</strong> ${esc(sub.reason)}</div>`:''}<div style="margin-top:10px;"><button onclick="printNotice(${sub.id})" style="font-size:0.85rem;">🖨 告知用紙を印刷</button></div></div>`).join('');
+            }
+            document.getElementById('dayDetailsModal').classList.add('active');
+        }
+
+        function closeDayDetails() {
+            document.getElementById('dayDetailsModal').classList.remove('active');
+        }
+
+        function openHelpModal() {
+            document.getElementById('helpModal').classList.add('active');
+        }
+
+        function closeHelpModal() {
+            document.getElementById('helpModal').classList.remove('active');
+        }
+
+        function sendManagerNotification(sub, phase) {
+            const managerEmail = getManagerEmail();
+
+            const dateParts = sub.date.split('-');
+            const dateFormatted = dateParts[0] + '年' + parseInt(dateParts[1]) + '月' + parseInt(dateParts[2]) + '日';
+            const dayOfWeek = ['日','月','火','水','木','金','土'][new Date(sub.date).getDay()];
+
+            let subject, body, phaseLabel;
+
+            if (phase === 'phase1') {
+                phaseLabel = '代行申請を登録しました';
+                subject = `【代行申請】${dateFormatted} ${sub.timeSlot} ${sub.program} - ${sub.originalInstructor}`;
+                body = `代行申請がありました。\n\n■ 申請者: ${sub.originalInstructor}\n■ 日時: ${dateFormatted}（${dayOfWeek}）${sub.timeSlot}\n■ クラス: ${sub.program}\n■ 理由: ${sub.reason}\n■ 代行者: 未定\n\n━━━━━━━━━━━━━━━━━━━━\nスタジオ代行管理アプリでご確認ください。\n代行者が決まり次第、承認依頼の通知が届きます。`;
+            } else if (phase === 'phase2') {
+                phaseLabel = '代行者を登録しました';
+                subject = `【承認依頼】${dateFormatted} ${sub.timeSlot} ${sub.program} - ${sub.substituteInstructor}が代行`;
+                body = `代行者が決まりました。承認をお願いいたします。\n\n■ 申請者: ${sub.originalInstructor}\n■ 日時: ${dateFormatted}（${dayOfWeek}）${sub.timeSlot}\n■ 元クラス: ${sub.program}\n■ 代行者: ${sub.substituteInstructor}\n■ 代行クラス: ${sub.substituteProgram || sub.program}\n\n━━━━━━━━━━━━━━━━━━━━\n【承認の手順】\n1. スタジオ代行管理アプリを開いてください\n2.「管理者」としてログインしてください\n3. ダッシュボードに「承認待ち」として表示されます\n4.「✅ 承認」ボタンを押して承認してください\n\n※承認後、自動的にお客様告知画面が表示されます。`;
+            }
+
+            // Show notification options modal
+            const modal = document.getElementById('emailNotifyModal');
+            document.getElementById('emailNotifyTitle').textContent = phaseLabel;
+            document.getElementById('emailNotifySummary').innerHTML = `
+                <div style="margin-bottom:6px;"><strong>${esc(dateFormatted)}（${esc(dayOfWeek)}）${esc(sub.timeSlot)}</strong></div>
+                <div>${esc(sub.program)} / ${esc(sub.originalInstructor)}</div>
+                ${sub.substituteInstructor ? '<div>代行: <strong>' + esc(sub.substituteInstructor) + '</strong></div>' : ''}
+            `;
+
+            const mailtoLink = managerEmail ? `mailto:${managerEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}` : '';
+            const lineBody = body.replace(/\n/g, '\n');
+            const lineLink = `https://line.me/R/share?text=${encodeURIComponent(subject + '\n\n' + body)}`;
+
+            document.getElementById('emailNotifyMailBtn').onclick = function() {
+                if (mailtoLink) { window.location.href = mailtoLink; }
+                else { alert('管理者メールアドレスが設定されていません。'); }
+            };
+            document.getElementById('emailNotifyCopyBtn').onclick = function() {
+                const text = subject + '\n\n' + body;
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast('テキストをコピーしました。LINEやメッセージアプリに貼り付けてください。');
+                }).catch(() => {
+                    prompt('以下をコピーしてください:', text);
+                });
+            };
+            document.getElementById('emailNotifyLineBtn').onclick = function() {
+                window.open(lineLink, '_blank');
+            };
+            document.getElementById('emailNotifySkipBtn').onclick = function() {
+                modal.classList.remove('active');
+            };
+
+            modal.classList.add('active');
+        }
+
+        function printNotice(id) {
+            const all = JSON.parse(localStorage.getItem(KEYS.SUBSTITUTES)||'[]');
+            const sub = all.find(s => s.id === id);
+            if (!sub) { alert('データが見つかりません'); return; }
+
+            const dateParts = sub.date.split('-');
+            const dateFormatted = dateParts[0] + '年' + parseInt(dateParts[1]) + '月' + parseInt(dateParts[2]) + '日';
+            const dayOfWeek = ['日','月','火','水','木','金','土'][new Date(sub.date).getDay()];
+            const actualProgram = sub.substituteProgram || sub.program;
+            const programChanged = sub.substituteProgram && sub.substituteProgram !== sub.program;
+
+            const noticeHTML = `
+                <div class="notice-card">
+                    <div class="notice-header">代行のお知らせ</div>
+                    <div class="notice-body">
+                        <div class="notice-date">${esc(dateFormatted)}（${esc(dayOfWeek)}）${esc(sub.timeSlot)}〜</div>
+                        <table class="notice-table">
+                            <tr>
+                                <th></th>
+                                <th>変更前</th>
+                                <th>変更後</th>
+                            </tr>
+                            <tr>
+                                <td class="notice-label">担当</td>
+                                <td class="notice-before">${esc(sub.originalInstructor)}</td>
+                                <td class="notice-after">${esc(sub.substituteInstructor)}</td>
+                            </tr>
+                            ${programChanged ? `<tr>
+                                <td class="notice-label">クラス</td>
+                                <td class="notice-before">${esc(sub.program)}</td>
+                                <td class="notice-after">${esc(actualProgram)}</td>
+                            </tr>` : `<tr>
+                                <td class="notice-label">クラス</td>
+                                <td colspan="2" class="notice-same">${esc(sub.program)}</td>
+                            </tr>`}
+                        </table>
+                        <div class="notice-message">ご理解のほどよろしくお願いいたします。</div>
+                    </div>
+                    <div class="notice-footer"></div>
+                </div>`;
+
+            const printWindow = window.open('','_blank','width=800,height=1000');
+            printWindow.document.write(`<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><title>代行告知用紙</title>
+<style>
+@page { size: A4 portrait; margin: 0; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', sans-serif; width:210mm; height:297mm; }
+.page { width:210mm; height:297mm; display:flex; flex-direction:column; }
+.half { width:210mm; height:148.5mm; display:flex; align-items:center; justify-content:center; position:relative; }
+.half:first-child { border-bottom: 1px dashed #ccc; }
+.notice-card { width:170mm; text-align:center; }
+.notice-header { font-size:22pt; font-weight:700; margin-bottom:8mm; letter-spacing:0.15em; color:#be185d; border-bottom:3px double #f472b6; padding-bottom:5mm; }
+.notice-body { margin-bottom:6mm; }
+.notice-date { font-size:15pt; font-weight:600; margin-bottom:8mm; background:#fdf2f8; color:#9d174d; padding:4mm 0; border-radius:3mm; border:1px solid #fbcfe8; }
+.notice-table { width:100%; border-collapse:collapse; margin-bottom:6mm; font-size:12pt; }
+.notice-table th { background:#ec4899; color:#fff; padding:3mm 2mm; font-weight:600; text-align:center; font-size:11pt; }
+.notice-table td { padding:3.5mm 2mm; border-bottom:1px solid #fce7f3; text-align:center; }
+.notice-label { font-weight:600; background:#fdf2f8; width:22%; font-size:11pt; color:#9d174d; }
+.notice-before { width:39%; font-size:13pt; }
+.notice-after { width:39%; font-size:13pt; font-weight:700; color:#be185d; }
+.notice-same { font-size:13pt; font-weight:600; }
+.notice-message { font-size:11pt; color:#6b7280; margin-top:5mm; }
+.notice-footer { font-size:10pt; color:#f9a8d4; margin-top:3mm; font-weight:600; }
+@media print {
+    body { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    .half:first-child { border-bottom:1px dashed #ccc; }
+}
+</style></head><body>
+<div class="page">
+    <div class="half">${noticeHTML}</div>
+    <div class="half">${noticeHTML}</div>
+</div>
+<script>window.onload=function(){window.print();}<\/script>
+</body></html>`);
+            printWindow.document.close();
+        }
+
+        function openNotificationModal(id) {
+            const all = JSON.parse(localStorage.getItem(KEYS.SUBSTITUTES)||'[]');
+            const sub = all.find(s => s.id === id);
+            if (!sub) return;
+
+            document.getElementById('notifDate').textContent = sub.date + ' ' + sub.timeSlot + '〜';
+            document.getElementById('notifProgram').textContent = sub.substituteProgram || sub.program;
+            document.getElementById('notifOriginal').textContent = sub.originalInstructor;
+            document.getElementById('notifSubstitute').textContent = sub.substituteInstructor;
+            document.getElementById('notificationModal').dataset.substituteId = id;
+            document.getElementById('notificationModal').classList.add('active');
+        }
+
+        function closeNotificationModal() {
+            document.getElementById('notificationModal').classList.remove('active');
+        }
+
+        function handleNotificationPrint() {
+            const id = parseInt(document.getElementById('notificationModal').dataset.substituteId);
+            printNotice(id);
+        }
+
+        function handleNotificationSNS() {
+            const id = parseInt(document.getElementById('notificationModal').dataset.substituteId);
+            const all = JSON.parse(localStorage.getItem(KEYS.SUBSTITUTES)||'[]');
+            const sub = all.find(s => s.id === id);
+            if (!sub) return;
+
+            const dateParts = sub.date.split('-');
+            const dateFormatted = dateParts[0] + '年' + parseInt(dateParts[1]) + '月' + parseInt(dateParts[2]) + '日';
+            const dayOfWeek = ['日','月','火','水','木','金','土'][new Date(sub.date).getDay()];
+            const snsText = `【代行のお知らせ】\n📅 ${dateFormatted}（${dayOfWeek}）${sub.timeSlot}〜\n❌ 変更前：${sub.program}（${sub.originalInstructor}）\n⭕ 変更後：${sub.substituteProgram || sub.program}（${sub.substituteInstructor}）\nご理解のほどよろしくお願いいたします。\n#Lucina北小金 #スタジオ代行`;
+
+            navigator.clipboard.writeText(snsText).then(() => {
+                showToast('コピーしました！');
+            }).catch(() => {
+                alert('コピーに失敗しました');
+            });
+        }
+
+        function markAsNotified() {
+            const id = parseInt(document.getElementById('notificationModal').dataset.substituteId);
+            const all = JSON.parse(localStorage.getItem(KEYS.SUBSTITUTES)||'[]');
+            const sub = all.find(s => s.id === id);
+            if (!sub) return;
+
+            sub.status = '告知済';
+            sub.updatedAt = new Date().toISOString();
+            localStorage.setItem(KEYS.SUBSTITUTES,JSON.stringify(all));
+
+            renderSubstituteList();
+            renderCalendar();
+            updateDashboard();
+            closeNotificationModal();
+            showAlert('listAlert','告知済みにマークしました','success');
+        }
+
+        function showAlert(elementId, message, type) {
+            const alert = document.getElementById(elementId);
+            alert.textContent = message;
+            alert.className = `alert ${type} active`;
+            setTimeout(() => alert.classList.remove('active'), 4000);
+        }
+
+        let pendingConfirmCallback = null;
+
+        function showConfirm(message, onConfirm) {
+            document.getElementById('confirmMessage').textContent = message;
+            document.getElementById('confirmModal').classList.add('active');
+            pendingConfirmCallback = onConfirm;
+        }
+
+        function closeConfirmModal() {
+            document.getElementById('confirmModal').classList.remove('active');
+            pendingConfirmCallback = null;
+        }
+
+        function confirmAction() {
+            if (pendingConfirmCallback) {
+                pendingConfirmCallback();
+            }
+            closeConfirmModal();
+        }
+
+        function checkPendingApprovalsPopup() {
+            const all = JSON.parse(localStorage.getItem(KEYS.SUBSTITUTES)||'[]');
+            const pendingSubs = all.filter(s => s.status === '承認待ち');
+            if (pendingSubs.length === 0) return;
+
+            document.getElementById('adminPendingPopupCount').textContent = `${pendingSubs.length} 件の承認待ち申請`;
+            const listEl = document.getElementById('adminPendingPopupList');
+            listEl.innerHTML = pendingSubs.map(sub => {
+                const dateParts = sub.date.split('-');
+                const dateFormatted = parseInt(dateParts[1]) + '/' + parseInt(dateParts[2]);
+                return `<div style="background:#fffbf0; border:1px solid #fcd34d; border-radius:8px; padding:14px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                    <div>
+                        <div style="font-weight:600; color:#1f2937; font-size:0.95rem;">${esc(dateFormatted)} ${esc(sub.timeSlot)} ${esc(sub.program)}</div>
+                        <div style="font-size:0.85rem; color:#6b7280; margin-top:4px;">${esc(sub.originalInstructor)} → ${esc(sub.substituteInstructor)}</div>
+                    </div>
+                    <div style="display:flex; gap:6px;">
+                        <button class="success" onclick="approveSubstitute(${sub.id}); closeAdminPendingPopup();" style="padding:6px 14px; font-size:0.8rem;">✅ 承認</button>
+                        <button class="danger" onclick="rejectSubstitute(${sub.id}); closeAdminPendingPopup();" style="padding:6px 14px; font-size:0.8rem;">❌ 却下</button>
+                    </div>
+                </div>`;
+            }).join('');
+            document.getElementById('adminPendingPopup').classList.add('active');
+        }
+
+        function closeAdminPendingPopup() {
+            document.getElementById('adminPendingPopup').classList.remove('active');
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toastNotification');
+            document.getElementById('toastMessage').textContent = message;
+            toast.style.display = 'block';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3000);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            populateStoreGrid();
+            setupEventListeners();
+            // Store selection modal is shown first (active by default)
+            // Data loading happens after store is selected via selectStore()
+        });
+    </script>
+</body>
+</html>
