@@ -1,0 +1,2080 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Line Up — AXISCORE PILATES</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Noto+Serif+JP:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;scroll-behavior:smooth}
+body{background:#fff;color:#1a1a1a;font-family:"Cormorant Garamond",serif;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+a:focus-visible,button:focus-visible{outline:2px solid #8a7868;outline-offset:3px;border-radius:2px;box-shadow:0 0 0 6px rgba(138,120,104,.1)}
+img{display:block;width:100%;height:auto}
+::selection{background:#c4b5a5;color:#fff}
+
+.page-curtain{position:fixed;inset:0;z-index:9999;background:#fff;display:flex;align-items:center;justify-content:center;transition:opacity .6s ease,visibility .6s ease}
+.page-curtain.done{opacity:0;visibility:hidden;pointer-events:none}
+.page-curtain span{font-size:14px;letter-spacing:6px;color:#998878;animation:fadeIn 1s both}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+.fade-up{opacity:0;transform:translateY(28px);transition:opacity .9s ease,transform .9s ease}
+.fade-up.visible{opacity:1;transform:none}
+.delay-0{transition-delay:0s}
+.delay-1{transition-delay:.15s}
+.delay-2{transition-delay:.3s}
+.delay-3{transition-delay:.45s}
+.delay-4{transition-delay:.6s}
+
+/* Header */
+header{position:fixed;top:0;left:0;right:0;z-index:100;height:72px;display:flex;align-items:center;background:rgba(255,255,255,.96);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(0,0,0,.04);transition:box-shadow .4s ease,background .4s ease}
+header.scrolled{box-shadow:0 2px 24px rgba(0,0,0,.06);background:rgba(255,255,255,.99)}
+.hd{max-width:1200px;width:100%;margin:0 auto;padding:0 40px;display:flex;align-items:center;justify-content:space-between}
+.hd-logo{display:flex;align-items:center;text-decoration:none}
+.hd-logo img{height:56px!important;width:auto!important;max-width:none!important}
+nav{display:flex;gap:32px}
+nav a{font-size:12px;font-weight:400;letter-spacing:3px;color:#555;transition:color .3s;text-transform:uppercase;padding:4px 0;position:relative}
+nav a::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:#a89888;transform:scaleX(0);transition:transform .3s;transform-origin:center}
+nav a:hover{color:#1a1a1a}
+nav a:hover::after,nav a.active::after{transform:scaleX(1)}
+nav a.active{color:#1a1a1a}
+nav a:focus-visible{outline:2px solid #8a7868;outline-offset:6px;border-radius:2px}
+
+/* Hero */
+.hero{height:70vh;min-height:440px;position:relative;overflow:hidden;display:flex;align-items:flex-end;justify-content:center}
+.hero-img{position:absolute;inset:0;background:url('images/cropped/lineup-hero-studio.jpg') center/cover no-repeat}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(255,255,255,.1) 0%,rgba(255,255,255,.7) 65%,#fff 100%)}
+.hero-content{position:relative;z-index:2;text-align:center;padding-bottom:72px}
+.hero-label{font-size:11px;font-weight:400;letter-spacing:6px;color:#8a7868;text-transform:uppercase;text-indent:6px;margin-bottom:14px}
+.hero-title{font-size:clamp(40px,7vw,80px);font-weight:400;letter-spacing:clamp(6px,1.5vw,16px);text-indent:clamp(6px,1.5vw,16px);font-style:italic}
+
+/* Section */
+.sec{max-width:1000px;margin:0 auto;padding:140px 40px}
+.sec-label{font-size:11px;font-weight:400;letter-spacing:6px;color:#8a7868;text-transform:uppercase;text-indent:6px;margin-bottom:24px}
+.sec-heading{font-family:"Noto Serif JP",serif;font-size:clamp(20px,2.4vw,28px);font-weight:400;line-height:2;letter-spacing:.08em;color:#1a1a1a}
+.sec-body{font-family:"Noto Serif JP",serif;font-size:clamp(13px,1.15vw,15px);font-weight:300;line-height:2.1;letter-spacing:.04em;color:#444;margin-top:24px}
+.sec-divider{width:32px;height:1px;background:#d8d0c8;margin:28px 0}
+.philosophy{border-top:1px solid #f0ece8;text-align:center}
+
+/* Anchor Nav */
+.anchor-nav{border-top:1px solid #f0ece8;border-bottom:1px solid #f0ece8;padding:18px 40px;text-align:center;position:sticky;top:72px;z-index:90;background:rgba(255,255,255,.97);backdrop-filter:blur(12px)}
+.anchor-nav a{font-size:11px;font-weight:400;letter-spacing:3px;color:#555;text-transform:uppercase;margin:0 12px;transition:color .3s;display:inline-block;padding:6px 0;position:relative}
+.anchor-nav a:hover{color:#1a1a1a}
+.anchor-nav a::after{content:'';position:absolute;bottom:2px;left:0;right:0;height:1px;background:#a89888;transform:scaleX(0);transition:transform .3s;transform-origin:center}
+.anchor-nav a:hover::after{transform:scaleX(1)}
+.anchor-nav a.active::after{transform:scaleX(1)}
+.anchor-nav a:focus-visible{outline:2px solid #8a7868;outline-offset:2px;border-radius:2px}
+.anchor-nav a[href="#brand-a"]{color:#8a7868;font-weight:500}
+.anchor-nav a[href="#brand-a"]::after{background:#8a7868}
+.anchor-nav a[href="#brand-x"]{color:#4a6480;font-weight:500}
+.anchor-nav a[href="#brand-x"]::after{background:#4a6480}
+.anchor-sep{color:#ddd;margin:0 6px;font-size:10px}
+
+/* ===== BRAND SECTION ===== */
+.brand-section{border-top:1px solid #f0ece8}
+.brand-header{padding:100px 40px 40px;max-width:1100px;margin:0 auto;text-align:center}
+.brand-badge{display:inline-block;font-size:10px;font-weight:600;letter-spacing:4px;color:#fff;background:#8a7868;padding:7px 22px;margin-bottom:20px;text-transform:uppercase;border-radius:2px}
+.brand-title{font-size:clamp(32px,4vw,56px);font-weight:400;letter-spacing:clamp(6px,1.2vw,12px);font-style:italic;margin-bottom:12px}
+.brand-sub{font-family:"Noto Serif JP",serif;font-size:13px;font-weight:300;color:#555;letter-spacing:2px}
+.brand-x .brand-badge{background:#4a6480}
+.brand-x .brand-title{color:#1a1a1a}
+
+/* ===== CATEGORY HEADER ===== */
+.cat-header{max-width:1100px;margin:0 auto;padding:72px 40px 16px;display:flex;align-items:baseline;gap:20px;border-bottom:1px solid #f0ece8}
+.cat-num{font-size:11px;font-weight:300;letter-spacing:4px;color:#998878}
+.cat-title{font-size:clamp(24px,3vw,36px);font-weight:400;letter-spacing:6px;font-style:italic}
+.cat-title-jp{font-family:"Noto Serif JP",serif;font-size:12px;font-weight:300;color:#555;letter-spacing:2px;margin-left:12px}
+
+/* Category Video Embed */
+.cat-video{max-width:800px;margin:40px auto 24px;padding:0 40px}
+.cat-video-wrap{position:relative;width:100%;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:4px;box-shadow:0 4px 24px rgba(0,0,0,.08)}
+.cat-video-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none}
+
+/* ===== PRODUCT DETAIL ===== */
+.product{padding:72px 0;border-top:1px solid #f5f2ef}
+.product:first-of-type{border-top:none}
+.product:nth-child(even){background:#faf9f7}
+.product-inner{max-width:1100px;margin:0 auto;padding:0 40px}
+.product-top{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:start}
+.product-gallery{position:relative;border-radius:2px;overflow:hidden;background:#faf9f7}
+.product:nth-child(even) .product-gallery{background:#fff}
+.product-gallery img.gallery-img{width:100%;aspect-ratio:4/3;object-fit:contain;padding:20px;transition:opacity .4s ease;position:absolute;top:0;left:0;opacity:0}
+.product-gallery img.gallery-img.active{position:relative;opacity:1}
+.product-gallery-wrap{position:relative;cursor:pointer;overflow:hidden}
+.product-gallery-wrap:hover img.active{transform:scale(1.04);transition:transform .6s ease}
+/* Nav arrows */
+.gallery-nav{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.85);border:1px solid rgba(0,0,0,.08);cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s;z-index:3;font-size:14px;color:#555;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.product-gallery:hover .gallery-nav{opacity:1}
+.gallery-nav:hover{background:#fff;box-shadow:0 4px 16px rgba(0,0,0,.12)}
+.gallery-nav.prev{left:12px}
+.gallery-nav.next{right:12px}
+/* Dots */
+.gallery-dots{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:3}
+.gallery-dot{width:7px;height:7px;border-radius:50%;background:rgba(138,120,104,.25);cursor:pointer;transition:all .3s}
+.gallery-dot.active{background:#8a7868;transform:scale(1.3)}
+/* Counter */
+.gallery-counter{position:absolute;top:12px;right:14px;font-size:10px;font-weight:400;letter-spacing:2px;color:#aaa;z-index:3;opacity:0;transition:opacity .3s}
+.product-gallery:hover .gallery-counter{opacity:1}
+.product-video-wrap{position:relative;width:100%;padding-bottom:56.25%;height:0;overflow:hidden;margin-top:8px;border-radius:2px}
+.product-video-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none}
+.product-info{}
+.product-series{font-size:9px;font-weight:400;letter-spacing:4px;color:#8a7868;text-transform:uppercase;margin-bottom:10px}
+.product-name{font-size:clamp(26px,3vw,38px);font-weight:400;letter-spacing:4px;font-style:italic;margin-bottom:6px}
+.product-name-jp{font-family:"Noto Serif JP",serif;font-size:13px;font-weight:300;color:#444;margin-bottom:20px;letter-spacing:1px}
+.product-desc{font-family:"Noto Serif JP",serif;font-size:14px;font-weight:300;line-height:2.1;color:#444;margin-bottom:28px}
+.product-price-block{padding:24px;border:1px solid rgba(138,120,104,.2);border-radius:2px;margin-bottom:28px;text-align:center;background:#fff;border-top:3px solid #8a7868}
+.product:nth-child(even) .product-price-block{background:#faf9f7}
+.product-price{font-size:clamp(26px,2.8vw,34px);font-weight:400;letter-spacing:3px;color:#8a7868}
+.product-price-note{font-family:"Noto Serif JP",serif;font-size:11px;font-weight:300;color:#555;margin-top:4px}
+
+/* Spec Table */
+.spec-table{width:100%;margin-top:20px;border-collapse:collapse}
+.spec-table tr{border-bottom:1px solid #f0ece8}
+.spec-table th{font-family:"Noto Serif JP",serif;font-size:12px;font-weight:400;color:#555;text-align:left;padding:10px 12px 10px 0;white-space:nowrap;width:80px;vertical-align:top}
+.spec-table td{font-family:"Noto Serif JP",serif;font-size:12px;font-weight:300;color:#555;padding:10px 0;line-height:1.8}
+
+/* Spec Accordion */
+.spec-detail{margin-top:32px}
+.spec-detail-toggle{font-family:"Noto Serif JP",serif;font-size:12px;font-weight:400;letter-spacing:1px;color:#8a7868;cursor:pointer;padding:12px 0;border-top:1px solid #f0ece8;display:flex;align-items:center;justify-content:space-between;transition:color .3s,background-color .3s;border-radius:2px;margin:0 -6px;padding-left:6px;padding-right:6px}
+.spec-detail-toggle:hover{color:#1a1a1a;background-color:rgba(138,120,104,.06)}
+.spec-detail-toggle::after{content:'+';font-size:16px;transition:transform .4s ease}
+.spec-detail-toggle.open::after{transform:rotate(45deg)}
+.spec-detail-content{max-height:0;overflow:hidden;transition:max-height .5s ease}
+.spec-detail-content.open{max-height:600px}
+.spec-detail-list{font-family:"Noto Serif JP",serif;font-size:12px;font-weight:300;line-height:2.2;color:#555;padding:16px 0;columns:2;column-gap:32px}
+.spec-detail-list li{break-inside:avoid;margin-bottom:4px}
+
+/* ===== X SERIES CARD GRID ===== */
+.x-category{padding:0 0 48px;border-top:none}
+.x-grid{max-width:1100px;margin:0 auto;padding:24px 40px 0;display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.x-card{background:#fff;border:1px solid #f0ece8;border-top:3px solid #4a6480;border-radius:2px;overflow:hidden;transition:all .4s ease;will-change:transform,box-shadow;box-shadow:0 2px 8px rgba(74,100,128,.04)}
+.x-card:hover{transform:translateY(-6px);border-color:rgba(74,100,128,.5);box-shadow:0 20px 48px rgba(74,100,128,.16)}
+.x-card-img{background:#faf9f7;padding:0;position:relative;min-height:200px;overflow:hidden;will-change:transform}
+.x-card-img img.gallery-img{width:100%;aspect-ratio:4/3;object-fit:contain;padding:20px;transition:opacity .4s ease;position:absolute;top:0;left:0;opacity:0}
+.x-card-img img.gallery-img.active{position:relative;opacity:1}
+.x-card:hover .x-card-img img{transform:scale(1.04)}
+.x-card-body{padding:24px}
+.x-card-model{font-size:24px;font-weight:400;letter-spacing:2px;font-style:italic;margin-bottom:2px}
+.x-card-grade{display:inline-block;font-size:9px;font-weight:600;letter-spacing:2px;color:#fff;background:#4a6480;border:1px solid #4a6480;padding:4px 12px;border-radius:12px;text-transform:uppercase;margin:8px 0 6px}
+.x-card-name{font-family:"Noto Serif JP",serif,"ヒラギノ角ゴ Pro","Hiragino Kaku Gothic Pro","メイリオ",Meiryo,"MS Pゴシック","MS PGothic",sans-serif;font-size:15px;font-weight:400;color:#333;margin-bottom:4px}
+.x-card-desc{font-family:"Noto Serif JP",serif;font-size:12px;font-weight:300;color:#444;line-height:1.8;margin-bottom:16px}
+.x-card-price{font-size:22px;font-weight:400;letter-spacing:1px;color:#4a6480;padding:16px 0;border-top:2px solid rgba(74,100,128,.2);text-align:center}
+.x-card-price span{font-family:"Noto Serif JP",serif;font-size:10px;font-weight:300;color:#555;letter-spacing:1px;display:block;margin-top:4px}
+.x-card-specs{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#f0ece8;border-top:1px solid #f0ece8}
+.x-spec{background:#fff;padding:12px 14px}
+.x-spec-label{font-family:"Noto Serif JP",serif;font-size:9px;font-weight:400;letter-spacing:1.5px;color:#555;text-transform:uppercase;margin-bottom:2px}
+.x-spec-value{font-family:"Noto Serif JP",serif;font-size:11px;font-weight:400;color:#555}
+.x-card-options{padding:14px 24px;border-top:1px solid #f0ece8;display:flex;gap:16px}
+.x-grid-4{grid-template-columns:repeat(4,1fr)}
+.x-opt{font-family:"Noto Serif JP",serif;font-size:10px;font-weight:300;color:#444}
+.x-opt strong{font-weight:400;color:#4a6480;margin-left:4px}
+
+/* NAPPA Leather Color Chart */
+.nappa-section{border-top:1px solid #f0ece8;background:#faf9f7}
+.nappa-intro{font-family:"Noto Serif JP",serif;font-size:clamp(13px,1.15vw,15px);font-weight:300;line-height:2.1;letter-spacing:.04em;color:#444;margin-top:24px}
+.nappa-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:12px;margin-top:40px}
+.nappa-swatch{text-align:center;transition:transform .3s ease}
+.nappa-swatch:hover{transform:translateY(-3px)}
+.nappa-color{width:100%;aspect-ratio:1.4/1;border-radius:4px;border:1px solid rgba(0,0,0,.08);box-shadow:0 1px 4px rgba(0,0,0,.06);transition:box-shadow .3s ease}
+.nappa-swatch:hover .nappa-color{box-shadow:0 4px 12px rgba(0,0,0,.12)}
+.nappa-code{font-size:9px;font-weight:400;letter-spacing:1px;color:#888;margin-top:6px}
+.nappa-note{font-family:"Noto Serif JP",serif;font-size:12px;font-weight:300;color:#888;margin-top:32px;text-align:center;letter-spacing:.04em}
+
+/* Accessories */
+.acc-section{border-top:1px solid #f0ece8}
+.acc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:24px;margin-top:48px}
+.acc-card{background:#fff;border:1px solid #f0ece8;border-radius:2px;padding:0;text-align:center;transition:all .3s ease;overflow:hidden;will-change:transform,box-shadow;border-top:3px solid #f0ece8}
+.acc-card:hover{transform:translateY(-4px);border-color:#c4b5a5;border-top-color:#8a7868;box-shadow:0 8px 24px rgba(138,120,104,.1)}
+.acc-card:nth-child(1){transition-delay:.05s}
+.acc-card:nth-child(2){transition-delay:.1s}
+.acc-card:nth-child(3){transition-delay:.15s}
+.acc-card:nth-child(4){transition-delay:.2s}
+.acc-card:nth-child(5){transition-delay:.25s}
+.acc-card-img{width:100%;aspect-ratio:4/3;object-fit:contain;display:block;background:#faf9f7;padding:12px;transition:transform .6s ease;will-change:transform}
+.acc-card:hover .acc-card-img{transform:scale(1.04)}
+.acc-card-body{padding:20px 16px}
+.acc-card-name{font-size:clamp(13px,1.2vw,15px);font-weight:400;letter-spacing:2px;margin-bottom:6px}
+.acc-card-size{font-family:"Noto Serif JP",serif;font-size:11px;font-weight:300;color:#888;margin-bottom:12px}
+.acc-card-price{font-size:clamp(16px,1.5vw,20px);font-weight:300;letter-spacing:1px;color:#4a6480}
+.acc-card-price span{font-size:10px;font-weight:300;color:#888;margin-left:4px}
+
+/* Wood Table */
+.wood-table{width:100%;border-collapse:collapse;margin-top:48px;font-family:"Noto Serif JP",serif}
+.wood-table th,.wood-table td{padding:16px 14px;font-size:clamp(11px,1vw,13px);font-weight:300;line-height:1.8;border-bottom:1px solid #f0ece8;text-align:center;vertical-align:top}
+.wood-table thead th{font-weight:400;font-size:12px;color:#1a1a1a;background:#faf9f7;padding:14px}
+.wood-table tbody th{font-weight:400;color:#1a1a1a;background:#faf9f7}
+.wood-table td{color:#444}
+
+/* Feature Split */
+.feature{border-top:1px solid #f0ece8}
+.feature-split{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;margin-top:56px}
+.feature-img{border-radius:2px;overflow:hidden;will-change:transform}
+.feature-img img{transition:transform .6s ease}
+.feature-img:hover img{transform:scale(1.04)}
+.feature-detail h3{font-size:clamp(22px,2.2vw,30px);font-weight:400;letter-spacing:4px;font-style:italic;margin-bottom:18px}
+
+/* Service Grid */
+.svc-split{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start;margin-top:56px}
+.svc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.svc-item{text-align:center;padding:28px 16px;border:1px solid #f0ece8;border-radius:2px;transition:all .3s ease;background:#fff;will-change:transform,box-shadow;box-shadow:0 2px 6px rgba(0,0,0,.02)}
+.svc-item:hover{transform:translateY(-4px);border-color:#c4b5a5;box-shadow:0 8px 24px rgba(138,120,104,.1)}
+.svc-en{font-size:14px;font-weight:400;letter-spacing:2px;font-style:italic;margin-bottom:6px}
+.svc-jp{font-family:"Noto Serif JP",serif;font-size:11px;font-weight:300;color:#8a7868;letter-spacing:1px}
+
+/* Contact */
+.contact{text-align:center;border-top:1px solid #f0ece8}
+.contact-company{font-family:"Noto Serif JP",serif;font-size:14px;font-weight:300;letter-spacing:2px;color:#555;margin-top:36px}
+.contact-tel{font-size:clamp(24px,3vw,36px);font-weight:300;letter-spacing:4px;margin-top:20px;color:#1a1a1a}
+.contact-mail{font-size:14px;font-weight:300;letter-spacing:3px;color:#8a7868;margin-top:14px}
+.sns-icons{display:flex;justify-content:center;gap:24px;margin-top:32px}
+.sns-icons a{display:flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid #e0dbd6;border-radius:50%;transition:all .3s ease;will-change:transform,box-shadow;padding:8px}
+.sns-icons a:hover{border-color:#1a1a1a;background:#1a1a1a;transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.sns-icons a svg{width:18px;height:18px;fill:#888;transition:fill .3s ease}
+.sns-icons a:hover svg{fill:#fff}
+
+/* CTA Section */
+.hero-cta{position:relative;will-change:transform,box-shadow;min-height:44px;display:inline-flex;align-items:center}
+.hero-cta:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.15)!important}
+.hero-cta:focus-visible{outline:2px solid rgba(255,255,255,.6);outline-offset:3px;border-radius:2px}
+
+footer{text-align:center;padding:48px;border-top:1px solid #f0ece8}
+footer small{font-size:10px;font-weight:300;letter-spacing:3px;color:#888}
+
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;z-index:110;background:none;border:none}
+.hamburger span{display:block;width:22px;height:1.5px;background:#1a1a1a;transition:all .35s ease;transform-origin:center}
+.hamburger.open span:nth-child(1){transform:rotate(45deg) translate(4.5px,4.5px)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(4.5px,-4.5px)}
+.mobile-overlay{position:fixed;inset:0;z-index:99;background:rgba(255,255,255,.98);backdrop-filter:blur(20px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:36px;opacity:0;visibility:hidden;transition:opacity .4s ease,visibility .4s ease,transform .4s ease;transform:translateY(-20px)}
+.mobile-overlay.open{opacity:1;visibility:visible;transform:translateY(0)}
+.mobile-overlay a{font-size:16px;letter-spacing:6px;color:#1a1a1a;text-transform:uppercase;padding:8px 0;position:relative}
+.mobile-overlay a::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:#a89888;transform:scaleX(0);transition:transform .3s;transform-origin:center}
+.mobile-overlay a:hover::after{transform:scaleX(1)}
+
+.btt{position:fixed;bottom:32px;right:32px;z-index:90;width:44px;height:44px;border-radius:50%;background:#fff;border:1px solid #e0dbd6;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;visibility:hidden;transform:translateY(12px);transition:all .4s ease;box-shadow:0 2px 12px rgba(0,0,0,.06);will-change:transform,opacity}
+.btt.show{opacity:1;visibility:visible;transform:none}
+.btt:hover{background:#1a1a1a;border-color:#1a1a1a;transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.12)}
+.btt svg{width:16px;height:16px;fill:none;stroke:#888;stroke-width:2;transition:stroke .3s}
+.btt:hover svg{stroke:#fff}
+
+/* ===== EDIT MODE ===== */
+.edit-fab,.edit-toolbar,.img-modal{display:none!important}
+body.edit-allowed .edit-fab{display:flex!important}
+body.edit-allowed .edit-toolbar{display:none}
+body.edit-allowed.edit-mode .edit-toolbar{display:flex!important}
+body.edit-allowed .img-modal{display:none!important}
+body.edit-allowed .img-modal.open{display:flex!important}
+.edit-fab{position:fixed;bottom:32px;left:32px;z-index:200;width:48px;height:48px;border-radius:50%;background:#8a7868;border:none;cursor:pointer;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(138,120,104,.4);transition:all .3s}
+.edit-fab:hover{background:#7a6858;transform:scale(1.08)}
+.edit-fab svg{width:20px;height:20px;fill:#fff}
+body.edit-mode .edit-fab{background:#c44}
+
+.edit-toolbar{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(80px);z-index:200;background:#fff;border:1px solid #e0dbd6;border-radius:12px;padding:12px 20px;display:flex;align-items:center;gap:16px;box-shadow:0 8px 32px rgba(0,0,0,.12);transition:all .4s ease;opacity:0;pointer-events:none}
+body.edit-mode .edit-toolbar{transform:translateX(-50%) translateY(0);opacity:1;pointer-events:auto}
+.edit-toolbar-label{font-family:"Noto Serif JP",serif;font-size:12px;color:#8a7868;font-weight:400;letter-spacing:1px;white-space:nowrap}
+.edit-btn{font-family:"Noto Serif JP",serif;font-size:11px;font-weight:400;letter-spacing:1px;padding:8px 18px;border:1px solid #d0ccc8;border-radius:6px;cursor:pointer;background:#fff;color:#555;transition:all .3s;white-space:nowrap}
+.edit-btn:hover{background:#faf9f7;border-color:#8a7868;color:#1a1a1a}
+.edit-btn-save{background:#8a7868;color:#fff;border-color:#8a7868}
+.edit-btn-save:hover{background:#7a6858}
+
+/* Edit mode: disable gallery nav, show edit buttons instead */
+body.edit-mode .gallery-nav,body.edit-mode .gallery-dots,body.edit-mode .gallery-counter{display:none!important}
+body.edit-mode .product-gallery{outline:2px dashed rgba(138,120,104,.3);outline-offset:4px;transition:outline-color .3s}
+body.edit-mode .product-gallery:hover{outline-color:#8a7868}
+
+/* Edit buttons row - below gallery in edit mode */
+.edit-img-btns{display:none;gap:6px;padding:10px 0 0;justify-content:center}
+body.edit-mode .edit-img-btns{display:flex}
+.edit-img-btn{font-family:"Noto Serif JP",serif;font-size:11px;font-weight:400;letter-spacing:1px;padding:8px 16px;border:1px solid #d0ccc8;border-radius:6px;cursor:pointer;background:#fff;color:#555;transition:all .3s}
+.edit-img-btn:hover{background:#8a7868;color:#fff;border-color:#8a7868}
+.edit-img-btn .edit-check{color:#6a8a78;font-size:9px;margin-left:3px}
+
+/* X-card gallery & edit buttons */
+.x-card-img .gallery-nav{width:28px;height:28px;font-size:12px}
+.x-card-img .gallery-nav.prev{left:6px}
+.x-card-img .gallery-nav.next{right:6px}
+.x-card-img .gallery-dots{bottom:8px}
+.x-card-img .edit-img-btns{padding:6px 0 4px}
+.x-card-img .edit-img-btn{font-size:10px;padding:5px 10px}
+
+/* Image selector modal */
+.img-modal{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.img-modal.open{display:flex}
+.img-modal-box{background:#fff;border-radius:8px;max-width:600px;width:90%;max-height:80vh;overflow:hidden;box-shadow:0 16px 48px rgba(0,0,0,.2)}
+.img-modal-header{padding:16px 20px;border-bottom:1px solid #f0ece8;display:flex;align-items:center;justify-content:space-between}
+.img-modal-title{font-family:"Noto Serif JP",serif;font-size:14px;font-weight:400;letter-spacing:1px}
+.img-modal-close{width:32px;height:32px;border:none;background:none;cursor:pointer;font-size:20px;color:#888;border-radius:50%;transition:background .2s}
+.img-modal-close:hover{background:#f0ece8}
+.img-modal-tabs{display:flex;gap:4px;padding:12px 20px;border-bottom:1px solid #f0ece8}
+.img-modal-tab{font-family:"Noto Serif JP",serif;font-size:11px;padding:6px 14px;border:1px solid #e0dbd6;border-radius:16px;background:#fff;cursor:pointer;color:#888;transition:all .3s;letter-spacing:1px}
+.img-modal-tab.active{background:#8a7868;color:#fff;border-color:#8a7868}
+.img-modal-body{padding:16px 20px;overflow-y:auto;max-height:50vh}
+.img-modal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:10px}
+.img-modal-thumb{cursor:pointer;border-radius:4px;overflow:hidden;border:2px solid transparent;transition:all .3s;background:#faf9f7}
+.img-modal-thumb:hover{border-color:#8a7868;transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.img-modal-thumb img{width:100%;aspect-ratio:4/3;object-fit:contain;padding:6px}
+.img-modal-thumb-name{font-size:8px;color:#999;text-align:center;padding:2px 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.img-modal-upload{text-align:center;padding:24px}
+.img-modal-upload-btn{font-family:"Noto Serif JP",serif;font-size:12px;padding:12px 32px;border:2px dashed #d0ccc8;border-radius:8px;background:#faf9f7;cursor:pointer;color:#888;transition:all .3s;letter-spacing:1px}
+.img-modal-upload-btn:hover{border-color:#8a7868;color:#8a7868;background:#f5f2ef}
+
+.edit-toast{position:fixed;top:80px;left:50%;transform:translateX(-50%) translateY(-20px);z-index:250;background:#333;color:#fff;padding:10px 24px;border-radius:8px;font-family:"Noto Serif JP",serif;font-size:12px;letter-spacing:1px;opacity:0;transition:all .3s;pointer-events:none}
+.edit-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:768px){
+  .hd{padding:0 24px}
+  nav{display:none}
+  .hamburger{display:flex}
+  .btt{bottom:24px;right:24px;width:40px;height:40px}
+  nav a{font-size:11px;letter-spacing:2px}
+  .sec{padding:96px 24px}
+  .product{padding:48px 0}
+  .product-inner{padding:0 24px}
+  .product-top{grid-template-columns:1fr;gap:32px}
+  .feature-split{grid-template-columns:1fr;gap:40px}
+  .svc-split{grid-template-columns:1fr;gap:32px}
+  .svc-grid{grid-template-columns:repeat(2,1fr)}
+  .spec-detail-list{columns:1}
+  .anchor-nav a{margin:0 6px;font-size:10px;letter-spacing:2px}
+  .anchor-sep{margin:0 2px}
+  .contact-tel{font-size:24px}
+  .wood-table{font-size:11px}
+  .acc-grid{grid-template-columns:repeat(2,1fr);gap:16px}
+  .acc-card{padding:20px 14px}
+  .nappa-grid{grid-template-columns:repeat(auto-fill,minmax(56px,1fr));gap:8px}
+  .x-grid{grid-template-columns:1fr 1fr;gap:16px;padding:16px 24px 0}
+  .x-grid-4{grid-template-columns:1fr 1fr}
+  .cat-header{padding:56px 24px 12px}
+  .cat-video{padding:0 24px;margin:28px auto 16px}
+  .brand-header{padding:72px 24px 32px}
+}
+@media(max-width:480px){
+  .hero{height:50vh;min-height:340px}
+  .anchor-nav{overflow-x:auto;white-space:nowrap;text-align:left;padding:14px 24px;-webkit-overflow-scrolling:touch;scrollbar-width:none;scroll-behavior:smooth}
+  .anchor-nav::-webkit-scrollbar{display:none}
+  .x-grid{grid-template-columns:1fr}
+  .x-grid-4{grid-template-columns:1fr}
+  .svc-grid{grid-template-columns:1fr}
+  .svc-item{min-height:44px}
+  .acc-grid{grid-template-columns:1fr;gap:12px}
+  .acc-card{min-height:44px}
+  .product{padding:40px 0}
+  .sec{padding:80px 24px}
+}
+</style>
+<script src="machine-data.js"></script>
+<script id="machine-data">
+/* inline fallback — remove this block if machine-data.js is always present */
+if(typeof MACHINE_DATA==='undefined'){
+var MACHINE_DATA = {
+  "brandA": {
+    "name": "Brand A",
+    "series": "Original Series",
+    "subtitle": "カエデ（ブナ・オーク）無垢材 — 国内設計・品質管理",
+    "description": "オリジナル設計のこだわり。安心の品質（国内外実績、耐久性、安全性）。操作性・収納性・カスタマイズ性を兼ね備え、スタジオに合わせた最適な提案をいたします。",
+    "products": [
+      {
+        "id": "vertical-01",
+        "nameEn": "Vertical 01",
+        "series": "Brand A — Reformer",
+        "nameJp": "折りたたみリフォーマー",
+        "video": "295xCi4gQHg",
+        "description": "省スペース設計の折りたたみ式リフォーマー。カエデ（ブナ・オーク）材フレームを採用し、コンパクトに収納しながらも本格的なトレーニングが可能。限られたスペースのスタジオや自宅にも最適です。",
+        "price": 466400,
+        "priceNote": "税込",
+        "image": "images/lineup/V01.png",
+        "images": ["images/lineup/V01.png", "", ""],
+        "specs": [
+          {
+            "label": "材質",
+            "value": "カエデ（ブナ・オーク）"
+          },
+          {
+            "label": "サイズ",
+            "value": "開放時 2290×625×240mm"
+          },
+          {
+            "label": "収納時",
+            "value": "673×487×1142mm"
+          },
+          {
+            "label": "正味重量",
+            "value": "78kg"
+          },
+          {
+            "label": "総重量",
+            "value": "100kg"
+          }
+        ],
+        "accessories": [
+          "標準スポンジ",
+          "黒のワイドホイール",
+          "グレーの滑り止めカバー",
+          "aタイプのストッパープレート",
+          "プラスチックのスプリングホルダー"
+        ]
+      },
+      {
+        "id": "vertical-02",
+        "nameEn": "Vertical 02",
+        "series": "Brand A — Reformer",
+        "nameJp": "折りたたみリフォーマー",
+        "description": "V01の進化版。黒のワイドホイール、グレーの滑り止めカバー、aタイプのストッパープレートなど5つの標準装備を搭載。さらなる操作性と安定感を実現したモデルです。",
+        "price": 475200,
+        "priceNote": "税込",
+        "image": "images/lineup/V02.png",
+        "images": ["images/lineup/V02.png", "", ""],
+        "specs": [
+          {
+            "label": "材質",
+            "value": "カエデ（ブナ・オーク）"
+          },
+          {
+            "label": "サイズ",
+            "value": "開放時 2365×600×240mm"
+          },
+          {
+            "label": "収納時",
+            "value": "694×712×1148mm"
+          },
+          {
+            "label": "正味重量",
+            "value": "80kg"
+          },
+          {
+            "label": "総重量",
+            "value": "100kg"
+          }
+        ],
+        "accessories": [
+          "標準スポンジ",
+          "黒のワイドホイール",
+          "グレーの滑り止めカバー",
+          "aタイプのストッパープレート",
+          "プラスチックのスプリングホルダー"
+        ]
+      },
+      {
+        "id": "reformer",
+        "nameEn": "Reformer",
+        "series": "Brand A — Reformer",
+        "nameJp": "フットレバー式リフォーマー",
+        "description": "プロ仕様のフットレバー式。35mm無垢材フレーム、韓国製スプリング5本セット、アルミ合金レールで安定性と滑らかなキャリッジ走行を実現。本格スタジオに最適な高耐久モデル。",
+        "price": 550000,
+        "priceNote": "税込",
+        "image": "images/lineup/Reformer.png",
+        "images": ["images/lineup/Reformer.png", "", ""],
+        "specs": [
+          {
+            "label": "材質",
+            "value": "カエデ（ブナ・オーク）35mm無垢材"
+          },
+          {
+            "label": "サイズ",
+            "value": "2432×705×965mm"
+          },
+          {
+            "label": "梱包",
+            "value": "2450×760×450mm"
+          },
+          {
+            "label": "正味重量",
+            "value": "90kg"
+          },
+          {
+            "label": "総重量",
+            "value": "125kg"
+          }
+        ],
+        "accessories": [
+          "35mm無垢材フレーム",
+          "韓国製スプリング×5本セット（赤28kg×1、緑15kg×2、黄8kg×2）",
+          "1mm厚マイクロファイバーレザー",
+          "高密度スポンジクッション",
+          "アルミ合金レール×2",
+          "ボックス×1",
+          "ヘッドレスト 3段階調整",
+          "ショルダー×2",
+          "アルミ合金フットバー×1",
+          "ロープ×2、静音タイヤ×2",
+          "ソフトペダル（二重ステッチレザー）×1",
+          "踏み板×1",
+          "滑車×10、移動輪×2",
+          "カウンターウエイト輪×4",
+          "フックベルト×1"
+        ]
+      },
+      {
+        "id": "half-tower",
+        "nameEn": "Half Tower",
+        "series": "Brand A — Half Tower",
+        "nameJp": "フットレバー式 ハーフタワー",
+        "description": "ハイエンドフットレバー内蔵リフォーマーにタワーユニットを追加。垂直方向のエクササイズバリエーションが広がり、ハーフタワー用スプリング8本付属で多彩なプログラムが可能です。",
+        "price": 730400,
+        "priceNote": "税込",
+        "image": "images/lineup/Half tower.png",
+        "images": ["images/lineup/Half tower.png", "", ""],
+        "specs": [
+          {
+            "label": "材質",
+            "value": "カエデ（ブナ・オーク）"
+          },
+          {
+            "label": "サイズ",
+            "value": "2400×700×2030mm"
+          },
+          {
+            "label": "梱包",
+            "value": "2450×760×450mm / 730×440×340mm"
+          },
+          {
+            "label": "正味重量",
+            "value": "125kg"
+          },
+          {
+            "label": "総重量",
+            "value": "150kg"
+          }
+        ],
+        "accessories": [
+          "ハーフタワー用スプリング8本（短緑20kg、短黄12kg、長緑16kg、長黄14kg 各2本）",
+          "固定プレート",
+          "ステンレスフランジ×2",
+          "フック付きタワーバー（木製）×1",
+          "U型フレーム×2",
+          "安全ロープ×1"
+        ]
+      },
+      {
+        "id": "cadillac",
+        "nameEn": "Cadillac",
+        "series": "Brand A — Cadillac",
+        "nameJp": "ハイエンド アルミフレーム",
+        "description": "28mm無垢材フレーム、韓国製スプリング10本セット付属のフルフレームキャデラック。トラペーズ、プッシュスルーバー、スプリングなど多彩なアタッチメントで全身の統合的トレーニングに最適。",
+        "price": 730400,
+        "priceNote": "税込",
+        "image": "images/lineup/Cadillac.png",
+        "images": ["images/lineup/Cadillac.png", "", ""],
+        "specs": [
+          {
+            "label": "材質",
+            "value": "カエデ（ブナ・オーク）28mm無垢材"
+          },
+          {
+            "label": "サイズ",
+            "value": "2520×780×2050mm"
+          },
+          {
+            "label": "梱包",
+            "value": "2390×780×800mm"
+          },
+          {
+            "label": "正味重量",
+            "value": "95kg"
+          },
+          {
+            "label": "総重量",
+            "value": "120kg"
+          }
+        ],
+        "accessories": [
+          "28mm無垢材フレーム",
+          "韓国製スプリング10本セット",
+          "1mm厚マイクロファイバーレザー",
+          "高密度スポンジクッション",
+          "ステンレス製横パイプ×2、アルミ合金縦パイプ×4",
+          "ブラッシュハンドル×2個（黒・白・グレー選択可）",
+          "ヘッドレスト（二重ステッチレザー製）×1",
+          "フットパッド（二重ステッチレザー製）×1",
+          "フック付きタワーバー（木製）×1",
+          "タワーフレーム（可動式フック付き×2）",
+          "U型フレーム（20mm厚アルミ合金製）×1",
+          "ハンドル（プラスチック製）×2",
+          "リングハンドル（手持ち用）×2",
+          "スイングバー（フック付き木製）×1",
+          "フットストラップ×1、セーフティロープ×1"
+        ]
+      },
+      {
+        "id": "chair",
+        "nameEn": "Chair",
+        "series": "Brand A — Chair",
+        "nameJp": "ピラティスチェア",
+        "description": "コンパクトながら多彩なエクササイズが可能。韓国製スプリング4本、ステンレスハンドル装備。スプリット・ペダルシステムで上半身・下半身・体幹のバランストレーニングに対応します。",
+        "price": 220000,
+        "priceNote": "税込",
+        "image": "images/lineup/Chair.png",
+        "images": ["images/lineup/Chair.png", "", ""],
+        "specs": [
+          {
+            "label": "材質",
+            "value": "カエデ（ブナ・オーク）17mm多層板"
+          },
+          {
+            "label": "サイズ",
+            "value": "870×680×610mm"
+          },
+          {
+            "label": "梱包",
+            "value": "910×770×770mm"
+          },
+          {
+            "label": "正味重量",
+            "value": "40kg"
+          },
+          {
+            "label": "総重量",
+            "value": "50kg"
+          }
+        ],
+        "accessories": [
+          "フレーム：17mm多層板",
+          "韓国製スプリング×4（赤30kg×2、緑20kg×2）",
+          "1mm厚マイクロファイバーレザー",
+          "高密度スポンジクッション",
+          "ステンレスハンドル×2（滑り止めラバー付き）",
+          "プラスチック製ハンドル付きナイロンロープ×2",
+          "ハンドルのゆるみ調整つまみ×2",
+          "上下ハンドルの移動調節用つまみ×2"
+        ]
+      },
+      {
+        "id": "ladder-barrel",
+        "nameEn": "Ladder Barrel",
+        "series": "Brand A — Barrel",
+        "nameJp": "ラダーバレル",
+        "description": "背骨の柔軟性向上、ストレッチ、コアトレーニングに最適。アーチ形状が身体に自然にフィットし、安全で効果的なエクササイズを実現。スライドレール付きで調整可能。",
+        "price": 319000,
+        "priceNote": "税込",
+        "image": "images/lineup/Ladder barrel.png",
+        "images": ["images/lineup/Ladder barrel.png", "", ""],
+        "specs": [
+          {
+            "label": "材質",
+            "value": "カエデ（ブナ・オーク）17mm多層板"
+          },
+          {
+            "label": "サイズ",
+            "value": "1150×620×980mm"
+          },
+          {
+            "label": "梱包",
+            "value": "1170×690×1110mm"
+          },
+          {
+            "label": "正味重量",
+            "value": "45kg"
+          },
+          {
+            "label": "総重量",
+            "value": "60kg"
+          }
+        ],
+        "accessories": [
+          "フレーム：17mm多層板",
+          "はしご：35mm",
+          "1mm厚マイクロファイバーレザー",
+          "高密度スポンジクッション",
+          "踏み板：二重ステッチレザー製",
+          "フットプレート×1",
+          "スライドレール×2"
+        ]
+      },
+      {
+        "id": "caformer",
+        "nameEn": "Caformer",
+        "series": "Brand A — Caformer",
+        "nameJp": "カフォーマー",
+        "description": "リフォーマーとキャデラックの機能を融合した複合マシン。28mm無垢材フレーム、リフォーマー用6本＋キャデラック用10本のスプリングセット付属。限られたスペースで最大限のエクササイズバリエーションを実現。",
+        "price": 836000,
+        "priceNote": "税込",
+        "image": "images/lineup/Caformer.png",
+        "images": ["images/lineup/Caformer.png", "", ""],
+        "specs": [
+          {
+            "label": "材質",
+            "value": "カエデ 28mm無垢材"
+          },
+          {
+            "label": "サイズ",
+            "value": "2540×900×2080mm"
+          },
+          {
+            "label": "梱包",
+            "value": "2360×860×760mm"
+          },
+          {
+            "label": "正味重量",
+            "value": "135kg"
+          },
+          {
+            "label": "梱包重量",
+            "value": "170kg"
+          }
+        ],
+        "accessories": [
+          "28mm無垢材フレーム",
+          "リフォーマー用韓国製スプリング×6本セット",
+          "キャデラック用韓国製スプリング×10本セット",
+          "1mm厚マイクロファイバーレザー",
+          "高密度スポンジクッション",
+          "アルミ合金レール×2",
+          "ボックス×1",
+          "ヘッドレスト×1、ショルダー×2",
+          "ステンレス製フットバー×1",
+          "ロープ×2、静音タイヤ×2",
+          "ソフトペダル、踏み板、滑車×10",
+          "ジャンピングボード",
+          "ステンレス製パイプ×2、アルミ合金縦パイプ×4",
+          "ブラッシュハンドル×2個",
+          "タワーバー（フック付き木製）×1",
+          "U型フレーム×1",
+          "リングハンドル×2、スイングバー×1",
+          "フットストラップ×1、セーフティロープ×1"
+        ]
+      }
+    ]
+  },
+  "brandX": {
+    "name": "Brand X",
+    "series": "X Series",
+    "subtitle": "コストパフォーマンスに優れた海外工場直送モデル — 表示価格はすべて税込",
+    "description": "コストパフォーマンスに優れた海外工場直送モデル。世界競争力のあるマシンラインアップ。表示価格はすべて税込です。",
+    "categories": [
+      {
+        "id": "reformer",
+        "number": "01",
+        "nameEn": "Reformer",
+        "nameJp": "リフォーマー",
+        "products": [
+          {
+            "model": "X01-A",
+            "id": "x01-a",
+            "grade": "Entry",
+            "nameEn": "Standard Reformer",
+            "descJp": "スタンダードリフォーマー。メープル材フレーム、コンパクト設計。",
+            "price": 905,
+            "priceJpy": 447975,
+            "specs": [
+              {
+                "label": "サイズ",
+                "value": "2280×720×1850mm"
+              },
+              {
+                "label": "本体重量",
+                "value": "90kg"
+              },
+              {
+                "label": "梱包重量",
+                "value": "120kg"
+              },
+              {
+                "label": "キャリッジ幅",
+                "value": "340mm"
+              }
+            ],
+            "options": [
+              {
+                "name": "EVA",
+                "price": 26400
+              },
+              {
+                "name": "塗装",
+                "price": 33000
+              }
+            ],
+            "image": "images/cropped/product-x01-a.jpg",
+            "images": ["images/cropped/product-x01-a.jpg", "", ""]
+          },
+          {
+            "model": "X01-B",
+            "id": "x01-b",
+            "grade": "Standard",
+            "nameEn": "Enhanced Reformer",
+            "descJp": "ヘッドレスト・ショルダーブロック付き。メープル材フレーム。",
+            "price": 1052,
+            "priceJpy": 520740,
+            "specs": [
+              {
+                "label": "サイズ",
+                "value": "2280×720×1850mm"
+              },
+              {
+                "label": "本体重量",
+                "value": "100kg"
+              },
+              {
+                "label": "梱包重量",
+                "value": "130kg"
+              },
+              {
+                "label": "キャリッジ幅",
+                "value": "340mm"
+              }
+            ],
+            "options": [
+              {
+                "name": "EVA",
+                "price": 26400
+              },
+              {
+                "name": "塗装",
+                "price": 33000
+              }
+            ],
+            "image": "images/cropped/product-x01-b.jpg",
+            "images": ["images/cropped/product-x01-b.jpg", "", ""]
+          },
+          {
+            "model": "X01-C",
+            "id": "x01-c",
+            "grade": "Pro",
+            "nameEn": "Professional Reformer",
+            "priceJpy": 426690,
+            "descJp": "スチールフレーム、モダンブラックデザイン。",
+            "price": 862,
+            "specs": [
+              {
+                "label": "サイズ",
+                "value": "2280×720×1850mm"
+              },
+              {
+                "label": "本体重量",
+                "value": "90kg"
+              },
+              {
+                "label": "梱包重量",
+                "value": "120kg"
+              },
+              {
+                "label": "キャリッジ幅",
+                "value": "312mm"
+              }
+            ],
+            "options": [
+              {
+                "name": "EVA",
+                "price": 26400
+              },
+              {
+                "name": "塗装",
+                "price": 33000
+              }
+            ],
+            "image": "images/cropped/product-x01-c.jpg",
+            "images": ["images/cropped/product-x01-c.jpg", "", ""]
+          }
+        ]
+      },
+      {
+        "id": "half_tower",
+        "number": "02",
+        "nameEn": "Half Tower",
+        "nameJp": "ハーフタワー",
+        "products": [
+          {
+            "model": "X02-A",
+            "id": "x02-a",
+            "grade": "Standard",
+            "nameEn": "Half Tower Reformer",
+            "priceJpy": 571230,
+            "descJp": "リフォーマー＋ハーフタワー。メープル材、フルスプリングシステム。",
+            "price": 1154,
+            "specs": [
+              {
+                "label": "サイズ",
+                "value": "2280×720×1850mm"
+              },
+              {
+                "label": "本体重量",
+                "value": "110kg"
+              },
+              {
+                "label": "梱包重量",
+                "value": "140kg"
+              },
+              {
+                "label": "キャリッジ幅",
+                "value": "340mm"
+              }
+            ],
+            "options": [
+              {
+                "name": "EVA",
+                "price": 26400
+              },
+              {
+                "name": "塗装",
+                "price": 33000
+              }
+            ],
+            "image": "images/cropped/product-x02-a.jpg",
+            "images": ["images/cropped/product-x02-a.jpg", "", ""]
+          },
+          {
+            "model": "X02-B",
+            "id": "x02-b",
+            "grade": "Standard",
+            "nameEn": "Half Tower Reformer",
+            "priceJpy": 519750,
+            "descJp": "折りたたみ式タワー付きリフォーマー。省スペース設計。",
+            "price": 1050,
+            "specs": [
+              {
+                "label": "サイズ",
+                "value": "2280×690×1850mm"
+              },
+              {
+                "label": "本体重量",
+                "value": "110kg"
+              },
+              {
+                "label": "梱包重量",
+                "value": "140kg"
+              },
+              {
+                "label": "キャリッジ幅",
+                "value": "340mm"
+              }
+            ],
+            "options": [
+              {
+                "name": "EVA",
+                "price": 26400
+              },
+              {
+                "name": "塗装",
+                "price": 33000
+              }
+            ],
+            "image": "images/cropped/product-x02-b.jpg",
+            "images": ["images/cropped/product-x02-b.jpg", "", ""]
+          },
+          {
+            "model": "X02-C",
+            "id": "x02-c",
+            "grade": "Premium",
+            "nameEn": "Premium Half Tower",
+            "priceJpy": 668250,
+            "descJp": "プレミアム・ハーフタワー。高品質パッド、フルアクセサリー付属。",
+            "price": 1350,
+            "specs": [
+              {
+                "label": "サイズ",
+                "value": "2280×720×1850mm"
+              },
+              {
+                "label": "本体重量",
+                "value": "120kg"
+              },
+              {
+                "label": "梱包重量",
+                "value": "150kg"
+              },
+              {
+                "label": "キャリッジ幅",
+                "value": "340mm"
+              }
+            ],
+            "options": [
+              {
+                "name": "EVA",
+                "price": 26400
+              },
+              {
+                "name": "塗装",
+                "price": 33000
+              }
+            ],
+            "image": "images/cropped/product-x02-c.jpg",
+            "images": ["images/cropped/product-x02-c.jpg", "", ""]
+          }
+        ]
+      },
+      {
+        "id": "cadillac",
+        "number": "03",
+        "nameEn": "Cadillac",
+        "nameJp": "キャデラック",
+        "products": [
+          {
+            "model": "X03-A",
+            "id": "x03-a",
+            "grade": "Steel",
+            "nameEn": "Steel Cadillac",
+            "priceJpy": 413820,
+            "descJp": "スチール製キャデラック。フルフレーム、各種アタッチメント付属。",
+            "price": 836,
+            "specs": [
+              {
+                "label": "サイズ",
+                "value": "2320×760×1990mm"
+              },
+              {
+                "label": "本体重量",
+                "value": "90kg"
+              },
+              {
+                "label": "梱包重量",
+                "value": "120kg"
+              },
+              {
+                "label": "キャリッジ幅",
+                "value": "550mm"
+              }
+            ],
+            "image": "images/cropped/product-x03-a.jpg",
+            "images": ["images/cropped/product-x03-a.jpg", "", ""]
+          },
+          {
+            "model": "X03-B",
+            "id": "x03-b",
+            "grade": "Maple",
+            "nameEn": "Maple Cadillac",
+            "priceJpy": 440550,
+            "descJp": "メープル材キャデラック。天然木の質感、プロ仕様。",
+            "price": 890,
+            "specs": [
+              {
+                "label": "サイズ",
+                "value": "2190×800×2120mm"
+              },
+              {
+                "label": "本体重量",
+                "value": "100kg"
+              },
+              {
+                "label": "素材",
+                "value": "メープル材"
+              },
+              {
+                "label": "キャリッジ幅",
+                "value": "635mm"
+              }
+            ],
+            "options": [
+              {
+                "name": "EVA",
+                "price": 26400
+              },
+              {
+                "name": "塗装",
+                "price": 33000
+              }
+            ],
+            "image": "images/cropped/product-x03-b.jpg",
+            "images": ["images/cropped/product-x03-b.jpg", "", ""]
+          },
+          {
+            "model": "X03-C",
+            "id": "x03-c",
+            "grade": "Premium",
+            "nameEn": "Premium Maple Cadillac",
+            "priceJpy": 561825,
+            "descJp": "リフォーマーベッド一体型キャデラック。",
+            "price": 1135,
+            "specs": [
+              {
+                "label": "サイズ",
+                "value": "2190×800×2120mm"
+              },
+              {
+                "label": "本体重量",
+                "value": "120kg"
+              },
+              {
+                "label": "素材",
+                "value": "メープル材"
+              },
+              {
+                "label": "キャリッジ幅",
+                "value": "635mm"
+              }
+            ],
+            "options": [
+              {
+                "name": "EVA",
+                "price": 26400
+              },
+              {
+                "name": "塗装",
+                "price": 33000
+              }
+            ],
+            "image": "images/cropped/product-x03-c.jpg",
+            "images": ["images/cropped/product-x03-c.jpg", "", ""]
+          }
+        ]
+      },
+      {
+        "id": "chair",
+        "number": "04",
+        "nameEn": "Chair",
+        "nameJp": "チェア",
+        "products": [
+          {
+            "model": "X04-A",
+            "id": "x04-a",
+            "grade": "Entry",
+            "nameEn": "Wunda Chair",
+            "priceJpy": 200475,
+            "descJp": "ワンダチェア。メープル材、スプリット・ペダルシステム。",
+            "price": 405,
+            "specs": [
+              {
+                "label": "サイズ",
+                "value": "840×680×615mm"
+              },
+              {
+                "label": "本体重量",
+                "value": "45kg"
+              },
+              {
+                "label": "梱包重量",
+                "value": "65kg"
+              },
+              {
+                "label": "素材",
+                "value": "メープル材"
+              }
+            ],
+            "options": [
+              {
+                "name": "EVA",
+                "price": 13200
+              },
+              {
+                "name": "塗装",
+                "price": 19800
+              }
+            ],
+            "image": "images/cropped/product-x04-a.jpg",
+            "images": ["images/cropped/product-x04-a.jpg", "", ""]
+          },
+          {
+            "model": "X04-B",
+            "id": "x04-b",
+            "grade": "Standard",
+            "nameEn": "Combo Chair",
+            "priceJpy": 200475,
+            "descJp": "コンボチェア。天然木フレーム、コンパクト設計。",
+            "price": 405,
+            "specs": [
+              {
+                "label": "サイズ",
+                "value": "840×600×600mm"
+              },
+              {
+                "label": "本体重量",
+                "value": "45kg"
+              },
+              {
+                "label": "梱包重量",
+                "value": "65kg"
+              },
+              {
+                "label": "素材",
+                "value": "天然木"
+              }
+            ],
+            "options": [
+              {
+                "name": "EVA",
+                "price": 13200
+              },
+              {
+                "name": "塗装",
+                "price": 19800
+              }
+            ],
+            "image": "images/cropped/product-x04-b.jpg",
+            "images": ["images/cropped/product-x04-b.jpg", "", ""]
+          },
+          {
+            "model": "X04-C",
+            "id": "x04-c",
+            "grade": "Pro",
+            "nameEn": "High Back Chair",
+            "priceJpy": 226710,
+            "descJp": "ハイバックチェア。スチール＋ホワイトパネル。",
+            "price": 458,
+            "specs": [
+              {
+                "label": "サイズ",
+                "value": "750×600×1300mm"
+              },
+              {
+                "label": "本体重量",
+                "value": "45kg"
+              },
+              {
+                "label": "梱包重量",
+                "value": "65kg"
+              },
+              {
+                "label": "素材",
+                "value": "スチール"
+              }
+            ],
+            "image": "images/cropped/product-x04-c.jpg",
+            "images": ["images/cropped/product-x04-c.jpg", "", ""]
+          }
+        ]
+      },
+      {
+        "id": "ladder_barrel",
+        "number": "05",
+        "nameEn": "Ladder Barrel",
+        "nameJp": "ラダーバレル",
+        "products": [
+          {
+            "model": "X05-A",
+            "id": "x05-a",
+            "grade": "Entry",
+            "nameEn": "Ladder Barrel",
+            "priceJpy": 215325,
+            "descJp": "メープル材。フットペダル機能付き。",
+            "price": 435,
+            "specs": [
+              {
+                "label": "サイズ",
+                "value": "1100×620×980mm"
+              },
+              {
+                "label": "本体重量",
+                "value": "90kg"
+              }
+            ],
+            "options": [
+              {
+                "name": "EVA",
+                "price": 13200
+              },
+              {
+                "name": "塗装",
+                "price": 19800
+              }
+            ],
+            "image": "images/cropped/product-x05-a.jpg",
+            "images": ["images/cropped/product-x05-a.jpg", "", ""]
+          },
+          {
+            "model": "X05-B",
+            "id": "x05-b",
+            "grade": "Standard",
+            "nameEn": "Ladder Barrel Pro",
+            "priceJpy": 225225,
+            "descJp": "鉄製フレーム、メープル材板。フットペダル調節可能。",
+            "price": 455,
+            "specs": [
+              {
+                "label": "サイズ",
+                "value": "1100×620×980mm"
+              },
+              {
+                "label": "本体重量",
+                "value": "90kg"
+              }
+            ],
+            "options": [
+              {
+                "name": "EVA",
+                "price": 13200
+              },
+              {
+                "name": "塗装",
+                "price": 19800
+              }
+            ],
+            "image": "images/cropped/product-x05-b.jpg",
+            "images": ["images/cropped/product-x05-b.jpg", "", ""]
+          },
+          {
+            "model": "X05-C",
+            "id": "x05-c",
+            "grade": "Pro",
+            "nameEn": "Steel Ladder Barrel",
+            "priceJpy": 210375,
+            "descJp": "オールスチールフレーム。フットペダル機能付き。",
+            "price": 425,
+            "specs": [
+              {
+                "label": "サイズ",
+                "value": "1100×620×980mm"
+              },
+              {
+                "label": "本体重量",
+                "value": "90kg"
+              }
+            ],
+            "image": "images/cropped/product-x05-c.jpg",
+            "images": ["images/cropped/product-x05-c.jpg", "", ""]
+          },
+          {
+            "model": "X05-D",
+            "id": "x05-d",
+            "grade": "Basic",
+            "nameEn": "Classic Barrel",
+            "priceJpy": 196020,
+            "descJp": "フットペダル機能なし。クラシックデザイン。",
+            "price": 396,
+            "specs": [
+              {
+                "label": "サイズ",
+                "value": "1100×620×980mm"
+              },
+              {
+                "label": "本体重量",
+                "value": "90kg"
+              }
+            ],
+            "options": [
+              {
+                "name": "EVA",
+                "price": 13200
+              },
+              {
+                "name": "塗装",
+                "price": 19800
+              }
+            ],
+            "image": "images/cropped/product-x05-d.jpg",
+            "images": ["images/cropped/product-x05-d.jpg", "", ""]
+          }
+        ]
+      }
+    ]
+  }
+};
+}
+</script>
+</head>
+<body>
+
+<div class="page-curtain"><span>AXISCORE</span></div>
+
+<header>
+  <div class="hd">
+    <a href="index.html" class="hd-logo"><img src="images/logos/axiscore-logo-v2.png" alt="AXISCORE PILATES"></a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="academy.html">Academy</a>
+      <a href="lineup.html" class="active">Line Up</a>
+      <a href="results.html">Results</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="mobile-overlay"><a href="index.html">Home</a><a href="academy.html">Academy</a><a href="lineup.html">Line Up</a><a href="results.html">Results</a><a href="#contact">Contact</a></div>
+
+<section class="hero">
+  <div class="hero-img"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-label">Machine Line Up</p>
+    <h1 class="hero-title">Line Up</h1>
+  </div>
+</section>
+
+<section class="sec philosophy fade-up">
+  <p class="sec-label">Philosophy</p>
+  <h2 class="sec-heading">ピラティスを、もっと自由に。<br>オリジナルマシンで、理想のスタジオを実現。</h2>
+  <p class="sec-body">オリジナル設計のこだわり。安心の品質（国内外実績、耐久性、安全性）。<br>操作性・収納性・カスタマイズ性を兼ね備え、スタジオに合わせた最適な提案をいたします。</p>
+</section>
+
+<div class="anchor-nav fade-up">
+  <a href="#brand-a">Brand A</a>
+  <span class="anchor-sep">|</span>
+  <a href="#brand-x">Brand X</a>
+  <span class="anchor-sep">|</span>
+  <a href="#seat-color">Seat Color</a>
+  <span class="anchor-sep">|</span>
+  <a href="#accessories">Accessories</a>
+  <span class="anchor-sep">|</span>
+  <a href="#customize">Customize</a>
+  <span class="anchor-sep">|</span>
+  <a href="#after-service">Service</a>
+</div>
+
+<!-- Brand A: 動的生成 -->
+<div class="brand-section" id="brand-a"></div>
+
+<!-- Brand X: 動的生成 -->
+<div class="brand-section brand-x" id="brand-x"></div>
+
+
+<!-- ========== NAPPA LEATHER COLORS ========== -->
+<section class="sec nappa-section fade-up" id="seat-color">
+  <p class="sec-label">Seat Color</p>
+  <h2 class="sec-heading">シートカラー — NAPPAレザー</h2>
+  <p class="nappa-intro">Brand Xシリーズでは、シート（パッド）のカラーを豊富なNAPPAレザーからお選びいただけます。スタジオの雰囲気やブランドイメージに合わせて、お好みのカラーをご指定ください。</p>
+  <div class="nappa-grid">
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#c2a46a"></div><p class="nappa-code">NP301</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#a68b5b"></div><p class="nappa-code">NP302</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#6b4226"></div><p class="nappa-code">NP303</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#c4342a"></div><p class="nappa-code">NP304</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#7a1e2a"></div><p class="nappa-code">NP305</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#3c2018"></div><p class="nappa-code">NP306</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#9a9a96"></div><p class="nappa-code">NP307</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#1a1a1a"></div><p class="nappa-code">NP308</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#dcd5bc"></div><p class="nappa-code">NP309</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#d99a2b"></div><p class="nappa-code">NP310</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#c9919a"></div><p class="nappa-code">NP311</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#a0442a"></div><p class="nappa-code">NP312</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#1e2744"></div><p class="nappa-code">NP313</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#1a4030"></div><p class="nappa-code">NP314</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#c82828"></div><p class="nappa-code">NP315</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#5c1a22"></div><p class="nappa-code">NP316</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#cc2828"></div><p class="nappa-code">NP317</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#5e1820"></div><p class="nappa-code">NP318</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#3c4c4e"></div><p class="nappa-code">NP319</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#a09880"></div><p class="nappa-code">NP320</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#e4e2d8"></div><p class="nappa-code">NP321</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#6e1a28"></div><p class="nappa-code">NP361</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#bba88e"></div><p class="nappa-code">NP362</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#5a2420"></div><p class="nappa-code">NP363</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#a8a090"></div><p class="nappa-code">NP364</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#dcdabe"></div><p class="nappa-code">NP366</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#c8a840"></div><p class="nappa-code">NP368</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#8aa090"></div><p class="nappa-code">NP370</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#d0b820"></div><p class="nappa-code">NP374</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#b81828"></div><p class="nappa-code">NP375</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#c8aa20"></div><p class="nappa-code">NP376</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#a01828"></div><p class="nappa-code">NP377</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#9a2896"></div><p class="nappa-code">NP378</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#96aaa0"></div><p class="nappa-code">NP379</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#607080"></div><p class="nappa-code">NP380</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#1a2860"></div><p class="nappa-code">NP381</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#0a6838"></div><p class="nappa-code">NP382</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#b89898"></div><p class="nappa-code">NP383</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#cc6898"></div><p class="nappa-code">NP384</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#1c2030"></div><p class="nappa-code">NP385</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#cc7860"></div><p class="nappa-code">NP386</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#202840"></div><p class="nappa-code">NP387</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#e08868"></div><p class="nappa-code">NP388</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#2a2828"></div><p class="nappa-code">NP389</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#4a1820"></div><p class="nappa-code">NP390</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#182038"></div><p class="nappa-code">NP391</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#d8d8c8"></div><p class="nappa-code">NP392</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#a09070"></div><p class="nappa-code">NP393</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#182040"></div><p class="nappa-code">NP394</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#1a7880"></div><p class="nappa-code">NP395</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#101828"></div><p class="nappa-code">NP396</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#28a8b0"></div><p class="nappa-code">NP397</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#706888"></div><p class="nappa-code">NP398</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#a07830"></div><p class="nappa-code">NP399</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#a8c018"></div><p class="nappa-code">NP400</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#c87020"></div><p class="nappa-code">NP401</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#9a9868"></div><p class="nappa-code">NP402</p></div>
+    <div class="nappa-swatch fade-up"><div class="nappa-color" style="background:#808880"></div><p class="nappa-code">NP403</p></div>
+  </div>
+  <p class="nappa-note">※ 画面上の色味は実際の素材と異なる場合がございます。サンプル帳でのご確認をおすすめいたします。</p>
+</section>
+
+<!-- ========== ACCESSORIES ========== -->
+<section class="sec acc-section fade-up" id="accessories">
+  <p class="sec-label">Accessories</p>
+  <h2 class="sec-heading">アクセサリー</h2>
+  <p class="sec-body">ピラティスのトレーニング効果を高めるアクセサリー各種。表示価格はすべて税込です。</p>
+  <div class="acc-grid">
+    <div class="acc-card fade-up">
+      <img class="acc-card-img" src="images/accessories/pilates-circle.jpg" alt="Pilates Circle" loading="lazy">
+      <div class="acc-card-body">
+        <div class="acc-card-name">Pilates Circle</div>
+        <div class="acc-card-size">38cm</div>
+        <div class="acc-card-price">&yen;2,640<span>税込</span></div>
+      </div>
+    </div>
+    <div class="acc-card fade-up delay-1">
+      <img class="acc-card-img" src="images/accessories/pilates-ball.jpg" alt="Pilates Ball" loading="lazy">
+      <div class="acc-card-body">
+        <div class="acc-card-name">Pilates Ball</div>
+        <div class="acc-card-size">25cm</div>
+        <div class="acc-card-price">&yen;1,898<span>税込</span></div>
+      </div>
+    </div>
+    <div class="acc-card fade-up delay-2">
+      <img class="acc-card-img" src="images/accessories/foam-roller.jpg" alt="Foam Roller" loading="lazy">
+      <div class="acc-card-body">
+        <div class="acc-card-name">Foam Roller</div>
+        <div class="acc-card-size">33×13cm / 45×13cm</div>
+        <div class="acc-card-price">&yen;5,363<span>税込</span></div>
+      </div>
+    </div>
+    <div class="acc-card fade-up delay-3">
+      <img class="acc-card-img" src="images/accessories/elastic-band.jpg" alt="Elastic Band" loading="lazy">
+      <div class="acc-card-body">
+        <div class="acc-card-name">Elastic Band</div>
+        <div class="acc-card-size">1500×150×0.35mm</div>
+        <div class="acc-card-price">&yen;990<span>税込</span></div>
+      </div>
+    </div>
+    <div class="acc-card fade-up">
+      <img class="acc-card-img" src="images/accessories/yoga-block.jpg" alt="Yoga Block" loading="lazy">
+      <div class="acc-card-body">
+        <div class="acc-card-name">Yoga Block</div>
+        <div class="acc-card-size">23×15×7.5cm</div>
+        <div class="acc-card-price">&yen;4,125<span>税込</span></div>
+      </div>
+    </div>
+    <div class="acc-card fade-up delay-1">
+      <img class="acc-card-img" src="images/accessories/balance-disc.jpg" alt="Balance Disc" loading="lazy">
+      <div class="acc-card-body">
+        <div class="acc-card-name">Balance Disc</div>
+        <div class="acc-card-size">直径34cm</div>
+        <div class="acc-card-price">&yen;3,135<span>税込</span></div>
+      </div>
+    </div>
+    <div class="acc-card fade-up delay-2">
+      <img class="acc-card-img" src="images/accessories/spinal-corrector-wood.jpg" alt="Spinal Corrector (Wood)" loading="lazy">
+      <div class="acc-card-body">
+        <div class="acc-card-name">Spinal Corrector (Wood)</div>
+        <div class="acc-card-size">—</div>
+        <div class="acc-card-price">&yen;57,750<span>税込</span></div>
+      </div>
+    </div>
+    <div class="acc-card fade-up delay-3">
+      <img class="acc-card-img" src="images/accessories/epp-spinal-corrector.jpg" alt="EPP Spinal Corrector" loading="lazy">
+      <div class="acc-card-body">
+        <div class="acc-card-name">EPP Spinal Corrector</div>
+        <div class="acc-card-size">96×36×26cm</div>
+        <div class="acc-card-price">&yen;18,975<span>税込</span></div>
+      </div>
+    </div>
+    <div class="acc-card fade-up">
+      <img class="acc-card-img" src="images/accessories/spine-trainer.jpg" alt="Spine Trainer" loading="lazy">
+      <div class="acc-card-body">
+        <div class="acc-card-name">Spine Trainer</div>
+        <div class="acc-card-size">—</div>
+        <div class="acc-card-price">&yen;60,390<span>税込</span></div>
+      </div>
+    </div>
+    <div class="acc-card fade-up delay-1">
+      <img class="acc-card-img" src="images/accessories/massage-stick.jpg" alt="Massage Stick" loading="lazy">
+      <div class="acc-card-body">
+        <div class="acc-card-name">Massage Stick</div>
+        <div class="acc-card-size">—</div>
+        <div class="acc-card-price">&yen;17,325<span>税込</span></div>
+      </div>
+    </div>
+    <div class="acc-card fade-up delay-2">
+      <img class="acc-card-img" src="images/accessories/balance-pad.jpg" alt="Balance Pad" loading="lazy">
+      <div class="acc-card-body">
+        <div class="acc-card-name">Balance Pad</div>
+        <div class="acc-card-size">28×17×6cm</div>
+        <div class="acc-card-price">&yen;4,950<span>税込</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== CUSTOMIZE ========== -->
+<section class="sec feature fade-up" id="customize">
+  <p class="sec-label">Customizable</p>
+  <div class="feature-split">
+    <div class="feature-img fade-up"><img src="images/cropped/customizable.jpg" alt="Customizable" loading="lazy"></div>
+    <div class="feature-detail fade-up delay-1">
+      <h3>Customizable</h3>
+      <p class="sec-body" style="margin-top:12px">お客様のご希望に合わせて、ピラティスマシンのフレームカラーやシートの色などを自由にカスタマイズしていただけます。空間の雰囲気やブランドイメージに合わせたデザインで、世界に一つだけのマシンをお作りいただけます。</p>
+      <p class="sec-body" style="margin-top:12px;font-size:13px;color:#444">ご希望やご相談がございましたら、どうぞお気軽にお問い合わせください。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== AFTER-SERVICE ========== -->
+<section class="sec fade-up" id="after-service" style="background:#faf9f7;max-width:100%;border-top:1px solid #f0ece8">
+  <div style="max-width:960px;margin:0 auto">
+    <p class="sec-label" style="text-align:center">After-Service</p>
+    <h2 class="sec-heading" style="text-align:center;margin-bottom:8px">安心のアフターサポート</h2>
+    <div class="svc-split">
+      <div>
+        <p class="sec-body" style="margin-top:0">axiscoreでは、ご購入前のご相談やプランニングから丁寧に対応させていただいております。お客様のご要望に寄り添い、実際の現場を訪問させていただいたうえでのプランニングや、カスタマイズされたオリジナルのご提案も可能です。</p>
+        <p class="sec-body" style="margin-top:16px">設置・施工に至るまで、すべての工程をワンストップでサポートいたします。</p>
+        <p class="sec-body" style="margin-top:16px">ご購入後のアフターサービスにも万全の体制で対応しております。国内ブランドならではの迅速な対応は、多くのお客様よりご好評をいただいております。経年による劣化やご使用中の不具合などにつきましても、どうぞご遠慮なくご相談ください。</p>
+      </div>
+      <div class="svc-grid">
+        <div class="svc-item fade-up delay-1"><p class="svc-en">Maintenance</p><p class="svc-jp">保守・メンテナンス</p></div>
+        <div class="svc-item fade-up delay-2"><p class="svc-en">Layout Design</p><p class="svc-jp">レイアウトデザイン</p></div>
+        <div class="svc-item fade-up delay-3"><p class="svc-en">Delivery</p><p class="svc-jp">搬入・組立</p></div>
+        <div class="svc-item fade-up delay-1"><p class="svc-en">Quotation</p><p class="svc-jp">見積依頼</p></div>
+        <div class="svc-item fade-up delay-2"><p class="svc-en">Repair</p><p class="svc-jp">修理依頼</p></div>
+        <div class="svc-item fade-up delay-3"><p class="svc-en">Parts</p><p class="svc-jp">パーツ郵送</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PURCHASE CTA -->
+<section class="sec fade-up" style="text-align:center;background:linear-gradient(180deg,#faf9f7 0%,#f5f0eb 100%);border-top:1px solid #f0ece8">
+  <p class="sec-label">Online Shop</p>
+  <h2 class="sec-heading" style="text-align:center;font-size:clamp(22px,2.6vw,30px)">ご購入・お見積りはこちら</h2>
+  <p class="sec-body" style="text-align:center;margin-top:16px;margin-bottom:36px;max-width:600px;margin-left:auto;margin-right:auto">
+    マシンのご購入やカスタマイズのご相談は、オンラインショップまたはお電話にて承っております。
+  </p>
+  <div style="display:flex;gap:20px;justify-content:center;flex-wrap:wrap">
+    <a href="https://axiscore.base.shop/" target="_blank" rel="noopener" class="hero-cta" style="display:inline-flex;align-items:center;gap:8px;font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:500;letter-spacing:3px;color:#fff;background:#8a7868;padding:16px 44px;text-decoration:none;border-radius:2px;transition:background .3s,transform .3s,box-shadow .3s">
+      オンラインショップへ
+      <svg viewBox="0 0 24 24" style="width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+    </a>
+    <a href="tel:0356049088" class="hero-cta" style="display:inline-flex;align-items:center;gap:8px;font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:500;letter-spacing:3px;color:#fff;background:#1a1a1a;padding:16px 44px;text-decoration:none;border-radius:2px;transition:background .3s,transform .3s,box-shadow .3s">
+      電話で相談する
+      <svg viewBox="0 0 24 24" style="width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="sec contact fade-up" id="contact">
+  <p class="sec-label">Contact</p>
+  <p class="contact-company">株式会社大丸プランニング</p>
+  <p class="contact-tel">03-5604-9088</p>
+  <p class="contact-mail">info@ace-axiscore.com</p>
+  <div class="sns-icons">
+    <a href="https://www.facebook.com/" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+    <a href="https://www.instagram.com/axiscorepilates/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
+    <a href="https://line.me/" target="_blank" rel="noopener" aria-label="LINE"><svg viewBox="0 0 24 24"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg></a>
+    <a href="mailto:info@ace-axiscore.com" aria-label="Email"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></a>
+  </div>
+</section>
+
+<footer><small>&copy; AXISCORE PILATES &mdash; All rights reserved.</small></footer>
+
+<button class="btt" aria-label="Back to top"><svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg></button>
+
+<script>
+/* Page curtain */
+window.addEventListener('load',()=>{setTimeout(()=>document.querySelector('.page-curtain').classList.add('done'),300)});
+
+/* Header scroll */
+const hd=document.querySelector('header');
+window.addEventListener('scroll',()=>{hd.classList.toggle('scrolled',window.scrollY>60)},{passive:true});
+
+/* Hamburger */
+const hb=document.querySelector('.hamburger'),mo=document.querySelector('.mobile-overlay');
+hb.addEventListener('click',()=>{hb.classList.toggle('open');mo.classList.toggle('open');document.body.style.overflow=mo.classList.contains('open')?'hidden':''});
+mo.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{hb.classList.remove('open');mo.classList.remove('open');document.body.style.overflow=''}));
+
+/* Back to Top */
+const btt=document.querySelector('.btt');
+window.addEventListener('scroll',()=>{btt.classList.toggle('show',window.scrollY>400)},{passive:true});
+btt.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+
+/* === machines.json を読み込んで製品を動的に表示 === */
+function esc(s){if(!s)return '';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+
+function renderBrandA(data, container){
+  let h='';
+  h+='<div class="brand-header fade-up">';
+  h+='<span class="brand-badge">Brand A</span>';
+  h+='<h2 class="brand-title">'+esc(data.series)+'</h2>';
+  h+='<p class="brand-sub">'+esc(data.subtitle)+'</p>';
+  h+='</div>';
+
+  data.products.forEach((p,idx)=>{
+    h+='<div class="product fade-up"><div class="product-inner"><div class="product-top">';
+    var imgs=p.images&&p.images.length?p.images:[p.image,'',''];
+    var validImgs=imgs.filter(function(s){return s&&s.length>0});
+    if(!validImgs.length) validImgs=[p.image||''];
+    var gid='gal-'+esc(p.id);
+    h+='<div class="product-gallery" id="'+gid+'" data-idx="0" data-count="'+validImgs.length+'">';
+    h+='<div class="product-gallery-wrap">';
+    validImgs.forEach(function(src,i){
+      h+='<img class="gallery-img'+(i===0?' active':'')+'" src="'+esc(src)+'" alt="'+esc(p.nameEn)+'" loading="lazy" data-i="'+i+'">';
+    });
+    if(validImgs.length>1){
+      h+='<button class="gallery-nav prev" onclick="galNav(\''+gid+'\',-1)" aria-label="前へ">&#8249;</button>';
+      h+='<button class="gallery-nav next" onclick="galNav(\''+gid+'\',1)" aria-label="次へ">&#8250;</button>';
+      h+='<span class="gallery-counter">1 / '+validImgs.length+'</span>';
+      h+='<div class="gallery-dots">';
+      validImgs.forEach(function(_,i){h+='<span class="gallery-dot'+(i===0?' active':'')+'" onclick="galGo(\''+gid+'\','+i+')"></span>'});
+      h+='</div>';
+    }
+    h+='</div>';
+    // Edit mode buttons (MAIN / SUB1 / SUB2)
+    h+='<div class="edit-img-btns">';
+    var slotLabels=['メイン','サブ 1','サブ 2'];
+    for(var si=0;si<3;si++){
+      var hasImg=imgs[si]&&imgs[si].length>0;
+      h+='<button class="edit-img-btn" onclick="openImgModal(findProduct(\''+esc(p.id)+'\').product,\'brandA\',null,'+idx+','+si+')">';
+      h+=slotLabels[si];
+      if(hasImg) h+='<span class="edit-check"> ✓</span>';
+      h+='</button>';
+    }
+    h+='</div>';
+    if(p.video){
+      h+='<div class="product-video-wrap" style="margin-top:8px">';
+      h+='<iframe src="https://www.youtube.com/embed/'+esc(p.video)+'?rel=0&modestbranding=1" title="'+esc(p.nameEn)+'" frameborder="0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen loading="lazy"></iframe>';
+      h+='</div>';
+    }
+    h+='</div>';
+    h+='<div class="product-info">';
+    h+='<p class="product-series">'+esc(p.series||'')+'</p>';
+    h+='<h3 class="product-name">'+esc(p.nameEn)+'</h3>';
+    h+='<p class="product-name-jp">'+esc(p.nameJp||'')+'</p>';
+    h+='<p class="product-desc">'+esc(p.description||'')+'</p>';
+    h+='<div class="product-price-block">';
+    h+='<p class="product-price">&yen;'+Number(p.price||0).toLocaleString()+'</p>';
+    h+='<p class="product-price-note">'+esc(p.priceNote||'')+'</p></div>';
+
+    if(p.specs&&p.specs.length){
+      h+='<table class="spec-table">';
+      p.specs.forEach(s=>{h+='<tr><th>'+esc(s.label)+'</th><td>'+esc(s.value)+'</td></tr>'});
+      h+='</table>';
+    }
+    if(p.accessories&&p.accessories.length){
+      h+='<div class="spec-detail">';
+      h+='<div class="spec-detail-toggle">標準装備・仕様を見る</div>';
+      h+='<div class="spec-detail-content"><ol class="spec-detail-list">';
+      p.accessories.forEach(a=>{h+='<li>'+esc(a)+'</li>'});
+      h+='</ol></div></div>';
+    }
+    h+='</div></div></div></div>';
+  });
+
+  container.innerHTML=h;
+}
+
+function renderBrandX(data, container){
+  let h='';
+  h+='<div class="brand-header fade-up">';
+  h+='<span class="brand-badge">Brand X</span>';
+  h+='<h2 class="brand-title">'+esc(data.series||'X Series')+'</h2>';
+  h+='<p class="brand-sub">'+esc(data.subtitle)+'</p>';
+  h+='</div>';
+
+  data.categories.forEach((cat,ci)=>{
+    h+='<div class="cat-header fade-up">';
+    h+='<span class="cat-num">'+esc(cat.number||'')+'</span>';
+    h+='<h3 class="cat-title">'+esc(cat.nameEn)+'<span class="cat-title-jp">'+esc(cat.nameJp||'')+'</span></h3>';
+    h+='</div>';
+
+    if(cat.video){
+      h+='<div class="cat-video fade-up">';
+      h+='<div class="cat-video-wrap">';
+      h+='<iframe src="https://www.youtube.com/embed/'+esc(cat.video)+'?rel=0&modestbranding=1" title="'+esc(cat.nameEn)+' Movie" frameborder="0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen loading="lazy"></iframe>';
+      h+='</div>';
+      h+='</div>';
+    }
+
+    const gridClass=(cat.products.length===4||cat.nameEn.toLowerCase().includes('ladder'))?'x-grid x-grid-4':'x-grid';
+    h+='<div class="x-category fade-up"><div class="'+gridClass+'">';
+
+    cat.products.forEach((p,pi)=>{
+      const delay=pi>0?' delay-'+Math.min(pi,4):'';
+      h+='<div class="x-card fade-up'+delay+'">';
+      var xImgs=p.images&&p.images.length?p.images:[p.image||'','',''];
+      var xValid=xImgs.filter(function(s){return s&&s.length>0});
+      if(!xValid.length) xValid=[p.image||''];
+      var xgid='xgal-'+esc(p.id);
+      if(xValid.length>0){
+        h+='<div class="x-card-img product-gallery" id="'+xgid+'" data-idx="0" data-count="'+xValid.length+'">';
+        xValid.forEach(function(src,i){
+          h+='<img class="gallery-img'+(i===0?' active':'')+'" src="'+esc(src)+'" alt="'+esc(p.nameEn||p.model)+'" loading="lazy" data-i="'+i+'">';
+        });
+        if(xValid.length>1){
+          h+='<button class="gallery-nav prev" onclick="event.stopPropagation();galNav(\''+xgid+'\',-1)" aria-label="前へ">&#8249;</button>';
+          h+='<button class="gallery-nav next" onclick="event.stopPropagation();galNav(\''+xgid+'\',1)" aria-label="次へ">&#8250;</button>';
+          h+='<div class="gallery-dots">';
+          xValid.forEach(function(_,i){h+='<span class="gallery-dot'+(i===0?' active':'')+'" onclick="event.stopPropagation();galGo(\''+xgid+'\','+i+')"></span>'});
+          h+='</div>';
+        }
+        h+='<div class="edit-img-btns">';
+        var xSlotLabels=['メイン','サブ 1','サブ 2'];
+        for(var si=0;si<3;si++){
+          var xHas=xImgs[si]&&xImgs[si].length>0;
+          h+='<button class="edit-img-btn" onclick="event.stopPropagation();openImgModal(findProduct(\''+esc(p.id)+'\').product,\'brandX\','+ci+','+pi+','+si+')">';
+          h+=xSlotLabels[si];
+          if(xHas) h+='<span class="edit-check"> ✓</span>';
+          h+='</button>';
+        }
+        h+='</div>';
+        h+='</div>';
+      }
+      h+='<div class="x-card-body">';
+      h+='<p class="x-card-model">'+esc(p.model||'')+'</p>';
+      h+='<span class="x-card-grade">'+esc(p.grade||'')+'</span>';
+      h+='<p class="x-card-name">'+esc(p.nameEn||'')+'</p>';
+      h+='<p class="x-card-desc">'+esc(p.descJp||'')+'</p>';
+      h+='<div class="x-card-price">&yen;'+Number(p.priceJpy||0).toLocaleString()+'<span>税込</span></div>';
+      h+='</div>';
+
+      h+='<div class="x-card-specs">';
+      if(p.specs&&p.specs.length){
+        p.specs.slice(0,4).forEach(s=>{
+          h+='<div class="x-spec"><p class="x-spec-label">'+esc(s.label)+'</p><p class="x-spec-value">'+esc(s.value)+'</p></div>';
+        });
+      } else {
+        h+='<div class="x-spec" style="grid-column:1/-1"><p class="x-spec-label">スペック</p><p class="x-spec-value">—</p></div>';
+      }
+      h+='</div>';
+
+      if(p.options&&p.options.length){
+        h+='<div class="x-card-options">';
+        p.options.forEach(o=>{
+          h+='<span class="x-opt">'+esc(o.name)+'<strong>+&yen;'+Number(o.price||0).toLocaleString()+'（税込）</strong></span>';
+        });
+        h+='</div>';
+      }
+      h+='</div>';
+    });
+
+    h+='</div></div>';
+  });
+
+  container.innerHTML=h;
+}
+
+function initObserver(){
+  const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}})},{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
+  document.querySelectorAll('.spec-detail-toggle').forEach(t=>{
+    t.addEventListener('click',()=>{t.classList.toggle('open');t.nextElementSibling.classList.toggle('open')})
+  });
+}
+
+function galNav(gid,dir){
+  var g=document.getElementById(gid);
+  var count=parseInt(g.dataset.count);
+  var idx=(parseInt(g.dataset.idx)+dir+count)%count;
+  galGo(gid,idx);
+}
+function galGo(gid,idx){
+  var g=document.getElementById(gid);
+  g.dataset.idx=idx;
+  g.querySelectorAll('.gallery-img').forEach(function(img,i){
+    img.classList.toggle('active',i===idx);
+  });
+  g.querySelectorAll('.gallery-dot').forEach(function(dot,i){
+    dot.classList.toggle('active',i===idx);
+  });
+  var counter=g.querySelector('.gallery-counter');
+  if(counter) counter.textContent=(idx+1)+' / '+g.dataset.count;
+}
+
+function loadData(){
+  // 方法1: fetchで読み込み (http/httpsサーバー経由の場合)
+  // 方法2: scriptタグで埋め込み済みデータを使用 (file://の場合)
+  if(typeof MACHINE_DATA !== 'undefined'){
+    renderBrandA(MACHINE_DATA.brandA, document.getElementById('brand-a'));
+    renderBrandX(MACHINE_DATA.brandX, document.getElementById('brand-x'));
+    initObserver();
+    return;
+  }
+  fetch('machines.json')
+    .then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json()})
+    .then(data=>{
+      renderBrandA(data.brandA, document.getElementById('brand-a'));
+      renderBrandX(data.brandX, document.getElementById('brand-x'));
+      initObserver();
+    })
+    .catch(err=>{
+      console.error('machines.json の読み込みに失敗:',err);
+      document.getElementById('brand-a').innerHTML='<div style="text-align:center;padding:80px 40px;color:#c44;font-family:Noto Serif JP,serif;font-size:14px">データの読み込みに失敗しました。<br>machines.json が同じフォルダにあるか確認してください。<br><small style="color:#444">file://で開いている場合は、admin.htmlから「lineup.htmlを更新」ボタンを使ってください。</small></div>';
+    });
+}
+loadData();
+
+/* ===== EDIT MODE ===== */
+// ?edit がURLにある場合のみ編集機能を有効化
+if(window.location.search.indexOf('edit')!==-1 || window.location.protocol==='file:'){
+  document.body.classList.add('edit-allowed');
+}
+var editMode=false;
+var editTarget=null; // {brand,catIdx,prodIdx,slotIdx}
+
+// Known images for the picker
+var EDIT_IMAGES={
+  'lineup':['V01.png','V02.png','Reformer.png','Half tower.png','Cadillac.png','Chair.png','Ladder barrel.png','Caformer.png'],
+  'cropped':['product-v01.jpg','product-v02.jpg','product-reformer.jpg','product-half-tower.jpg','product-cadillac.jpg','product-chair.jpg','product-ladder-barrel.jpg','product-caformer.jpg','product-x01-a.jpg','product-x01-b.jpg','product-x01-c.jpg','product-x02-a.jpg','product-x02-b.jpg','product-x02-c.jpg','product-x03-a.jpg','product-x03-b.jpg','product-x03-c.jpg','product-x04-a.jpg','product-x04-b.jpg','product-x04-c.jpg','product-x05-a.jpg','product-x05-b.jpg','product-x05-c.jpg','product-x05-d.jpg'],
+  'base':['01_brand-a_vertical-01.jpg','02_brand-a_vertical-02.jpg','03_brand-a_reformer.jpg','04_brand-a_half-tower.jpg','05_brand-a_cadillac.jpg','06_brand-a_chair.jpg','07_brand-a_ladder-barrel.jpg','08_brand-a_caformer.jpg','09_brand-x_x01-a-entry.jpg','10_brand-x_x01-b-standard.jpg','11_brand-x_x01-c-pro.jpg','12_brand-x_x02-a-standard.jpg','13_brand-x_x02-b-standard.jpg','14_brand-x_x02-c-premium.jpg','15_brand-x_x03-a-steel.jpg','16_brand-x_x03-b-maple.jpg','17_brand-x_x03-c-premium.jpg','18_brand-x_x04-a-entry.jpg','19_brand-x_x04-b-standard.jpg','20_brand-x_x04-c-pro.jpg','21_brand-x_x05-a-entry.jpg','22_brand-x_x05-b-standard.jpg','23_brand-x_x05-c-pro.jpg','24_brand-x_x05-d-basic.jpg']
+};
+var EDIT_DIRS={'lineup':'images/lineup/','cropped':'images/cropped/','base':'base-product-images_20260316/'};
+
+function toggleEditMode(){
+  editMode=!editMode;
+  document.body.classList.toggle('edit-mode',editMode);
+  if(editMode){
+    editToast('編集モード ON — 各画像の下のボタンで変更できます。変更後は「保存（ダウンロード）」→ ダウンロードされたファイルで元のlineup.htmlを上書きしてください');
+  } else {
+    editToast('編集モード OFF');
+  }
+}
+
+function findProduct(pid){
+  if(MACHINE_DATA.brandA){
+    var idx=MACHINE_DATA.brandA.products.findIndex(function(p){return p.id===pid});
+    if(idx>=0) return {product:MACHINE_DATA.brandA.products[idx],brand:'brandA',catIdx:null,prodIdx:idx};
+  }
+  if(MACHINE_DATA.brandX){
+    for(var ci=0;ci<MACHINE_DATA.brandX.categories.length;ci++){
+      var cat=MACHINE_DATA.brandX.categories[ci];
+      for(var pi=0;pi<cat.products.length;pi++){
+        if(cat.products[pi].id===pid) return {product:cat.products[pi],brand:'brandX',catIdx:ci,prodIdx:pi};
+      }
+    }
+  }
+  return null;
+}
+
+function findProductByImage(src,brand){
+  if(brand==='brandX'&&MACHINE_DATA.brandX){
+    for(var ci=0;ci<MACHINE_DATA.brandX.categories.length;ci++){
+      var cat=MACHINE_DATA.brandX.categories[ci];
+      for(var pi=0;pi<cat.products.length;pi++){
+        if(cat.products[pi].image===src) return {product:cat.products[pi],brand:'brandX',catIdx:ci,prodIdx:pi};
+      }
+    }
+  }
+  return null;
+}
+
+function openImgModal(product,brand,catIdx,prodIdx,slotIdx){
+  editTarget={product:product,brand:brand,catIdx:catIdx,prodIdx:prodIdx,slotIdx:slotIdx};
+  var modal=document.getElementById('imgModal');
+  var name=product.nameEn||product.model||'';
+  var imgs=product.images||[product.image||'','',''];
+  document.getElementById('imgModalTitle').textContent=name+' — '+(slotIdx===0?'メイン':'サブ '+(slotIdx));
+  // Show slot selector
+  var slotHtml='';
+  ['MAIN','SUB 1','SUB 2'].forEach(function(label,i){
+    var cls=i===slotIdx?' active':'';
+    var src=imgs[i]||'';
+    slotHtml+='<button class="img-modal-tab'+cls+'" onclick="switchSlot('+i+')">'+label+(src?' ✓':'')+'</button>';
+  });
+  document.getElementById('imgModalSlots').innerHTML=slotHtml;
+  showImgDir('lineup');
+  modal.classList.add('open');
+}
+
+function switchSlot(idx){
+  if(!editTarget) return;
+  editTarget.slotIdx=idx;
+  var imgs=editTarget.product.images||[editTarget.product.image||'','',''];
+  var labels=['MAIN','SUB 1','SUB 2'];
+  document.getElementById('imgModalTitle').textContent=(editTarget.product.nameEn||editTarget.product.model)+' — '+labels[idx];
+  document.querySelectorAll('#imgModalSlots .img-modal-tab').forEach(function(btn,i){
+    btn.classList.toggle('active',i===idx);
+  });
+}
+
+function showImgDir(key){
+  document.querySelectorAll('#imgModalDirs .img-modal-tab').forEach(function(t){
+    t.classList.toggle('active',t.dataset.dir===key);
+  });
+  var files=EDIT_IMAGES[key]||[];
+  var dir=EDIT_DIRS[key]||'';
+  var html='';
+  files.forEach(function(f){
+    var path=dir+f;
+    html+='<div class="img-modal-thumb" onclick="selectImage(\''+path.replace(/'/g,"\\'")+'\')"><img src="'+path+'" alt="" loading="lazy" onerror="this.parentElement.style.display=\'none\'"><div class="img-modal-thumb-name">'+f+'</div></div>';
+  });
+  document.getElementById('imgModalGrid').innerHTML=html;
+}
+
+function selectImage(path){
+  if(!editTarget) return;
+  var p=editTarget.product;
+  if(!p.images) p.images=[p.image||'','',''];
+  p.images[editTarget.slotIdx]=path;
+  if(editTarget.slotIdx===0) p.image=path;
+  // Re-render affected area
+  if(editTarget.brand==='brandA'){
+    renderBrandA(MACHINE_DATA.brandA, document.getElementById('brand-a'));
+    initObserver();
+  } else {
+    renderBrandX(MACHINE_DATA.brandX, document.getElementById('brand-x'));
+    initObserver();
+  }
+  closeImgModal();
+  editToast('画像を変更しました: '+(p.nameEn||p.model));
+}
+
+function uploadLocalImage(){
+  var input=document.createElement('input');
+  input.type='file';input.accept='image/*';
+  input.onchange=function(){
+    if(!input.files[0]||!editTarget) return;
+    var reader=new FileReader();
+    reader.onload=function(e){
+      selectImage(e.target.result);
+    };
+    reader.readAsDataURL(input.files[0]);
+  };
+  input.click();
+}
+
+function closeImgModal(){
+  document.getElementById('imgModal').classList.remove('open');
+  editTarget=null;
+}
+
+function saveEditedData(){
+  var scriptEl=document.getElementById('machine-data');
+  if(!scriptEl){editToast('エラー: scriptタグが見つかりません');return;}
+  // Update the script content with new MACHINE_DATA
+  var newData='if(typeof MACHINE_DATA===\'undefined\'){\nvar MACHINE_DATA = '+JSON.stringify(MACHINE_DATA,null,2)+';\n}';
+  scriptEl.textContent='/* inline fallback — remove this block if machine-data.js is always present */\n'+newData;
+  // Build full HTML
+  var lang=document.documentElement.getAttribute('lang');
+  var html='<!DOCTYPE html>\n<html'+(lang?' lang="'+lang+'"':'')+'>\n'+document.head.outerHTML+'\n'+document.body.outerHTML+'\n</html>';
+  var blob=new Blob([html],{type:'text/html;charset=utf-8'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='lineup.html';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(a.href);
+  editToast('保存しました — ダウンロードフォルダのlineup.htmlで元ファイルを上書きしてください');
+}
+
+function editToast(msg){
+  var t=document.getElementById('editToast');
+  t.textContent=msg;t.classList.add('show');
+  var duration=msg.length>30?6000:3000;
+  setTimeout(function(){t.classList.remove('show')},duration);
+}
+</script>
+
+<!-- Edit Mode UI -->
+<button class="edit-fab" onclick="toggleEditMode()" title="編集モード切替">
+<svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+</button>
+<div class="edit-toolbar">
+<span class="edit-toolbar-label">編集モード</span>
+<span style="font-size:10px;color:#999;margin:0 8px">※ 保存後、ダウンロードされたファイルで元のlineup.htmlを上書きしてください</span>
+<button class="edit-btn" onclick="toggleEditMode()">終了</button>
+<button class="edit-btn edit-btn-save" onclick="saveEditedData()">保存（ダウンロード）</button>
+</div>
+<div class="edit-toast" id="editToast"></div>
+
+<!-- Image Selector Modal -->
+<div class="img-modal" id="imgModal" onclick="if(event.target===this)closeImgModal()">
+<div class="img-modal-box">
+<div class="img-modal-header">
+<span class="img-modal-title" id="imgModalTitle">画像選択</span>
+<button class="img-modal-close" onclick="closeImgModal()">&times;</button>
+</div>
+<div id="imgModalSlots" style="display:flex;gap:4px;padding:12px 20px;border-bottom:1px solid #f0ece8"></div>
+<div id="imgModalDirs" style="display:flex;gap:4px;padding:8px 20px;border-bottom:1px solid #f0ece8">
+<button class="img-modal-tab active" data-dir="lineup" onclick="showImgDir('lineup')">Lineup</button>
+<button class="img-modal-tab" data-dir="cropped" onclick="showImgDir('cropped')">Cropped</button>
+<button class="img-modal-tab" data-dir="base" onclick="showImgDir('base')">Base</button>
+</div>
+<div class="img-modal-body">
+<div class="img-modal-grid" id="imgModalGrid"></div>
+<div class="img-modal-upload" style="margin-top:16px">
+<button class="img-modal-upload-btn" onclick="uploadLocalImage()">ファイルから選択...</button>
+</div>
+</div>
+</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,1672 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pilates Equipment Photo Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Noto Serif JP', serif;
+      background-color: #f5f1ed;
+      color: #3a3a3a;
+      overflow-x: hidden;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: linear-gradient(135deg, #8a7868 0%, #9a8878 100%);
+      padding: 20px 30px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 10px 18px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: 'Noto Serif JP', serif;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-export {
+      background-color: #4a6480;
+      color: #fff;
+    }
+
+    .btn-export:hover {
+      background-color: #3a5470;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .btn-copy {
+      background-color: #6b8e7f;
+      color: #fff;
+    }
+
+    .btn-copy:hover {
+      background-color: #5a7d6e;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    .products-section {
+      margin-bottom: 60px;
+    }
+
+    .brand-header {
+      border-bottom: 3px solid #8a7868;
+      padding-bottom: 15px;
+      margin-bottom: 30px;
+    }
+
+    .brand-header h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: #3a3a3a;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .brand-subtitle {
+      font-size: 13px;
+      color: #666;
+      font-weight: 500;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 25px;
+      margin-bottom: 30px;
+    }
+
+    .product-card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transition: box-shadow 0.3s ease;
+    }
+
+    .product-card:hover {
+      box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    }
+
+    .product-header {
+      margin-bottom: 18px;
+      border-bottom: 2px solid #f0ebe5;
+      padding-bottom: 12px;
+    }
+
+    .product-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: #3a3a3a;
+      margin-bottom: 4px;
+    }
+
+    .product-subtitle {
+      font-size: 12px;
+      color: #999;
+      font-weight: 500;
+    }
+
+    .image-slots {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* Carousel preview - matches lineup page */
+    .admin-gallery{position:relative;border-radius:6px;overflow:hidden;background:#f0ebe5;aspect-ratio:4/3;margin-bottom:12px}
+    .admin-gallery img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:16px;opacity:0;transition:opacity .3s}
+    .admin-gallery img.active{opacity:1}
+    .admin-gallery .gal-nav{position:absolute;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.85);border:1px solid rgba(0,0,0,.08);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;color:#555;z-index:2;opacity:0;transition:opacity .3s}
+    .admin-gallery:hover .gal-nav{opacity:1}
+    .admin-gallery .gal-nav.prev{left:8px}
+    .admin-gallery .gal-nav.next{right:8px}
+    .admin-gallery .gal-dots{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);display:flex;gap:5px;z-index:2}
+    .admin-gallery .gal-dot{width:6px;height:6px;border-radius:50%;background:rgba(138,120,104,.3);cursor:pointer;transition:all .3s}
+    .admin-gallery .gal-dot.active{background:#8a7868;transform:scale(1.3)}
+    .admin-gallery .gal-counter{position:absolute;top:8px;right:10px;font-size:9px;color:#aaa;letter-spacing:1px;z-index:2}
+
+    /* Slot edit rows */
+    .image-slot {
+      border: 1px solid #e8ddd4;
+      border-radius: 6px;
+      padding: 10px 12px;
+      background: #faf8f6;
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .slot-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: #8a7868;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      white-space:nowrap;
+      min-width:44px;
+    }
+
+    .image-preview {
+      width: 60px;
+      height: 45px;
+      background: #f0ebe5;
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      position: relative;
+      flex-shrink:0;
+    }
+
+    .image-preview:hover {
+      background: #e8ddd4;
+    }
+
+    .image-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .image-preview.empty::after {
+      content: 'クリックして選択';
+      color: #bbb;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .image-input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    input[type="text"],
+    input[type="file"] {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 12px;
+      padding: 8px 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background: #fff;
+      color: #3a3a3a;
+    }
+
+    input[type="text"] {
+      width: 100%;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    .file-input-label {
+      display: inline-block;
+      padding: 6px 10px;
+      background: #f0ebe5;
+      border: 1px solid #e8ddd4;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 11px;
+      text-align: center;
+      font-weight: 600;
+      color: #8a7868;
+      transition: all 0.2s ease;
+    }
+
+    .file-input-label:hover {
+      background: #e8ddd4;
+      border-color: #ddd;
+    }
+
+    .library-section {
+      background: #fff;
+      border-radius: 8px;
+      padding: 25px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      margin-bottom: 40px;
+    }
+
+    .library-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: #3a3a3a;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #f0ebe5;
+      padding-bottom: 15px;
+      letter-spacing: 0.5px;
+    }
+
+    .library-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 15px;
+    }
+
+    .library-item {
+      aspect-ratio: 4/5;
+      border-radius: 6px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      background: #f0ebe5;
+      border: 2px solid transparent;
+    }
+
+    .library-item:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+      border-color: #8a7868;
+    }
+
+    .library-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .library-item:hover img {
+      transform: scale(1.05);
+    }
+
+    .library-item-path {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0,0,0,0.8);
+      color: #fff;
+      padding: 6px;
+      font-size: 9px;
+      word-break: break-all;
+      transform: translateY(100%);
+      transition: transform 0.3s ease;
+      max-height: 60px;
+      overflow-y: auto;
+    }
+
+    .library-item:hover .library-item-path {
+      transform: translateY(0);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 14px 20px;
+      background: #8a7868;
+      color: #fff;
+      border-radius: 4px;
+      font-size: 13px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      animation: slideUp 0.3s ease;
+      max-width: 300px;
+      z-index: 1000;
+    }
+
+    .toast.success {
+      background: #6b8e7f;
+    }
+
+    .toast.error {
+      background: #b87a5f;
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(100px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideOut {
+      from {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      to {
+        transform: translateY(100px);
+        opacity: 0;
+      }
+    }
+
+    .toast.removing {
+      animation: slideOut 0.3s ease forwards;
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+      }
+
+      .header-actions {
+        width: 100%;
+      }
+
+      .products-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .image-preview {
+        height: 120px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Pilates Equipment Photo Admin</h1>
+    <div class="header-actions">
+      <button class="btn-export" onclick="exportLineupHTML()">machine-data.js を保存</button>
+      <button class="btn-copy" onclick="copyJSONToClipboard()">JSONをコピー</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Brand A Section -->
+    <div class="products-section">
+      <div class="brand-header">
+        <h2>Brand A</h2>
+        <div class="brand-subtitle">カエデ（ブナ・オーク）無垢材 — 国内設計・品質管理</div>
+      </div>
+      <div class="products-grid" id="brandA-grid"></div>
+    </div>
+
+    <!-- Brand X Section -->
+    <div class="products-section">
+      <div class="brand-header">
+        <h2>Brand X</h2>
+        <div class="brand-subtitle">コストパフォーマンスに優れた海外工場直送モデル</div>
+      </div>
+      <div id="brandX-container"></div>
+    </div>
+
+    <!-- Image Library Section -->
+    <div class="library-section">
+      <div class="library-title">Image Library</div>
+      <div class="library-grid" id="library-grid"></div>
+    </div>
+  </div>
+
+  <script>
+var MACHINE_DATA = {
+  "brandA": {
+    "name": "Brand A",
+    "series": "Original Series",
+    "subtitle": "カエデ（ブナ・オーク）無垢材 — 国内設計・品質管理",
+    "description": "オリジナル設計のこだわり。安心の品質（国内外実績、耐久性、安全性）。操作性・収納性・カスタマイズ性を兼ね備え、スタジオに合わせた最適な提案をいたします。",
+    "products": [
+      {
+        "id": "vertical-01",
+        "nameEn": "Vertical 01",
+        "series": "Brand A — Reformer",
+        "nameJp": "折りたたみリフォーマー",
+        "video": "295xCi4gQHg",
+        "description": "省スペース設計の折りたたみ式リフォーマー。カエデ（ブナ・オーク）材フレームを採用し、コンパクトに収納しながらも本格的なトレーニングが可能。限られたスペースのスタジオや自宅にも最適です。",
+        "price": 466400,
+        "priceNote": "税込",
+        "image": "images/lineup/V01.png",
+        "images": ["images/lineup/V01.png", "", ""],
+        "specs": [
+          {
+            "label": "材質",
+            "value": "カエデ（ブナ・オーク）"
+          },
+          {
+            "label": "サイズ",
+            "value": "開放時 2290×625×240mm"
+          },
+          {
+            "label": "収納時",
+            "value": "673×487×1142mm"
+          },
+          {
+            "label": "正味重量",
+            "value": "78kg"
+          },
+          {
+            "label": "総重量",
+            "value": "100kg"
+          }
+        ],
+        "accessories": [
+          "標準スポンジ",
+          "黒のワイドホイール",
+          "グレーの滑り止めカバー",
+          "aタイプのストッパープレート",
+          "プラスチックのスプリングホルダー"
+        ]
+      },
+      {
+        "id": "vertical-02",
+        "nameEn": "Vertical 02",
+        "series": "Brand A — Reformer",
+        "nameJp": "折りたたみリフォーマー",
+        "description": "V01の進化版。黒のワイドホイール、グレーの滑り止めカバー、aタイプのストッパープレートなど5つの標準装備を搭載。さらなる操作性と安定感を実現したモデルです。",
+        "price": 475200,
+        "priceNote": "税込",
+        "image": "images/lineup/V02.png",
+        "images": ["images/lineup/V02.png", "", ""],
+        "specs": [
+          {
+            "label": "材質",
+            "value": "カエデ（ブナ・オーク）"
+          },
+          {
+            "label": "サイズ",
+            "value": "開放時 2365×600×240mm"
+          },
+          {
+            "label": "収納時",
+            "value": "694×712×1148mm"
+          },
+          {
+            "label": "正味重量",
+            "value": "80kg"
+          },
+          {
+            "label": "総重量",
+            "value": "100kg"
+          }
+        ],
+        "accessories": [
+          "標準スポンジ",
+          "黒のワイドホイール",
+          "グレーの滑り止めカバー",
+          "aタイプのストッパープレート",
+          "プラスチックのスプリングホルダー"
+        ]
+      },
+      {
+        "id": "reformer",
+        "nameEn": "Reformer",
+        "series": "Brand A — Reformer",
+        "nameJp": "フットレバー式リフォーマー",
+        "description": "プロ仕様のフットレバー式。35mm無垢材フレーム、韓国製スプリング5本セット、アルミ合金レールで安定性と滑らかなキャリッジ走行を実現。本格スタジオに最適な高耐久モデル。",
+        "price": 550000,
+        "priceNote": "税込",
+        "image": "images/lineup/Reformer.png",
+        "images": ["images/lineup/Reformer.png", "", ""],
+        "specs": [
+          {
+            "label": "材質",
+            "value": "カエデ（ブナ・オーク）35mm無垢材"
+          },
+          {
+            "label": "サイズ",
+            "value": "2432×705×965mm"
+          },
+          {
+            "label": "梱包",
+            "value": "2450×760×450mm"
+          },
+          {
+            "label": "正味重量",
+            "value": "90kg"
+          },
+          {
+            "label": "総重量",
+            "value": "125kg"
+          }
+        ],
+        "accessories": [
+          "35mm無垢材フレーム",
+          "韓国製スプリング×5本セット（赤28kg×1、緑15kg×2、黄8kg×2）",
+          "1mm厚マイクロファイバーレザー",
+          "高密度スポンジクッション",
+          "アルミ合金レール×2",
+          "ボックス×1",
+          "ヘッドレスト 3段階調整",
+          "ショルダー×2",
+          "アルミ合金フットバー×1",
+          "ロープ×2、静音タイヤ×2",
+          "ソフトペダル（二重ステッチレザー）×1",
+          "踏み板×1",
+          "滑車×10、移動輪×2",
+          "カウンターウエイト輪×4",
+          "フックベルト×1"
+        ]
+      },
+      {
+        "id": "half-tower",
+        "nameEn": "Half Tower",
+        "series": "Brand A — Half Tower",
+        "nameJp": "フットレバー式 ハーフタワー",
+        "description": "ハイエンドフットレバー内蔵リフォーマーにタワーユニットを追加。垂直方向のエクササイズバリエーションが広がり、ハーフタワー用スプリング8本付属で多彩なプログラムが可能です。",
+        "price": 730400,
+        "priceNote": "税込",
+        "image": "images/lineup/Half tower.png",
+        "images": ["images/lineup/Half tower.png", "", ""],
+        "specs": [
+          {
+            "label": "材質",
+            "value": "カエデ（ブナ・オーク）"
+          },
+          {
+            "label": "サイズ",
+            "value": "2400×700×2030mm"
+          },
+          {
+            "label": "梱包",
+            "value": "2450×760×450mm / 730×440×340mm"
+          },
+          {
+            "label": "正味重量",
+            "value": "125kg"
+          },
+          {
+            "label": "総重量",
+            "value": "150kg"
+          }
+        ],
+        "accessories": [
+          "ハーフタワー用スプリング8本（短緑20kg、短黄12kg、長緑16kg、長黄14kg 各2本）",
+          "固定プレート",
+          "ステンレスフランジ×2",
+          "フック付きタワーバー（木製）×1",
+          "U型フレーム×2",
+          "安全ロープ×1"
+        ]
+      },
+      {
+        "id": "cadillac",
+        "nameEn": "Cadillac",
+        "series": "Brand A — Cadillac",
+        "nameJp": "ハイエンド アルミフレーム",
+        "description": "28mm無垢材フレーム、韓国製スプリング10本セット付属のフルフレームキャデラック。トラペーズ、プッシュスルーバー、スプリングなど多彩なアタッチメントで全身の統合的トレーニングに最適。",
+        "price": 730400,
+        "priceNote": "税込",
+        "image": "images/lineup/Cadillac.png",
+        "images": ["images/lineup/Cadillac.png", "", ""],
+        "specs": [
+          {
+            "label": "材質",
+            "value": "カエデ（ブナ・オーク）28mm無垢材"
+          },
+          {
+            "label": "サイズ",
+            "value": "2520×780×2050mm"
+          },
+          {
+            "label": "梱包",
+            "value": "2390×780×800mm"
+          },
+          {
+            "label": "正味重量",
+            "value": "95kg"
+          },
+          {
+            "label": "総重量",
+            "value": "120kg"
+          }
+        ],
+        "accessories": [
+          "28mm無垢材フレーム",
+          "韓国製スプリング10本セット",
+          "1mm厚マイクロファイバーレザー",
+          "高密度スポンジクッション",
+          "ステンレス製横パイプ×2、アルミ合金縦パイプ×4",
+          "ブラッシュハンドル×2個（黒・白・グレー選択可）",
+          "ヘッドレスト（二重ステッチレザー製）×1",
+          "フットパッド（二重ステッチレザー製）×1",
+          "フック付きタワーバー（木製）×1",
+          "タワーフレーム（可動式フック付き×2）",
+          "U型フレーム（20mm厚アルミ合金製）×1",
+          "ハンドル（プラスチック製）×2",
+          "リングハンドル（手持ち用）×2",
+          "スイングバー（フック付き木製）×1",
+          "フットストラップ×1、セーフティロープ×1"
+        ]
+      },
+      {
+        "id": "chair",
+        "nameEn": "Chair",
+        "series": "Brand A — Chair",
+        "nameJp": "ピラティスチェア",
+        "description": "コンパクトながら多彩なエクササイズが可能。韓国製スプリング4本、ステンレスハンドル装備。スプリット・ペダルシステムで上半身・下半身・体幹のバランストレーニングに対応します。",
+        "price": 220000,
+        "priceNote": "税込",
+        "image": "images/lineup/Chair.png",
+        "images": ["images/lineup/Chair.png", "", ""],
+        "specs": [
+          {
+            "label": "材質",
+            "value": "カエデ（ブナ・オーク）17mm多層板"
+          },
+          {
+            "label": "サイズ",
+            "value": "870×680×610mm"
+          },
+          {
+            "label": "梱包",
+            "value": "910×770×770mm"
+          },
+          {
+            "label": "正味重量",
+            "value": "40kg"
+          },
+          {
+            "label": "総重量",
+            "value": "50kg"
+          }
+        ],
+        "accessories": [
+          "フレーム：17mm多層板",
+          "韓国製スプリング×4（赤30kg×2、緑20kg×2）",
+          "1mm厚マイクロファイバーレザー",
+          "高密度スポンジクッション",
+          "ステンレスハンドル×2（滑り止めラバー付き）",
+          "プラスチック製ハンドル付きナイロンロープ×2",
+          "ハンドルのゆるみ調整つまみ×2",
+          "上下ハンドルの移動調節用つまみ×2"
+        ]
+      },
+      {
+        "id": "ladder-barrel",
+        "nameEn": "Ladder Barrel",
+        "series": "Brand A — Barrel",
+        "nameJp": "ラダーバレル",
+        "description": "背骨の柔軟性向上、ストレッチ、コアトレーニングに最適。アーチ形状が身体に自然にフィットし、安全で効果的なエクササイズを実現。スライドレール付きで調整可能。",
+        "price": 319000,
+        "priceNote": "税込",
+        "image": "images/lineup/Ladder barrel.png",
+        "images": ["images/lineup/Ladder barrel.png", "", ""],
+        "specs": [
+          {
+            "label": "材質",
+            "value": "カエデ（ブナ・オーク）17mm多層板"
+          },
+          {
+            "label": "サイズ",
+            "value": "1150×620×980mm"
+          },
+          {
+            "label": "梱包",
+            "value": "1170×690×1110mm"
+          },
+          {
+            "label": "正味重量",
+            "value": "45kg"
+          },
+          {
+            "label": "総重量",
+            "value": "60kg"
+          }
+        ],
+        "accessories": [
+          "フレーム：17mm多層板",
+          "はしご：35mm",
+          "1mm厚マイクロファイバーレザー",
+          "高密度スポンジクッション",
+          "踏み板：二重ステッチレザー製",
+          "フットプレート×1",
+          "スライドレール×2"
+        ]
+      },
+      {
+        "id": "caformer",
+        "nameEn": "Caformer",
+        "series": "Brand A — Caformer",
+        "nameJp": "カフォーマー",
+        "description": "リフォーマーとキャデラックの機能を融合した複合マシン。28mm無垢材フレーム、リフォーマー用6本＋キャデラック用10本のスプリングセット付属。限られたスペースで最大限のエクササイズバリエーションを実現。",
+        "price": 836000,
+        "priceNote": "税込",
+        "image": "images/lineup/Caformer.png",
+        "images": ["images/lineup/Caformer.png", "", ""],
+        "specs": [
+          {
+            "label": "材質",
+            "value": "カエデ 28mm無垢材"
+          },
+          {
+            "label": "サイズ",
+            "value": "2540×900×2080mm"
+          },
+          {
+            "label": "梱包",
+            "value": "2360×860×760mm"
+          },
+          {
+            "label": "正味重量",
+            "value": "135kg"
+          },
+          {
+            "label": "梱包重量",
+            "value": "170kg"
+          }
+        ],
+        "accessories": [
+          "28mm無垢材フレーム",
+          "リフォーマー用韓国製スプリング×6本セット",
+          "キャデラック用韓国製スプリング×10本セット",
+          "1mm厚マイクロファイバーレザー",
+          "高密度スポンジクッション",
+          "アルミ合金レール×2",
+          "ボックス×1",
+          "ヘッドレスト×1、ショルダー×2",
+          "ステンレス製フットバー×1",
+          "ロープ×2、静音タイヤ×2",
+          "ソフトペダル、踏み板、滑車×10",
+          "ジャンピングボード",
+          "ステンレス製パイプ×2、アルミ合金縦パイプ×4",
+          "ブラッシュハンドル×2個",
+          "タワーバー（フック付き木製）×1",
+          "U型フレーム×1",
+          "リングハンドル×2、スイングバー×1",
+          "フットストラップ×1、セーフティロープ×1"
+        ]
+      }
+    ]
+  },
+  "brandX": {
+    "name": "Brand X",
+    "series": "X Series",
+    "subtitle": "コストパフォーマンスに優れた海外工場直送モデル — 表示価格はすべて税込",
+    "description": "コストパフォーマンスに優れた海外工場直送モデル。世界競争力のあるマシンラインアップ。表示価格はすべて税込です。",
+    "categories": [
+      {
+        "id": "reformer",
+        "number": "01",
+        "nameEn": "Reformer",
+        "nameJp": "リフォーマー",
+        "products": [
+          {
+            "model": "X01-A",
+            "id": "x01-a",
+            "grade": "Entry",
+            "nameEn": "Standard Reformer",
+            "descJp": "スタンダードリフォーマー。メープル材フレーム、コンパクト設計。",
+            "price": 905,
+            "priceJpy": 447975,
+            "specs": [
+              {
+                "label": "サイズ",
+                "value": "2280×720×1850mm"
+              },
+              {
+                "label": "本体重量",
+                "value": "90kg"
+              },
+              {
+                "label": "梱包重量",
+                "value": "120kg"
+              },
+              {
+                "label": "キャリッジ幅",
+                "value": "340mm"
+              }
+            ],
+            "options": [
+              {
+                "name": "EVA",
+                "price": 26400
+              },
+              {
+                "name": "塗装",
+                "price": 33000
+              }
+            ],
+            "image": "images/cropped/product-x01-a.jpg",
+            "images": ["images/cropped/product-x01-a.jpg", "", ""]
+          },
+          {
+            "model": "X01-B",
+            "id": "x01-b",
+            "grade": "Standard",
+            "nameEn": "Enhanced Reformer",
+            "descJp": "ヘッドレスト・ショルダーブロック付き。メープル材フレーム。",
+            "price": 1052,
+            "priceJpy": 520740,
+            "specs": [
+              {
+                "label": "サイズ",
+                "value": "2280×720×1850mm"
+              },
+              {
+                "label": "本体重量",
+                "value": "100kg"
+              },
+              {
+                "label": "梱包重量",
+                "value": "130kg"
+              },
+              {
+                "label": "キャリッジ幅",
+                "value": "340mm"
+              }
+            ],
+            "options": [
+              {
+                "name": "EVA",
+                "price": 26400
+              },
+              {
+                "name": "塗装",
+                "price": 33000
+              }
+            ],
+            "image": "images/cropped/product-x01-b.jpg",
+            "images": ["images/cropped/product-x01-b.jpg", "", ""]
+          },
+          {
+            "model": "X01-C",
+            "id": "x01-c",
+            "grade": "Pro",
+            "nameEn": "Professional Reformer",
+            "priceJpy": 426690,
+            "descJp": "スチールフレーム、モダンブラックデザイン。",
+            "price": 862,
+            "specs": [
+              {
+                "label": "サイズ",
+                "value": "2280×720×1850mm"
+              },
+              {
+                "label": "本体重量",
+                "value": "90kg"
+              },
+              {
+                "label": "梱包重量",
+                "value": "120kg"
+              },
+              {
+                "label": "キャリッジ幅",
+                "value": "312mm"
+              }
+            ],
+            "options": [
+              {
+                "name": "EVA",
+                "price": 26400
+              },
+              {
+                "name": "塗装",
+                "price": 33000
+              }
+            ],
+            "image": "images/cropped/product-x01-c.jpg",
+            "images": ["images/cropped/product-x01-c.jpg", "", ""]
+          }
+        ]
+      },
+      {
+        "id": "half_tower",
+        "number": "02",
+        "nameEn": "Half Tower",
+        "nameJp": "ハーフタワー",
+        "products": [
+          {
+            "model": "X02-A",
+            "id": "x02-a",
+            "grade": "Standard",
+            "nameEn": "Half Tower Reformer",
+            "priceJpy": 571230,
+            "descJp": "リフォーマー＋ハーフタワー。メープル材、フルスプリングシステム。",
+            "price": 1154,
+            "specs": [
+              {
+                "label": "サイズ",
+                "value": "2280×720×1850mm"
+              },
+              {
+                "label": "本体重量",
+                "value": "110kg"
+              },
+              {
+                "label": "梱包重量",
+                "value": "140kg"
+              },
+              {
+                "label": "キャリッジ幅",
+                "value": "340mm"
+              }
+            ],
+            "options": [
+              {
+                "name": "EVA",
+                "price": 26400
+              },
+              {
+                "name": "塗装",
+                "price": 33000
+              }
+            ],
+            "image": "images/cropped/product-x02-a.jpg",
+            "images": ["images/cropped/product-x02-a.jpg", "", ""]
+          },
+          {
+            "model": "X02-B",
+            "id": "x02-b",
+            "grade": "Standard",
+            "nameEn": "Half Tower Reformer",
+            "priceJpy": 519750,
+            "descJp": "折りたたみ式タワー付きリフォーマー。省スペース設計。",
+            "price": 1050,
+            "specs": [
+              {
+                "label": "サイズ",
+                "value": "2280×690×1850mm"
+              },
+              {
+                "label": "本体重量",
+                "value": "110kg"
+              },
+              {
+                "label": "梱包重量",
+                "value": "140kg"
+              },
+              {
+                "label": "キャリッジ幅",
+                "value": "340mm"
+              }
+            ],
+            "options": [
+              {
+                "name": "EVA",
+                "price": 26400
+              },
+              {
+                "name": "塗装",
+                "price": 33000
+              }
+            ],
+            "image": "images/cropped/product-x02-b.jpg",
+            "images": ["images/cropped/product-x02-b.jpg", "", ""]
+          },
+          {
+            "model": "X02-C",
+            "id": "x02-c",
+            "grade": "Premium",
+            "nameEn": "Premium Half Tower",
+            "priceJpy": 668250,
+            "descJp": "プレミアム・ハーフタワー。高品質パッド、フルアクセサリー付属。",
+            "price": 1350,
+            "specs": [
+              {
+                "label": "サイズ",
+                "value": "2280×720×1850mm"
+              },
+              {
+                "label": "本体重量",
+                "value": "120kg"
+              },
+              {
+                "label": "梱包重量",
+                "value": "150kg"
+              },
+              {
+                "label": "キャリッジ幅",
+                "value": "340mm"
+              }
+            ],
+            "options": [
+              {
+                "name": "EVA",
+                "price": 26400
+              },
+              {
+                "name": "塗装",
+                "price": 33000
+              }
+            ],
+            "image": "images/cropped/product-x02-c.jpg",
+            "images": ["images/cropped/product-x02-c.jpg", "", ""]
+          }
+        ]
+      },
+      {
+        "id": "cadillac",
+        "number": "03",
+        "nameEn": "Cadillac",
+        "nameJp": "キャデラック",
+        "products": [
+          {
+            "model": "X03-A",
+            "id": "x03-a",
+            "grade": "Steel",
+            "nameEn": "Steel Cadillac",
+            "priceJpy": 413820,
+            "descJp": "スチール製キャデラック。フルフレーム、各種アタッチメント付属。",
+            "price": 836,
+            "specs": [
+              {
+                "label": "サイズ",
+                "value": "2320×760×1990mm"
+              },
+              {
+                "label": "本体重量",
+                "value": "90kg"
+              },
+              {
+                "label": "梱包重量",
+                "value": "120kg"
+              },
+              {
+                "label": "キャリッジ幅",
+                "value": "550mm"
+              }
+            ],
+            "image": "images/cropped/product-x03-a.jpg",
+            "images": ["images/cropped/product-x03-a.jpg", "", ""]
+          },
+          {
+            "model": "X03-B",
+            "id": "x03-b",
+            "grade": "Maple",
+            "nameEn": "Maple Cadillac",
+            "priceJpy": 440550,
+            "descJp": "メープル材キャデラック。天然木の質感、プロ仕様。",
+            "price": 890,
+            "specs": [
+              {
+                "label": "サイズ",
+                "value": "2190×800×2120mm"
+              },
+              {
+                "label": "本体重量",
+                "value": "100kg"
+              },
+              {
+                "label": "素材",
+                "value": "メープル材"
+              },
+              {
+                "label": "キャリッジ幅",
+                "value": "635mm"
+              }
+            ],
+            "options": [
+              {
+                "name": "EVA",
+                "price": 26400
+              },
+              {
+                "name": "塗装",
+                "price": 33000
+              }
+            ],
+            "image": "images/cropped/product-x03-b.jpg",
+            "images": ["images/cropped/product-x03-b.jpg", "", ""]
+          },
+          {
+            "model": "X03-C",
+            "id": "x03-c",
+            "grade": "Premium",
+            "nameEn": "Premium Maple Cadillac",
+            "priceJpy": 561825,
+            "descJp": "リフォーマーベッド一体型キャデラック。",
+            "price": 1135,
+            "specs": [
+              {
+                "label": "サイズ",
+                "value": "2190×800×2120mm"
+              },
+              {
+                "label": "本体重量",
+                "value": "120kg"
+              },
+              {
+                "label": "素材",
+                "value": "メープル材"
+              },
+              {
+                "label": "キャリッジ幅",
+                "value": "635mm"
+              }
+            ],
+            "options": [
+              {
+                "name": "EVA",
+                "price": 26400
+              },
+              {
+                "name": "塗装",
+                "price": 33000
+              }
+            ],
+            "image": "images/cropped/product-x03-c.jpg",
+            "images": ["images/cropped/product-x03-c.jpg", "", ""]
+          }
+        ]
+      },
+      {
+        "id": "chair",
+        "number": "04",
+        "nameEn": "Chair",
+        "nameJp": "チェア",
+        "products": [
+          {
+            "model": "X04-A",
+            "id": "x04-a",
+            "grade": "Entry",
+            "nameEn": "Wunda Chair",
+            "priceJpy": 200475,
+            "descJp": "ワンダチェア。メープル材、スプリット・ペダルシステム。",
+            "price": 405,
+            "specs": [
+              {
+                "label": "サイズ",
+                "value": "840×680×615mm"
+              },
+              {
+                "label": "本体重量",
+                "value": "45kg"
+              },
+              {
+                "label": "梱包重量",
+                "value": "65kg"
+              },
+              {
+                "label": "素材",
+                "value": "メープル材"
+              }
+            ],
+            "options": [
+              {
+                "name": "EVA",
+                "price": 13200
+              },
+              {
+                "name": "塗装",
+                "price": 19800
+              }
+            ],
+            "image": "images/cropped/product-x04-a.jpg",
+            "images": ["images/cropped/product-x04-a.jpg", "", ""]
+          },
+          {
+            "model": "X04-B",
+            "id": "x04-b",
+            "grade": "Standard",
+            "nameEn": "Combo Chair",
+            "priceJpy": 200475,
+            "descJp": "コンボチェア。天然木フレーム、コンパクト設計。",
+            "price": 405,
+            "specs": [
+              {
+                "label": "サイズ",
+                "value": "840×600×600mm"
+              },
+              {
+                "label": "本体重量",
+                "value": "45kg"
+              },
+              {
+                "label": "梱包重量",
+                "value": "65kg"
+              },
+              {
+                "label": "素材",
+                "value": "天然木"
+              }
+            ],
+            "options": [
+              {
+                "name": "EVA",
+                "price": 13200
+              },
+              {
+                "name": "塗装",
+                "price": 19800
+              }
+            ],
+            "image": "images/cropped/product-x04-b.jpg",
+            "images": ["images/cropped/product-x04-b.jpg", "", ""]
+          },
+          {
+            "model": "X04-C",
+            "id": "x04-c",
+            "grade": "Pro",
+            "nameEn": "High Back Chair",
+            "priceJpy": 226710,
+            "descJp": "ハイバックチェア。スチール＋ホワイトパネル。",
+            "price": 458,
+            "specs": [
+              {
+                "label": "サイズ",
+                "value": "750×600×1300mm"
+              },
+              {
+                "label": "本体重量",
+                "value": "45kg"
+              },
+              {
+                "label": "梱包重量",
+                "value": "65kg"
+              },
+              {
+                "label": "素材",
+                "value": "スチール"
+              }
+            ],
+            "image": "images/cropped/product-x04-c.jpg",
+            "images": ["images/cropped/product-x04-c.jpg", "", ""]
+          }
+        ]
+      },
+      {
+        "id": "ladder_barrel",
+        "number": "05",
+        "nameEn": "Ladder Barrel",
+        "nameJp": "ラダーバレル",
+        "products": [
+          {
+            "model": "X05-A",
+            "id": "x05-a",
+            "grade": "Entry",
+            "nameEn": "Ladder Barrel",
+            "priceJpy": 215325,
+            "descJp": "メープル材。フットペダル機能付き。",
+            "price": 435,
+            "specs": [
+              {
+                "label": "サイズ",
+                "value": "1100×620×980mm"
+              },
+              {
+                "label": "本体重量",
+                "value": "90kg"
+              }
+            ],
+            "options": [
+              {
+                "name": "EVA",
+                "price": 13200
+              },
+              {
+                "name": "塗装",
+                "price": 19800
+              }
+            ],
+            "image": "images/cropped/product-x05-a.jpg",
+            "images": ["images/cropped/product-x05-a.jpg", "", ""]
+          },
+          {
+            "model": "X05-B",
+            "id": "x05-b",
+            "grade": "Standard",
+            "nameEn": "Ladder Barrel Pro",
+            "priceJpy": 225225,
+            "descJp": "鉄製フレーム、メープル材板。フットペダル調節可能。",
+            "price": 455,
+            "specs": [
+              {
+                "label": "サイズ",
+                "value": "1100×620×980mm"
+              },
+              {
+                "label": "本体重量",
+                "value": "90kg"
+              }
+            ],
+            "options": [
+              {
+                "name": "EVA",
+                "price": 13200
+              },
+              {
+                "name": "塗装",
+                "price": 19800
+              }
+            ],
+            "image": "images/cropped/product-x05-b.jpg",
+            "images": ["images/cropped/product-x05-b.jpg", "", ""]
+          },
+          {
+            "model": "X05-C",
+            "id": "x05-c",
+            "grade": "Pro",
+            "nameEn": "Steel Ladder Barrel",
+            "priceJpy": 210375,
+            "descJp": "オールスチールフレーム。フットペダル機能付き。",
+            "price": 425,
+            "specs": [
+              {
+                "label": "サイズ",
+                "value": "1100×620×980mm"
+              },
+              {
+                "label": "本体重量",
+                "value": "90kg"
+              }
+            ],
+            "image": "images/cropped/product-x05-c.jpg",
+            "images": ["images/cropped/product-x05-c.jpg", "", ""]
+          },
+          {
+            "model": "X05-D",
+            "id": "x05-d",
+            "grade": "Basic",
+            "nameEn": "Classic Barrel",
+            "priceJpy": 196020,
+            "descJp": "フットペダル機能なし。クラシックデザイン。",
+            "price": 396,
+            "specs": [
+              {
+                "label": "サイズ",
+                "value": "1100×620×980mm"
+              },
+              {
+                "label": "本体重量",
+                "value": "90kg"
+              }
+            ],
+            "options": [
+              {
+                "name": "EVA",
+                "price": 13200
+              },
+              {
+                "name": "塗装",
+                "price": 19800
+              }
+            ],
+            "image": "images/cropped/product-x05-d.jpg",
+            "images": ["images/cropped/product-x05-d.jpg", "", ""]
+          }
+        ]
+      }
+    ]
+  }
+};
+
+// Image library files
+const imageLibrary = [
+  'images/lineup/V01.png',
+  'images/lineup/V02.png',
+  'images/lineup/Reformer.png',
+  'images/lineup/Half tower.png',
+  'images/lineup/Cadillac.png',
+  'images/lineup/Chair.png',
+  'images/lineup/Ladder barrel.png',
+  'images/lineup/Caformer.png',
+  'images/lineup/product-v01.jpg',
+  'images/cropped/product-x01-a.jpg',
+  'images/cropped/product-x01-b.jpg',
+  'images/cropped/product-x01-c.jpg',
+  'images/cropped/product-x02-a.jpg',
+  'images/cropped/product-x02-b.jpg',
+  'images/cropped/product-x02-c.jpg',
+  'images/cropped/product-x03-a.jpg',
+  'images/cropped/product-x03-b.jpg',
+  'images/cropped/product-x03-c.jpg',
+  'images/cropped/product-x04-a.jpg',
+  'images/cropped/product-x04-b.jpg',
+  'images/cropped/product-x04-c.jpg',
+  'images/cropped/product-x05-a.jpg',
+  'images/cropped/product-x05-b.jpg',
+  'images/cropped/product-x05-c.jpg',
+  'images/cropped/product-x05-d.jpg',
+  'images/cropped/product-v01.jpg',
+  'images/cropped/product-v02.jpg',
+  'images/cropped/product-cadillac.jpg',
+  'images/cropped/product-caformer.jpg',
+  'images/cropped/product-chair.jpg',
+  'images/cropped/product-half-tower.jpg',
+  'images/cropped/product-ladder-barrel.jpg',
+  'images/cropped/product-reformer.jpg'
+];
+
+function init() {
+  renderBrandA();
+  renderBrandX();
+  renderImageLibrary();
+}
+
+function renderBrandA() {
+  const container = document.getElementById('brandA-grid');
+  const products = MACHINE_DATA.brandA.products;
+  container.innerHTML = products.map(product => createProductCard(product, 'brandA')).join('');
+  attachProductCardListeners();
+}
+
+function renderBrandX() {
+  const container = document.getElementById('brandX-container');
+  let html = '';
+  MACHINE_DATA.brandX.categories.forEach(category => {
+    html += `<div class="products-grid" id="brandX-${category.id}">${category.products.map(product => createProductCard(product, 'brandX')).join('')}</div>`;
+  });
+  container.innerHTML = html;
+  attachProductCardListeners();
+}
+
+function createProductCard(product, brand) {
+  const productId = product.id;
+  const images = product.images || [product.image || '', '', ''];
+  const validImgs = images.filter(s=>s&&s.length>0);
+  const galId = 'adm-gal-'+productId;
+  const labels = ['MAIN','SUB 1','SUB 2'];
+
+  let galImgs = '';
+  validImgs.forEach((src,i)=>{
+    galImgs += `<img class="${i===0?'active':''}" src="${src}" alt="" data-i="${i}">`;
+  });
+  if(!validImgs.length) galImgs = '<span style="color:#bbb;font-size:12px">画像なし</span>';
+
+  let galNav = '';
+  if(validImgs.length>1){
+    galNav = `<button class="gal-nav prev" onclick="admGalNav('${galId}',-1)">&#8249;</button>
+    <button class="gal-nav next" onclick="admGalNav('${galId}',1)">&#8250;</button>
+    <span class="gal-counter">1 / ${validImgs.length}</span>
+    <div class="gal-dots">${validImgs.map((_,i)=>`<span class="gal-dot${i===0?' active':''}" onclick="admGalGo('${galId}',${i})"></span>`).join('')}</div>`;
+  }
+
+  let slots = '';
+  for(let i=0;i<3;i++){
+    const src = images[i]||'';
+    slots += `<div class="image-slot">
+      <label class="slot-label">${labels[i]}</label>
+      <div class="image-preview ${!src?'empty':''}" onclick="triggerFileInput(this)">
+        ${src?`<img src="${src}" alt="">`:''}</div>
+      <input type="text" class="image-path-input" data-index="${i}" value="${src}" placeholder="画像パス..." style="flex:1">
+      <label class="file-input-label">選択<input type="file" class="file-input" accept="image/*" data-index="${i}"></label>
+    </div>`;
+  }
+
+  return `
+    <div class="product-card" data-product-id="${productId}" data-brand="${brand}">
+      <div class="product-header">
+        <div class="product-title">${product.nameEn || product.model}</div>
+        <div class="product-subtitle">${product.nameJp || product.descJp || ''}</div>
+      </div>
+      <div class="admin-gallery" id="${galId}" data-idx="0" data-count="${validImgs.length}">
+        ${galImgs}${galNav}
+      </div>
+      <div class="image-slots">${slots}</div>
+    </div>`;
+}
+
+function attachProductCardListeners() {
+  document.querySelectorAll('.product-card').forEach(card => {
+    const productId = card.dataset.productId;
+    const brand = card.dataset.brand;
+    card.querySelectorAll('input[type="file"]').forEach(fileInput => {
+      fileInput.addEventListener('change', (e) => {
+        const index = parseInt(e.target.dataset.index);
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            const preview = e.target.closest('.image-slot').querySelector('.image-preview');
+            preview.innerHTML = `<img src="${event.target.result}" alt="Preview">`;
+            preview.classList.remove('empty');
+            updateProductImage(productId, brand, index, event.target.result);
+            showToast('Image loaded');
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    });
+    card.querySelectorAll('.image-path-input').forEach(input => {
+      input.addEventListener('change', (e) => {
+        const index = parseInt(e.target.dataset.index);
+        const path = e.target.value.trim();
+        updateProductImage(productId, brand, index, path);
+        if (path) {
+          const img = new Image();
+          img.onload = () => {
+            const preview = e.target.closest('.image-slot').querySelector('.image-preview');
+            preview.innerHTML = `<img src="${path}" alt="Preview">`;
+            preview.classList.remove('empty');
+            showToast('Image path updated');
+          };
+          img.onerror = () => showToast('Could not load image', 'error');
+          img.src = path;
+        }
+      });
+    });
+  });
+}
+
+function admGalNav(gid,dir){
+  var g=document.getElementById(gid);
+  var count=parseInt(g.dataset.count)||1;
+  var idx=((parseInt(g.dataset.idx)||0)+dir+count)%count;
+  admGalGo(gid,idx);
+}
+function admGalGo(gid,idx){
+  var g=document.getElementById(gid);
+  g.dataset.idx=idx;
+  g.querySelectorAll('img').forEach(function(img,i){img.classList.toggle('active',i===idx)});
+  g.querySelectorAll('.gal-dot').forEach(function(d,i){d.classList.toggle('active',i===idx)});
+  var c=g.querySelector('.gal-counter');
+  if(c) c.textContent=(idx+1)+' / '+g.dataset.count;
+}
+
+function triggerFileInput(previewEl) {
+  const fileInput = previewEl.closest('.image-slot').querySelector('input[type="file"]');
+  fileInput.click();
+}
+
+function updateProductImage(productId, brand, imageIndex, imagePath) {
+  let product = null;
+  if (brand === 'brandA') {
+    product = MACHINE_DATA.brandA.products.find(p => p.id === productId);
+  } else {
+    for (let category of MACHINE_DATA.brandX.categories) {
+      product = category.products.find(p => p.id === productId);
+      if (product) break;
+    }
+  }
+  if (product) {
+    if (!product.images) product.images = ['', '', ''];
+    product.images[imageIndex] = imagePath;
+  }
+}
+
+function renderImageLibrary() {
+  const container = document.getElementById('library-grid');
+  container.innerHTML = imageLibrary.map(imagePath => `
+    <div class="library-item" onclick="copyImagePath('${imagePath}')">
+      <img src="${imagePath}" alt="Library image" onerror="this.style.display='none'">
+      <div class="library-item-path">${imagePath}</div>
+    </div>
+  `).join('');
+}
+
+function copyImagePath(path) {
+  navigator.clipboard.writeText(path).then(() => {
+    showToast('Image path copied to clipboard');
+  });
+}
+
+function copyJSONToClipboard() {
+  const jsonString = 'var MACHINE_DATA = ' + JSON.stringify(MACHINE_DATA, null, 2) + ';';
+  navigator.clipboard.writeText(jsonString).then(() => {
+    showToast('JSON copied to clipboard', 'success');
+  }).catch(() => {
+    showToast('Failed to copy JSON', 'error');
+  });
+}
+
+function exportLineupHTML() {
+  try {
+    // machine-data.js をダウンロード（lineup.html が読み込むファイル）
+    const jsContent = 'var MACHINE_DATA = ' + JSON.stringify(MACHINE_DATA, null, 2) + ';\n';
+    const blob = new Blob([jsContent], { type: 'application/javascript;charset=utf-8' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'machine-data.js';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(link.href);
+    showToast('machine-data.js をダウンロードしました。同じフォルダに保存してください。', 'success');
+  } catch (error) {
+    showToast('エラー: ' + error.message, 'error');
+  }
+}
+
+function showToast(message, type = 'success') {
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.textContent = message;
+  document.body.appendChild(toast);
+  setTimeout(() => {
+    toast.classList.add('removing');
+    setTimeout(() => {
+      document.body.removeChild(toast);
+    }, 300);
+  }, 3000);
+}
+
+document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>

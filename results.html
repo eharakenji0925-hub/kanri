@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Results — AXISCORE PILATES</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Noto+Serif+JP:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;scroll-behavior:smooth}
+body{background:#fff;color:#1a1a1a;font-family:"Cormorant Garamond",serif;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+img{display:block;width:100%;height:auto}
+::selection{background:#c4b5a5;color:#fff}
+
+/* Page Load */
+.page-curtain{position:fixed;inset:0;z-index:9999;background:#fff;display:flex;align-items:center;justify-content:center;transition:opacity .6s ease,visibility .6s ease}
+.page-curtain.done{opacity:0;visibility:hidden;pointer-events:none}
+.page-curtain span{font-size:14px;letter-spacing:6px;color:#998878;animation:fadeIn 1s both}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* Animations */
+.fade-up{opacity:0;transform:translateY(28px);transition:opacity .9s ease,transform .9s ease}
+.fade-up.visible{opacity:1;transform:none}
+.delay-1{transition-delay:.15s}
+.delay-2{transition-delay:.3s}
+.delay-3{transition-delay:.45s}
+
+/* Focus Visible */
+a:focus-visible,button:focus-visible,.gallery-item:focus-visible,.lightbox-close:focus-visible{outline:2px solid #8a7868;outline-offset:3px;border-radius:2px}
+
+/* Header */
+header{
+  position:fixed;top:0;left:0;right:0;z-index:100;height:72px;display:flex;align-items:center;
+  background:rgba(255,255,255,.96);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(0,0,0,.04);transition:box-shadow .4s ease,background .4s ease;
+}
+header.scrolled{box-shadow:0 2px 24px rgba(0,0,0,.06);background:rgba(255,255,255,.99)}
+.hd{max-width:1200px;width:100%;margin:0 auto;padding:0 40px;display:flex;align-items:center;justify-content:space-between}
+.hd-logo{display:flex;align-items:center;text-decoration:none}
+.hd-logo img{height:56px!important;width:auto!important;max-width:none!important}
+nav{display:flex;gap:32px}
+nav a{font-size:12px;font-weight:400;letter-spacing:3px;color:#555;transition:color .3s;text-transform:uppercase;padding:4px 0;position:relative}
+nav a::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:#a89888;transform:scaleX(0);transition:transform .3s;transform-origin:center}
+nav a:hover{color:#1a1a1a}
+nav a:hover::after,nav a.active::after{transform:scaleX(1)}
+nav a.active{color:#1a1a1a}
+
+/* Hamburger */
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;z-index:110;background:none;border:none}
+.hamburger span{display:block;width:22px;height:1.5px;background:#1a1a1a;transition:all .35s ease;transform-origin:center;will-change:transform}
+.hamburger.open span:nth-child(1){transform:rotate(45deg) translate(4.5px,4.5px)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(4.5px,-4.5px)}
+.mobile-overlay{position:fixed;inset:0;z-index:99;background:rgba(255,255,255,.98);backdrop-filter:blur(20px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:36px;opacity:0;visibility:hidden;transform:translateY(20px);transition:all .4s ease}
+.mobile-overlay.open{opacity:1;visibility:visible;transform:none}
+.mobile-overlay a{font-size:16px;letter-spacing:6px;color:#1a1a1a;text-transform:uppercase;padding:8px 0;position:relative}
+.mobile-overlay a::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:#a89888;transform:scaleX(0);transition:transform .3s;transform-origin:center}
+.mobile-overlay a:hover::after{transform:scaleX(1)}
+
+/* Hero */
+.hero{
+  height:60vh;min-height:400px;position:relative;overflow:hidden;
+  display:flex;align-items:flex-end;justify-content:center;
+}
+.hero-img{position:absolute;inset:0;background:url('images/cropped/results-hero.jpg') center/cover no-repeat;background-attachment:fixed}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(255,255,255,.05) 0%,rgba(255,255,255,.65) 60%,#fff 100%)}
+.hero-content{position:relative;z-index:2;text-align:center;padding-bottom:72px}
+.hero-label{font-size:11px;font-weight:400;letter-spacing:6px;color:#8a7868;text-transform:uppercase;text-indent:6px;margin-bottom:14px}
+.hero-title{font-size:clamp(40px,7vw,80px);font-weight:400;letter-spacing:clamp(6px,1.5vw,16px);text-indent:clamp(6px,1.5vw,16px);font-style:italic}
+
+/* Section Common */
+.sec{max-width:1000px;margin:0 auto;padding:120px 40px}
+.sec-label{font-size:11px;font-weight:400;letter-spacing:6px;color:#8a7868;text-transform:uppercase;text-indent:6px;margin-bottom:24px}
+.sec-heading{font-family:"Noto Serif JP",serif;font-size:clamp(20px,2.6vw,30px);font-weight:400;line-height:2;letter-spacing:.08em;color:#1a1a1a}
+.sec-body{font-family:"Noto Serif JP",serif;font-size:clamp(13px,1.15vw,15px);font-weight:300;line-height:2.1;letter-spacing:.04em;color:#444;margin-top:28px}
+
+/* Achievements */
+.achievements{background:#1a1a1a;max-width:100%;text-align:center}
+.achievements .sec-label{color:#8a7868}
+.achievements .sec-heading{color:#fff}
+.ach-inner{max-width:1000px;margin:0 auto}
+.ach-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;margin-top:64px}
+.ach-item{text-align:center;padding:32px 16px;transition:transform .3s ease,background-color .3s ease;will-change:transform;border-radius:2px}
+.ach-item:hover{transform:scale(1.03);background-color:rgba(255,255,255,.03)}
+.ach-number{font-size:clamp(40px,5vw,64px);font-weight:300;letter-spacing:-1px;color:#fff;line-height:1;text-shadow:0 2px 8px rgba(0,0,0,.3)}
+.ach-number .counter{display:inline}
+.ach-suffix{font-size:.5em;color:#8a7868}
+.ach-unit{font-size:14px;font-weight:300;letter-spacing:2px;color:#8a7868;margin-top:8px}
+.ach-desc{font-family:"Noto Serif JP",serif;font-size:11px;font-weight:300;color:#444;margin-top:12px;letter-spacing:1px}
+
+/* Track Record */
+.track-record{text-align:center;border-top:1px solid #f0ece8}
+.track-note{font-family:"Noto Serif JP",serif;font-size:12px;font-weight:300;color:#555;margin-top:20px;letter-spacing:1px}
+
+/* Logo Marquee */
+.marquee-wrap{position:relative;overflow:hidden;margin-top:48px;padding:24px 0;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 8%,#000 92%,transparent 100%);
+  mask-image:linear-gradient(90deg,transparent 0%,#000 8%,#000 92%,transparent 100%);
+  scrollbar-width:none}
+.marquee-wrap::-webkit-scrollbar{display:none}
+.marquee-track{display:flex;gap:56px;width:max-content;animation:marquee-scroll 40s linear infinite;will-change:transform}
+.marquee-track:hover{animation-play-state:paused}
+.marquee-track img{height:80px;width:auto;object-fit:contain;flex-shrink:0;opacity:.7;filter:grayscale(20%);transition:opacity .3s,filter .3s;will-change:opacity,filter}
+.marquee-track img:hover{opacity:1;filter:grayscale(0%)}
+@keyframes marquee-scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* Second row - reverse direction */
+.marquee-wrap.reverse .marquee-track{animation-direction:reverse}
+
+/* Gallery — Masonry-inspired layout */
+.gallery{border-top:1px solid #f0ece8}
+.gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(12,1fr);
+  grid-auto-rows:80px;
+  gap:6px;
+  margin-top:48px;
+}
+.gallery-item{
+  overflow:hidden;position:relative;cursor:pointer;
+  border-radius:3px;
+  will-change:transform;
+  min-height:44px;
+  touch-action:manipulation;
+}
+.gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform .7s cubic-bezier(.25,.46,.45,.94),filter .5s ease;will-change:transform}
+.gallery-item:hover img{transform:scale(1.06);filter:brightness(1.05)}
+.gallery-item::before{
+  content:'';position:absolute;inset:0;z-index:1;
+  background:linear-gradient(to top,rgba(0,0,0,.5) 0%,rgba(0,0,0,.08) 40%,transparent 100%);
+  opacity:0;transition:opacity .4s ease;
+}
+.gallery-item:hover::before{opacity:1}
+.gallery-item::after{
+  content:attr(data-label);position:absolute;bottom:0;left:0;right:0;z-index:2;
+  padding:24px 20px 18px;
+  color:#fff;font-family:"Noto Serif JP",serif;font-size:12px;font-weight:400;letter-spacing:1.5px;
+  opacity:0;transform:translateY(10px);transition:all .4s cubic-bezier(.25,.46,.45,.94) .05s;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.gallery-item:hover::after{opacity:1;transform:none}
+.gallery-item .overlay-tag{
+  position:absolute;top:16px;left:16px;z-index:2;
+  background:rgba(138,120,104,.85);backdrop-filter:blur(8px);
+  color:#fff;font-family:"Noto Serif JP",serif;font-size:10px;font-weight:400;
+  letter-spacing:2px;padding:6px 14px;border-radius:2px;
+  opacity:0;transform:translateY(-6px);transition:all .4s ease .1s;
+}
+.gallery-item:hover .overlay-tag{opacity:1;transform:none}
+
+/* Grid placement — 4-row magazine layout */
+.g-hero{grid-column:1/8;grid-row:span 5}
+.g-side-top{grid-column:8/13;grid-row:span 3}
+.g-side-btm{grid-column:8/13;grid-row:span 2}
+.g-left{grid-column:1/5;grid-row:span 3}
+.g-center{grid-column:5/9;grid-row:span 3}
+.g-right{grid-column:9/13;grid-row:span 3}
+.g-wide-left{grid-column:1/7;grid-row:span 3}
+.g-wide-right{grid-column:7/13;grid-row:span 3}
+.g-full{grid-column:1/13;grid-row:span 4}
+.g-third-1{grid-column:1/5;grid-row:span 3}
+.g-third-2{grid-column:5/9;grid-row:span 3}
+.g-third-3{grid-column:9/13;grid-row:span 3}
+
+/* Lightbox */
+.lightbox{
+  position:fixed;inset:0;z-index:9999;
+  background:rgba(0,0,0,.92);backdrop-filter:blur(16px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;visibility:hidden;transition:opacity .4s ease,visibility .4s ease;
+  cursor:zoom-out;
+}
+.lightbox.open{opacity:1;visibility:visible}
+.lightbox img{max-width:90vw;max-height:85vh;object-fit:contain;border-radius:4px;box-shadow:0 8px 40px rgba(0,0,0,.4);transform:scale(.92);transition:transform .4s cubic-bezier(.25,.46,.45,.94);will-change:transform}
+.lightbox.open img{transform:scale(1)}
+.lightbox-close{
+  position:absolute;top:24px;right:28px;
+  width:44px;height:44px;border:none;background:rgba(255,255,255,.1);border-radius:50%;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:background .3s;
+  touch-action:manipulation;
+  min-height:44px;
+  min-width:44px;
+}
+.lightbox-close:hover{background:rgba(255,255,255,.25)}
+.lightbox-close svg{width:20px;height:20px;fill:none;stroke:#fff;stroke-width:2}
+.lightbox-caption{
+  position:absolute;bottom:28px;left:50%;transform:translateX(-50%);
+  font-family:"Noto Serif JP",serif;font-size:13px;font-weight:400;letter-spacing:2px;color:rgba(255,255,255,.8);
+}
+
+/* Implementation Flow */
+.flow-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;margin-top:56px;counter-reset:flow;position:relative}
+.flow-step{position:relative;padding:36px 24px 28px;background:#faf9f7;border-radius:4px;border-top:2px solid #d4c8bc;transition:transform .3s ease,box-shadow .3s ease;will-change:transform}
+.flow-step:hover{transform:translateY(-4px);box-shadow:0 8px 28px rgba(0,0,0,.06)}
+.flow-step::after{
+  content:'▸';position:absolute;right:-32px;top:50%;transform:translateY(-50%);
+  font-size:24px;color:#d4c8bc;font-weight:300;
+}
+.flow-step:last-child::after{content:'';display:none}
+.flow-num{font-size:clamp(32px,3vw,42px);font-weight:300;letter-spacing:-1px;color:#d4c8bc;line-height:1;display:block;margin-bottom:16px}
+.flow-title{font-family:"Noto Serif JP",serif;font-size:15px;font-weight:500;letter-spacing:1px;color:#1a1a1a;margin-bottom:12px}
+.flow-desc{font-family:"Noto Serif JP",serif;font-size:12px;font-weight:300;line-height:2;letter-spacing:.04em;color:#555}
+
+/* B2B Training */
+.training{border-top:1px solid #f0ece8}
+.training-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:48px;align-items:start}
+.training-card{background:#faf9f7;border-radius:4px;padding:40px 36px 36px;border-left:3px solid #d4c8bc;transition:transform .3s ease,box-shadow .3s ease;will-change:transform}
+.training-card:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,.05)}
+.training-card-label{font-size:10px;font-weight:400;letter-spacing:3px;text-transform:uppercase;color:#a89888;margin-bottom:16px}
+.training-card h4{font-family:"Noto Serif JP",serif;font-size:17px;font-weight:500;letter-spacing:1px;color:#1a1a1a;margin-bottom:14px}
+.training-card p{font-family:"Noto Serif JP",serif;font-size:12px;font-weight:300;line-height:2.1;letter-spacing:.04em;color:#555}
+.training-card ul{list-style:none;margin-top:16px}
+.training-card ul li{font-family:"Noto Serif JP",serif;font-size:12px;font-weight:300;line-height:2.2;letter-spacing:.04em;color:#555;padding-left:18px;position:relative}
+.training-card ul li::before{content:'';position:absolute;left:0;top:11px;width:6px;height:6px;border-radius:50%;background:#d4c8bc}
+.training-note{font-family:"Noto Serif JP",serif;font-size:12px;font-weight:300;line-height:2;letter-spacing:.04em;color:#777;margin-top:36px;text-align:center;max-width:700px;margin-left:auto;margin-right:auto}
+
+/* Event */
+.event{border-top:1px solid #f0ece8}
+.event-split{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;margin-top:48px}
+.event-img{border-radius:2px;overflow:hidden;will-change:transform}
+.event-img img{transition:transform .6s ease;will-change:transform}
+.event-img:hover img{transform:scale(1.03)}
+.event-detail h3{font-size:clamp(22px,2.2vw,30px);font-weight:400;letter-spacing:4px;font-style:italic;margin-bottom:18px}
+
+/* Contact */
+.contact{text-align:center;border-top:1px solid #f0ece8}
+.contact-name{font-family:"Noto Serif JP",serif;font-size:14px;font-weight:300;letter-spacing:2px;color:#555;margin-top:36px}
+.contact-tel{font-size:clamp(24px,3vw,36px);font-weight:300;letter-spacing:4px;margin-top:20px;color:#1a1a1a;transition:color .3s}
+.contact-tel:hover{color:#8a7868}
+.contact-mail{font-size:14px;font-weight:300;letter-spacing:3px;color:#8a7868;margin-top:14px;transition:color .3s}
+.contact-mail:hover{color:#1a1a1a}
+.contact-address{font-family:"Noto Serif JP",serif;font-size:13px;font-weight:300;line-height:2;color:#555;margin-top:28px;letter-spacing:.02em}
+.sns-icons{display:flex;justify-content:center;gap:24px;margin-top:32px}
+.sns-icons a{display:flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid #e0dbd6;border-radius:50%;transition:all .3s ease;will-change:transform;touch-action:manipulation;min-height:44px;min-width:44px}
+.sns-icons a:hover{border-color:#1a1a1a;background:#1a1a1a;transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.sns-icons a svg{width:18px;height:18px;fill:#888;transition:fill .3s ease}
+.sns-icons a:hover svg{fill:#fff}
+
+/* Back to Top */
+.btt{position:fixed;bottom:32px;right:32px;z-index:90;width:44px;height:44px;border-radius:50%;background:#fff;border:1px solid #e0dbd6;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;visibility:hidden;transform:translateY(12px);transition:all .4s ease;box-shadow:0 2px 12px rgba(0,0,0,.06);will-change:transform;touch-action:manipulation}
+.btt.show{opacity:1;visibility:visible;transform:none}
+.btt:hover{background:#1a1a1a;border-color:#1a1a1a;transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.12)}
+.btt svg{width:16px;height:16px;fill:none;stroke:#888;stroke-width:2;transition:stroke .3s}
+.btt:hover svg{stroke:#fff}
+
+/* Footer */
+footer{text-align:center;padding:48px 40px;border-top:1px solid #f0ece8}
+footer small{font-size:10px;font-weight:300;letter-spacing:3px;color:#888}
+
+/* Responsive */
+@media(max-width:768px){
+  .hd{padding:0 24px}
+  nav{display:none}
+  .hamburger{display:flex}
+  .sec{padding:80px 24px}
+  .ach-grid{grid-template-columns:repeat(2,1fr);gap:20px}
+  .gallery-grid{grid-template-columns:repeat(6,1fr);grid-auto-rows:60px}
+  .g-hero{grid-column:1/7;grid-row:span 3}
+  .g-side-top{grid-column:1/4;grid-row:span 2}
+  .g-side-btm{grid-column:4/7;grid-row:span 2}
+  .g-left{grid-column:1/3;grid-row:span 2}
+  .g-center{grid-column:3/5;grid-row:span 2}
+  .g-right{grid-column:5/7;grid-row:span 2}
+  .g-wide-left{grid-column:1/4;grid-row:span 2}
+  .g-wide-right{grid-column:4/7;grid-row:span 2}
+  .g-full{grid-column:1/7;grid-row:span 3}
+  .g-third-1{grid-column:1/3;grid-row:span 2}
+  .g-third-2{grid-column:3/5;grid-row:span 2}
+  .g-third-3{grid-column:5/7;grid-row:span 2}
+  .flow-grid{grid-template-columns:repeat(2,1fr);gap:20px}
+  .flow-step::after{display:none}
+  .training-grid{grid-template-columns:1fr}
+  .event-split{grid-template-columns:1fr;gap:32px}
+  .contact-tel{font-size:24px}
+  .btt{bottom:24px;right:24px;width:40px;height:40px}
+  .marquee-track img{height:56px}
+  .marquee-track{gap:36px;animation-duration:30s}
+}
+@media(max-width:480px){
+  .ach-grid{grid-template-columns:1fr 1fr}
+  .gallery-grid{grid-template-columns:1fr 1fr;grid-auto-rows:auto}
+  .g-hero,.g-side-top,.g-side-btm,.g-left,.g-center,.g-right,.g-wide-left,.g-wide-right,.g-full,.g-third-1,.g-third-2,.g-third-3{grid-column:auto;grid-row:auto}
+  .gallery-item{aspect-ratio:4/3}
+  .flow-grid{grid-template-columns:1fr}
+  .flow-step::after{display:none}
+  .event-split{grid-template-columns:1fr}
+  .hero{height:50vh;min-height:340px}
+}
+</style>
+</head>
+<body>
+
+<div class="page-curtain"><span>AXISCORE</span></div>
+
+<header>
+  <div class="hd">
+    <a href="index.html" class="hd-logo"><img src="images/logos/axiscore-logo-v2.png" alt="AXISCORE PILATES"></a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="academy.html">Academy</a>
+      <a href="lineup.html">Line Up</a>
+      <a href="results.html" class="active">Results</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="mobile-overlay">
+  <a href="index.html">Home</a>
+  <a href="academy.html">Academy</a>
+  <a href="lineup.html">Line Up</a>
+  <a href="results.html">Results</a>
+  <a href="#contact">Contact</a>
+</div>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-img"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-label">Our Results</p>
+    <h1 class="hero-title">Results</h1>
+  </div>
+</section>
+
+<!-- ===== ACHIEVEMENTS ===== -->
+<section class="sec achievements fade-up" style="max-width:100%">
+  <div class="ach-inner">
+    <p class="sec-label">Achievements</p>
+    <h2 class="sec-heading">確かな実績が、信頼の証。</h2>
+    <div class="ach-grid">
+      <div class="ach-item fade-up">
+        <p class="ach-number"><span class="counter" data-target="200">0</span><span class="ach-suffix">+</span></p>
+        <p class="ach-unit">Studios</p>
+        <p class="ach-desc">導入スタジオ数</p>
+      </div>
+      <div class="ach-item fade-up delay-1">
+        <p class="ach-number"><span class="counter" data-target="20">0</span></p>
+        <p class="ach-unit">Years</p>
+        <p class="ach-desc">事業実績</p>
+      </div>
+      <div class="ach-item fade-up delay-2">
+        <p class="ach-number"><span class="counter" data-target="500">0</span><span class="ach-suffix">+</span></p>
+        <p class="ach-unit">Instructors</p>
+        <p class="ach-desc">養成インストラクター</p>
+      </div>
+      <div class="ach-item fade-up delay-3">
+        <p class="ach-number"><span class="counter" data-target="2">0</span></p>
+        <p class="ach-unit">Brands</p>
+        <p class="ach-desc">オリジナルマシンブランド</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TRACK RECORD ===== -->
+<section class="sec track-record fade-up" style="max-width:100%;padding-left:0;padding-right:0">
+  <div style="max-width:1000px;margin:0 auto;padding:0 40px">
+    <p class="sec-label">Our Track Record</p>
+    <h2 class="sec-heading">全国のフィットネス施設・スタジオに導入</h2>
+    <p class="sec-body" style="margin-bottom:8px">大手フィットネスクラブから個人スタジオまで、多くの施設にaxiscoreマシンをご導入いただいています。</p>
+  </div>
+  <!-- Row 1: left to right (12 logos) -->
+  <div class="marquee-wrap fade-up">
+    <div class="marquee-track" id="marquee-row1">
+      <img src="images/logos/lealea.png" alt="LEALEA">
+      <img src="images/logos/jexer.png" alt="Jexer Fitness Club">
+      <img src="images/logos/the-silk.png" alt="the SILK">
+      <img src="images/logos/warawara.png" alt="わらわら WATER">
+      <img src="images/logos/wowd.png" alt="WOW'D! Work Out World">
+      <img src="images/logos/pilates-zero.png" alt="PILATES ZERO">
+      <img src="images/logos/renaissance.png" alt="RENAISSANCE">
+      <img src="images/logos/hain-pilates.png" alt="Hain pilates">
+      <img src="images/logos/asuwell.png" alt="Fitness&Spa ASUWELL">
+      <img src="images/logos/lifewell.png" alt="FITNESS & SPA LIFEWELL">
+      <img src="images/logos/bleda.png" alt="BLEDA">
+      <img src="images/logos/esforta.png" alt="esforta">
+    </div>
+  </div>
+  <!-- Row 2: right to left (12 logos) -->
+  <div class="marquee-wrap reverse fade-up">
+    <div class="marquee-track" id="marquee-row2">
+      <img src="images/logos/sopra.png" alt="sopra">
+      <img src="images/logos/aqua.png" alt="AQUA">
+      <img src="images/logos/well-hack-gym.png" alt="WELL HACK GYM">
+      <img src="images/logos/a-studio.png" alt="A studio">
+      <img src="images/logos/ips-sports-club.png" alt="IPS SPORTS CLUB">
+      <img src="images/logos/cesame.png" alt="Cesame Sports Club">
+      <img src="images/logos/lucina.png" alt="Lucina PILATES STUDIO">
+      <img src="images/logos/raga.png" alt="Raga">
+      <img src="images/logos/lucina-hot.png" alt="Lucina hot collagen studio">
+      <img src="images/logos/atrio-due-next.png" alt="ATRIO DUE Next">
+      <img src="images/logos/synergym.png" alt="SynerGym">
+      <img src="images/logos/tokyo-dome-sports.png" alt="TOKYO DOME SPORTS">
+    </div>
+  </div>
+  <p class="track-note">※ 一部導入先をご紹介（順不同）</p>
+</section>
+
+<!-- ===== IMPLEMENTATION GALLERY ===== -->
+<section class="sec gallery fade-up" style="max-width:100%;padding-left:0;padding-right:0">
+  <div style="max-width:1000px;margin:0 auto;padding:0 40px">
+    <p class="sec-label">Implementation</p>
+    <h2 class="sec-heading">導入事例</h2>
+    <p class="sec-body" style="margin-bottom:0">全国200以上のスタジオでaxiscoreマシンが活躍しています。スペース設計・レイアウトデザインから搬入・設置まで、ワンストップでサポート。写真は実際の導入施設の様子です。</p>
+  </div>
+  <div class="gallery-grid fade-up" style="max-width:1100px;margin:48px auto 0;padding:0 40px">
+    <!-- Row 1: Hero + 2 stacked -->
+    <div class="gallery-item g-hero" data-label="グループスタジオ — Group Studio"><img src="images/gallery/studio-white-reformers.jpg" alt="グループスタジオ導入事例" loading="lazy"></div>
+    <div class="gallery-item g-side-top" data-label="the SILK 五反田 — Gotanda"><img src="images/gallery/studio-gotanda.jpg" alt="the SILK 五反田" loading="lazy"></div>
+    <div class="gallery-item g-side-btm" data-label="ジェクサー上野 — Jexer Ueno"><img src="images/gallery/studio-jexer-ueno.jpg" alt="ジェクサー上野" loading="lazy"></div>
+    <!-- Row 2: 3 equal columns -->
+    <div class="gallery-item g-left" data-label="キャデラック — Cadillac"><img src="images/gallery/studio-maru-cadillac.jpg" alt="キャデラック導入" loading="lazy"></div>
+    <div class="gallery-item g-center" data-label="シルク浅草 — Silk Asakusa"><img src="images/gallery/studio-silk-asakusa.jpg" alt="シルク浅草" loading="lazy"></div>
+    <div class="gallery-item g-right" data-label="プライベートスタジオ — Private"><img src="images/gallery/studio-cocoruf.jpg" alt="プライベートスタジオ" loading="lazy"></div>
+    <!-- Row 3: 2 wide columns -->
+    <div class="gallery-item g-wide-left" data-label="ナチュラルスタジオ — Natural Light"><img src="images/gallery/studio-personal.jpg" alt="パーソナルスタジオ" loading="lazy"></div>
+    <div class="gallery-item g-wide-right" data-label="レアレア武蔵中原 — Lealea"><img src="images/gallery/studio-lealea.jpg" alt="レアレア武蔵中原" loading="lazy"></div>
+    <!-- Row 4: 3 columns -->
+    <div class="gallery-item g-third-1" data-label="リフォーマー — Reformer Row"><img src="images/gallery/studio-maru-reformers.jpg" alt="リフォーマー設置" loading="lazy"></div>
+    <div class="gallery-item g-third-2" data-label="ラダーバレル — Ladder Barrel"><img src="images/gallery/studio-maru-barrel.jpg" alt="ラダーバレル" loading="lazy"></div>
+    <div class="gallery-item g-third-3" data-label="the SILK — White Studio"><img src="images/gallery/studio-silk-white.jpg" alt="the SILK スタジオ" loading="lazy"></div>
+  </div>
+</section>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" aria-label="閉じる"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+  <img src="" alt="">
+  <p class="lightbox-caption"></p>
+</div>
+
+<!-- ===== IMPLEMENTATION FLOW ===== -->
+<section class="sec fade-up" style="max-width:100%;border-top:1px solid #f0ece8">
+  <div style="max-width:1000px;margin:0 auto;padding:0 40px">
+    <p class="sec-label">Flow</p>
+    <h2 class="sec-heading">導入の流れ</h2>
+    <div class="flow-grid">
+      <div class="flow-step fade-up">
+        <span class="flow-num">01</span>
+        <h4 class="flow-title">ヒアリング</h4>
+        <p class="flow-desc">スタジオのコンセプト・規模・ご予算を丁寧にお伺いし、最適なマシン構成をご提案いたします。</p>
+      </div>
+      <div class="flow-step fade-up delay-1">
+        <span class="flow-num">02</span>
+        <h4 class="flow-title">レイアウト設計</h4>
+        <p class="flow-desc">図面をもとに、マシンの配置・動線を考慮したレイアウトプランをデザインいたします。</p>
+      </div>
+      <div class="flow-step fade-up delay-2">
+        <span class="flow-num">03</span>
+        <h4 class="flow-title">搬入・設置</h4>
+        <p class="flow-desc">経験豊富なスタッフが搬入から組立・設置まで一貫して対応。即日オペレーション可能です。</p>
+      </div>
+      <div class="flow-step fade-up delay-3">
+        <span class="flow-num">04</span>
+        <h4 class="flow-title">アフターサポート</h4>
+        <p class="flow-desc">定期メンテナンスや消耗部品の交換など、導入後も長期的にサポートいたします。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== B2B TRAINING ===== -->
+<section class="sec training fade-up">
+  <p class="sec-label">Training</p>
+  <h2 class="sec-heading">法人向け研修サービス</h2>
+  <p class="sec-body" style="margin-bottom:0">axiscoreでは、マシンの導入だけでなく、インストラクターの新規養成からスキルアップまで、法人様向けの研修プログラムを定期的に実施しています。企業間でのご依頼も多数承っており、導入後の運営を総合的にサポートいたします。</p>
+
+  <div class="training-grid">
+    <div class="training-card fade-up">
+      <p class="training-card-label">New Certification</p>
+      <h4>インストラクター新規養成</h4>
+      <p>ピラティス未経験のスタッフの方でも、基礎理論からマシン操作・指導法までを体系的に学べるカリキュラムをご用意。法人様の新規事業立ち上げやスタジオ開業時に多くの企業様にご利用いただいています。</p>
+      <ul>
+        <li>解剖学・運動学の基礎理論</li>
+        <li>リフォーマー・キャデラック等マシン実技</li>
+        <li>グループ・パーソナル指導法</li>
+        <li>修了認定テスト・ディプロマ発行</li>
+      </ul>
+    </div>
+    <div class="training-card fade-up delay-1">
+      <p class="training-card-label">Skill Up</p>
+      <h4>スキルアップ研修</h4>
+      <p>既にピラティス指導に携わるインストラクターの方を対象に、より高度な指導スキルや最新のエクササイズプログラムを学ぶ研修を定期開催。企業様のスタジオクオリティ向上に貢献しています。</p>
+      <ul>
+        <li>アドバンスプログラム・応用テクニック</li>
+        <li>特殊ケース対応（産前産後・シニア等）</li>
+        <li>最新エクササイズ・トレンド共有</li>
+        <li>出張研修にも対応（全国）</li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="training-note">※ 研修内容・日程は法人様のご要望に合わせてカスタマイズ可能です。<br>詳しくはお気軽にお問い合わせください。</p>
+</section>
+
+<!-- ===== SPORTEC / EVENT ===== -->
+<section class="sec event fade-up">
+  <p class="sec-label">Event</p>
+  <div class="event-split">
+    <div class="event-img fade-up"><img src="images/cropped/sportec.jpg" alt="SPORTEC 2025" loading="lazy"></div>
+    <div class="event-detail fade-up delay-1">
+      <h3>SPORTEC 2025</h3>
+      <p class="sec-body" style="margin-top:12px">日本最大級のスポーツ・フィットネス産業総合展「SPORTEC」に出展。axiscoreオリジナルマシンの展示・体験を通じて、多くのフィットネス関係者にブランドの魅力をお伝えしました。</p>
+      <p class="sec-body" style="margin-top:16px;font-size:13px;color:#444">展示会・イベントへの出展情報は、お問い合わせよりご確認ください。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section class="sec contact fade-up" id="contact">
+  <p class="sec-label">Contact</p>
+  <p class="contact-name">株式会社大丸プランニング</p>
+  <a href="tel:0356049088" class="contact-tel">03-5604-9088</a>
+  <a href="mailto:info@ace-axiscore.com" class="contact-mail">info@ace-axiscore.com</a>
+  <p class="contact-address">〒1160013 東京都荒川区西日暮里2丁目17−7 大石ビル 3階</p>
+  <div class="sns-icons">
+    <a href="https://www.facebook.com/" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+    <a href="https://www.instagram.com/axiscorepilates/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
+    <a href="https://line.me/" target="_blank" rel="noopener" aria-label="LINE"><svg viewBox="0 0 24 24"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg></a>
+    <a href="mailto:info@ace-axiscore.com" aria-label="Email"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></a>
+  </div>
+</section>
+
+<footer>
+  <small>&copy; AXISCORE PILATES &mdash; All rights reserved.</small>
+</footer>
+
+<button class="btt" aria-label="Back to top">
+  <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<script>
+/* Page curtain */
+window.addEventListener('load',()=>{setTimeout(()=>document.querySelector('.page-curtain').classList.add('done'),300)});
+
+/* IntersectionObserver */
+const obs=new IntersectionObserver(es=>{
+  es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}})
+},{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
+
+/* Header scroll */
+const hd=document.querySelector('header');
+window.addEventListener('scroll',()=>{hd.classList.toggle('scrolled',window.scrollY>60)},{passive:true});
+
+/* Hamburger */
+const hb=document.querySelector('.hamburger'),mo=document.querySelector('.mobile-overlay');
+hb.addEventListener('click',()=>{hb.classList.toggle('open');mo.classList.toggle('open');document.body.style.overflow=mo.classList.contains('open')?'hidden':''});
+mo.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{hb.classList.remove('open');mo.classList.remove('open');document.body.style.overflow=''}));
+
+/* Back to Top */
+const btt=document.querySelector('.btt');
+window.addEventListener('scroll',()=>{btt.classList.toggle('show',window.scrollY>400)},{passive:true});
+btt.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+
+/* Marquee: duplicate items for seamless loop */
+document.querySelectorAll('.marquee-track').forEach(track=>{
+  const items=track.innerHTML;
+  track.innerHTML=items+items;
+});
+
+/* Lightbox */
+const lb=document.getElementById('lightbox');
+const lbImg=lb.querySelector('img');
+const lbCap=lb.querySelector('.lightbox-caption');
+document.querySelectorAll('.gallery-item').forEach(item=>{
+  item.addEventListener('click',()=>{
+    const img=item.querySelector('img');
+    lbImg.src=img.src;
+    lbImg.alt=img.alt;
+    lbCap.textContent=item.dataset.label||'';
+    lb.classList.add('open');
+    document.body.style.overflow='hidden';
+  });
+});
+lb.addEventListener('click',e=>{
+  if(e.target===lbImg)return;
+  lb.classList.remove('open');
+  document.body.style.overflow='';
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&lb.classList.contains('open')){
+    lb.classList.remove('open');
+    document.body.style.overflow='';
+  }
+});
+
+/* Counter Animation */
+const counterObs=new IntersectionObserver(es=>{
+  es.forEach(e=>{
+    if(e.isIntersecting){
+      const el=e.target,target=+el.dataset.target;
+      let current=0;const step=Math.ceil(target/60),duration=1600,interval=duration/60;
+      const timer=setInterval(()=>{current+=step;if(current>=target){current=target;clearInterval(timer)}el.textContent=current},interval);
+      counterObs.unobserve(el);
+    }
+  })
+},{threshold:.5});
+document.querySelectorAll('.counter').forEach(el=>counterObs.observe(el));
+</script>
+
+</body>
+</html>

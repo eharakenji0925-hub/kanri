@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Academy — AXISCORE PILATES</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Noto+Serif+JP:wght@200;300;400;500&display=swap" rel="stylesheet">
+<link rel="preload" href="images/cropped/academy-hero.jpg" as="image">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;scroll-behavior:smooth}
+body{background:#fff;color:#1a1a1a;font-family:"Cormorant Garamond",serif;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+img{display:block;width:100%;height:auto}
+::selection{background:#c4b5a5;color:#fff}
+
+/* Page Curtain */
+.page-curtain{position:fixed;inset:0;z-index:9999;background:#fff;display:flex;align-items:center;justify-content:center;transition:opacity .6s ease,visibility .6s ease}
+.page-curtain.done{opacity:0;visibility:hidden;pointer-events:none}
+.page-curtain span{font-size:14px;letter-spacing:6px;color:#998878;animation:fadeIn 1s both}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* Animations */
+.fade-up{opacity:0;transform:translateY(28px);transition:opacity .9s ease,transform .9s ease}
+.fade-up.visible{opacity:1;transform:none}
+.delay-1{transition-delay:.15s;will-change:transform}
+.delay-2{transition-delay:.3s;will-change:transform}
+.delay-3{transition-delay:.45s;will-change:transform}
+
+/* Header */
+header{position:fixed;top:0;left:0;right:0;z-index:100;height:72px;display:flex;align-items:center;background:rgba(255,255,255,.96);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(0,0,0,.04);transition:box-shadow .3s ease,background .3s ease;will-change:box-shadow}
+header.scrolled{box-shadow:0 2px 24px rgba(0,0,0,.06);background:rgba(255,255,255,.99)}
+.hd{max-width:1100px;width:100%;margin:0 auto;padding:0 40px;display:flex;align-items:center;justify-content:space-between}
+.hd-logo{display:flex;align-items:center;text-decoration:none;transition:opacity .3s ease}
+.hd-logo img{height:56px!important;width:auto!important;max-width:none!important}
+nav{display:flex;gap:32px}
+nav a{
+  font-size:12px;font-weight:400;letter-spacing:3px;color:#555;transition:color .3s;text-transform:uppercase;
+  padding:4px 0;position:relative;
+}
+nav a::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:#a89888;transform:scaleX(0);transition:transform .3s;transform-origin:center}
+nav a:hover{color:#1a1a1a}
+nav a:hover::after,nav a.active::after{transform:scaleX(1)}
+nav a.active{color:#1a1a1a}
+
+/* Hero */
+.hero{height:70vh;min-height:440px;position:relative;overflow:hidden;display:flex;align-items:flex-end;justify-content:center}
+.hero-img{position:absolute;inset:0;background:url('images/cropped/academy-hero.jpg') center/cover no-repeat}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(255,255,255,.1) 0%,rgba(255,255,255,.7) 65%,#fff 100%)}
+.hero-content{position:relative;z-index:2;text-align:center;padding-bottom:72px}
+.hero-label{font-size:11px;font-weight:400;letter-spacing:6px;color:#8a7868;text-transform:uppercase;text-indent:6px;margin-bottom:14px}
+.hero-title{font-size:clamp(40px,7vw,80px);font-weight:400;letter-spacing:clamp(6px,1.5vw,16px);text-indent:clamp(6px,1.5vw,16px);font-style:italic}
+.hero-cta{display:inline-flex;align-items:center;margin-top:28px;font-family:"Noto Serif JP",serif;font-size:14px;font-weight:400;letter-spacing:2px;color:#fff;background:#8a7868;padding:16px 44px;border-radius:2px;transition:background .3s,transform .3s,box-shadow .3s;will-change:transform,background}
+.hero-cta:hover{background:#6b5d50;transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.12)}
+
+/* PSGA External Link Button */
+.psga-ext:hover{background:#6b5d50!important;gap:14px!important;transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.12)}
+
+/* Section Common */
+.sec{max-width:900px;margin:0 auto;padding:100px 40px}
+.sec-wide{max-width:1100px;margin:0 auto;padding:100px 40px}
+.sec-label{font-size:11px;font-weight:400;letter-spacing:6px;color:#8a7868;text-transform:uppercase;text-indent:6px;margin-bottom:24px}
+.sec-heading{font-family:"Noto Serif JP",serif;font-size:clamp(20px,2.4vw,28px);font-weight:400;line-height:2;letter-spacing:.08em;color:#1a1a1a}
+.sec-body{font-family:"Noto Serif JP",serif;font-size:clamp(15px,1.3vw,17px);font-weight:400;line-height:2.1;letter-spacing:.04em;color:#333;margin-top:24px}
+.sec-divider{width:32px;height:1px;background:#d8d0c8;margin:28px 0}
+
+/* Focus Visible (Accessibility) */
+a:focus-visible,.co-card:focus-visible,.btt:focus-visible,.hero-cta:focus-visible{outline:2px solid #8a7868;outline-offset:3px;border-radius:2px}
+
+/* About */
+.about{border-top:1px solid #f0ece8;text-align:center}
+
+/* Course Overview Cards */
+.course-overview{border-top:1px solid #f0ece8;background:#faf9f7}
+.co-category{margin-top:56px}
+.co-category+.co-category{margin-top:64px}
+.co-cat-header{display:flex;align-items:center;gap:16px;margin-bottom:28px}
+.co-cat-badge{font-size:10px;font-weight:400;letter-spacing:3px;text-transform:uppercase;padding:6px 18px;border-radius:2px}
+.co-cat-badge.classical{background:#1a1a1a;color:#fff}
+.co-cat-badge.contemporary{background:#fff;color:#1a1a1a;border:1px solid #d8d0c8}
+.co-cat-title{font-family:"Noto Serif JP",serif;font-size:14px;font-weight:300;letter-spacing:.06em;color:#555}
+.co-cat-line{flex:1;height:1px;background:#e8e4e0}
+.co-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.co-card{background:#fff;border:1px solid #f0ece8;border-radius:2px;overflow:hidden;transition:all .4s ease;cursor:pointer;position:relative;display:grid;grid-template-columns:1.2fr 1fr;will-change:transform,box-shadow,border-color}
+.co-card:hover{border-color:#b8a898;box-shadow:0 12px 40px rgba(0,0,0,.07);transform:translateY(-4px) scale(1.01)}
+.co-card-img{position:relative;overflow:hidden}
+.co-card-img img{width:100%;height:100%;object-fit:cover;aspect-ratio:4/3;transition:transform .5s ease;min-height:280px}
+.co-card:hover .co-card-img img{transform:scale(1.08)}
+.co-card-tag{position:absolute;top:14px;left:14px;font-size:9px;font-weight:400;letter-spacing:2px;color:#fff;background:rgba(168,152,136,.88);padding:4px 12px;text-transform:uppercase;backdrop-filter:blur(4px)}
+.co-card-tag.tag-contemporary{background:rgba(106,138,120,.9)}
+.co-card-tag.tag-choreo{background:rgba(90,110,160,.9)}
+.co-card-tag.tag-tactile{background:rgba(168,120,88,.9)}
+
+/* Card accent borders */
+.co-card.card-contemporary{border-left:3px solid #6a8a78}
+.co-card.card-choreo{border-left:3px solid #5a6ea0}
+.co-card.card-tactile{border-left:3px solid #a87858}
+.co-card.card-contemporary:hover{border-color:#6a8a78}
+.co-card.card-choreo:hover{border-color:#5a6ea0}
+.co-card.card-tactile:hover{border-color:#a87858}
+.co-card-body{padding:28px 24px;display:flex;flex-direction:column;justify-content:center}
+.co-card-name{font-size:clamp(16px,1.5vw,20px);font-weight:400;letter-spacing:2px;font-style:italic;margin-bottom:6px}
+.co-card-jp{font-family:"Noto Serif JP",serif;font-size:13px;font-weight:400;letter-spacing:1px;color:#333;margin-bottom:14px}
+.co-card-desc{font-family:"Noto Serif JP",serif;font-size:14px;font-weight:400;line-height:2.0;color:#333;margin-bottom:18px}
+.co-card-meta{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px}
+.co-card-meta-item{font-family:"Noto Serif JP",serif;font-size:13px;font-weight:400;color:#7a6858;display:flex;align-items:center;gap:4px}
+.co-card-meta-item svg{width:13px;height:13px;fill:none;stroke:#c4b5a5;stroke-width:1.5}
+.co-card-price{font-size:clamp(22px,2vw,28px);font-weight:400;letter-spacing:1px;color:#8a7868;margin-bottom:4px}
+.co-card-price-note{font-family:"Noto Serif JP",serif;font-size:13px;font-weight:400;color:#555}
+.co-card-link{display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-size:11px;font-weight:400;letter-spacing:2px;color:#8a7868;text-transform:uppercase;transition:color .3s,gap .3s}
+.co-card-link:hover{color:#1a1a1a;gap:10px}
+.co-card-link svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.5;transition:stroke .3s}
+
+/* Anchor Nav */
+.anchor-nav{
+  border-top:1px solid #f0ece8;border-bottom:1px solid #f0ece8;
+  padding:16px 40px;text-align:center;
+  position:sticky;top:72px;z-index:90;
+  background:rgba(255,255,255,.97);backdrop-filter:blur(12px);
+  display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;
+}
+.anchor-nav-group{display:flex;align-items:center;gap:4px;position:relative}
+.anchor-nav-group+.anchor-nav-group{margin-left:4px}
+.anchor-nav-divider{width:1px;height:20px;background:#e0dbd6;margin:0 8px;flex-shrink:0}
+.anchor-nav-label{font-family:"Noto Serif JP",serif;font-size:9px;font-weight:400;letter-spacing:1.5px;color:#b0a898;text-transform:uppercase;margin-right:4px;white-space:nowrap}
+.anchor-nav a{
+  font-size:11px;font-weight:400;letter-spacing:3px;color:#888;
+  text-transform:uppercase;transition:all .3s;
+  display:inline-block;padding:8px 16px;position:relative;
+  border-radius:20px;border:1px solid transparent;white-space:nowrap;
+}
+.anchor-nav a:hover{color:#1a1a1a;background:rgba(0,0,0,.03)}
+.anchor-nav a.nav-personal{color:#1a1a1a;border-color:rgba(0,0,0,.12)}
+.anchor-nav a.nav-personal:hover{background:rgba(0,0,0,.04)}
+.anchor-nav a.nav-choreo{color:#5a6ea0;border-color:rgba(90,110,160,.2)}
+.anchor-nav a.nav-choreo:hover{background:rgba(90,110,160,.08)}
+.anchor-nav a.nav-tactile{color:#a87858;border-color:rgba(168,120,88,.2)}
+.anchor-nav a.nav-tactile:hover{background:rgba(168,120,88,.08)}
+.anchor-nav a::after{
+  content:'';position:absolute;bottom:2px;left:16px;right:16px;
+  height:2px;border-radius:1px;background:#a89888;transform:scaleX(0);
+  transition:transform .3s;transform-origin:center;
+}
+.anchor-nav a.nav-personal::after{background:#1a1a1a}
+.anchor-nav a.nav-choreo::after{background:#5a6ea0}
+.anchor-nav a.nav-tactile::after{background:#a87858}
+.anchor-nav a:hover::after,.anchor-nav a.active::after{transform:scaleX(1);transition:transform .3s ease}
+.anchor-nav a.active{color:#1a1a1a;font-weight:500}
+
+/* Course Section */
+.course-sec{padding:120px 0;border-top:1px solid #f0ece8}
+.course-sec:nth-child(even){background:#faf9f7}
+.course-inner{max-width:960px;margin:0 auto;padding:0 40px}
+
+/* Course Header Split */
+.course-header-split{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;margin-bottom:64px}
+.course-header-text .course-tag{
+  display:inline-block;font-size:10px;font-weight:400;letter-spacing:3px;
+  color:#8a7868;text-transform:uppercase;
+  border:1px solid #e0d8d0;padding:5px 14px;margin-bottom:18px;
+}
+.course-tag.ct-contemporary{color:#6a8a78;border-color:#6a8a78;background:rgba(106,138,120,.06)}
+.course-tag.ct-choreo{color:#5a6ea0;border-color:#5a6ea0;background:rgba(90,110,160,.06)}
+.course-tag.ct-tactile{color:#a87858;border-color:#a87858;background:rgba(168,120,88,.06)}
+
+/* Section accent line */
+.course-sec.sec-contemporary{border-top:3px solid #6a8a78}
+.course-sec.sec-choreo{border-top:3px solid #5a6ea0}
+.course-sec.sec-tactile{border-top:3px solid #a87858}
+.course-header-text h3{font-size:clamp(24px,2.6vw,32px);font-weight:400;letter-spacing:4px;font-style:italic;margin-bottom:18px}
+.course-header-text .course-jp{font-family:"Noto Serif JP",serif;font-size:14px;font-weight:400;letter-spacing:1px;color:#333;margin-bottom:20px}
+.course-header-text .course-desc{font-family:"Noto Serif JP",serif;font-size:clamp(15px,1.2vw,17px);font-weight:400;line-height:2.1;color:#333}
+.course-header-img{border-radius:2px;overflow:hidden}
+.course-header-img img{width:100%;height:100%;object-fit:cover;aspect-ratio:3/2}
+
+/* Info Grid - key details */
+.info-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0;margin-bottom:48px;border:1px solid #f0ece8;border-radius:4px;overflow:hidden}
+.info-item{padding:36px 28px;background:#fff;text-align:center;position:relative}
+.info-item+.info-item{border-left:1px solid #f0ece8}
+.info-item.on-white{background:#fff}
+.info-label{font-size:11px;font-weight:400;letter-spacing:3px;color:#8a7868;text-transform:uppercase;margin-bottom:14px}
+.info-value{font-family:"Noto Serif JP",serif;font-size:clamp(16px,1.5vw,20px);font-weight:400;line-height:1.8;color:#1a1a1a}
+.info-note{font-family:"Noto Serif JP",serif;font-size:12px;font-weight:400;color:#444;margin-top:6px}
+
+/* Price Cards */
+.price-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:48px}
+.price-card{padding:28px 20px;border:1px solid #f0ece8;background:#fff;border-radius:4px;transition:all .4s ease;position:relative;will-change:transform,box-shadow}
+.price-card:hover{box-shadow:0 8px 28px rgba(0,0,0,.06);transform:translateY(-4px)}
+.price-card.on-white{background:#fff}
+.price-card-name{font-size:11px;font-weight:500;letter-spacing:3px;text-transform:uppercase;margin-bottom:14px}
+.price-card-amount{font-size:clamp(22px,2vw,28px);font-weight:400;letter-spacing:2px;margin-bottom:4px;color:#1a1a1a}
+.price-card-note{font-family:"Noto Serif JP",serif;font-size:11px;font-weight:400;color:#999;letter-spacing:1px}
+.price-card-hours{font-family:"Noto Serif JP",serif;font-size:13px;font-weight:400;color:#555;margin-top:10px;padding-top:10px;border-top:1px solid #f0ece8}
+
+/* Curriculum */
+.curriculum{margin-bottom:48px}
+.curriculum-title{font-size:clamp(16px,1.6vw,20px);font-weight:400;letter-spacing:3px;font-style:italic;margin-bottom:28px;padding-bottom:12px;border-bottom:1px solid #e8e4e0}
+.curriculum-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.curriculum-block{padding:24px;border:1px solid #f0ece8;background:#fff;border-radius:4px;transition:all .4s ease;will-change:transform,box-shadow}
+.curriculum-block:hover{box-shadow:0 6px 20px rgba(0,0,0,.05);transform:translateY(-2px)}
+.curriculum-block.on-white{background:#fff}
+.curriculum-block-head{display:flex;align-items:baseline;gap:12px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #f0ece8}
+.curriculum-block-num{font-size:18px;font-weight:400;letter-spacing:2px;color:#8a7868}
+.curriculum-block-name{font-family:"Noto Serif JP",serif;font-size:15px;font-weight:500;color:#1a1a1a;letter-spacing:.05em}
+.curriculum-block-hours{font-size:11px;font-weight:400;color:#999;letter-spacing:1px;margin-left:auto;background:#faf9f7;padding:3px 10px;border-radius:2px}
+.curriculum-block-list{font-family:"Noto Serif JP",serif;font-size:13px;font-weight:400;line-height:2;color:#555;padding-left:1em}
+.curriculum-block-list li{margin-bottom:2px}
+.curriculum-note{font-family:"Noto Serif JP",serif;font-size:13px;font-weight:400;line-height:2;color:#333;margin-top:28px;padding:24px;border:1px solid #f0ece8;border-radius:4px;background:#faf9f7}
+
+/* Comparison Table */
+.tbl-wrap{overflow-x:auto;margin-top:48px;-webkit-overflow-scrolling:touch;position:relative}
+.tbl-wrap::after{content:'← スクロールできます →';display:none;text-align:center;font-family:"Noto Serif JP",serif;font-size:11px;color:#8a7868;margin-top:8px;letter-spacing:1px}
+@media(max-width:768px){.tbl-wrap::after{display:block}}
+.tbl{width:100%;border-collapse:collapse;font-family:"Noto Serif JP",serif}
+.tbl th,.tbl td{padding:18px 20px;text-align:center;font-size:clamp(13px,1.1vw,15px);font-weight:400;letter-spacing:.02em;line-height:1.8;border-bottom:1px solid #f0ece8}
+.tbl th{font-weight:400;color:#1a1a1a;background:#faf9f7;min-width:100px;text-align:left}
+.tbl thead th{font-family:"Cormorant Garamond",serif;font-size:16px;font-weight:400;letter-spacing:3px;font-style:italic;color:#1a1a1a;padding:22px 20px;border-bottom:2px solid #d8d0c8}
+.tbl thead th:first-child{font-family:"Noto Serif JP",serif;font-style:normal;font-size:13px;letter-spacing:1px}
+.tbl td{color:#333}
+.tbl small{color:#444;font-size:12px}
+.tbl tbody tr{transition:background .3s;will-change:background}
+.tbl tbody tr:hover{background:rgba(168,152,136,.06)}
+.tbl thead th:nth-child(2){color:#8a7868}
+.tbl thead th:nth-child(3){color:#1a1a1a}
+
+/* Program List */
+.program-section{margin-top:56px;margin-bottom:56px}
+.program-section h4{font-family:"Cormorant Garamond",serif;font-size:clamp(20px,2vw,26px);font-weight:400;letter-spacing:3px;text-align:center;margin-bottom:8px}
+.program-section .program-sub{font-family:"Noto Serif JP",serif;font-size:13px;color:#555;text-align:center;margin-bottom:36px;font-weight:300}
+.program-columns{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.program-box{border:none;padding:32px 28px;background:transparent;transition:all .4s ease;will-change:background}
+.program-box+.program-box{border-left:1px solid #e8e4e0}
+.program-box:hover{background:rgba(168,152,136,.04);transform:translateY(-2px)}
+.program-box-header{display:flex;align-items:center;gap:14px;margin-bottom:6px}
+.program-box-badge{display:inline-block;font-size:10px;font-weight:400;letter-spacing:1.5px;color:#fff;padding:5px 16px;border-radius:20px;white-space:nowrap}
+.program-box-badge.beginner{background:linear-gradient(135deg,#b8a898,#a89888)}
+.program-box-badge.intermediate{background:linear-gradient(135deg,#7a9a8a,#6b8a7a)}
+.program-box-title{font-family:"Noto Serif JP",serif;font-size:15px;font-weight:400;letter-spacing:.05em}
+.program-box-note{font-family:"Noto Serif JP",serif;font-size:12px;color:#666;font-weight:400;margin-bottom:20px;padding-left:2px}
+.program-box-tags{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.program-box-tag{font-size:10px;letter-spacing:1px;padding:3px 10px;border-radius:2px;border:1px solid #d8d0c8;color:#555;font-weight:300}
+.program-box-tag.required{border-color:#c47060;color:#c47060}
+.program-box-tag.optional{border-color:#5a8a7a;color:#5a8a7a}
+.program-list{list-style:none;padding:0;margin:0}
+.program-list li{display:flex;align-items:baseline;gap:12px;padding:12px 0;border-bottom:1px solid #f4f2f0;font-family:"Noto Serif JP",serif;font-size:15px;font-weight:400;color:#333;letter-spacing:.03em;transition:background .3s,padding-left .3s;will-change:padding-left,background}
+.program-list li:hover{background:rgba(168,152,136,.04);padding-left:6px}
+.program-list li:last-child{border-bottom:none}
+.program-list .p-num{font-family:"Cormorant Garamond",serif;font-size:12px;color:#a89888;min-width:18px}
+.program-list .p-name{font-weight:400;min-width:110px;letter-spacing:.08em}
+.program-list .p-count{color:#888;font-size:12px;min-width:55px}
+.program-list .p-desc{color:#555;font-size:13px}
+@media(max-width:768px){.program-columns{grid-template-columns:1fr}.program-box+.program-box{border-left:none;border-top:1px solid #e8e4e0}}
+
+/* Section Sub-headings for flow areas */
+.flow-heading{text-align:center;margin-bottom:12px;margin-top:64px}
+.flow-heading h4{font-family:"Cormorant Garamond",serif;font-size:clamp(18px,1.8vw,24px);font-weight:400;letter-spacing:4px;font-style:italic;color:#1a1a1a;margin-bottom:6px}
+.flow-heading p{font-family:"Noto Serif JP",serif;font-size:12px;font-weight:300;color:#8a7868;letter-spacing:1px}
+
+/* Flow Total */
+.flow-total{text-align:center;margin:8px 0;padding:20px 28px;background:transparent;display:flex;align-items:center;justify-content:center;gap:20px}
+.flow-total::before,.flow-total::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,#d8d0c8,transparent)}
+.flow-total-label{font-family:"Noto Serif JP",serif;font-size:13px;font-weight:300;color:#8a7868;letter-spacing:.05em;white-space:nowrap}
+.flow-total-price{font-family:"Cormorant Garamond",serif;font-size:clamp(28px,2.8vw,38px);font-weight:500;letter-spacing:2px;color:#8a7868;white-space:nowrap}
+.flow-total-price small{font-size:12px;font-weight:300;color:#888;letter-spacing:0;margin-left:4px}
+
+/* Step connector arrows between tier rows */
+.step-connector{display:flex;align-items:center;justify-content:center;margin:8px 0}
+.step-connector svg{width:28px;height:28px;fill:none;stroke:#c4b5a5;stroke-width:1.5;opacity:.7}
+
+/* Group Reformer Tiers */
+.tier-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:24px;margin-bottom:24px}
+.tier-card{padding:40px 32px;background:transparent;text-align:center;transition:all .4s ease;position:relative;border-radius:2px;will-change:background,box-shadow}
+.tier-card::before{content:'';position:absolute;top:0;left:20px;right:20px;height:2px;background:linear-gradient(90deg,transparent,#c4b5a5,transparent)}
+.tier-card:hover{background:rgba(168,152,136,.07);box-shadow:0 12px 36px rgba(0,0,0,.08);transform:translateY(-2px)}
+.tier-card+.tier-card{border-left:1px solid #f0ece8}
+.tier-badge{display:inline-block;font-size:10px;font-weight:500;letter-spacing:2.5px;color:#a89888;background:transparent;padding:0;margin-bottom:18px;text-transform:uppercase;border-radius:0;border:none}
+.tier-name{font-family:"Noto Serif JP",serif;font-size:18px;font-weight:400;color:#1a1a1a;letter-spacing:.05em;margin-bottom:16px;min-height:48px;display:flex;align-items:center;justify-content:center}
+.tier-price{font-size:clamp(26px,2.6vw,34px);font-weight:400;letter-spacing:2px;margin-bottom:4px;color:#8a7868}
+.tier-price-note{font-family:"Noto Serif JP",serif;font-size:12px;font-weight:400;color:#444;margin-bottom:20px}
+.tier-divider{width:24px;height:1px;background:#d8d0c8;margin:0 auto 20px}
+.tier-detail{font-family:"Noto Serif JP",serif;font-size:14px;font-weight:400;line-height:2.2;color:#333;text-align:left}
+.tier-detail strong{font-weight:500;color:#333}
+.tier-target{font-family:"Noto Serif JP",serif;font-size:11px;font-weight:300;color:#8a7868;margin-top:16px;padding-top:16px;border-top:1px solid #f0ece8;text-align:left}
+@media(max-width:768px){.tier-card+.tier-card{border-left:none;border-top:1px solid #f0ece8}}
+
+/* Schedule Cards */
+.schedule-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0;margin-top:24px;margin-bottom:40px}
+.schedule-card{display:flex;align-items:center;gap:20px;padding:24px 28px;background:transparent;transition:all .3s ease;will-change:background}
+.schedule-card+.schedule-card{border-left:1px solid #f0ece8}
+.schedule-card:hover{background:rgba(168,152,136,.05);transform:translateY(-1px)}
+.schedule-month{font-family:"Cormorant Garamond",serif;font-size:22px;font-weight:400;letter-spacing:1px;color:#a89888;min-width:80px;text-align:center;line-height:1.3}
+.schedule-month small{display:block;font-size:10px;letter-spacing:2px;color:#c4b5a5;text-transform:uppercase;margin-top:2px}
+.schedule-info{font-family:"Noto Serif JP",serif;font-size:15px;font-weight:400;color:#333;line-height:1.8}
+.schedule-info strong{font-weight:400;color:#1a1a1a}
+
+/* Info Notes (replaces curriculum-note for enhanced version) */
+.info-notes{margin-top:40px;margin-bottom:32px}
+.info-notes-title{font-family:"Noto Serif JP",serif;font-size:13px;font-weight:400;color:#1a1a1a;letter-spacing:.05em;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid #f0ece8;display:flex;align-items:center;gap:8px}
+.info-notes-title svg{width:16px;height:16px;fill:none;stroke:#a89888;stroke-width:1.5}
+.info-notes-list{list-style:none;padding:0;margin:0}
+.info-notes-list li{font-family:"Noto Serif JP",serif;font-size:13px;font-weight:400;line-height:2;color:#444;padding:6px 0 6px 24px;position:relative;border-bottom:1px solid #faf9f7}
+.info-notes-list li::before{content:'';position:absolute;left:6px;top:14px;width:6px;height:6px;border-radius:50%;background:#e0d8d0}
+.info-notes-list li:last-child{border-bottom:none}
+
+/* Trademark */
+.trademark{font-family:"Noto Serif JP",serif;font-size:12px;font-weight:400;color:#666;margin-top:32px;text-align:center;line-height:2;padding:0}
+@media(max-width:768px){.schedule-grid{grid-template-columns:1fr}.schedule-card+.schedule-card{border-left:none;border-top:1px solid #f0ece8}}
+
+/* Master Trainers */
+.trainers{border-top:1px solid #f0ece8}
+.trainer-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:48px;margin-top:64px}
+.trainer{text-align:center}
+.trainer-photo{width:160px;height:160px;border-radius:2px;overflow:hidden;margin:0 auto 24px;border:1px solid #f0ece8;transition:transform .4s ease;will-change:transform}
+.trainer:hover .trainer-photo{transform:scale(1.05)}
+.trainer-photo img{width:100%;height:100%;object-fit:cover}
+.trainer-name{font-size:16px;font-weight:400;letter-spacing:2px;margin-bottom:4px}
+.trainer-name-jp{font-family:"Noto Serif JP",serif;font-size:12px;font-weight:400;color:#333;letter-spacing:1px;margin-bottom:6px}
+.trainer-role{font-family:"Noto Serif JP",serif;font-size:11px;font-weight:300;letter-spacing:1px;color:#8a7868}
+
+/* Contact */
+.contact{text-align:center;border-top:1px solid #f0ece8}
+.contact-company{font-family:"Noto Serif JP",serif;font-size:14px;font-weight:300;letter-spacing:2px;color:#555;margin-top:36px}
+.contact-tel{font-size:clamp(24px,3vw,36px);font-weight:300;letter-spacing:4px;margin-top:20px;color:#1a1a1a}
+.contact-mail{font-size:14px;font-weight:300;letter-spacing:3px;color:#8a7868;margin-top:14px}
+.sns-icons{display:flex;justify-content:center;gap:24px;margin-top:32px}
+.sns-icons a{display:flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid #e0dbd6;border-radius:50%;transition:all .3s ease;will-change:transform,background,border-color}
+.sns-icons a:hover{border-color:#1a1a1a;background:#1a1a1a;transform:translateY(-3px);box-shadow:0 6px 16px rgba(0,0,0,.12);transition:all .3s cubic-bezier(0.4,0,0.2,1)}
+.sns-icons a svg{width:18px;height:18px;fill:#888;transition:fill .3s ease}
+.sns-icons a:hover svg{fill:#fff}
+
+/* Contact Links */
+.contact-tel{transition:color .3s;cursor:pointer}
+.contact-tel:hover{color:#8a7868}
+.contact-mail{transition:color .3s;cursor:pointer}
+.contact-mail:hover{color:#1a1a1a}
+
+/* Hamburger Menu */
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;z-index:110;background:none;border:none}
+.hamburger span{display:block;width:22px;height:1.5px;background:#1a1a1a;transition:all .35s cubic-bezier(0.4,0,0.2,1);transform-origin:center}
+.hamburger.open span:nth-child(1){transform:rotate(45deg) translate(4.5px,4.5px)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(4.5px,-4.5px)}
+.mobile-overlay{position:fixed;inset:0;z-index:99;background:rgba(255,255,255,.98);backdrop-filter:blur(20px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:36px;opacity:0;visibility:hidden;transition:all .4s cubic-bezier(0.4,0,0.2,1);will-change:opacity,visibility}
+.mobile-overlay.open{opacity:1;visibility:visible}
+.mobile-overlay a{font-size:16px;letter-spacing:6px;color:#1a1a1a;text-transform:uppercase;padding:8px 0;position:relative}
+.mobile-overlay a::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:#a89888;transform:scaleX(0);transition:transform .3s;transform-origin:center}
+.mobile-overlay a:hover::after{transform:scaleX(1)}
+
+/* Back to Top Button */
+.btt{position:fixed;bottom:32px;right:32px;z-index:90;width:44px;height:44px;border-radius:50%;background:#fff;border:1px solid #e0dbd6;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;visibility:hidden;transform:translateY(12px);transition:all .4s ease;box-shadow:0 2px 12px rgba(0,0,0,.06);will-change:transform,opacity}
+.btt.show{opacity:1;visibility:visible;transform:none}
+.btt:hover{background:#1a1a1a;border-color:#1a1a1a;transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.12)}
+.btt svg{width:16px;height:16px;fill:none;stroke:#888;stroke-width:2;transition:stroke .3s}
+.btt:hover svg{stroke:#fff}
+
+/* Footer */
+footer{text-align:center;padding:48px;border-top:1px solid #f0ece8}
+footer small{font-size:10px;font-weight:300;letter-spacing:3px;color:#888}
+
+/* Accordion */
+.accordion{border:1px solid #f0ece8;border-radius:4px;overflow:hidden;margin-bottom:24px}
+.accordion+.accordion{margin-top:-1px}
+.accordion-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;padding:20px 24px;background:#fff;border:none;cursor:pointer;font-family:"Noto Serif JP",serif;font-size:14px;font-weight:400;letter-spacing:.06em;color:#1a1a1a;transition:background .3s}
+.accordion-toggle:hover{background:#faf9f7}
+.accordion-toggle svg{width:16px;height:16px;fill:none;stroke:#8a7868;stroke-width:2;transition:transform .3s;flex-shrink:0}
+.accordion-toggle.open svg{transform:rotate(180deg)}
+.accordion-content{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.accordion-content-inner{padding:0 24px 24px}
+
+/* Responsive */
+@media(max-width:768px){
+  .hd{padding:0 24px}
+  nav{display:none}
+  .hamburger{display:flex}
+  .btt{bottom:24px;right:24px;width:40px;height:40px}
+  .sec,.sec-wide{padding:80px 24px}
+  .course-sec{padding:64px 0}
+  .course-inner{padding:0 24px}
+  .co-grid{grid-template-columns:1fr}
+  .co-card{grid-template-columns:1fr 1fr}
+  .course-header-split{grid-template-columns:1fr;gap:24px}
+  .course-header-img{order:-1}
+  .info-grid{grid-template-columns:1fr 1fr}
+  .price-grid{grid-template-columns:repeat(2,1fr);gap:12px}
+  .curriculum-grid{grid-template-columns:1fr}
+  .tier-grid{grid-template-columns:1fr}
+  .tier-card+.tier-card{border-left:none;border-top:1px solid #f0ece8}
+  .trainer-grid{grid-template-columns:repeat(2,1fr);gap:36px}
+  .tbl th,.tbl td{padding:14px 12px;font-size:12px}
+  .anchor-nav{overflow-x:auto;white-space:nowrap;text-align:left;padding:12px 20px;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;justify-content:flex-start;gap:4px}
+  .anchor-nav a{margin:0 2px;font-size:10px;letter-spacing:2px;display:inline-block;padding:6px 12px}
+  .anchor-nav-label{font-size:8px;letter-spacing:1px}
+  .anchor-nav-divider{height:16px;margin:0 4px}
+  .contact-tel{font-size:24px}
+  .schedule-grid{grid-template-columns:1fr}
+  .schedule-card+.schedule-card{border-left:none;border-top:1px solid #f0ece8}
+  .program-columns{grid-template-columns:1fr}
+  .program-box+.program-box{border-left:none;border-top:1px solid #e8e4e0}
+  [style*="grid-template-columns:repeat(4"]{grid-template-columns:repeat(2,1fr)!important}
+  [style*="grid-template-columns:repeat(5"]{grid-template-columns:repeat(2,1fr)!important}
+  [style*="grid-template-columns:repeat(3"]{grid-template-columns:1fr!important}
+}
+@media(max-width:480px){
+  .hero{height:50vh;min-height:300px}
+  .hero-title{font-size:clamp(32px,8vw,48px)}
+  .sec,.sec-wide{padding:64px 20px}
+  .course-sec{padding:48px 0}
+  .course-inner{padding:0 20px}
+  .co-grid{grid-template-columns:1fr;gap:16px}
+  .co-card{grid-template-columns:1fr}
+  .co-card-img{max-height:200px;overflow:hidden}
+  .co-card-img img{min-height:auto;aspect-ratio:16/9}
+  .info-grid{grid-template-columns:1fr}
+  .info-item+.info-item{border-left:none;border-top:1px solid #f0ece8}
+  .price-grid{grid-template-columns:1fr;gap:8px}
+  .trainer-grid{grid-template-columns:1fr;gap:28px}
+  .anchor-nav{padding:12px 16px}
+  .anchor-nav a{margin:0 4px;font-size:9px;letter-spacing:1.5px;padding:6px 12px}
+  .flow-total{flex-direction:column;gap:8px}
+  .flow-total::before,.flow-total::after{display:none}
+  .tier-card{padding:28px 20px}
+  .curriculum-block{padding:18px}
+  .accordion-toggle{padding:16px 20px;font-size:13px}
+  .accordion-content-inner{padding:0 20px 20px}
+  [style*="grid-template-columns:repeat(4"]{grid-template-columns:1fr!important}
+  [style*="grid-template-columns:repeat(5"]{grid-template-columns:repeat(2,1fr)!important}
+}
+</style>
+</head>
+<body>
+
+<div class="page-curtain"><span>AXISCORE</span></div>
+
+<header>
+  <div class="hd">
+    <a href="index.html" class="hd-logo"><img src="images/logos/axiscore-logo-v2.png" alt="AXISCORE PILATES"></a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="academy.html" class="active">Academy</a>
+      <a href="lineup.html">Line Up</a>
+      <a href="results.html">Results</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="mobile-overlay"><a href="index.html">Home</a><a href="academy.html">Academy</a><a href="lineup.html">Line Up</a><a href="results.html">Results</a><a href="#contact">Contact</a></div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-img"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-label">Axiscore Academy</p>
+    <h1 class="hero-title">Academy</h1>
+    <a href="#original" class="hero-cta">コース一覧を見る<svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.5;margin-left:8px"><polyline points="6 9 12 15 18 9"/></svg></a>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="sec about fade-up">
+  <p class="sec-label">About</p>
+  <h2 class="sec-heading">
+    プロとして指導現場で信頼されるための<br>
+    「理論」「技術」「伝える力」を徹底的に磨く、<br>
+    実践重視の養成プログラム。
+  </h2>
+  <p class="sec-body">
+    解剖学・運動学を土台に、姿勢分析や修正法、クライアントごとのアプローチ技術までを体系的に習得。<br>
+    マットだけでなく、リフォーマーやキャデラックなどのマシン操作・指導も網羅し、<br>
+    スタジオや医療・リハビリ分野でも活躍できるレベルを目指します。
+  </p>
+  <p class="sec-body" style="margin-top:16px">
+    指導経験豊富な講師による実技指導とフィードバック、現場に即したケーススタディ、卒業後のフォローアップも充実。<br>
+    独立・開業、チーム指導、アスリートサポートなど、あなたのキャリアに合わせた「使えるスキル」を育てます。
+  </p>
+</section>
+
+<!-- QUICK FLOW GUIDE -->
+<section class="sec fade-up" style="max-width:100%;background:#faf9f7;border-top:1px solid #f0ece8;border-bottom:1px solid #f0ece8;padding:80px 40px">
+  <div style="max-width:1000px;margin:0 auto">
+    <p class="sec-label" style="text-align:center">How to Start</p>
+    <h2 class="sec-heading" style="text-align:center">ライセンス取得までの流れ</h2>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:48px;text-align:center">
+      <div class="fade-up" style="position:relative">
+        <div style="width:56px;height:56px;border-radius:50%;background:#8a7868;color:#fff;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:18px;font-weight:300;letter-spacing:1px">01</div>
+        <h4 style="font-family:'Noto Serif JP',serif;font-size:15px;font-weight:500;letter-spacing:.06em;color:#1a1a1a;margin-bottom:10px">コースを選ぶ</h4>
+        <p style="font-family:'Noto Serif JP',serif;font-size:13px;font-weight:300;line-height:2;color:#555">パーソナル・グループから目的に合ったコースを選択</p>
+      </div>
+      <div class="fade-up delay-1" style="position:relative">
+        <div style="width:56px;height:56px;border-radius:50%;background:#8a7868;color:#fff;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:18px;font-weight:300;letter-spacing:1px">02</div>
+        <h4 style="font-family:'Noto Serif JP',serif;font-size:15px;font-weight:500;letter-spacing:.06em;color:#1a1a1a;margin-bottom:10px">基礎研修を受講</h4>
+        <p style="font-family:'Noto Serif JP',serif;font-size:13px;font-weight:300;line-height:2;color:#555">解剖学・運動学の基礎理論と姿勢分析を学ぶ</p>
+      </div>
+      <div class="fade-up delay-2" style="position:relative">
+        <div style="width:56px;height:56px;border-radius:50%;background:#8a7868;color:#fff;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:18px;font-weight:300;letter-spacing:1px">03</div>
+        <h4 style="font-family:'Noto Serif JP',serif;font-size:15px;font-weight:500;letter-spacing:.06em;color:#1a1a1a;margin-bottom:10px">養成研修・実技</h4>
+        <p style="font-family:'Noto Serif JP',serif;font-size:13px;font-weight:300;line-height:2;color:#555">マシン操作・指導法を実践で習得</p>
+      </div>
+      <div class="fade-up delay-3" style="position:relative">
+        <div style="width:56px;height:56px;border-radius:50%;background:#1a1a1a;color:#fff;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:18px;font-weight:300;letter-spacing:1px">04</div>
+        <h4 style="font-family:'Noto Serif JP',serif;font-size:15px;font-weight:500;letter-spacing:.06em;color:#1a1a1a;margin-bottom:10px">認定試験・修了</h4>
+        <p style="font-family:'Noto Serif JP',serif;font-size:13px;font-weight:300;line-height:2;color:#555">実技試験に合格し、認定証を取得</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COURSE OVERVIEW -->
+<section class="sec-wide course-overview">
+  <p class="sec-label fade-up" style="text-align:center">Courses</p>
+  <h2 class="sec-heading fade-up" style="text-align:center">コース一覧</h2>
+  <p class="sec-body fade-up" style="text-align:center;margin-top:12px">パーソナルとグループ、目的に合わせてお選びいただけます。</p>
+
+  <!-- Personal Training -->
+  <div class="co-category fade-up">
+    <div class="co-cat-header">
+      <span class="co-cat-badge classical">Personal</span>
+      <span class="co-cat-title">パーソナルライセンス</span>
+      <span class="co-cat-line"></span>
+    </div>
+    <div class="co-grid" style="grid-template-columns:1fr">
+
+      <!-- Contemporary Course -->
+      <a href="#contemporary" class="co-card card-contemporary">
+        <div class="co-card-img">
+          <img src="images/cropped/placeholder-original.jpg" alt="Contemporary Course" loading="lazy">
+          <span class="co-card-tag tag-contemporary">Contemporary</span>
+        </div>
+        <div class="co-card-body">
+          <p class="co-card-name">Contemporary Course</p>
+          <p class="co-card-jp">コンテンポラリー マシンピラティス</p>
+          <p class="co-card-desc">独自の「10 Units × 4 Levels」フレームワークを採用。全イクイップメントを、現代の解剖学・運動科学に基づき効率よく学べます。</p>
+          <div class="co-card-meta">
+            <span class="co-card-meta-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>58h〜</span>
+            <span class="co-card-meta-item"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>少人数制</span>
+            <span class="co-card-meta-item"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>4レベル</span>
+          </div>
+          <p class="co-card-price">¥580,000〜</p>
+          <p class="co-card-price-note">税別 / FUNDAMENTALから</p>
+          <span class="co-card-link">Detail <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg></span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- Group Reformer® (2 types) -->
+  <div class="co-category fade-up">
+    <div class="co-cat-header">
+      <span class="co-cat-badge contemporary">Group Reformer®</span>
+      <span class="co-cat-title">グループリフォーマー® — コリオグラフィー / タクタイル</span>
+      <span class="co-cat-line"></span>
+    </div>
+    <div class="co-grid">
+
+      <!-- Group Reformer® — Choreography -->
+      <a href="#group" class="co-card card-choreo">
+        <div class="co-card-img">
+          <img src="images/cropped/placeholder-group.jpg" alt="Group Reformer" loading="lazy">
+          <span class="co-card-tag tag-choreo">Choreography</span>
+        </div>
+        <div class="co-card-body">
+          <p class="co-card-name">Group Reformer® Choreography</p>
+          <p class="co-card-jp">グループリフォーマー® コリオグラフィー</p>
+          <p class="co-card-desc">完成されたコリオ（振付）に沿ってグループレッスンを進行。統一感のある指導で、安全かつ効果的に体幹強化・姿勢改善・柔軟性向上を目指します。</p>
+          <div class="co-card-meta">
+            <span class="co-card-meta-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>12-20h</span>
+            <span class="co-card-meta-item"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>10名</span>
+            <span class="co-card-meta-item"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>3ステップ</span>
+          </div>
+          <p class="co-card-price">¥320,000</p>
+          <p class="co-card-price-note">税別 / 基礎研修＋養成研修 合計（初級修了まで）</p>
+          <span class="co-card-link">Detail <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg></span>
+        </div>
+      </a>
+
+      <!-- Group Reformer® Tactile Version -->
+      <a href="#group-tactile" class="co-card card-tactile">
+        <div class="co-card-img">
+          <img src="images/cropped/placeholder-group.jpg" alt="Group Reformer Tactile" loading="lazy">
+          <span class="co-card-tag tag-tactile">Tactile</span>
+        </div>
+        <div class="co-card-body">
+          <p class="co-card-name">Group Reformer® Tactile</p>
+          <p class="co-card-jp">グループリフォーマー® タクタイル</p>
+          <p class="co-card-desc">「10 Units × 4 Levels」フレームワーク採用。タクタイルキューイングとインストラクター裁量型のプログラム設計で、グループ指導の質を革新します。</p>
+          <div class="co-card-meta">
+            <span class="co-card-meta-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>58h〜</span>
+            <span class="co-card-meta-item"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>少人数制</span>
+            <span class="co-card-meta-item"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>4レベル</span>
+          </div>
+          <p class="co-card-price">¥580,000〜</p>
+          <p class="co-card-price-note">税別 / FUNDAMENTALから</p>
+          <span class="co-card-link">Detail <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg></span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ANCHOR NAV -->
+<div class="anchor-nav fade-up">
+  <div class="anchor-nav-group">
+    <span class="anchor-nav-label">Personal</span>
+    <a href="#contemporary" class="nav-personal">Contemporary</a>
+  </div>
+  <span class="anchor-nav-divider"></span>
+  <div class="anchor-nav-group">
+    <span class="anchor-nav-label">Group Reformer®</span>
+    <a href="#group" class="nav-choreo">Choreography</a>
+    <a href="#group-tactile" class="nav-tactile">Tactile</a>
+  </div>
+  <span class="anchor-nav-divider"></span>
+  <div class="anchor-nav-group">
+    <a href="#trainers">Trainers</a>
+    <a href="#psga">Classical (PSGA)</a>
+  </div>
+</div>
+
+<!-- ===== CONTEMPORARY COURSE — Detail ===== -->
+<div class="course-sec sec-contemporary" id="contemporary" style="background:#faf9f7">
+  <div class="course-inner">
+    <p class="sec-label fade-up" style="color:#6a8a78">Personal License</p>
+    <div class="course-header-split fade-up">
+      <div class="course-header-text">
+        <span class="course-tag ct-contemporary">Personal — Contemporary</span>
+        <h3>Contemporary Course</h3>
+        <p class="course-jp">パーソナル｜コンテンポラリーマシンピラティスコース</p>
+        <div class="sec-divider"></div>
+        <p class="course-desc">
+          AXISCORE独自の「10 Units × 4 Levels」フレームワークを採用。従来の振付型プログラムとは異なり、10ユニットの骨格をベースにインストラクター自身がお客様に最適な60分を設計する力を養います。リフォーマー・キャデラック・チェア・バレルの全イクイップメントを、現代の解剖学・運動科学の知見とともに学べるコースです。
+        </p>
+      </div>
+      <div class="course-header-img">
+        <img src="images/cropped/personal-original.jpg" alt="Contemporary Course" loading="lazy">
+      </div>
+    </div>
+
+    <!-- Key Info -->
+    <div class="info-grid fade-up">
+      <div class="info-item on-white"><p class="info-label">受講資格</p><p class="info-value">なし</p><p class="info-note">未経験者歓迎</p></div>
+      <div class="info-item on-white"><p class="info-label">定員</p><p class="info-value">少人数制</p><p class="info-note">マスタートレーナー直接指導</p></div>
+    </div>
+
+    <!-- Level-based Pricing -->
+    <h4 class="curriculum-title fade-up">Pricing — レベル別料金</h4>
+    <div class="price-grid fade-up">
+      <div class="price-card on-white" style="border-left:3px solid #6b9a7a">
+        <p class="price-card-name" style="color:#6b9a7a">FUNDAMENTAL</p>
+        <p class="price-card-amount">¥580,000</p>
+        <p class="price-card-note">税抜</p>
+        <p class="price-card-hours">58時間 / 17週間</p>
+        <p style="font-family:'Noto Serif JP',serif;font-size:12px;color:#555;margin-top:8px;line-height:1.8">受講資格：なし（新規入門）<br>対象：未経験〜基礎レベル</p>
+      </div>
+      <div class="price-card on-white" style="border-left:3px solid #5a82b6">
+        <p class="price-card-name" style="color:#5a82b6">INTERMEDIATE</p>
+        <p class="price-card-amount">¥410,000</p>
+        <p class="price-card-note">税抜</p>
+        <p class="price-card-hours">41時間 / 13週間</p>
+        <p style="font-family:'Noto Serif JP',serif;font-size:12px;color:#555;margin-top:8px;line-height:1.8">受講資格：F認定取得<br>（実務6ヶ月以上推奨）</p>
+      </div>
+      <div class="price-card on-white" style="border-left:3px solid #c49a5a">
+        <p class="price-card-name" style="color:#c49a5a">ADVANCE</p>
+        <p class="price-card-amount">¥440,000</p>
+        <p class="price-card-note">税抜</p>
+        <p class="price-card-hours">44時間 / 14週間</p>
+        <p style="font-family:'Noto Serif JP',serif;font-size:12px;color:#555;margin-top:8px;line-height:1.8">受講資格：I認定取得<br>（実務1年以上推奨）</p>
+      </div>
+      <div class="price-card on-white" style="border-left:3px solid #8a7868">
+        <p class="price-card-name" style="color:#8a7868">MASTER</p>
+        <p class="price-card-amount">¥640,000</p>
+        <p class="price-card-note">税抜</p>
+        <p class="price-card-hours">64時間 / 19週間</p>
+        <p style="font-family:'Noto Serif JP',serif;font-size:12px;color:#555;margin-top:8px;line-height:1.8">受講資格：A認定取得<br>（実務2年以上＋推薦状）</p>
+      </div>
+    </div>
+
+    <!-- UNIT-System Overview -->
+    <h4 class="curriculum-title fade-up">10 Units × 4 Levels</h4>
+    <div class="fade-up" style="margin-bottom:48px">
+      <p style="font-family:'Noto Serif JP',serif;font-size:clamp(14px,1.2vw,16px);font-weight:400;line-height:2.2;color:#333;margin-bottom:28px">
+        すべてのレッスンは10ユニットで構成された統一の骨格を持ち、4段階のレベル（Fundamental → Intermediate → Advance → Master）で強度を調整。インストラクターが自らの技量とお客様の状態に合わせてプログラムを設計する「裁量型メソッド」です。
+      </p>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:24px">
+        <div style="text-align:center;padding:18px 8px;background:#faf9f7;border:1px solid #f0ece8;border-radius:2px"><p style="font-size:11px;font-weight:400;letter-spacing:2px;color:#8a7868;margin-bottom:6px">01</p><p style="font-family:'Noto Serif JP',serif;font-size:12px;color:#333">Warm Up</p></div>
+        <div style="text-align:center;padding:18px 8px;background:#faf9f7;border:1px solid #f0ece8;border-radius:2px"><p style="font-size:11px;font-weight:400;letter-spacing:2px;color:#8a7868;margin-bottom:6px">02</p><p style="font-family:'Noto Serif JP',serif;font-size:12px;color:#333">Foot Work</p></div>
+        <div style="text-align:center;padding:18px 8px;background:#faf9f7;border:1px solid #f0ece8;border-radius:2px"><p style="font-size:11px;font-weight:400;letter-spacing:2px;color:#8a7868;margin-bottom:6px">03</p><p style="font-family:'Noto Serif JP',serif;font-size:12px;color:#333">Abdominal</p></div>
+        <div style="text-align:center;padding:18px 8px;background:#faf9f7;border:1px solid #f0ece8;border-radius:2px"><p style="font-size:11px;font-weight:400;letter-spacing:2px;color:#8a7868;margin-bottom:6px">04</p><p style="font-family:'Noto Serif JP',serif;font-size:12px;color:#333">Hip Work</p></div>
+        <div style="text-align:center;padding:18px 8px;background:#faf9f7;border:1px solid #f0ece8;border-radius:2px"><p style="font-size:11px;font-weight:400;letter-spacing:2px;color:#8a7868;margin-bottom:6px">05</p><p style="font-family:'Noto Serif JP',serif;font-size:12px;color:#333">Spinal Art.</p></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:28px">
+        <div style="text-align:center;padding:18px 8px;background:#faf9f7;border:1px solid #f0ece8;border-radius:2px"><p style="font-size:11px;font-weight:400;letter-spacing:2px;color:#8a7868;margin-bottom:6px">06</p><p style="font-family:'Noto Serif JP',serif;font-size:12px;color:#333">Full Body</p></div>
+        <div style="text-align:center;padding:18px 8px;background:#faf9f7;border:1px solid #f0ece8;border-radius:2px"><p style="font-size:11px;font-weight:400;letter-spacing:2px;color:#8a7868;margin-bottom:6px">07</p><p style="font-family:'Noto Serif JP',serif;font-size:12px;color:#333">Arm Work</p></div>
+        <div style="text-align:center;padding:18px 8px;background:#faf9f7;border:1px solid #f0ece8;border-radius:2px"><p style="font-size:11px;font-weight:400;letter-spacing:2px;color:#8a7868;margin-bottom:6px">08</p><p style="font-family:'Noto Serif JP',serif;font-size:12px;color:#333">Leg Work</p></div>
+        <div style="text-align:center;padding:18px 8px;background:#faf9f7;border:1px solid #f0ece8;border-radius:2px"><p style="font-size:11px;font-weight:400;letter-spacing:2px;color:#8a7868;margin-bottom:6px">09</p><p style="font-family:'Noto Serif JP',serif;font-size:12px;color:#333">Lat. Flex</p></div>
+        <div style="text-align:center;padding:18px 8px;background:#faf9f7;border:1px solid #f0ece8;border-radius:2px"><p style="font-size:11px;font-weight:400;letter-spacing:2px;color:#8a7868;margin-bottom:6px">10</p><p style="font-family:'Noto Serif JP',serif;font-size:12px;color:#333">Back Ext.</p></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+        <div style="text-align:center;padding:16px 12px;border-bottom:3px solid #6b9a7a;background:#fff;border-radius:2px"><p style="font-size:11px;font-weight:500;letter-spacing:2px;color:#6b9a7a;margin-bottom:4px">FUNDAMENTAL</p><p style="font-family:'Noto Serif JP',serif;font-size:11px;color:#555">基礎動作の習得</p></div>
+        <div style="text-align:center;padding:16px 12px;border-bottom:3px solid #5a82b6;background:#fff;border-radius:2px"><p style="font-size:11px;font-weight:500;letter-spacing:2px;color:#5a82b6;margin-bottom:4px">INTERMEDIATE</p><p style="font-family:'Noto Serif JP',serif;font-size:11px;color:#555">フローの導入</p></div>
+        <div style="text-align:center;padding:16px 12px;border-bottom:3px solid #c49a5a;background:#fff;border-radius:2px"><p style="font-size:11px;font-weight:500;letter-spacing:2px;color:#c49a5a;margin-bottom:4px">ADVANCE</p><p style="font-family:'Noto Serif JP',serif;font-size:11px;color:#555">複合動作・高強度</p></div>
+        <div style="text-align:center;padding:16px 12px;border-bottom:3px solid #8a7868;background:#fff;border-radius:2px"><p style="font-size:11px;font-weight:500;letter-spacing:2px;color:#8a7868;margin-bottom:4px">MASTER</p><p style="font-family:'Noto Serif JP',serif;font-size:11px;color:#555">全種目から自在に構成</p></div>
+      </div>
+    </div>
+
+    <!-- Training Flow — FUNDAMENTAL example -->
+    <div class="accordion fade-up">
+      <button class="accordion-toggle" onclick="this.classList.toggle('open');var c=this.nextElementSibling;c.style.maxHeight=c.style.maxHeight?null:c.scrollHeight+'px'">
+        Training Flow — FUNDAMENTAL（例）
+        <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="accordion-content">
+        <div class="accordion-content-inner">
+          <p style="font-family:'Noto Serif JP',serif;font-size:14px;color:#555;margin-bottom:24px;line-height:2">新規入門者はFUNDAMENTALからスタート。以下の6フェーズで段階的にスキルを習得し、認定試験に挑みます。</p>
+          <div class="curriculum-grid">
+            <div class="curriculum-block on-white" style="border-left:3px solid #6b9a7a">
+              <div class="curriculum-block-head">
+                <span class="curriculum-block-num" style="color:#6b9a7a">01</span>
+                <span class="curriculum-block-name">理論基礎</span>
+                <span class="curriculum-block-hours">10時間 / 2週</span>
+              </div>
+              <ul class="curriculum-block-list">
+                <li>ピラティスの歴史・哲学・原則</li>
+                <li>AXISCORE UNIT-SYSTEMの全体像</li>
+                <li>解剖学基礎（脊柱・骨盤・主要筋群）</li>
+                <li>禁忌事項の整理</li>
+                <li>理論テスト（80点以上で次フェーズへ）</li>
+              </ul>
+            </div>
+            <div class="curriculum-block on-white" style="border-left:3px solid #6b9a7a">
+              <div class="curriculum-block-head">
+                <span class="curriculum-block-num" style="color:#6b9a7a">02</span>
+                <span class="curriculum-block-name">見学実習</span>
+                <span class="curriculum-block-hours">8時間 / 2週</span>
+              </div>
+              <ul class="curriculum-block-list">
+                <li>F / I レベルのデモクラス視聴</li>
+                <li>キューイング・アジャストメント観察</li>
+                <li>観察レポート提出・フィードバック</li>
+              </ul>
+            </div>
+            <div class="curriculum-block on-white" style="border-left:3px solid #6b9a7a">
+              <div class="curriculum-block-head">
+                <span class="curriculum-block-num" style="color:#6b9a7a">03</span>
+                <span class="curriculum-block-name">実技習得（F）</span>
+                <span class="curriculum-block-hours">24時間 / 8週</span>
+              </div>
+              <ul class="curriculum-block-list">
+                <li>10ユニット × Fバリエーション全習得</li>
+                <li>週1回3時間ペースで段階的に習得</li>
+                <li>フローの基礎・種目間トランジション</li>
+                <li>ユニット別チェックシートの完成</li>
+              </ul>
+            </div>
+            <div class="curriculum-block on-white" style="border-left:3px solid #6b9a7a">
+              <div class="curriculum-block-head">
+                <span class="curriculum-block-num" style="color:#6b9a7a">04</span>
+                <span class="curriculum-block-name">プログラム設計</span>
+                <span class="curriculum-block-hours">6時間 / 2週</span>
+              </div>
+              <ul class="curriculum-block-list">
+                <li>60分プログラム設計演習 × 3本</li>
+                <li>タイム管理・強度バランスの調整</li>
+                <li>マスタートレーナーによる構成フィードバック</li>
+              </ul>
+            </div>
+            <div class="curriculum-block on-white" style="border-left:3px solid #6b9a7a">
+              <div class="curriculum-block-head">
+                <span class="curriculum-block-num" style="color:#6b9a7a">05</span>
+                <span class="curriculum-block-name">指導実習</span>
+                <span class="curriculum-block-hours">6時間 / 2週</span>
+              </div>
+              <ul class="curriculum-block-list">
+                <li>マスタートレーナー監督下での実レッスン</li>
+                <li>セッション後の即時フィードバック</li>
+                <li>キューイング・安全管理の実践</li>
+              </ul>
+            </div>
+            <div class="curriculum-block on-white" style="border-left:3px solid #6b9a7a">
+              <div class="curriculum-block-head">
+                <span class="curriculum-block-num" style="color:#6b9a7a">06</span>
+                <span class="curriculum-block-name">修了審査</span>
+                <span class="curriculum-block-hours">4時間 / 1週</span>
+              </div>
+              <ul class="curriculum-block-list">
+                <li>理論試験（AXISCORE体系・禁忌・解剖学）</li>
+                <li>実技審査：45分レッスンの指導実演</li>
+                <li>合格基準：各科目70点以上</li>
+                <li>合格後、AXISCORE認定証発行</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion fade-up">
+      <button class="accordion-toggle" onclick="this.classList.toggle('open');var c=this.nextElementSibling;c.style.maxHeight=c.style.maxHeight?null:c.scrollHeight+'px'">
+        受講について
+        <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="accordion-content">
+        <div class="accordion-content-inner">
+          <p style="font-family:'Noto Serif JP',serif;font-size:14px;color:#555;line-height:2">
+            <strong>受講について：</strong><br>
+            ・費用は全て個人負担となります。<br>
+            ・各レベルの認定取得後、次のレベルへ進むことができます（F → I → A → M）。<br>
+            ・再試験が必要な場合は、別途費用がかかります。<br>
+            ・受講者の自己都合による欠席の場合、補講対応は別途費用がかかります。<br>
+            ・別途：会場までの交通費・宿泊費が必要です。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== GROUP REFORMER® CHOREOGRAPHY ===== -->
+<div class="course-sec sec-choreo" id="group">
+  <div class="course-inner">
+    <p class="sec-label fade-up" style="color:#5a6ea0">Group Reformer® — Choreography</p>
+    <div class="course-header-split fade-up">
+      <div class="course-header-text">
+        <span class="course-tag ct-choreo">Group Reformer® — Choreography</span>
+        <h3>Group Reformer® Choreography</h3>
+        <p class="course-jp">グループリフォーマー®｜コリオグラフィー</p>
+        <div class="sec-divider"></div>
+        <p class="course-desc">
+          事前に設計されたコリオ（振付）に沿ってグループレッスンを進行するスタイル。全インストラクターが同一プログラムを実施するため、統一感のある高品質なレッスンを提供できます。<br><br>
+          初級4種・中級6種の全10プログラムを段階的に習得し、グループ指導に必要なキューイング・テンポ感・エネルギーの作り方を実践的に学びます。
+        </p>
+      </div>
+      <div class="course-header-img">
+        <img src="images/cropped/group-reformer.jpg" alt="Group Reformer" loading="lazy">
+      </div>
+    </div>
+
+    <p class="sec-body fade-up" style="text-align:center;margin-top:0;margin-bottom:48px">
+      完成されたコリオに沿って進行するため、指導経験が浅くても統一感のあるレッスンを提供できます。<br>
+      初級4種＋中級6種の全10プログラムを段階的に習得します。
+    </p>
+
+    <!-- Program List -->
+    <div class="program-section fade-up">
+      <h4>Program List</h4>
+      <p class="program-sub">プログラム一覧（全10種）</p>
+
+      <div class="program-columns">
+        <!-- 初級 4種 -->
+        <div class="program-box">
+          <div class="program-box-header">
+            <span class="program-box-badge beginner">初級 4種</span>
+            <span class="program-box-title">新規養成で一括習得</span>
+          </div>
+          <p class="program-box-note">養成研修（初級）20時間で4種を習得</p>
+          <ul class="program-list">
+            <li>
+              <span class="p-name">Intro</span>
+              <span class="p-count">18種</span>
+              <span class="p-desc">— ピラティス基礎を含む導入構成</span>
+            </li>
+            <li>
+              <span class="p-name">Basic</span>
+              <span class="p-count">22種</span>
+              <span class="p-desc">— 姿勢チェックから始まる標準構成</span>
+            </li>
+            <li>
+              <span class="p-name">Basic/waist</span>
+              <span class="p-count">23種</span>
+              <span class="p-desc">— ウエスト特化構成</span>
+            </li>
+            <li>
+              <span class="p-name">Basic/hip</span>
+              <span class="p-count">22種</span>
+              <span class="p-desc">— 下半身重視構成</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- 中級 6種 -->
+        <div class="program-box">
+          <div class="program-box-header">
+            <span class="program-box-badge intermediate">中級 6種</span>
+            <span class="program-box-title">各3時間 / 初級修了者が受講可</span>
+          </div>
+          <p class="program-box-note">初級修了後に任意で受講可（順番推奨）</p>
+          <ul class="program-list">
+            <li>
+              <span class="p-num">①</span>
+              <span class="p-name">Intermediate</span>
+              <span class="p-count">27-35種</span>
+              <span class="p-desc">— 全部位バリエーション</span>
+            </li>
+            <li>
+              <span class="p-num">②</span>
+              <span class="p-name">Back&amp;Core</span>
+              <span class="p-count">29-34種</span>
+              <span class="p-desc">— 背面・体幹特化</span>
+            </li>
+            <li>
+              <span class="p-num">③</span>
+              <span class="p-name">Lowerbody</span>
+              <span class="p-count">24-26種</span>
+              <span class="p-desc">— 下半身集中</span>
+            </li>
+            <li>
+              <span class="p-num">④</span>
+              <span class="p-name">WaistShape</span>
+              <span class="p-count">26-31種</span>
+              <span class="p-desc">— 腹部引き締め</span>
+            </li>
+            <li>
+              <span class="p-num">⑤</span>
+              <span class="p-name">Jumpboard</span>
+              <span class="p-count">25-31種</span>
+              <span class="p-desc">— アクティブ特殊構成</span>
+            </li>
+            <li>
+              <span class="p-num">⑥</span>
+              <span class="p-name">Core Flow</span>
+              <span class="p-count">27-32種</span>
+              <span class="p-desc">— 体幹バランス</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Training Flow -->
+    <div class="flow-heading fade-up">
+      <h4>Training Flow</h4>
+      <p>受講から初級修了までの流れ</p>
+    </div>
+
+    <div class="tier-grid fade-up">
+      <div class="tier-card">
+        <span class="tier-badge">Step 1</span>
+        <p class="tier-name">基礎研修</p>
+        <p class="tier-price">¥120,000</p>
+        <p class="tier-price-note">税別 / 個人受講</p>
+        <div class="tier-divider"></div>
+        <div class="tier-detail">
+          <strong>研修時間：</strong>12時間<br>
+          <strong>最短期間：</strong>2日間<br>
+          <strong>対象：</strong>一般マーケット<br>（ピラティス未経験者）
+        </div>
+        <p class="tier-target">※他団体ライセンス保有者は免除</p>
+      </div>
+      <div class="tier-card">
+        <span class="tier-badge">Step 2</span>
+        <p class="tier-name">養成研修（初級）</p>
+        <p class="tier-price">¥200,000</p>
+        <p class="tier-price-note">税別 / 個人受講</p>
+        <div class="tier-divider"></div>
+        <div class="tier-detail">
+          <strong>研修時間：</strong>20時間<br>
+          <strong>最短期間：</strong>4日間<br>
+          <strong>習得：</strong>初級4種を一括取得
+        </div>
+        <p class="tier-target">※基礎研修修了者 or<br>ピラティス指導経験者が対象</p>
+      </div>
+      <div class="tier-card">
+        <span class="tier-badge">Step 3</span>
+        <p class="tier-name">認定試験・初級修了</p>
+        <p class="tier-price" style="font-size:clamp(16px,1.4vw,20px)">養成研修費に含む</p>
+        <p class="tier-price-note">&nbsp;</p>
+        <div class="tier-divider"></div>
+        <div class="tier-detail">
+          <strong>試験：</strong>実技 + 筆記<br>
+          <strong>条件：</strong>原則6ヶ月以上経過<br>
+          <strong>再試験：</strong>20,000円（税別）
+        </div>
+        <p class="tier-target">※初級修了後、中級の受講と<br>商標使用契約が可能になります</p>
+      </div>
+    </div>
+
+    <!-- Total -->
+    <div class="flow-total fade-up">
+      <span class="flow-total-label">Step 1 + Step 2 合計</span>
+      <span class="flow-total-price">¥320,000<small>（税別）</small></span>
+    </div>
+
+    <!-- Arrow Connector -->
+    <div class="step-connector fade-up">
+      <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+
+    <!-- Post-Certification Options -->
+    <div class="accordion fade-up">
+      <button class="accordion-toggle" onclick="this.classList.toggle('open');var c=this.nextElementSibling;c.style.maxHeight=c.style.maxHeight?null:c.scrollHeight+'px'">
+        After Certification
+        <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="accordion-content">
+        <div class="accordion-content-inner">
+          <p style="font-family:'Noto Serif JP',serif;font-size:13px;color:#555;margin-bottom:24px">初級修了後のステップアップ</p>
+          <div class="tier-grid">
+            <div class="tier-card">
+              <span class="tier-badge" style="color:#6b8a7a">Option</span>
+              <p class="tier-name">中級（①〜⑥）</p>
+              <p class="tier-price" style="font-size:clamp(16px,1.4vw,20px)">各3時間 × 6種</p>
+              <p class="tier-price-note">任意 / 順番推奨</p>
+              <div class="tier-divider"></div>
+              <div class="tier-detail">
+                <strong>開催：</strong>3月・9月<br>（午前・午後に実施）<br>
+                <strong>対象：</strong>初級修了者
+              </div>
+              <p class="tier-target">※任意受講・順番推奨</p>
+            </div>
+            <div class="tier-card">
+              <span class="tier-badge" style="color:#8a7868">Skill Up</span>
+              <p class="tier-name">スキルアップ研修</p>
+              <p class="tier-price" style="font-size:clamp(16px,1.4vw,20px)">¥11,000〜</p>
+              <p class="tier-price-note">税込 / 1回</p>
+              <div class="tier-divider"></div>
+              <div class="tier-detail">
+                <strong>開催：</strong>1月・6月<br>
+                <strong>当社契約：</strong>11,000円（税込）<br>
+                <strong>外部一般：</strong>22,000円（税込）
+              </div>
+              <p class="tier-target">※ピラティスインストラクターなら<br>誰でも受講可</p>
+            </div>
+            <div class="tier-card">
+              <span class="tier-badge" style="color:#c4956a">Trademark</span>
+              <p class="tier-name">商標使用権</p>
+              <p class="tier-price">¥26,400</p>
+              <p class="tier-price-note">税込 / 年間・一括払い</p>
+              <div class="tier-divider"></div>
+              <div class="tier-detail">
+                <strong>対象：</strong>初級修了者＋契約締結<br>
+                <strong>権利：</strong>「グループリフォーマー」<br>の名称を個人で使用可
+              </div>
+              <p class="tier-target">※コラーゲン導入店舗以外でも使用可</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Annual Schedule -->
+    <div class="flow-heading fade-up" style="margin-top:56px">
+      <h4>Annual Schedule</h4>
+      <p>年間研修スケジュール</p>
+    </div>
+
+    <div class="schedule-grid fade-up">
+      <div class="schedule-card">
+        <div class="schedule-month">1月 / 6月<small>Jan &amp; Jun</small></div>
+        <div class="schedule-info"><strong>スキルアップ研修</strong><br>ピラティスインストラクターなら誰でも受講可</div>
+      </div>
+      <div class="schedule-card">
+        <div class="schedule-month">3月 / 9月<small>Mar &amp; Sep</small></div>
+        <div class="schedule-info"><strong>中級 更新研修</strong><br>①〜⑥のうちいずれかを午前・午後に実施</div>
+      </div>
+    </div>
+
+    <!-- Notes -->
+    <div class="accordion fade-up">
+      <button class="accordion-toggle" onclick="this.classList.toggle('open');var c=this.nextElementSibling;c.style.maxHeight=c.style.maxHeight?null:c.scrollHeight+'px'">
+        受講について
+        <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="accordion-content">
+        <div class="accordion-content-inner">
+          <ul style="font-family:'Noto Serif JP',serif;font-size:14px;color:#555;line-height:2.2;list-style-position:inside">
+            <li>費用は全て個人負担となります。</li>
+            <li>研修、養成コースの時間配分は受講者数やスキルにより変動する場合があります。</li>
+            <li>養成コース内には認定試験（実技＋筆記）が含まれます。</li>
+            <li>再試験が必要となった場合は、別途費用〈20,000円（税別）/1人〉がかかります。</li>
+            <li>受講者の自己都合による欠席の場合、補講対応は別途費用〈20,000円（税別）/1時間〉がかかります。</li>
+            <li>認定試験に合格し初級を修了された方へ認定証が発行されます。</li>
+            <li>初級修了後、商標使用契約を締結することで「グループリフォーマー」の名称を個人で使用できます。</li>
+            <li>別途：会場までの交通費・宿泊費が必要となります。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <p class="trademark fade-up">
+      「グループリフォーマー」は当社保有の登録商標です。<br>
+      登録第6375514号（区分41）/ 登録第6375516号（区分44）/ 登録第6789230号（Groupreformer・区分41・44）
+    </p>
+  </div>
+</div>
+
+<!-- ===== GROUP REFORMER® TACTILE ===== -->
+<div class="course-sec sec-tactile" id="group-tactile" style="background:#faf9f7">
+  <div class="course-inner">
+    <p class="sec-label fade-up" style="color:#a87858">Group Reformer® — Tactile</p>
+    <div class="course-header-split fade-up">
+      <div class="course-header-text">
+        <span class="course-tag ct-tactile">Group Reformer® — Tactile</span>
+        <h3>Group Reformer® Tactile</h3>
+        <p class="course-jp">グループリフォーマー®｜タクタイル</p>
+        <div class="sec-divider"></div>
+        <p class="course-desc">
+          「10 Units × 4 Levels」フレームワークをグループリフォーマー指導に導入。従来の振付型プログラムから、インストラクターが10ユニットの骨格をもとに60分を自在に設計する裁量型メソッドへ。タクタイル（触覚）キューイングの技術を加え、参加者一人ひとりの動きの質を高める指導力を養います。
+        </p>
+      </div>
+      <div class="course-header-img">
+        <img src="images/cropped/placeholder-group.jpg" alt="Group Reformer Tactile" loading="lazy">
+      </div>
+    </div>
+
+    <!-- Key Info -->
+    <div class="info-grid fade-up">
+      <div class="info-item" style="background:transparent"><p class="info-label">受講資格</p><p class="info-value">なし</p><p class="info-note">未経験者歓迎</p></div>
+      <div class="info-item" style="background:transparent"><p class="info-label">定員</p><p class="info-value">少人数制</p><p class="info-note">マスタートレーナー直接指導</p></div>
+    </div>
+
+    <!-- Level-based Pricing -->
+    <h4 class="curriculum-title fade-up">Pricing — レベル別料金</h4>
+    <div class="price-grid fade-up">
+      <div class="price-card" style="background:transparent;border-left:3px solid #6b9a7a">
+        <p class="price-card-name" style="color:#6b9a7a">FUNDAMENTAL</p>
+        <p class="price-card-amount">¥580,000</p>
+        <p class="price-card-note">税抜</p>
+        <p class="price-card-hours">58時間 / 17週間</p>
+        <p style="font-family:'Noto Serif JP',serif;font-size:12px;color:#555;margin-top:8px;line-height:1.8">受講資格：なし（新規入門）</p>
+      </div>
+      <div class="price-card" style="background:transparent;border-left:3px solid #5a82b6">
+        <p class="price-card-name" style="color:#5a82b6">INTERMEDIATE</p>
+        <p class="price-card-amount">¥410,000</p>
+        <p class="price-card-note">税抜</p>
+        <p class="price-card-hours">41時間 / 13週間</p>
+        <p style="font-family:'Noto Serif JP',serif;font-size:12px;color:#555;margin-top:8px;line-height:1.8">受講資格：F認定取得</p>
+      </div>
+      <div class="price-card" style="background:transparent;border-left:3px solid #c49a5a">
+        <p class="price-card-name" style="color:#c49a5a">ADVANCE</p>
+        <p class="price-card-amount">¥440,000</p>
+        <p class="price-card-note">税抜</p>
+        <p class="price-card-hours">44時間 / 14週間</p>
+        <p style="font-family:'Noto Serif JP',serif;font-size:12px;color:#555;margin-top:8px;line-height:1.8">受講資格：I認定取得</p>
+      </div>
+      <div class="price-card" style="background:transparent;border-left:3px solid #8a7868">
+        <p class="price-card-name" style="color:#8a7868">MASTER</p>
+        <p class="price-card-amount">¥640,000</p>
+        <p class="price-card-note">税抜</p>
+        <p class="price-card-hours">64時間 / 19週間</p>
+        <p style="font-family:'Noto Serif JP',serif;font-size:12px;color:#555;margin-top:8px;line-height:1.8">受講資格：A認定取得</p>
+      </div>
+    </div>
+
+    <!-- What makes Tactile different -->
+    <h4 class="curriculum-title fade-up">Tactile Cueing — 3つの柱</h4>
+    <div class="fade-up" style="margin-bottom:48px">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0">
+        <div style="padding:32px 28px;text-align:center;border-right:1px solid #e8e4e0">
+          <p style="font-size:11px;font-weight:400;letter-spacing:3px;color:#a87858;text-transform:uppercase;margin-bottom:14px">Hands-On</p>
+          <p style="font-family:'Noto Serif JP',serif;font-size:14px;font-weight:400;line-height:2;color:#333">触覚による的確な誘導で<br>動きの質を引き上げる</p>
+        </div>
+        <div style="padding:32px 28px;text-align:center;border-right:1px solid #e8e4e0">
+          <p style="font-size:11px;font-weight:400;letter-spacing:3px;color:#a87858;text-transform:uppercase;margin-bottom:14px">Observation</p>
+          <p style="font-family:'Noto Serif JP',serif;font-size:14px;font-weight:400;line-height:2;color:#333">グループ全体を見渡す<br>観察力と瞬時の対応力</p>
+        </div>
+        <div style="padding:32px 28px;text-align:center">
+          <p style="font-size:11px;font-weight:400;letter-spacing:3px;color:#a87858;text-transform:uppercase;margin-bottom:14px">Design</p>
+          <p style="font-family:'Noto Serif JP',serif;font-size:14px;font-weight:400;line-height:2;color:#333">お客様の状態に合わせた<br>リアルタイムのプログラム調整</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 10 Units × 4 Levels -->
+    <h4 class="curriculum-title fade-up">10 Units × 4 Levels</h4>
+    <div class="fade-up" style="margin-bottom:48px">
+      <p style="font-family:'Noto Serif JP',serif;font-size:clamp(14px,1.2vw,16px);font-weight:400;line-height:2.2;color:#333;margin-bottom:28px">
+        すべてのグループレッスンは10ユニットで構成。各ユニットから種目を選択し、4段階のレベルに応じて60分を組み立てます。振付に依存しないため、インストラクターの専門性と個性が最大限に発揮されます。
+      </p>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+        <div style="text-align:center;padding:16px 12px;border-bottom:3px solid #6b9a7a;background:#fff;border-radius:2px"><p style="font-size:11px;font-weight:500;letter-spacing:2px;color:#6b9a7a;margin-bottom:4px">FUNDAMENTAL</p><p style="font-family:'Noto Serif JP',serif;font-size:11px;color:#555">基礎種目を中心に構成</p></div>
+        <div style="text-align:center;padding:16px 12px;border-bottom:3px solid #5a82b6;background:#fff;border-radius:2px"><p style="font-size:11px;font-weight:500;letter-spacing:2px;color:#5a82b6;margin-bottom:4px">INTERMEDIATE</p><p style="font-family:'Noto Serif JP',serif;font-size:11px;color:#555">フロー・連続動作の導入</p></div>
+        <div style="text-align:center;padding:16px 12px;border-bottom:3px solid #c49a5a;background:#fff;border-radius:2px"><p style="font-size:11px;font-weight:500;letter-spacing:2px;color:#c49a5a;margin-bottom:4px">ADVANCE</p><p style="font-family:'Noto Serif JP',serif;font-size:11px;color:#555">複合動作・チャレンジ種目</p></div>
+        <div style="text-align:center;padding:16px 12px;border-bottom:3px solid #8a7868;background:#fff;border-radius:2px"><p style="font-size:11px;font-weight:500;letter-spacing:2px;color:#8a7868;margin-bottom:4px">MASTER</p><p style="font-family:'Noto Serif JP',serif;font-size:11px;color:#555">全種目から自在に構成</p></div>
+      </div>
+    </div>
+
+    <!-- Training Flow -->
+    <div class="accordion fade-up">
+      <button class="accordion-toggle" onclick="this.classList.toggle('open');var c=this.nextElementSibling;c.style.maxHeight=c.style.maxHeight?null:c.scrollHeight+'px'">
+        Training Flow — FUNDAMENTAL（例）
+        <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="accordion-content">
+        <div class="accordion-content-inner">
+          <p style="font-family:'Noto Serif JP',serif;font-size:14px;color:#555;margin-bottom:24px;line-height:2">パーソナルコースと同じフレームワークで、グループ指導に特化した実技・設計を習得します。</p>
+          <div class="curriculum-grid">
+            <div class="curriculum-block" style="background:transparent;border-left:3px solid #a87858">
+              <div class="curriculum-block-head">
+                <span class="curriculum-block-num" style="color:#a87858">01</span>
+                <span class="curriculum-block-name">理論基礎</span>
+                <span class="curriculum-block-hours">10時間 / 2週</span>
+              </div>
+              <ul class="curriculum-block-list">
+                <li>AXISCORE UNIT-SYSTEMの全体像</li>
+                <li>10×4フレームワーク・解剖学基礎</li>
+                <li>グループ指導における禁忌事項</li>
+              </ul>
+            </div>
+            <div class="curriculum-block" style="background:transparent;border-left:3px solid #a87858">
+              <div class="curriculum-block-head">
+                <span class="curriculum-block-num" style="color:#a87858">02</span>
+                <span class="curriculum-block-name">見学・実技習得</span>
+                <span class="curriculum-block-hours">32時間 / 10週</span>
+              </div>
+              <ul class="curriculum-block-list">
+                <li>デモクラス視聴・キューイング観察</li>
+                <li>10ユニット × Fバリエーション全習得</li>
+                <li>タクタイルキューイングの実践</li>
+              </ul>
+            </div>
+            <div class="curriculum-block" style="background:transparent;border-left:3px solid #a87858">
+              <div class="curriculum-block-head">
+                <span class="curriculum-block-num" style="color:#a87858">03</span>
+                <span class="curriculum-block-name">プログラム設計・実習</span>
+                <span class="curriculum-block-hours">12時間 / 4週</span>
+              </div>
+              <ul class="curriculum-block-list">
+                <li>60分グループプログラム設計演習</li>
+                <li>監督下でのグループレッスン実施</li>
+                <li>マスタートレーナーによるフィードバック</li>
+              </ul>
+            </div>
+            <div class="curriculum-block" style="background:transparent;border-left:3px solid #a87858">
+              <div class="curriculum-block-head">
+                <span class="curriculum-block-num" style="color:#a87858">04</span>
+                <span class="curriculum-block-name">修了審査</span>
+                <span class="curriculum-block-hours">4時間 / 1週</span>
+              </div>
+              <ul class="curriculum-block-list">
+                <li>理論試験＋実技審査（45分グループ指導）</li>
+                <li>合格基準：各科目70点以上</li>
+                <li>AXISCORE認定証発行</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion fade-up">
+      <button class="accordion-toggle" onclick="this.classList.toggle('open');var c=this.nextElementSibling;c.style.maxHeight=c.style.maxHeight?null:c.scrollHeight+'px'">
+        受講について
+        <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="accordion-content">
+        <div class="accordion-content-inner">
+          <p style="font-family:'Noto Serif JP',serif;font-size:14px;color:#555;line-height:2">
+            <strong>受講について：</strong><br>
+            ・費用は全て個人負担となります。<br>
+            ・各レベルの認定取得後、次のレベルへ進むことができます（F → I → A → M）。<br>
+            ・禁忌事項・ユニット詳細は順次共有いたします。<br>
+            ・別途：会場までの交通費・宿泊費が必要です。<br>
+            ・ご質問・ご意見は随時お寄せください。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CLASSICAL PILATES (PSGA) — Brief Introduction ===== -->
+<div class="course-sec" id="psga" style="background:#faf9f7">
+  <div class="course-inner" style="text-align:center">
+    <p class="sec-label fade-up">Classical Pilates</p>
+    <h2 class="sec-heading fade-up" style="text-align:center;margin-bottom:20px">クラシカルピラティスをお求めの方へ</h2>
+    <p class="sec-body fade-up" style="text-align:center;max-width:680px;margin:0 auto 32px">
+      創始者ジョセフ・ピラティス氏の哲学と技術を直系で継承する「PSGA Japan」は、<br>
+      当社が運営する別ブランドの国際認定養成コースです。<br>
+      マット・リフォーマー・キャデラック・チェア&バレルの全イクイップメントに対応しています。
+    </p>
+    <a href="https://psgajp.com/" target="_blank" rel="noopener" class="psga-ext fade-up" style="display:inline-flex;align-items:center;gap:10px;font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:500;letter-spacing:3px;color:#fff;background:#8a7868;padding:14px 40px;text-decoration:none;transition:background .3s,gap .3s,transform .3s,box-shadow .3s">
+      PSGA Japan 公式サイトへ
+      <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.5"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+    </a>
+  </div>
+</div>
+
+<!-- ===== MASTER TRAINERS ===== -->
+<section class="sec trainers fade-up" id="trainers">
+  <p class="sec-label" style="text-align:center">Master Trainers</p>
+  <h2 class="sec-heading" style="text-align:center;margin-bottom:8px">経験豊富な講師陣</h2>
+  <p class="sec-body" style="text-align:center;margin-top:8px">現場で活躍するプロフェッショナルが、あなたの成長を支えます。</p>
+  <div class="trainer-grid">
+    <div class="trainer fade-up delay-1"><div class="trainer-photo"><img src="images/cropped/okushi-tatsuhiko.jpg" alt="Okushi Tatsuhiko" loading="lazy"></div><p class="trainer-name">Okushi Tatsuhiko</p><p class="trainer-name-jp">大串 達彦</p><p class="trainer-role">Master Trainer</p></div>
+    <div class="trainer fade-up delay-1"><div class="trainer-photo"><img src="images/cropped/fukai-yasuyo.jpg" alt="Fukai Yasuyo" loading="lazy"></div><p class="trainer-name">Fukai Yasuyo</p><p class="trainer-name-jp">深井 康代</p><p class="trainer-role">Master Trainer</p></div>
+    <div class="trainer fade-up delay-1"><div class="trainer-photo"><img src="images/cropped/hasumi-eri.jpg" alt="Hasumi Eri" loading="lazy"></div><p class="trainer-name">Hasumi Eri</p><p class="trainer-name-jp">蓮見 恵莉</p><p class="trainer-role">Master Trainer</p></div>
+    <div class="trainer fade-up delay-1"><div class="trainer-photo"><img src="images/cropped/takei-riho.jpg" alt="Takei Riho" loading="lazy"></div><p class="trainer-name">Takei Riho</p><p class="trainer-name-jp">武井 里穂</p><p class="trainer-role">Master Trainer</p></div>
+    <div class="trainer fade-up delay-2"><div class="trainer-photo"><img src="images/cropped/matsuoka-mari.jpg" alt="Matsuoka Mari" loading="lazy"></div><p class="trainer-name">Matsuoka Mari</p><p class="trainer-name-jp">松岡 真里</p><p class="trainer-role">Master Trainer</p></div>
+    <div class="trainer fade-up delay-2"><div class="trainer-photo"><img src="images/cropped/tabuchi-minako.jpg" alt="Tabuchi Minako" loading="lazy"></div><p class="trainer-name">Tabuchi Minako</p><p class="trainer-name-jp">田淵 美菜子</p><p class="trainer-role">Master Trainer</p></div>
+    <div class="trainer fade-up delay-2"><div class="trainer-photo"><img src="images/cropped/kotani-mayumi.jpg" alt="Kotani Mayumi" loading="lazy"></div><p class="trainer-name">Kotani Mayumi</p><p class="trainer-name-jp">小谷 真弓</p><p class="trainer-role">Master Trainer</p></div>
+    <div class="trainer fade-up delay-3"><div class="trainer-photo"><img src="images/cropped/sasaki-shiina.jpg" alt="Sasaki Shina" loading="lazy"></div><p class="trainer-name">Sasaki Shina</p><p class="trainer-name-jp">佐々木 詩菜</p><p class="trainer-role">Master Trainer</p></div>
+    <div class="trainer fade-up delay-3"><div class="trainer-photo"><img src="images/cropped/nakata-mami.jpg" alt="Nakata Mami" loading="lazy"></div><p class="trainer-name">Nakata Mami</p><p class="trainer-name-jp">中田 真実</p><p class="trainer-role">Master Trainer</p></div>
+    <div class="trainer fade-up delay-3"><div class="trainer-photo"><img src="images/cropped/takigawa-nana.jpg" alt="Takigawa Nana" loading="lazy"></div><p class="trainer-name">Takigawa Nana</p><p class="trainer-name-jp">滝川 奈那</p><p class="trainer-role">Master Trainer</p></div>
+  </div>
+</section>
+
+<!-- PRE-CONTACT CTA -->
+<section class="sec fade-up" style="text-align:center;background:linear-gradient(180deg,#faf9f7 0%,#f5f0eb 100%);border-top:1px solid #f0ece8">
+  <p class="sec-label">Next Step</p>
+  <h2 class="sec-heading" style="text-align:center;font-size:clamp(22px,2.6vw,30px)">あなたのキャリアを、ここから。</h2>
+  <p class="sec-body" style="text-align:center;margin-top:16px;margin-bottom:12px;max-width:600px;margin-left:auto;margin-right:auto">
+    「どのコースが自分に合っている？」「未経験でも大丈夫？」<br>
+    まずはお気軽にご相談ください。経験豊富なスタッフがお答えします。
+  </p>
+  <p style="font-family:'Noto Serif JP',serif;font-size:13px;font-weight:300;color:#8a7868;letter-spacing:.05em;margin-bottom:36px">無料相談・資料請求も承っております</p>
+  <div style="display:flex;gap:20px;justify-content:center;flex-wrap:wrap">
+    <a href="https://axiscore.base.shop/" target="_blank" rel="noopener" class="hero-cta" style="background:#8a7868;border-radius:2px">
+      コースに申し込む
+      <svg viewBox="0 0 24 24" style="width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.5;margin-left:8px"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+    </a>
+    <a href="tel:0356049088" class="hero-cta" style="background:#1a1a1a;border-radius:2px">
+      電話で相談する
+      <svg viewBox="0 0 24 24" style="width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.5;margin-left:8px"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+    </a>
+    <a href="mailto:info@ace-axiscore.com" class="hero-cta" style="background:transparent;border:1px solid #8a7868;color:#8a7868;border-radius:2px">
+      メールで問い合わせ
+      <svg viewBox="0 0 24 24" style="width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.5;margin-left:8px"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="sec contact fade-up" id="contact">
+  <p class="sec-label">Contact</p>
+  <p class="contact-company">株式会社大丸プランニング</p>
+  <a href="tel:0356049088" class="contact-tel">03-5604-9088</a>
+  <a href="mailto:info@ace-axiscore.com" class="contact-mail">info@ace-axiscore.com</a>
+  <div class="sns-icons">
+    <a href="https://www.facebook.com/" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+    <a href="https://www.instagram.com/axiscorepilates/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
+    <a href="https://line.me/" target="_blank" rel="noopener" aria-label="LINE"><svg viewBox="0 0 24 24"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg></a>
+    <a href="mailto:info@ace-axiscore.com" aria-label="Email"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></a>
+  </div>
+</section>
+
+<button class="btt" aria-label="Back to top"><svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg></button>
+
+<footer><small>&copy; AXISCORE PILATES &mdash; All rights reserved.</small></footer>
+
+<script>
+/* Page curtain */
+window.addEventListener('load',()=>{setTimeout(()=>document.querySelector('.page-curtain').classList.add('done'),300)});
+/* IntersectionObserver */
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}})},{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
+/* Header scroll */
+const hd=document.querySelector('header');
+window.addEventListener('scroll',()=>{hd.classList.toggle('scrolled',window.scrollY>60)},{passive:true});
+/* Hamburger */
+const hb=document.querySelector('.hamburger'),mo=document.querySelector('.mobile-overlay');
+hb.addEventListener('click',()=>{hb.classList.toggle('open');mo.classList.toggle('open');document.body.style.overflow=mo.classList.contains('open')?'hidden':''});
+mo.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{hb.classList.remove('open');mo.classList.remove('open');document.body.style.overflow=''}));
+/* Back to Top */
+const btt=document.querySelector('.btt');
+window.addEventListener('scroll',()=>{btt.classList.toggle('show',window.scrollY>400)},{passive:true});
+btt.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+
+/* Scroll Spy for Anchor Nav */
+const anchorLinks=document.querySelectorAll('.anchor-nav a');
+const sections=[];
+anchorLinks.forEach(a=>{const id=a.getAttribute('href').replace('#','');const el=document.getElementById(id);if(el)sections.push({el,link:a})});
+function updateActiveAnchor(){
+  const scrollY=window.scrollY+160;
+  let active=null;
+  sections.forEach(s=>{if(s.el.offsetTop<=scrollY)active=s});
+  anchorLinks.forEach(a=>a.classList.remove('active'));
+  if(active)active.link.classList.add('active');
+}
+window.addEventListener('scroll',updateActiveAnchor,{passive:true});
+updateActiveAnchor();
+
+/* Smooth Scroll with offset for sticky header + anchor nav */
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const id=a.getAttribute('href').replace('#','');
+    const target=document.getElementById(id);
+    if(!target)return;
+    e.preventDefault();
+    const offset=140;
+    const y=target.getBoundingClientRect().top+window.scrollY-offset;
+    window.scrollTo({top:y,behavior:'smooth'});
+  });
+});
+</script>
+</body>
+</html>
