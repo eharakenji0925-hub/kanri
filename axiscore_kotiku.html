@@ -29,7 +29,6 @@
   --fundamental:#22C55E;
   --intermediate:#3B82F6;
   --advance:#F59E0B;
-  --master:#C8102E;
   --pad:60px;
   --radius:6px;
   --slide-header-top:44px;
@@ -312,7 +311,6 @@ body::before{
 .s1-lv-f{border-color:var(--fundamental);background:rgba(34,197,94,.06);color:var(--fundamental)}
 .s1-lv-i{border-color:var(--intermediate);background:rgba(59,130,246,.06);color:var(--intermediate)}
 .s1-lv-a{border-color:var(--advance);background:rgba(245,158,11,.06);color:var(--advance)}
-.s1-lv-m{border-color:var(--master);background:rgba(200,16,46,.10);color:var(--master)}
 
 /* bottom bar */
 .s1-bottom{
@@ -449,9 +447,9 @@ body::before{
 .pd-card .desc{font:400 14px/1.8 'Noto Sans JP';color:var(--body);flex:1}
 
 /* ═══════════════════════════════════════════
-   SLIDE 7 — 4 CLASS LEVELS
+   SLIDE 7 — 3 CLASS LEVELS
 ═══════════════════════════════════════════ */
-.levels{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:18px var(--pad) 0}
+.levels{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px var(--pad) 0}
 .level-card{
   background:var(--card);border-radius:8px;padding:26px;
   border:1px solid var(--border);
@@ -472,7 +470,6 @@ body::before{
 .lv-fundamental{border-top-color:var(--fundamental)}.lv-fundamental h3{color:var(--fundamental)}.lv-fundamental .target{color:var(--fundamental)}.lv-fundamental::after{background:var(--fundamental)}
 .lv-intermediate{border-top-color:var(--intermediate)}.lv-intermediate h3{color:var(--intermediate)}.lv-intermediate .target{color:var(--intermediate)}.lv-intermediate::after{background:var(--intermediate)}
 .lv-advance{border-top-color:var(--advance)}.lv-advance h3{color:var(--advance)}.lv-advance .target{color:var(--advance)}.lv-advance::after{background:var(--advance)}
-.lv-master{border-top-color:var(--master)}.lv-master h3{color:var(--master)}.lv-master .target{color:var(--master)}.lv-master::after{background:var(--master)}
 
 /* ═══════════════════════════════════════════
    SLIDE 8 — CLASS EXAMPLES
@@ -654,10 +651,6 @@ body::before{
 .bldr-advance .pbtn:hover{border-color:var(--advance)}
 .bldr-advance .program-slots{border-color:rgba(245,158,11,.15)}
 .bldr-advance .clear-btn:hover{color:var(--advance);background:rgba(245,158,11,.12)}
-.bldr-master .pbtn:hover,.bldr-master .pbtn-num{color:var(--master)}
-.bldr-master .pbtn:hover{border-color:var(--master)}
-.bldr-master .program-slots{border-color:rgba(200,16,46,.15)}
-.bldr-master .clear-btn:hover{color:var(--master);background:rgba(200,16,46,.12)}
 /* Builder tabs */
 .builder-right{flex:1;display:flex;flex-direction:column;min-width:0}
 .builder-tabs{display:flex;gap:0;margin-bottom:6px;flex-shrink:0;border-radius:6px;overflow:hidden;border:1px solid var(--border2)}
@@ -675,7 +668,6 @@ body::before{
 .bldr-fundamental .builder-tab.tab-active::after{background:var(--fundamental)}
 .bldr-intermediate .builder-tab.tab-active::after{background:var(--intermediate)}
 .bldr-advance .builder-tab.tab-active::after{background:var(--advance)}
-.bldr-master .builder-tab.tab-active::after{background:var(--master)}
 .builder-panel{display:none;flex:1;overflow-y:auto}
 .builder-panel.panel-active{display:flex;flex-direction:column}
 .info-panel{
@@ -871,7 +863,6 @@ body::before{
 .badge-F{background:rgba(34,197,94,.12);color:var(--fundamental)}
 .badge-I{background:rgba(59,130,246,.12);color:var(--intermediate)}
 .badge-A{background:rgba(245,158,11,.12);color:var(--advance)}
-.badge-M{background:rgba(200,16,46,.12);color:var(--master)}
 .exdb-empty{font:400 13px 'Noto Sans JP';color:var(--dim);text-align:center;padding:24px;margin:auto}
 .exdb-hint{font:300 11px 'Noto Sans JP';color:var(--dim);text-align:center;padding:16px}
 
@@ -1022,7 +1013,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 
   <!-- ambient -->
   <div style="position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0">
-    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font:900 95vh 'Bebas Neue';color:rgba(255,255,255,0);-webkit-text-stroke:1px rgba(255,255,255,.055);line-height:1;letter-spacing:-8vw;user-select:none;white-space:nowrap;animation:pa-ghost 5s ease-in-out infinite">10×4</div>
+    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font:900 95vh 'Bebas Neue';color:rgba(255,255,255,0);-webkit-text-stroke:1px rgba(255,255,255,.055);line-height:1;letter-spacing:-8vw;user-select:none;white-space:nowrap;animation:pa-ghost 5s ease-in-out infinite">10×3</div>
     <div style="position:absolute;top:50%;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,16,46,.22),transparent)"></div>
     <div style="position:absolute;left:50%;top:0;bottom:0;width:1px;background:linear-gradient(180deg,transparent,rgba(200,16,46,.14),transparent)"></div>
     <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:12px;height:12px;border-radius:50%;background:var(--red);box-shadow:0 0 28px rgba(200,16,46,.9),0 0 60px rgba(200,16,46,.3)"></div>
@@ -1050,11 +1041,11 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
     <!-- label -->
     <div style="font:600 9px Montserrat;letter-spacing:5px;color:var(--red);margin-bottom:14px">INSTRUCTOR DESIGN FRAMEWORK</div>
 
-    <!-- 10 × 4 -->
+    <!-- 10 × 3 -->
     <div style="display:flex;align-items:center;gap:0;line-height:1">
       <div style="font:900 28vw 'Bebas Neue';color:var(--white);letter-spacing:-4px;text-shadow:0 0 80px rgba(255,255,255,.06)">10</div>
       <div style="font:900 14vw 'Bebas Neue';color:var(--red);text-shadow:0 0 40px rgba(200,16,46,.55);margin:0 1.2vw;align-self:center">×</div>
-      <div style="font:900 28vw 'Bebas Neue';color:var(--white);letter-spacing:-4px;text-shadow:0 0 80px rgba(255,255,255,.06)">4</div>
+      <div style="font:900 28vw 'Bebas Neue';color:var(--white);letter-spacing:-4px;text-shadow:0 0 80px rgba(255,255,255,.06)">3</div>
     </div>
 
     <!-- sub labels row -->
@@ -1112,7 +1103,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
     <!-- LEVELS strip -->
     <div style="margin-top:8px;display:flex;align-items:stretch;gap:6px;animation:aFU .5s .65s both">
       <div style="display:flex;align-items:center;padding:8px 14px;background:rgba(200,16,46,.06);border:1px solid var(--border2);border-radius:4px;flex-shrink:0">
-        <div style="font:700 8px Montserrat;letter-spacing:2px;color:var(--red)">4 LEVELS</div>
+        <div style="font:700 8px Montserrat;letter-spacing:2px;color:var(--red)">3 LEVELS</div>
       </div>
       <div style="display:flex;align-items:stretch;gap:6px;flex:1">
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:8px 14px;background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.22);border-radius:4px">
@@ -1129,11 +1120,6 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
           <div style="font:900 13px Montserrat;letter-spacing:1px;color:var(--advance)">A</div>
           <div style="font:700 8px Montserrat;letter-spacing:1.5px;color:var(--advance)">ADVANCE</div>
           <div style="font:300 9px 'Noto Sans JP';color:var(--muted);white-space:nowrap">複合・高強度</div>
-        </div>
-        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:8px 14px;background:rgba(200,16,46,.09);border:1px solid rgba(200,16,46,.28);border-radius:4px">
-          <div style="font:900 13px Montserrat;letter-spacing:1px;color:var(--master)">M</div>
-          <div style="font:700 8px Montserrat;letter-spacing:1.5px;color:var(--master)">MASTER</div>
-          <div style="font:300 9px 'Noto Sans JP';color:var(--muted);white-space:nowrap">全種目・裁量</div>
         </div>
       </div>
     </div>
@@ -1226,12 +1212,11 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
     <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.5"><path d="M5 12h14m-6-6l6 6-6 6"/></svg></div>
     <div class="flow-step">
       <div class="flow-num" style="background:linear-gradient(135deg,#3B82F6,#60A5FA)">2</div>
-      <h3 class="mono">4 LEVELS</h3><h4 class="jp">4つの強度プログラム</h4>
+      <h3 class="mono">3 LEVELS</h3><h4 class="jp">3つの強度プログラム</h4>
       <div class="flow-tags">
         <span class="flow-tag" style="background:rgba(34,197,94,.12);color:var(--fundamental)">FUNDAMENTAL</span>
         <span class="flow-tag" style="background:rgba(59,130,246,.12);color:var(--intermediate)">INTERMEDIATE</span>
         <span class="flow-tag" style="background:rgba(245,158,11,.12);color:var(--advance)">ADVANCE</span>
-        <span class="flow-tag" style="background:rgba(200,16,46,.12);color:var(--master)">MASTER</span>
       </div>
     </div>
     <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.5"><path d="M5 12h14m-6-6l6 6-6 6"/></svg></div>
@@ -1248,8 +1233,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
     </div>
   </div>
   <div class="s3-narrative">
-    <p class="jp"><strong>「10 Units × 4 Levels」フレームワーク</strong>は、従来の振付型プログラムの課題を根本から解決します。
-    10ユニットという骨格が一貫性と再現性を与え、4つのレベルが初心者からアスリートまでの段階的アプローチを可能にします。
+    <p class="jp"><strong>「10 Units × 3 Levels」フレームワーク</strong>は、従来の振付型プログラムの課題を根本から解決します。
+    10ユニットという骨格が一貫性と再現性を与え、3つのレベルが初心者からアスリートまでの段階的アプローチを可能にします。
     <span style="color:var(--muted);font-size:12px">── 型があるからこそ、その先に真の自由が生まれる。それがAXISCORE PILATESの指導哲学です。</span></p>
   </div>
 </div>
@@ -1443,13 +1428,13 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
 
 
 <!-- ════════════════════════════════════
-     SLIDE 7 — 4 CLASS LEVELS
+     SLIDE 7 — 3 CLASS LEVELS
 ════════════════════════════════════ -->
-<div class="slide" data-slide="5" data-title="4つのクラスレベル">
+<div class="slide" data-slide="5" data-title="3つのクラスレベル">
   <div class="sh">
     <div class="sh-tag"><div class="sh-tag-dot"></div><span class="sh-tag-text">Class Levels</span></div>
-    <div class="sh-title jp">4つのクラスレベル</div>
-    <div class="sh-sub mono">FUNDAMENTAL → INTERMEDIATE → ADVANCE → MASTER</div>
+    <div class="sh-title jp">3つのクラスレベル</div>
+    <div class="sh-sub mono">FUNDAMENTAL → INTERMEDIATE → ADVANCE</div>
     <div class="sh-desc jp">各クラスレベルで10ユニットの種目選択・難易度が異なります</div>
   </div>
   <div class="levels">
@@ -1468,11 +1453,6 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
       <p class="jp">上級種目を積極的に選択<br>複合動作・チャレンジ種目<br>インストラクター裁量の幅が広い</p>
       <div class="target jp">対象：中級習得済み・高強度を求める方</div>
     </div>
-    <div class="level-card lv-master">
-      <h3 class="mono">MASTER</h3><h4 class="jp">マスター</h4>
-      <p class="jp">全種目から自在に構成<br>最高難度の種目を含む<br>インストラクターの技量が最大限発揮</p>
-      <div class="target jp">対象：上級者・プロフェッショナル</div>
-    </div>
   </div>
 </div>
 
@@ -1488,7 +1468,6 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
     <button class="lv-btn lv-btn-active" style="--lc:var(--fundamental)" data-lv="F" onclick="switchGuide('F')">FUNDAMENTAL</button>
     <button class="lv-btn" style="--lc:var(--intermediate)" data-lv="I" onclick="switchGuide('I')">INTERMEDIATE</button>
     <button class="lv-btn" style="--lc:var(--advance)" data-lv="A" onclick="switchGuide('A')">ADVANCE</button>
-    <button class="lv-btn" style="--lc:var(--master)" data-lv="M" onclick="switchGuide('M')">MASTER</button>
   </div>
   <div class="guide-wrap">
     <div class="guide-left">
@@ -1541,7 +1520,7 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
           <span style="font:900 22px 'Bebas Neue';color:var(--red);line-height:1;flex-shrink:0">01</span>
           <div>
             <div style="font:700 12px Montserrat;color:var(--white);letter-spacing:.5px">クラスレベルを決める</div>
-            <div style="font:300 10px 'Noto Sans JP';color:var(--muted);margin-top:1px">FUNDAMENTAL / INTERMEDIATE / ADVANCE / MASTER</div>
+            <div style="font:300 10px 'Noto Sans JP';color:var(--muted);margin-top:1px">FUNDAMENTAL / INTERMEDIATE / ADVANCE</div>
           </div>
         </div>
         <div style="padding:9px 14px;font:300 12px/1.7 'Noto Sans JP';color:var(--body)">
@@ -1560,7 +1539,7 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
         </div>
         <div style="padding:9px 14px;font:300 12px/1.7 'Noto Sans JP';color:var(--body)">
           レベルガイド（P8）を参照し、各ユニットを<span style="color:var(--fundamental);font-weight:500">必須</span>・<span style="color:var(--intermediate);font-weight:500">推奨</span>・<span style="color:var(--muted);font-weight:500">選択</span>に分類する。<br>
-          FUNDAMENTALは01〜03を核に、MASTERは全10ユニットを活用。
+          FUNDAMENTALは01〜03を核に、ADVANCEでは全10ユニットを活用。
         </div>
       </div>
 
@@ -1602,7 +1581,7 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
           </div>
         </div>
         <div style="padding:9px 14px;font:300 12px/1.7 'Noto Sans JP';color:var(--body)">
-          種目の順序・ポジション変更のタイミング・強度の山をデザインする。INTERMEDIATE以上では<span style="color:var(--white);font-weight:500">フロー（連続動作）</span>を意識し、MASTERでは即興対応力も求められる。
+          種目の順序・ポジション変更のタイミング・強度の山をデザインする。INTERMEDIATE以上では<span style="color:var(--white);font-weight:500">フロー（連続動作）</span>を意識する。
         </div>
       </div>
 
@@ -1614,13 +1593,12 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
       <!-- Level matrix -->
       <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden">
         <div style="padding:9px 14px;border-bottom:1px solid var(--border);font:700 11px Montserrat;color:var(--white);letter-spacing:.5px">レベル別 構成の目安</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;border-bottom:1px solid var(--border)">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid var(--border)">
           <div style="padding:7px 10px;text-align:center;border-right:1px solid var(--border)"><span style="font:700 9px Montserrat;color:var(--fundamental)">FUND.</span></div>
           <div style="padding:7px 10px;text-align:center;border-right:1px solid var(--border)"><span style="font:700 9px Montserrat;color:var(--intermediate)">INTER.</span></div>
-          <div style="padding:7px 10px;text-align:center;border-right:1px solid var(--border)"><span style="font:700 9px Montserrat;color:var(--advance)">ADV.</span></div>
-          <div style="padding:7px 10px;text-align:center"><span style="font:700 9px Montserrat;color:var(--master)">MASTER</span></div>
+          <div style="padding:7px 10px;text-align:center"><span style="font:700 9px Montserrat;color:var(--advance)">ADV.</span></div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr">
           <!-- 使用ユニット -->
           <div style="padding:8px 10px;border-right:1px solid rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.04)">
             <div style="font:600 8px Montserrat;color:var(--dim);letter-spacing:1px;margin-bottom:3px">UNITS</div>
@@ -1630,13 +1608,9 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
             <div style="font:600 8px Montserrat;color:var(--dim);letter-spacing:1px;margin-bottom:3px">UNITS</div>
             <div style="font:700 16px 'Bebas Neue';color:var(--intermediate)">6〜8</div>
           </div>
-          <div style="padding:8px 10px;border-right:1px solid rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.04)">
-            <div style="font:600 8px Montserrat;color:var(--dim);letter-spacing:1px;margin-bottom:3px">UNITS</div>
-            <div style="font:700 16px 'Bebas Neue';color:var(--advance)">8〜9</div>
-          </div>
           <div style="padding:8px 10px;border-bottom:1px solid rgba(255,255,255,.04)">
             <div style="font:600 8px Montserrat;color:var(--dim);letter-spacing:1px;margin-bottom:3px">UNITS</div>
-            <div style="font:700 16px 'Bebas Neue';color:var(--master)">10</div>
+            <div style="font:700 16px 'Bebas Neue';color:var(--advance)">8〜10</div>
           </div>
           <!-- 種目数 -->
           <div style="padding:8px 10px;border-right:1px solid rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.04)">
@@ -1647,13 +1621,9 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
             <div style="font:600 8px Montserrat;color:var(--dim);letter-spacing:1px;margin-bottom:3px">EXERCISES</div>
             <div style="font:700 16px 'Bebas Neue';color:var(--intermediate)">25〜30</div>
           </div>
-          <div style="padding:8px 10px;border-right:1px solid rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.04)">
-            <div style="font:600 8px Montserrat;color:var(--dim);letter-spacing:1px;margin-bottom:3px">EXERCISES</div>
-            <div style="font:700 16px 'Bebas Neue';color:var(--advance)">25〜35</div>
-          </div>
           <div style="padding:8px 10px;border-bottom:1px solid rgba(255,255,255,.04)">
             <div style="font:600 8px Montserrat;color:var(--dim);letter-spacing:1px;margin-bottom:3px">EXERCISES</div>
-            <div style="font:700 16px 'Bebas Neue';color:var(--master)">30〜40</div>
+            <div style="font:700 16px 'Bebas Neue';color:var(--advance)">25〜35</div>
           </div>
           <!-- フロー -->
           <div style="padding:8px 10px;border-right:1px solid rgba(255,255,255,.04)">
@@ -1664,13 +1634,9 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
             <div style="font:600 8px Montserrat;color:var(--dim);letter-spacing:1px;margin-bottom:3px">FLOW</div>
             <div style="font:300 10px 'Noto Sans JP';color:var(--body)">ユニット間フロー導入</div>
           </div>
-          <div style="padding:8px 10px;border-right:1px solid rgba(255,255,255,.04)">
-            <div style="font:600 8px Montserrat;color:var(--dim);letter-spacing:1px;margin-bottom:3px">FLOW</div>
-            <div style="font:300 10px 'Noto Sans JP';color:var(--body)">複合動作・フロー重視</div>
-          </div>
           <div style="padding:8px 10px">
             <div style="font:600 8px Montserrat;color:var(--dim);letter-spacing:1px;margin-bottom:3px">FLOW</div>
-            <div style="font:300 10px 'Noto Sans JP';color:var(--body)">インストラクター独自設計</div>
+            <div style="font:300 10px 'Noto Sans JP';color:var(--body)">複合動作・フロー重視</div>
           </div>
         </div>
       </div>
@@ -1694,10 +1660,6 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
           <div style="display:flex;gap:9px;align-items:flex-start">
             <span style="font:700 8px Montserrat;background:rgba(245,158,11,.12);color:var(--advance);padding:2px 7px;border-radius:2px;flex-shrink:0;margin-top:2px">POSITION</span>
             <span style="font:300 11px/1.6 'Noto Sans JP';color:var(--body)">ポジション変更の回数を最小限にし、スムーズなトランジションを設計する</span>
-          </div>
-          <div style="display:flex;gap:9px;align-items:flex-start">
-            <span style="font:700 8px Montserrat;background:rgba(200,16,46,.12);color:var(--master);padding:2px 7px;border-radius:2px;flex-shrink:0;margin-top:2px">ADAPT</span>
-            <span style="font:300 11px/1.6 'Noto Sans JP';color:var(--body)">当日の参加者の状態を観察し、その場でプログラムを柔軟に修正する</span>
           </div>
         </div>
       </div>
@@ -1773,27 +1735,10 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
   </div>
 </div>
 
-<div class="slide s7-builder bldr-master" data-slide="11" data-title="プログラム構成 — MASTER">
-  <div class="builder-header" style="padding-bottom:0;padding-top:24px">
-    <div class="stitle jp">60分 プログラム構成 ─ <span style="color:var(--master)">MASTER</span></div>
-    <div class="ssub mono">マスター ─ 全種目を自在に構成・インストラクター技量の最大発揮</div>
-  </div>
-  <div class="b3wrap" style="--lc:var(--master)">
-    <div class="b3-nav" id="btnsM"></div>
-    <div class="b3-pick" id="midM"><div class="b3-pick-empty">← ユニットを選択して<br>エクササイズを追加</div></div>
-    <div class="b3-prog">
-      <div class="b3-prog-head"><span class="b3-prog-label">PROGRAM</span><span class="b3-prog-count" id="cntM">0種目</span></div>
-      <div class="b3-prog-scroll" id="slotsM"><div class="b3-prog-empty jp">ユニットを選択して<br>エクササイズを追加してください</div></div>
-      <div class="builder-total" id="totalM" style="display:none;margin-top:6px"></div>
-      <div class="builder-actions" style="margin-top:6px"><button class="action-btn clear-btn" onclick="b3Clear('M')"><span class="jp">クリア</span></button></div>
-    </div>
-  </div>
-</div>
-
 <!-- ════════════════════════════════════
      SLIDE 14 — CONTRAINDICATIONS
 ════════════════════════════════════ -->
-<div class="slide" data-slide="12" data-title="禁忌事項">
+<div class="slide" data-slide="11" data-title="禁忌事項">
   <div class="sh">
     <div class="sh-tag"><div class="sh-tag-dot"></div><span class="sh-tag-text">General Contraindications</span></div>
     <div class="sh-title jp">一般的な禁忌事項</div>
@@ -1815,7 +1760,7 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
 <!-- ════════════════════════════════════
      SLIDE 15 — UPCOMING
 ════════════════════════════════════ -->
-<div class="slide" data-slide="13" data-title="今後の整備事項">
+<div class="slide" data-slide="12" data-title="今後の整備事項">
   <div class="sh">
     <div class="sh-tag"><div class="sh-tag-dot"></div><span class="sh-tag-text">Upcoming Items</span></div>
     <div class="sh-title jp">今後の整備事項</div>
@@ -1825,7 +1770,7 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
     <div class="up-row"><span class="num">01</span><div class="info"><h4 class="jp">ユニット別 種目リスト確定</h4><p class="jp">各ユニットに属する種目の最終リストを確定。リフォーマー・キャデラック・チェア・バレル 全253種目をBuilderの「種目リスト」タブに統合済み</p></div><span class="status progress mono" style="background:rgba(34,197,94,.18);color:var(--fundamental);border-color:rgba(34,197,94,.3)">完了</span></div>
     <div class="up-row"><span class="num">02</span><div class="info"><h4 class="jp">禁忌事項（コントラインディケーション）の整理</h4><p class="jp">各種目・ユニットにおける禁忌事項を明文化。お客様の安全を最優先としたガイドラインを策定</p></div><span class="status next mono">これから</span></div>
     <div class="up-row"><span class="num">03</span><div class="info"><h4 class="jp">60分タイムライン ガイドラインの策定</h4><p class="jp">各ユニットの推奨時間配分を設定。インストラクターが判断に迷わない指針を提供</p></div><span class="status next mono">これから</span></div>
-    <div class="up-row"><span class="num">04</span><div class="info"><h4 class="jp">強度別プログラム例の作成</h4><p class="jp">Fundamental / Intermediate / Advance / Master の各レベルに対応したサンプルプログラムを用意</p></div><span class="status next mono">これから</span></div>
+    <div class="up-row"><span class="num">04</span><div class="info"><h4 class="jp">強度別プログラム例の作成</h4><p class="jp">Fundamental / Intermediate / Advance の各レベルに対応したサンプルプログラムを用意</p></div><span class="status next mono">これから</span></div>
     <div class="up-row"><span class="num">05</span><div class="info"><h4 class="jp">インストラクター研修の実施</h4><p class="jp">新プログラム体系の理解を深める研修を実施。ユニット選択の判断基準と禁忌事項の徹底</p></div><span class="status tbd mono">未定</span></div>
   </div>
 </div>
@@ -1833,7 +1778,7 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
 <!-- ════════════════════════════════════
      SLIDE 16 — MANUAL
 ════════════════════════════════════ -->
-<div class="slide" data-slide="14" data-title="種目・強度一覧">
+<div class="slide" data-slide="13" data-title="種目・強度一覧">
   <!-- full-height flex container -->
   <div style="display:flex;flex-direction:column;height:100vh;overflow:hidden">
 
@@ -1879,7 +1824,7 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
 <!-- ════════════════════════════════════
      SLIDE 17 — ADMIN: EXERCISE EDITOR
 ════════════════════════════════════ -->
-<div class="slide" data-slide="15" data-title="種目管理（管理者）">
+<div class="slide" data-slide="14" data-title="種目管理（管理者）">
   <!-- full-height flex -->
   <div style="display:flex;flex-direction:column;height:100vh;overflow:hidden">
 
@@ -1942,7 +1887,7 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
 <!-- ════════════════════════════════════
      SLIDE 16 — INSTRUCTOR TRAINING ROADMAP
 ════════════════════════════════════ -->
-<div class="slide" data-slide="16" data-title="新規養成ロードマップ">
+<div class="slide" data-slide="15" data-title="新規養成ロードマップ">
 <div style="display:flex;flex-direction:column;height:100vh;overflow:hidden">
 
   <!-- header -->
@@ -1987,7 +1932,7 @@ const PHASES=[
    items:[
      'ピラティスの歴史・哲学・原則',
      'AXISCORE UNIT-SYSTEM の全体像',
-     '10ユニット × 4レベルのフレームワーク',
+     '10ユニット × 3レベルのフレームワーク',
      '解剖学基礎（脊柱・骨盤・主要筋群）',
      'レッスン設計の考え方と禁忌事項',
    ],
@@ -2001,7 +1946,7 @@ const PHASES=[
    hours:10,
    sessions:5,
    items:[
-     'F / I / A / M 各レベルのデモクラス視聴',
+     'F / I / A 各レベルのデモクラス視聴',
      '種目選択の意図・フローの設計を観察',
      '禁忌管理とキューイング手法の確認',
      'クライアント対応と安全管理の観察',
@@ -2300,7 +2245,7 @@ renderDetail();
 <!-- ════════════════════════════════════
      SLIDE 17 — LEVEL ROADMAP
 ════════════════════════════════════ -->
-<div class="slide" data-slide="17" data-title="強度別 養成ロードマップ">
+<div class="slide" data-slide="16" data-title="強度別 養成ロードマップ">
 <div style="display:flex;flex-direction:column;height:100vh;overflow:hidden;background:var(--bg)">
 
   <!-- ── TOP BAR ── -->
@@ -2309,14 +2254,13 @@ renderDetail();
       <div class="sh-tag-dot"></div>
       <span style="font:600 9px Montserrat;letter-spacing:4px;color:var(--red)">LEVEL CERTIFICATION</span>
       <span style="font:900 20px 'Bebas Neue';letter-spacing:2px;color:var(--white)">強度別 養成ロードマップ</span>
-      <span style="font:300 11px 'Noto Sans JP';color:var(--muted);margin-left:4px">F → I → A → M 段階的認定</span>
+      <span style="font:300 11px 'Noto Sans JP';color:var(--muted);margin-left:4px">F → I → A 段階的認定</span>
     </div>
     <!-- level switcher tabs -->
     <div style="display:flex;gap:3px" id="lvr-tabs">
       <button class="lvr-tab lvr-tab-F lvr-active" onclick="lvrSet('F',this)">FUNDAMENTAL</button>
       <button class="lvr-tab lvr-tab-I" onclick="lvrSet('I',this)">INTERMEDIATE</button>
       <button class="lvr-tab lvr-tab-A" onclick="lvrSet('A',this)">ADVANCE</button>
-      <button class="lvr-tab lvr-tab-M" onclick="lvrSet('M',this)">MASTER</button>
       <button class="lvr-tab lvr-tab-ALL" onclick="lvrSet('ALL',this)">ALL</button>
     </div>
   </div>
@@ -2338,19 +2282,18 @@ renderDetail();
 .lvr-tab-F.lvr-active{background:rgba(34,197,94,.12);border-color:var(--fundamental);color:var(--fundamental)}
 .lvr-tab-I.lvr-active{background:rgba(59,130,246,.12);border-color:var(--intermediate);color:var(--intermediate)}
 .lvr-tab-A.lvr-active{background:rgba(245,158,11,.12);border-color:var(--advance);color:var(--advance)}
-.lvr-tab-M.lvr-active{background:rgba(200,16,46,.12);border-color:var(--master);color:var(--master)}
 .lvr-tab-ALL.lvr-active{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.2);color:var(--white)}
 /* phase step */
 .lvr-step{display:flex;gap:10px;align-items:flex-start}
 .lvr-step-line{display:flex;flex-direction:column;align-items:center;flex-shrink:0}
-.lvr-step-num{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font:700 10px Montserrat;border:2px solid;flex-shrink:0}
+.lvr-step-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font:700 11px Montserrat;border:2px solid;flex-shrink:0;box-shadow:0 0 8px rgba(0,0,0,.3)}
 .lvr-step-connector{width:2px;flex:1;min-height:10px;margin:2px 0}
 /* session card */
-.lvr-sess-card{flex-shrink:0;border-radius:6px;padding:10px 12px;border:1px solid;border-left-width:3px;min-width:185px;max-width:220px;transition:all .18s;cursor:pointer}
-.lvr-sess-card:hover{transform:translateY(-2px)}
+.lvr-sess-card{flex-shrink:0;border-radius:6px;padding:10px 12px;border:1px solid;border-left-width:4px;min-width:195px;max-width:230px;transition:all .18s;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.lvr-sess-card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.5)}
 /* week dot */
-.lvr-wdot{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border-right:1px solid;cursor:pointer;padding:4px 1px;transition:background .1s}
-.lvr-wdot:hover{filter:brightness(1.3)}
+.lvr-wdot{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border-right:1px solid;cursor:pointer;padding:4px 1px;transition:background .15s}
+.lvr-wdot:hover{filter:brightness(1.4);background:rgba(255,255,255,.1) !important}
 /* scrollbars */
 #lvr-body *::-webkit-scrollbar{width:3px;height:3px}
 #lvr-body *::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
@@ -2360,8 +2303,8 @@ renderDetail();
 'use strict';
 (function(){
 const RATE=10000;
-const LV_ORDER=['F','I','A','M'];
-const LV_COLORS_RGB={F:'34,197,94',I:'59,130,246',A:'245,158,11',M:'200,16,46'};
+const LV_ORDER=['F','I','A'];
+const LV_COLORS_RGB={F:'34,197,94',I:'59,130,246',A:'245,158,11'};
 const LV={
   F:{
     key:'F',label:'FUNDAMENTAL',jp:'ファンダメンタル',color:'var(--fundamental)',rgb:'34,197,94',
@@ -2371,7 +2314,7 @@ const LV={
     phases:[
       {title:'理論基礎',weeks:2,hours:10,contents:'AXISCORE体系・解剖学・禁忌・レッスン設計の基礎',
        sessions:[
-         {w:1,label:'Wk1',items:['ピラティスの歴史・哲学・原則','AXISCORE UNIT-SYSTEMの全体像','10×4フレームワーク解説']},
+         {w:1,label:'Wk1',items:['ピラティスの歴史・哲学・原則','AXISCORE UNIT-SYSTEMの全体像','10×3フレームワーク解説']},
          {w:2,label:'Wk2',items:['解剖学基礎（脊柱・骨盤・主要筋群）','禁忌事項の整理','理論テスト（80点合格）']},
        ]},
       {title:'見学実習',weeks:2,hours:8,contents:'Fレベルデモクラス視聴・観察レポート提出',
@@ -2474,47 +2417,6 @@ const LV={
       {title:'修了審査',weeks:1,hours:4,contents:'実技審査（Aレベル50分指導）＋口頭試問',
        sessions:[{w:14,label:'Wk14',items:['実技審査：Aレベル50分指導実演','口頭試問・A認定証発行']}]},
     ]
-  },
-  M:{
-    key:'M',label:'MASTER',jp:'マスター',color:'var(--master)',rgb:'200,16,46',
-    prereq:'ADVANCE認定取得（実務2年以上 + 推薦状）',
-    target:'全レベル対応・マスタートレーナー候補',
-    desc:'全種目から自在に構成し、最高難度のバリエーション・トランジションを含むプログラムを設計できる。リアルタイムでクライアントの反応を読み取り即興対応できる最高位認定。',
-    phases:[
-      {title:'MASTER理論',weeks:1,hours:5,contents:'プログラムデザインの芸術・即興対応・指導者としての哲学',
-       sessions:[{w:1,label:'Wk1',items:['プログラムデザインの哲学・芸術性（3h）','即興対応・リアルタイム修正の理論（2h）']}]},
-      {title:'全種目集中習得',weeks:8,hours:24,contents:'MASTER専用バリエーション全習得（週1×3h×8週）',
-       sessions:[
-         {w:2,label:'Wk2',items:['コントロールバランス系全種目（3h）']},
-         {w:3,label:'Wk3',items:['スター・アラベスク・バランスコントロールフロント（3h）']},
-         {w:4,label:'Wk4',items:['スワンダイブフル・ロッキング・全バックエクステンション（3h）']},
-         {w:5,label:'Wk5',items:['ティーザー全バリエーション・コークスクリュー（3h）']},
-         {w:6,label:'Wk6',items:['ジャンプボード全種・高速シングルレッグ（3h）']},
-         {w:7,label:'Wk7',items:['ニーリングシリーズ全種・逆立ち系導入（3h）']},
-         {w:8,label:'Wk8',items:['CADILLAC MASTER種目（ハンギング・インバージョン等）（3h）']},
-         {w:9,label:'Wk9',items:['全種目通し・Mチェックシート完成（3h）']},
-       ]},
-      {title:'高難度実習',weeks:3,hours:9,contents:'最高難度種目・コントロールバランス・逆立ち系の習得',
-       sessions:[
-         {w:10,label:'Wk10',items:['コントロールバランス・ヘッドスタンド重点習得（3h）']},
-         {w:11,label:'Wk11',items:['スネーク＆ツイスト全バリエーション・高速フロー（3h）']},
-         {w:12,label:'Wk12',items:['個人苦手種目の集中強化・MT直接指導（3h）']},
-       ]},
-      {title:'指導者実習',weeks:4,hours:12,contents:'新規受講生への指導補助・フィードバック能力の開発',
-       sessions:[
-         {w:13,label:'Wk13',items:['F受講生の実習補助・キュー観察（3h）']},
-         {w:14,label:'Wk14',items:['I受講生の実習補助・段階的指導（3h）']},
-         {w:15,label:'Wk15',items:['A受講生への指導補助・プログラム修正提案（3h）']},
-         {w:16,label:'Wk16',items:['独自クラスの単独実施（MTモニタリング下）（3h）']},
-       ]},
-      {title:'独自プログラム開発',weeks:2,hours:8,contents:'オリジナル60分プログラム5本作成・プレゼンテーション',
-       sessions:[
-         {w:17,label:'Wk17',items:['F/I/A/M各レベルプログラム × 4本作成（4h）']},
-         {w:18,label:'Wk18',items:['自由テーマプログラム × 1本','5本プレゼンテーション（4h）']},
-       ]},
-      {title:'最終審査',weeks:1,hours:6,contents:'理論試験＋実技審査（55分フルレベル指導）＋論文提出',
-       sessions:[{w:19,label:'Wk19',items:['理論試験・実技審査（55分）','論文提出・口頭審査','MASTER認定証発行']}]},
-    ]
   }
 };
 
@@ -2522,7 +2424,7 @@ const LV={
 function getExForUnit(uNums, lvKey){
   // uNums: array of unit numbers to include
   // returns array of exercise names available at lvKey
-  const lvOrder={F:0,I:1,A:2,M:3};
+  const lvOrder={F:0,I:1,A:2};
   const exArr=window.EX||[];
   const unitNames=window.UNIT_NAME||{};
   const result=[];
@@ -2561,30 +2463,39 @@ window.renderSingle=function renderSingle(lvKey){
   let cumW=0;
   d.phases.forEach((p,pi)=>{
     p._start=cumW+1;p._end=cumW+p.weeks;
-    if(p.sessions)p.sessions.forEach(s=>allSess.push({...s,pi,phaseColor:d.color,phaseRgb:d.rgb,phaseTitle:p.title}));
+    if(p.sessions)p.sessions.forEach(s=>allSess.push({...s,pi,phaseIdx:pi,phaseColor:d.color,phaseRgb:d.rgb,phaseTitle:p.title}));
     cumW+=p.weeks;
   });
 
-  // ── GANTT row ──
+  // ── GANTT row (with phase grouping) ──
   const totalWeeks=tot.weeks;
   let ganttCells='';
   let gwCum=0;
   d.phases.forEach((p,pi)=>{
-    const hasSess=(pi)=>allSess.some(s=>s.w>=p._start&&s.w<=p._end);
+    const isLastPhase=pi===d.phases.length-1;
+    // Phase group wrapper — each phase is visually grouped
+    let phaseWeeks='';
     for(let wi=0;wi<p.weeks;wi++){
       const wNum=gwCum+wi+1;
       const sess=allSess.find(s=>s.w===wNum);
       const isFirst=wi===0;
-      const pctWidth=(1/totalWeeks*100).toFixed(2);
-      ganttCells+=`<div class="lvr-wdot" style="
-        border-right-color:rgba(${d.rgb},.12);
-        background:${sess?`rgba(${d.rgb},.10)`:'rgba(255,255,255,.02)'};
-        border-top:2px solid ${isFirst?d.color:'transparent'};
-      " onclick="lvrWeekClick(${wNum})" title="${sess?sess.phaseTitle:''}">
+      const isLastW=wi===p.weeks-1;
+      phaseWeeks+=`<div class="lvr-wdot" style="
+        border-right-color:${isLastW?'transparent':'rgba('+d.rgb+',.15)'};
+        background:${sess?`rgba(${d.rgb},.18)`:'rgba(255,255,255,.04)'};
+        border-top:none;
+      " onclick="lvrWeekClick(${wNum})" title="PHASE 0${pi+1}: ${p.title}">
         <div style="font:700 10px Montserrat;color:${sess?d.color:'var(--dim)'};line-height:1">W${wNum}</div>
         <div style="width:${sess?8:4}px;height:${sess?8:3}px;border-radius:50%;background:${sess?d.color:'rgba(255,255,255,.12)'}"></div>
       </div>`;
     }
+    ganttCells+=`<div style="flex:${p.weeks};display:flex;flex-direction:column;${!isLastPhase?'border-right:2px solid rgba('+d.rgb+',.4);':''}">
+      <div style="display:flex;align-items:center;justify-content:center;gap:4px;height:18px;background:rgba(${d.rgb},.15);border-bottom:1px solid rgba(${d.rgb},.25);flex-shrink:0">
+        <span style="font:900 10px 'Bebas Neue';color:${d.color};letter-spacing:1px">0${pi+1}</span>
+        <span style="font:500 8px 'Noto Sans JP';color:rgba(${d.rgb.split(',').map(()=>'255').join(',')},${pi<3?'.7':'.6'});white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:${Math.max(p.weeks*40-30,30)}px;color:${d.color};opacity:.7">${p.title}</span>
+      </div>
+      <div style="flex:1;display:flex">${phaseWeeks}</div>
+    </div>`;
     gwCum+=p.weeks;
   });
 
@@ -2592,8 +2503,10 @@ window.renderSingle=function renderSingle(lvKey){
   let phaseLegend='';
   d.phases.forEach((p,pi)=>{
     const pct=(p.weeks/totalWeeks*100).toFixed(1);
-    phaseLegend+=`<div style="flex:${p.weeks};display:flex;align-items:center;justify-content:center;padding:3px 4px;background:rgba(${d.rgb},.06);border-right:1px solid rgba(${d.rgb},.12)">
-      <span style="font:600 10px Montserrat;color:rgba(${d.rgb},.8);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:.5px">0${pi+1} ${p.title}</span>
+    const pwStart=d.phases.slice(0,pi).reduce((s,x)=>s+x.weeks,0)+1;
+    const pwEnd=pwStart+p.weeks-1;
+    phaseLegend+=`<div style="flex:${p.weeks};display:flex;align-items:center;justify-content:center;gap:4px;padding:4px 6px;background:rgba(${d.rgb},.12);border-right:1px solid rgba(${d.rgb},.25);border-radius:2px">
+      <span style="font:700 9px Montserrat;color:${d.color};white-space:nowrap;letter-spacing:.5px">W${pwStart}–${pwEnd}</span>
     </div>`;
   });
 
@@ -2601,10 +2514,11 @@ window.renderSingle=function renderSingle(lvKey){
   let sessCds='';
   allSess.forEach(s=>{
     sessCds+=`<div class="lvr-sess-card" id="lvr-sw${s.w}" onclick="lvrWeekClick(${s.w})"
-      style="border-color:rgba(${s.phaseRgb},.25);border-left-color:${s.phaseColor};background:rgba(${s.phaseRgb},.06)">
+      style="border-color:rgba(${s.phaseRgb},.4);border-left-color:${s.phaseColor};background:rgba(${s.phaseRgb},.12)">
       <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
         <span style="font:900 16px 'Bebas Neue';color:${s.phaseColor};line-height:1">${s.label}</span>
-        <span style="font:600 8px Montserrat;letter-spacing:.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100px">${s.phaseTitle}</span>
+        <span style="font:700 8px Montserrat;padding:1px 6px;border-radius:2px;background:rgba(${s.phaseRgb},.2);color:${s.phaseColor};letter-spacing:.5px;border:1px solid rgba(${s.phaseRgb},.3)">P0${s.phaseIdx+1}</span>
+        <span style="font:600 8px Montserrat;letter-spacing:.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90px">${s.phaseTitle}</span>
       </div>
       ${(s.units?getExForUnit(s.units,lvKey):s.items).map(item=>`<div style="display:flex;gap:5px;align-items:flex-start;padding:2px 0">
         <div style="width:3px;height:3px;border-radius:50%;background:${s.phaseColor};flex-shrink:0;margin-top:5px"></div>
@@ -2613,20 +2527,24 @@ window.renderSingle=function renderSingle(lvKey){
     </div>`;
   });
 
-  // ── Phase step list ──
+  // ── Phase step list (with week range) ──
   let phaseSteps='';
+  let stepWCum=0;
   d.phases.forEach((p,pi)=>{
     const isLast=pi===d.phases.length-1;
+    const wStart=stepWCum+1;
+    const wEnd=stepWCum+p.weeks;
+    stepWCum+=p.weeks;
     phaseSteps+=`<div class="lvr-step" style="padding-bottom:${isLast?0:8}px">
       <div class="lvr-step-line">
-        <div class="lvr-step-num" style="border-color:${d.color};background:rgba(${d.rgb},.12);color:${d.color}">0${pi+1}</div>
+        <div class="lvr-step-num" style="border-color:${d.color};background:rgba(${d.rgb},.15);color:${d.color}">0${pi+1}</div>
         ${!isLast?`<div class="lvr-step-connector" style="background:rgba(${d.rgb},.2)"></div>`:''}
       </div>
       <div style="flex:1;padding-top:2px">
         <div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:3px">
           <span style="font:600 12px Montserrat;color:var(--white);letter-spacing:.3px">${p.title}</span>
-          <span style="font:700 8px Montserrat;padding:2px 8px;border-radius:2px;background:rgba(${d.rgb},.12);color:${d.color};letter-spacing:.5px">${p.weeks}週</span>
-          <span style="font:700 8px Montserrat;padding:2px 8px;border-radius:2px;background:rgba(255,255,255,.05);color:var(--muted);letter-spacing:.5px">${p.hours}h</span>
+          <span style="font:700 9px Montserrat;padding:2px 8px;border-radius:2px;background:rgba(${d.rgb},.2);color:${d.color};letter-spacing:.5px;border:1px solid rgba(${d.rgb},.3)">W${wStart}–W${wEnd}</span>
+          <span style="font:700 8px Montserrat;padding:2px 8px;border-radius:2px;background:rgba(${d.rgb},.12);color:${d.color};letter-spacing:.5px">${p.weeks}週 / ${p.hours}h</span>
           <span style="font:700 8px Montserrat;padding:2px 8px;border-radius:2px;background:rgba(${d.rgb},.08);color:${d.color};letter-spacing:.5px">¥${(p.hours*RATE/10000).toFixed(0)}万</span>
         </div>
         <div style="font:300 11px/1.5 'Noto Sans JP';color:var(--body)">${p.contents}</div>
@@ -2643,7 +2561,7 @@ window.renderSingle=function renderSingle(lvKey){
     <!-- ① LEFT TOP: phase steps -->
     <div style="overflow-y:auto;padding:14px var(--pad) 10px 28px;border-right:1px solid var(--border)">
       <!-- level kicker -->
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;padding:10px 14px;background:rgba(${d.rgb},.07);border:1px solid rgba(${d.rgb},.2);border-radius:7px">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;padding:10px 14px;background:rgba(${d.rgb},.12);border:1px solid rgba(${d.rgb},.35);border-radius:7px;box-shadow:0 2px 8px rgba(0,0,0,.2)">
         <div>
           <div style="font:900 12px Montserrat;letter-spacing:2px;color:${d.color}">${d.label}</div>
           <div style="font:300 10px 'Noto Sans JP';color:var(--muted);margin-top:2px">${d.jp}</div>
@@ -2660,11 +2578,11 @@ window.renderSingle=function renderSingle(lvKey){
 
     <!-- ② RIGHT: detail card -->
     <div style="overflow-y:auto;padding:14px 20px;display:flex;flex-direction:column;gap:8px">
-      <div style="background:var(--card);border:1px solid rgba(${d.rgb},.2);border-top:2px solid ${d.color};border-radius:7px;padding:12px">
+      <div style="background:var(--card2);border:1px solid rgba(${d.rgb},.35);border-top:3px solid ${d.color};border-radius:7px;padding:12px;box-shadow:0 2px 8px rgba(0,0,0,.25)">
         <div style="font:600 8px Montserrat;letter-spacing:2px;color:var(--dim);margin-bottom:6px">DESCRIPTION</div>
         <div style="font:300 11px/1.65 'Noto Sans JP';color:var(--body)">${d.desc}</div>
       </div>
-      <div style="background:var(--card);border:1px solid var(--border);border-radius:7px;padding:12px;display:flex;flex-direction:column;gap:8px">
+      <div style="background:var(--card2);border:1px solid rgba(${d.rgb},.25);border-radius:7px;padding:12px;display:flex;flex-direction:column;gap:8px;box-shadow:0 2px 8px rgba(0,0,0,.25)">
         <div>
           <div style="font:600 8px Montserrat;letter-spacing:2px;color:var(--dim);margin-bottom:4px">PREREQUISITES</div>
           <div style="font:300 11px/1.55 'Noto Sans JP';color:var(--body)">${d.prereq}</div>
@@ -2674,7 +2592,7 @@ window.renderSingle=function renderSingle(lvKey){
           <div style="font:300 11px/1.55 'Noto Sans JP';color:var(--body)">${d.target}</div>
         </div>
       </div>
-      <div style="background:rgba(${d.rgb},.06);border:1px solid rgba(${d.rgb},.2);border-radius:7px;padding:12px">
+      <div style="background:rgba(${d.rgb},.1);border:1px solid rgba(${d.rgb},.35);border-radius:7px;padding:12px;box-shadow:0 2px 8px rgba(0,0,0,.25)">
         <div style="font:600 8px Montserrat;letter-spacing:2px;color:${d.color};margin-bottom:6px">F → ${d.key} 累計取得</div>
         <div style="font:900 24px 'Bebas Neue';color:${d.color};line-height:1">¥${fmt(cum.cost)}</div>
         <div style="font:300 9px 'Noto Sans JP';color:var(--muted);margin-top:2px">累計 ${cum.hours}h / ${cum.weeks}週</div>
@@ -2691,13 +2609,13 @@ window.renderSingle=function renderSingle(lvKey){
     </div>
 
     <!-- ③ BOTTOM FULL: gantt + sessions (spans both columns) -->
-    <div style="grid-column:1/-1;border-top:1px solid var(--border);padding:10px var(--pad) 10px 28px;display:flex;flex-direction:column;gap:6px;background:rgba(255,255,255,.015);overflow:hidden">
+    <div style="grid-column:1/-1;border-top:1px solid rgba(255,255,255,.1);padding:10px var(--pad) 10px 28px;display:flex;flex-direction:column;gap:6px;background:rgba(255,255,255,.03);overflow:hidden">
       <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
         <span style="font:700 10px Montserrat;letter-spacing:3px;color:var(--muted)">WEEKLY SCHEDULE</span>
         <span style="font:300 11px 'Noto Sans JP';color:var(--dim)">― 週をクリックするとカードへスクロール</span>
       </div>
       <!-- gantt header -->
-      <div style="display:flex;height:48px;border:1px solid rgba(${d.rgb},.15);border-radius:5px;overflow:hidden;flex-shrink:0">${ganttCells}</div>
+      <div style="display:flex;height:62px;border:2px solid rgba(${d.rgb},.3);border-radius:5px;overflow:hidden;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.2)">${ganttCells}</div>
       <!-- phase labels -->
       <div style="display:flex;height:26px;border-radius:3px;overflow:hidden;flex-shrink:0">${phaseLegend}</div>
       <!-- session cards -->
@@ -2714,7 +2632,7 @@ window.renderSingle=function renderSingle(lvKey){
 function renderAll(){
   const el=document.getElementById('lvr-body');
   if(!el)return;
-  const cumM=cumulative('M');
+  const cumA=cumulative('A');
   let cols='';
   LV_ORDER.forEach(k=>{
     const d=LV[k];const tot=totalFor(k);
@@ -2726,7 +2644,7 @@ function renderAll(){
         <span style="font:600 8px Montserrat;color:var(--dim);flex-shrink:0;white-space:nowrap">${p.weeks}w · ¥${(p.hours*RATE/10000).toFixed(0)}万</span>
       </div>`;
     });
-    cols+=`<div onclick="lvrSet('${k}',null)" style="flex:1;background:var(--card);border:1px solid rgba(${d.rgb},.2);border-top:3px solid ${d.color};border-radius:7px;overflow:hidden;cursor:pointer;transition:all .18s;display:flex;flex-direction:column" onmouseover="this.style.transform='translateY(-4px)';this.style.borderColor=d.color" onmouseout="this.style.transform='none'">
+    cols+=`<div onclick="lvrSet('${k}',null)" style="flex:1;background:var(--card2);border:1px solid rgba(${d.rgb},.35);border-top:3px solid ${d.color};border-radius:7px;overflow:hidden;cursor:pointer;transition:all .18s;display:flex;flex-direction:column;box-shadow:0 2px 10px rgba(0,0,0,.3)" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 6px 20px rgba(0,0,0,.5)'" onmouseout="this.style.transform='none';this.style.boxShadow='0 2px 10px rgba(0,0,0,.3)'">
       <div style="padding:10px 12px;border-bottom:1px solid var(--border)">
         <div style="font:900 11px Montserrat;letter-spacing:2px;color:${d.color}">${d.label}</div>
         <div style="font:300 9px 'Noto Sans JP';color:var(--muted);margin-top:2px">${d.jp}</div>
@@ -2743,13 +2661,13 @@ function renderAll(){
     <div style="display:flex;flex-direction:column;height:100%;overflow:hidden;padding:14px 28px 0">
       <div style="flex:1;display:flex;gap:8px;overflow:hidden;min-height:0">${cols}</div>
       <div style="flex-shrink:0;margin:10px 0;padding:10px 14px;background:rgba(200,16,46,.06);border:1px solid rgba(200,16,46,.2);border-radius:6px;display:flex;align-items:center;gap:20px">
-        <span style="font:600 9px Montserrat;letter-spacing:2px;color:var(--red)">F → MASTER 全過程</span>
-        <span style="font:900 20px 'Bebas Neue';color:var(--white)">${cumM.weeks}週 <span style="font-size:11px;color:var(--muted)">≈ ${Math.round(cumM.weeks/4)}ヶ月</span></span>
-        <span style="font:900 20px 'Bebas Neue';color:var(--white)">${cumM.hours}h</span>
-        <span style="font:900 22px 'Bebas Neue';color:var(--red)">¥${fmt(cumM.cost)}</span>
+        <span style="font:600 9px Montserrat;letter-spacing:2px;color:var(--red)">F → ADVANCE 全過程</span>
+        <span style="font:900 20px 'Bebas Neue';color:var(--white)">${cumA.weeks}週 <span style="font-size:11px;color:var(--muted)">≈ ${Math.round(cumA.weeks/4)}ヶ月</span></span>
+        <span style="font:900 20px 'Bebas Neue';color:var(--white)">${cumA.hours}h</span>
+        <span style="font:900 22px 'Bebas Neue';color:var(--red)">¥${fmt(cumA.cost)}</span>
         <span style="font:300 10px 'Noto Sans JP';color:var(--muted)">（1時間 = ¥${fmt(RATE)}）</span>
         <div style="flex:1;height:3px;background:var(--border);border-radius:2px;margin-left:8px;overflow:hidden">
-          <div style="height:100%;width:100%;background:linear-gradient(90deg,var(--fundamental),var(--intermediate),var(--advance),var(--master))"></div>
+          <div style="height:100%;width:100%;background:linear-gradient(90deg,var(--fundamental),var(--intermediate),var(--advance))"></div>
         </div>
       </div>
     </div>
@@ -2778,6 +2696,463 @@ window.lvrWeekClick=function(w){
 };
 
 window.renderSingle('F');
+})();
+</script>
+
+<!-- ════════════════════════════════════
+     SLIDE 17 — APPARATUS-BASED TRAINING
+════════════════════════════════════ -->
+<div class="slide" data-slide="17" data-title="器具別 養成カリキュラム">
+<div style="display:flex;flex-direction:column;height:100vh;overflow:hidden;background:var(--bg)">
+
+  <!-- HEADER BAR -->
+  <div style="display:flex;align-items:center;justify-content:space-between;height:54px;flex-shrink:0;border-bottom:1px solid var(--border);padding:0 var(--pad);gap:20px">
+    <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0">
+      <div class="sh-tag-dot"></div>
+      <span style="font:600 9px Montserrat;letter-spacing:4px;color:var(--red);white-space:nowrap">APPARATUS-BASED TRAINING</span>
+      <span style="font:900 18px 'Bebas Neue';letter-spacing:2px;color:var(--white)">器具別 養成カリキュラム</span>
+      <span style="font:300 10px 'Noto Sans JP';color:var(--muted)">研修の流れと習得種目</span>
+    </div>
+    <!-- APPARATUS TABS -->
+    <div style="display:flex;gap:2px;flex-shrink:0" id="app-tabs">
+      <button class="app-tab app-tab-R app-tab-active" onclick="appSet('R',this)" style="padding:0 12px">REFORMER</button>
+      <button class="app-tab app-tab-C" onclick="appSet('C',this)" style="padding:0 12px">CADILLAC</button>
+      <button class="app-tab app-tab-W" onclick="appSet('W',this)" style="padding:0 12px">CHAIR</button>
+      <button class="app-tab app-tab-B" onclick="appSet('B',this)" style="padding:0 12px">BARREL</button>
+    </div>
+  </div>
+
+  <!-- MAIN BODY (2-column layout) -->
+  <div style="flex:1;overflow:hidden;display:flex;gap:0">
+    <!-- LEFT: Training Steps Stepper -->
+    <div style="width:360px;flex-shrink:0;border-right:1px solid var(--border);overflow-y:auto;padding:24px 20px;display:flex;flex-direction:column;gap:0" id="app-left">
+    </div>
+
+    <!-- RIGHT: Exercise List by Unit -->
+    <div style="flex:1;overflow-y:auto;padding:24px 20px" id="app-right">
+    </div>
+  </div>
+
+  <!-- FOOTER MANAGEMENT BAR -->
+  <div style="height:50px;flex-shrink:0;border-top:1px solid var(--border);padding:0 var(--pad);display:flex;align-items:center;gap:40px;background:rgba(0,0,0,.3)">
+    <span style="font:600 9px Montserrat;letter-spacing:2px;color:var(--dim)">MT確認ポイント</span>
+    <div style="display:flex;gap:32px;flex:1">
+      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font:300 11px 'Noto Sans JP';color:var(--body)">
+        <input type="checkbox" style="width:16px;height:16px;cursor:pointer;accent-color:var(--red)">
+        <span>種目チェックシート完了</span>
+      </label>
+      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font:300 11px 'Noto Sans JP';color:var(--body)">
+        <input type="checkbox" style="width:16px;height:16px;cursor:pointer;accent-color:var(--red)">
+        <span>実技テスト合格（70点以上）</span>
+      </label>
+      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font:300 11px 'Noto Sans JP';color:var(--body)">
+        <input type="checkbox" style="width:16px;height:16px;cursor:pointer;accent-color:var(--red)">
+        <span>安全管理・禁忌理解度確認</span>
+      </label>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<style>
+.app-tab {
+  height:32px;
+  border-radius:3px;
+  border:1px solid var(--border2);
+  background:transparent;
+  color:var(--dim);
+  font:600 8px Montserrat;
+  letter-spacing:1.5px;
+  cursor:pointer;
+  transition:all 0.15s;
+  white-space:nowrap;
+}
+.app-tab:hover {
+  color:var(--white);
+  background:rgba(255,255,255,.05);
+}
+.app-tab-R.app-tab-active {
+  background:rgba(200,16,46,.12);
+  border-color:var(--red);
+  color:var(--red);
+}
+.app-tab-C.app-tab-active {
+  background:rgba(59,130,246,.12);
+  border-color:var(--intermediate);
+  color:var(--intermediate);
+}
+.app-tab-W.app-tab-active {
+  background:rgba(34,197,94,.12);
+  border-color:var(--fundamental);
+  color:var(--fundamental);
+}
+.app-tab-B.app-tab-active {
+  background:rgba(245,158,11,.12);
+  border-color:var(--advance);
+  color:var(--advance);
+}
+
+/* Stepper styling */
+.stepper-step {
+  position:relative;
+  margin-bottom:20px;
+  padding-left:24px;
+}
+.stepper-step::before {
+  content:'';
+  position:absolute;
+  left:0;
+  top:0;
+  width:16px;
+  height:16px;
+  border-radius:50%;
+  background:var(--card2);
+  border:2px solid var(--border2);
+}
+.stepper-step.active::before {
+  background:var(--intermediate);
+  border-color:var(--intermediate);
+  box-shadow:0 0 0 6px rgba(59,130,246,.15);
+}
+.stepper-step::after {
+  content:'';
+  position:absolute;
+  left:7px;
+  top:16px;
+  width:2px;
+  height:calc(100% + 4px);
+  background:var(--border2);
+}
+.stepper-step:last-child::after {
+  display:none;
+}
+
+.stepper-title {
+  font:600 12px 'Noto Sans JP';
+  color:var(--white);
+  margin-bottom:6px;
+  letter-spacing:0.5px;
+}
+.stepper-goal {
+  font:300 10px 'Noto Sans JP';
+  color:var(--muted);
+  margin-bottom:8px;
+  line-height:1.4;
+}
+.stepper-count {
+  display:flex;
+  gap:12px;
+  margin-bottom:8px;
+}
+.stepper-count-item {
+  display:flex;
+  align-items:center;
+  gap:4px;
+}
+.stepper-count-num {
+  font:900 16px 'Bebas Neue';
+  color:var(--intermediate);
+}
+.stepper-count-label {
+  font:500 9px 'Noto Sans JP';
+  color:var(--muted);
+}
+.stepper-target {
+  padding:8px 10px;
+  border-left:2px solid var(--intermediate);
+  background:rgba(59,130,246,.06);
+  border-radius:3px;
+  font:300 10px 'Noto Sans JP';
+  color:var(--body);
+  line-height:1.4;
+}
+
+.summary-bar {
+  margin-top:auto;
+  padding-top:16px;
+  border-top:1px solid var(--border);
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.summary-item {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:8px 0;
+  font:300 11px 'Noto Sans JP';
+  color:var(--body);
+}
+.summary-value {
+  font:700 13px 'Bebas Neue';
+  color:var(--white);
+}
+
+/* Exercise list */
+.exercise-unit {
+  margin-bottom:16px;
+}
+.exercise-unit-header {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 10px;
+  background:var(--card2);
+  border:1px solid var(--border2);
+  border-radius:4px;
+  margin-bottom:8px;
+}
+.exercise-unit-num {
+  font:900 16px 'Bebas Neue';
+  color:var(--intermediate);
+  min-width:28px;
+}
+.exercise-unit-name {
+  font:600 11px Montserrat;
+  color:var(--white);
+  letter-spacing:0.5px;
+  flex:1;
+}
+.exercise-unit-count {
+  font:600 8px Montserrat;
+  color:var(--muted);
+}
+
+.exercise-card {
+  padding:10px 12px;
+  margin-bottom:6px;
+  border-left:3px solid var(--border2);
+  background:rgba(255,255,255,.02);
+  border-radius:3px;
+  border:1px solid var(--border2);
+  border-left:3px solid;
+  transition:all 0.15s;
+}
+.exercise-card:hover {
+  background:rgba(255,255,255,.04);
+}
+.exercise-name {
+  font:500 10px Montserrat;
+  color:var(--white);
+  margin-bottom:6px;
+  letter-spacing:0.3px;
+}
+.exercise-levels {
+  display:flex;
+  gap:4px;
+  flex-wrap:wrap;
+}
+.level-badge {
+  font:600 7px Montserrat;
+  letter-spacing:1px;
+  padding:3px 7px;
+  border-radius:2px;
+  border:1px solid;
+}
+.level-badge-F {
+  background:rgba(34,197,94,.08);
+  color:var(--fundamental);
+  border-color:rgba(34,197,94,.25);
+}
+.level-badge-I {
+  background:rgba(59,130,246,.08);
+  color:var(--intermediate);
+  border-color:rgba(59,130,246,.25);
+}
+.level-badge-A {
+  background:rgba(245,158,11,.08);
+  color:var(--advance);
+  border-color:rgba(245,158,11,.25);
+}
+</style>
+
+<script>
+'use strict';
+(function(){
+
+const APP_META = {
+  R: {key:'R', label:'REFORMER', jp:'リフォーマー', color:'var(--red)', rgb:'200,16,46'},
+  C: {key:'C', label:'CADILLAC', jp:'キャデラック', color:'var(--intermediate)', rgb:'59,130,246'},
+  W: {key:'W', label:'CHAIR', jp:'チェア', color:'var(--fundamental)', rgb:'34,197,94'},
+  B: {key:'B', label:'BARREL', jp:'バレル', color:'var(--advance)', rgb:'245,158,11'}
+};
+
+const APP_ORDER = ['R','C','W','B'];
+let appSel = 'R';
+
+function getAppExercises(appKey) {
+  const exArr = window.EX || [];
+  const unitNames = window.UNIT_NAME || {
+    1:'Warm Up',2:'Foot Work',3:'Abdominal',4:'Hip Work',
+    5:'Spinal Articulation',6:'Full Body Integration',
+    7:'Arm Work',8:'Leg Work',9:'Lateral Flex & Rotation',10:'Back Extension'
+  };
+  const result = {};
+  exArr.filter(e => e.app === appKey).forEach(e => {
+    if (!result[e.u]) {
+      result[e.u] = {unit: e.u, unitName: unitNames[e.u] || '', exercises: []};
+    }
+    result[e.u].exercises.push(e);
+  });
+  return Object.values(result).sort((a,b) => a.unit - b.unit);
+}
+
+function countByLevel(appKey) {
+  const exArr = window.EX || [];
+  const counts = {F:0, I:0, A:0, total:0};
+  exArr.filter(e => e.app === appKey).forEach(e => {
+    e.variations.forEach(v => {
+      if (counts[v.lv] !== undefined) counts[v.lv]++;
+      counts.total++;
+    });
+  });
+  return counts;
+}
+
+function estimateHours(counts) {
+  return (counts.F * 0.5) + (counts.I * 0.75) + (counts.A * 1.0);
+}
+
+function renderAppBody() {
+  const leftEl = document.getElementById('app-left');
+  const rightEl = document.getElementById('app-right');
+  if (!leftEl || !rightEl) return;
+
+  const units = getAppExercises(appSel);
+  const counts = countByLevel(appSel);
+  const estimatedHours = estimateHours(counts);
+
+  // LEFT: Training Steps Stepper
+  let leftHTML = `
+    <div class="stepper-step active">
+      <div class="stepper-title">ステップ 1: 基礎種目の習得（F）</div>
+      <div class="stepper-goal">目標: この器具の基本動作を習得</div>
+      <div class="stepper-count">
+        <div class="stepper-count-item">
+          <span class="stepper-count-num">${counts.F}</span>
+          <span class="stepper-count-label">種目</span>
+        </div>
+        <div class="stepper-count-item" style="margin-left:auto;color:var(--muted);font-size:9px">
+          約 ${(counts.F * 0.5).toFixed(1)} 時間
+        </div>
+      </div>
+      <div class="stepper-target">
+        <strong style="color:var(--white)">到達目標:</strong> 全F種目の正しいフォームとキューイング習得
+      </div>
+    </div>
+
+    <div class="stepper-step">
+      <div class="stepper-title">ステップ 2: 中級種目の習得（I）</div>
+      <div class="stepper-goal">目標: バリエーションを増やし、安定した指導を確立</div>
+      <div class="stepper-count">
+        <div class="stepper-count-item">
+          <span class="stepper-count-num">${counts.I}</span>
+          <span class="stepper-count-label">種目</span>
+        </div>
+        <div class="stepper-count-item" style="margin-left:auto;color:var(--muted);font-size:9px">
+          約 ${(counts.I * 0.75).toFixed(1)} 時間
+        </div>
+      </div>
+      <div class="stepper-target">
+        <strong style="color:var(--white)">到達目標:</strong> フロー構成でI種目を安全に指導可能
+      </div>
+    </div>
+
+    <div class="stepper-step">
+      <div class="stepper-title">ステップ 3: 上級種目の習得（A）</div>
+      <div class="stepper-goal">目標: ダイナミックで応用的なプログラムを展開</div>
+      <div class="stepper-count">
+        <div class="stepper-count-item">
+          <span class="stepper-count-num">${counts.A}</span>
+          <span class="stepper-count-label">種目</span>
+        </div>
+        <div class="stepper-count-item" style="margin-left:auto;color:var(--muted);font-size:9px">
+          約 ${(counts.A * 1.0).toFixed(1)} 時間
+        </div>
+      </div>
+      <div class="stepper-target">
+        <strong style="color:var(--white)">到達目標:</strong> A種目を含むダイナミックプログラム設計
+      </div>
+    </div>
+
+    <div class="stepper-step">
+      <div class="stepper-title">ステップ 4: 修了テスト</div>
+      <div class="stepper-goal">目標: 習得度を確認して認定</div>
+      <div style="padding:8px 10px;border-left:2px solid var(--advance);background:rgba(245,158,11,.06);border-radius:3px;font:300 10px 'Noto Sans JP';color:var(--body);line-height:1.5">
+        <div><strong style="color:var(--white)">実技審査:</strong> 30分指導実演</div>
+        <div style="margin-top:4px"><strong style="color:var(--white)">口頭試問:</strong> 禁忌・安全管理</div>
+      </div>
+    </div>
+
+    <div class="summary-bar">
+      <div class="summary-item">
+        <span>合計種目数</span>
+        <span class="summary-value">${counts.total}</span>
+      </div>
+      <div class="summary-item">
+        <span>推定研修時間</span>
+        <span class="summary-value">${estimatedHours.toFixed(1)} h</span>
+      </div>
+      <div class="summary-item" style="border-top:1px solid var(--border);padding-top:10px;margin-top:10px">
+        <span style="color:var(--dim)">合格基準</span>
+        <span style="color:var(--fundamental);font:700 10px 'Noto Sans JP'">70点以上</span>
+      </div>
+    </div>
+  `;
+
+  // RIGHT: Exercise List by Unit
+  let rightHTML = `
+    <div style="margin-bottom:10px">
+      <div style="font:600 8px Montserrat;letter-spacing:2px;color:var(--dim)">UNIT別 種目一覧</div>
+    </div>
+  `;
+
+  if (units.length === 0) {
+    rightHTML += `<div style="font:300 12px 'Noto Sans JP';color:var(--dim);text-align:center;margin-top:40px">この器具に対応する種目はありません</div>`;
+  } else {
+    units.forEach(uData => {
+      rightHTML += `
+        <div class="exercise-unit">
+          <div class="exercise-unit-header">
+            <div class="exercise-unit-num">${String(uData.unit).padStart(2,'0')}</div>
+            <div class="exercise-unit-name">${uData.unitName}</div>
+            <div class="exercise-unit-count">${uData.exercises.reduce((s,e)=>s+e.variations.length,0)} var.</div>
+          </div>
+      `;
+      uData.exercises.forEach(ex => {
+        const name = ex.name.replace(/（[^）]+）/,'').trim();
+        const borderColor = ex.variations.some(v => v.lv === 'A') ? 'var(--advance)' :
+                           ex.variations.some(v => v.lv === 'I') ? 'var(--intermediate)' :
+                           'var(--fundamental)';
+        rightHTML += `
+          <div class="exercise-card" style="border-left-color:${borderColor}">
+            <div class="exercise-name">${name}</div>
+            <div class="exercise-levels">
+              ${ex.variations.map(v => `
+                <span class="level-badge level-badge-${v.lv}">${v.lv}</span>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      });
+      rightHTML += `</div>`;
+    });
+  }
+
+  leftEl.innerHTML = leftHTML;
+  rightEl.innerHTML = rightHTML;
+}
+
+window.appSet = function(key, btn) {
+  appSel = key;
+  document.querySelectorAll('.app-tab').forEach(t => t.classList.remove('app-tab-active'));
+  const tabEl = document.querySelector('.app-tab-' + key);
+  if (tabEl) tabEl.classList.add('app-tab-active');
+  renderAppBody();
+};
+
+// Initial render called by show(17)
 })();
 </script>
 
@@ -2826,10 +3201,11 @@ function show(n){
   // per-slide inits
   setTimeout(()=>{
     if(n===4){renderRail&&renderRail();renderDetail&&renderDetail();}
-    if(n===14 && typeof emlInit==='function') emlInit();
-    if(n===15 && typeof admInit==='function') admInit();
-    if(n===16 && typeof trnSel==='function') trnSel(0);
-    if(n===17 && typeof lvrSet==='function') lvrSet('F',null);
+    if(n===13 && typeof emlInit==='function') emlInit();
+    if(n===14 && typeof admInit==='function') admInit();
+    if(n===15 && typeof trnSel==='function') trnSel(0);
+    if(n===16 && typeof lvrSet==='function') lvrSet('F',null);
+    if(n===17 && typeof appSet==='function') appSet('R',null);
   }, 50);
 }
 
@@ -2842,8 +3218,8 @@ function updateDots(n){
 function buildDots(){
   const el=document.getElementById('nav-dots');
   if(!el)return;
-  // Group structure: [1-3 intro], [4-7 system], [8-11 builders], [12-15 refs], [16 end]
-  const groups=[[1,2,3],[4,5,6,7],[8,9,10,11],[12,13,14,15,16,17],[18]];
+  // Group structure: [1-3 intro], [4-7 system], [8-11 builders], [12-15 refs], [16-17 apparatus], [18 end]
+  const groups=[[1,2,3],[4,5,6,7],[8,9,10,11],[12,13,14,15,16],[17],[18]];
   let h='';
   groups.forEach((g,gi)=>{
     if(gi>0)h+='<div style="width:4px;height:1px;background:rgba(255,255,255,.1);flex-shrink:0"></div>';
@@ -2874,14 +3250,14 @@ const U={
   9:{num:'09',name:'LAT. FLEX',jp:'ラテラル'},
   10:{num:'10',name:'BACK EXT.',jp:'バックExt'}
 };
-const LC={F:'#22C55E',I:'#3B82F6',A:'#F59E0B',M:'#C8102E'};
-const progs={F:[],I:[],A:[],M:[]};
+const LC={F:'#22C55E',I:'#3B82F6',A:'#F59E0B'};
+const progs={F:[],I:[],A:[]};
 
 
-const LEVEL_ORDER = {F:0,I:1,A:2,M:3};
-const LEVEL_LABEL = {F:'FUND.',I:'INTER.',A:'ADV.',M:'MASTER'};
+const LEVEL_ORDER = {F:0,I:1,A:2};
+const LEVEL_LABEL = {F:'FUND.',I:'INTER.',A:'ADV.'};
 const APP_LABEL = {R:'REFORMER',C:'CADILLAC',W:'CHAIR',B:'BARREL'};
-const UNIT_NAME = {1:'Warm Up',2:'Foot Work',3:'Abdominal',4:'Hip Work',5:'Spinal Art.',6:'Full Body',7:'Arm Work',8:'Leg Work',9:'Lat. Flex',10:'Back Ext.'};
+const UNIT_NAME = window.UNIT_NAME = {1:'Warm Up',2:'Foot Work',3:'Abdominal',4:'Hip Work',5:'Spinal Art.',6:'Full Body',7:'Arm Work',8:'Leg Work',9:'Lat. Flex',10:'Back Ext.'};
 
 /* ══════════════════════════════════
    3-COLUMN BUILDER SYSTEM
@@ -2890,10 +3266,9 @@ const bState = {
   F:{unit:null,mode:'pick',prog:[]},
   I:{unit:null,mode:'pick',prog:[]},
   A:{unit:null,mode:'pick',prog:[]},
-  M:{unit:null,mode:'pick',prog:[]},
 };
 
-const LEVEL_COLOR_CSS = {F:'var(--fundamental)',I:'var(--intermediate)',A:'var(--advance)',M:'var(--master)'};
+const LEVEL_COLOR_CSS = {F:'var(--fundamental)',I:'var(--intermediate)',A:'var(--advance)'};
 
 function buildButtons(containerId, lv) {
   b3RenderNav(lv);
@@ -3155,13 +3530,9 @@ const B3_CONTRA={
     {text:'逆立ち系・高負荷バランス種目'}],
     ok:[{text:'膝立ち種目は十分な注意のもと実施可能'},{text:'ショートスパインは可（ロングスパインは不可）'},{text:'スタンディング種目はサポート付きで導入可'}]},
   A:{title:'ADVANCE ─ 禁忌',items:[
-    {text:'マスター専用の最高難度種目（フルバランスコントロール等）'},
-    {text:'クライアントの習熟度が不十分な種目は無理に入れない'}],
-    ok:[{text:'ロングスパイン、ジャックナイフ等の上級スパイン系は可'},{text:'サイドスプリット、アップストレッチ等のスタンディング系は可'},{text:'ニーリングシリーズは全種目実施可'},{text:'インストラクター判断でほぼ全種目選択可能'}]},
-  M:{title:'MASTER ─ 禁忌',items:[
-    {text:'クライアントの当日のコンディションに合わない種目'},
-    {text:'一般的な禁忌事項に該当する場合は適宜除外'}],
-    ok:[{text:'全種目が選択可能 ─ インストラクターの技量と判断で自在に構成'},{text:'最高難度のバリエーション・トランジションを含む構成が可能'},{text:'クライアントの状態を常にモニタリングし、リアルタイムで調整'}]}
+    {text:'クライアントの習熟度が不十分な種目は無理に入れない'},
+    {text:'安全性を最優先とした種目選択'}],
+    ok:[{text:'ロングスパイン、ジャックナイフ等の上級スパイン系は可'},{text:'サイドスプリット、アップストレッチ等のスタンディング系は可'},{text:'ニーリングシリーズは全種目実施可'},{text:'インストラクター判断でほぼ全種目選択可能'}]}
 };
 const guideLevels={
   F:{label:'FUNDAMENTAL',color:'#22C55E',summary:'全10ユニットを原則実施。安全性と正しいフォームの習得を最優先とし、各ユニットのFUNDAMENTALバリエーションをバランスよく配置します。目安：20〜25エクササイズ',
@@ -3205,26 +3576,12 @@ const guideLevels={
       {tag:'req',time:'3-5',desc:'スネーク＆ツイスト・マーメイド上級・ラテラル全種'},
       {tag:'req',time:'3-5',desc:'スワンダイブ・バックエクステンション上級・ブレストストローク'}
     ],
-    philosophy:[{title:'全ユニット原則実施',text:'全10ユニットを必ずレッスンに組み込みます。レベルに応じた上級バリエーションを選択し、ダイナミックなフローと複合動作で構成します。',label:'バランス',lcolor:'rgba(245,158,11,.15)',tcolor:'#F59E0B'},{title:'複合動作の統合',text:'複数ユニットをまたぐ複合種目・連続動作を多用し、単純な種目の羅列ではなく、有機的に繋がったプログラムを設計します。',label:'統合',lcolor:'rgba(245,158,11,.12)',tcolor:'#F59E0B'}]},
-  M:{label:'MASTER',color:'#C8102E',summary:'全10ユニットを原則実施。すべてのバリエーションから自在に選択し、クライアントの状態をリアルタイムで読み取りながら最高難度のプログラムを設計します。目安：30〜40エクササイズ',
-    units:[
-      {tag:'req',time:'5-10',desc:'コントロール系全種・フルスパイナル・トランジションフロー'},
-      {tag:'req',time:'7-12',desc:'全フットワーク・ジャンプボード・サイドスプリットフル'},
-      {tag:'req',time:'5-10',desc:'ティーザーフル・コークスクリュー・ジャックナイフ・ロールオーバー'},
-      {tag:'req',time:'5-10',desc:'ヒップワーク上級全種・スタンディングキック全種'},
-      {tag:'req',time:'5-8',desc:'セミサークル・ロングスパイン・スパイナル全種'},
-      {tag:'req',time:'5-8',desc:'アップストレッチフル・スネーク・ツイスト・エレファントフル'},
-      {tag:'req',time:'5-8',desc:'ニーリング全種・ローイング全種・アームワークフル'},
-      {tag:'req',time:'5-8',desc:'スタンディング全種・ジャンプボード全種'},
-      {tag:'req',time:'3-5',desc:'ラテラル全種・スネーク＆ツイストフル'},
-      {tag:'req',time:'3-5',desc:'スワンダイブフル・ロッキング・バックエクステンション全種'}
-    ],
-    philosophy:[{title:'全ユニット原則実施',text:'全10ユニットを毎レッスンで実施します。インストラクターの最大の技量を発揮し、クライアントのその日のコンディションを瞬時に読み取って最適なバリエーションを選択します。',label:'最高難度',lcolor:'rgba(200,16,46,.15)',tcolor:'#C8102E'},{title:'即興と設計の融合',text:'事前設計を基盤としつつ、クライアントの反応に応じてリアルタイムでプログラムを修正します。全ユニットを制御しながら即興対応できることがMASTERの条件です。',label:'即興対応',lcolor:'rgba(200,16,46,.12)',tcolor:'#C8102E'}]}
+    philosophy:[{title:'全ユニット原則実施',text:'全10ユニットを必ずレッスンに組み込みます。レベルに応じた上級バリエーションを選択し、ダイナミックなフローと複合動作で構成します。',label:'バランス',lcolor:'rgba(245,158,11,.15)',tcolor:'#F59E0B'},{title:'複合動作の統合',text:'複数ユニットをまたぐ複合種目・連続動作を多用し、単純な種目の羅列ではなく、有機的に繋がったプログラムを設計します。',label:'統合',lcolor:'rgba(245,158,11,.12)',tcolor:'#F59E0B'}]}
 }
 const tagMap={req:'g-req',rec:'g-rec',opt:'g-opt',no:'g-no'};
 const tagLabel={req:'必須',rec:'推奨',opt:'選択',no:'制限'};
 const tagCycle=['req','rec','opt','no'];
-const guideCustom={F:Array(10).fill(null),I:Array(10).fill(null),A:Array(10).fill(null),M:Array(10).fill(null)};
+const guideCustom={F:Array(10).fill(null),I:Array(10).fill(null),A:Array(10).fill(null)};
 let currentGuideLv='F';
 
 function cycleTag(lv,idx){
@@ -3287,7 +3644,7 @@ function renderGuide(lv){
 }
 
 /* Init */
-buildButtons('btnsF','F');buildButtons('btnsI','I');buildButtons('btnsA','A');buildButtons('btnsM','M');
+buildButtons('btnsF','F');buildButtons('btnsI','I');buildButtons('btnsA','A');
 switchGuide('F');
 
 /* ══════════════════════════════════════════════════════
@@ -3296,20 +3653,21 @@ switchGuide('F');
 ══════════════════════════════════════════════════════ */
 
 // ── データ構造: {u, app, name, variations:[{lv,desc}]} ──
-const EX = [
+// window.EX / window.UNIT_NAME をグローバルに公開（器具別養成スライド等から参照）
+const EX = window.EX = [
 
   // ════════════ UNIT 01: WARM UP ════════════
   {u:1,app:'R',name:'Footwork — Parallel Heels（パラレルヒール）',variations:[
     {lv:'F',desc:'ニュートラルポジション確認。ゆっくり丁寧に脊柱・骨盤を安定させる'},
     {lv:'I',desc:'テンポを加え、呼吸とフットワークを連動。意識的な体幹の安定'},
     {lv:'A',desc:'スプリング設定を変えながら片脚バリエーションを組み合わせ'},
-    {lv:'M',desc:'ジャンプボードでの動的アクティベーション。フローで次の種目へ移行'},
+    {lv:'A',desc:'ジャンプボードでの動的アクティベーション。フローで次の種目へ移行'},
   ]},
   {u:1,app:'R',name:'Bridging（ブリッジング）',variations:[
     {lv:'F',desc:'骨盤のニュートラル確認。脊柱を節ごとに意識しながら持ち上げる'},
     {lv:'I',desc:'片脚ブリッジ導入。骨盤の安定を保ちながら非対称荷重に挑戦'},
     {lv:'A',desc:'肩の高さまで引き上げ（ショルダーブリッジ）。体幹・臀部の高強度'},
-    {lv:'M',desc:'アーティキュレーションを加えた連続動作でハイブリッジへ発展'},
+    {lv:'A',desc:'アーティキュレーションを加えた連続動作でハイブリッジへ発展'},
   ]},
   {u:1,app:'C',name:'Push Through — Breathing（ブリージング）',variations:[
     {lv:'F',desc:'バーを持ち、呼吸に合わせて脊柱を伸ばす。スプリングで呼吸の意識づけ'},
@@ -3337,18 +3695,18 @@ const EX = [
     {lv:'F',desc:'かかと位置、脚の幅を確認。ゆっくりと均等な荷重で押す'},
     {lv:'I',desc:'テンポを上げる。呼吸リズムと合わせ、意識的に股関節・膝・足首の連動'},
     {lv:'A',desc:'スプリング変更しながら変化をつける。アライメントの精度を求める'},
-    {lv:'M',desc:'ジャンプボード接続。エクセントリック／プライオメトリックへ発展'},
+    {lv:'A',desc:'ジャンプボード接続。エクセントリック／プライオメトリックへ発展'},
   ]},
   {u:2,app:'R',name:'Footwork — Parallel Toes（パラレルトー）',variations:[
     {lv:'F',desc:'爪先位置での基本荷重。足底筋とふくらはぎの活性化を意識'},
     {lv:'I',desc:'踵上げ（カーフレイズ）をセット内で組み合わせ。変化のあるフット'},
     {lv:'A',desc:'シングルレッグと交互に。不安定なバランスへの対応力向上'},
-    {lv:'M',desc:'高速テンポ＋片脚ジャンプボード。瞬発的な下肢筋力を開発'},
+    {lv:'A',desc:'高速テンポ＋片脚ジャンプボード。瞬発的な下肢筋力を開発'},
   ]},
   {u:2,app:'R',name:'Footwork — Single Leg（シングルレッグ）',variations:[
     {lv:'I',desc:'片脚で骨盤を安定させたままキャレッジを押す。中臀筋の意識'},
     {lv:'A',desc:'骨盤の傾きを最小化しながら、非対称荷重でのコントロール強化'},
-    {lv:'M',desc:'シングルレッグ＋回旋、またはジャンプボードでの爆発的な動き'},
+    {lv:'A',desc:'シングルレッグ＋回旋、またはジャンプボードでの爆発的な動き'},
   ]},
   {u:2,app:'R',name:'Prances（プランセス）',variations:[
     {lv:'F',desc:'交互に足を入れ替えリズミカルに。ふくらはぎのストレッチ感を意識'},
@@ -3363,7 +3721,7 @@ const EX = [
   {u:2,app:'W',name:'Pumping — Standing（スタンディングポンピング）',variations:[
     {lv:'I',desc:'立位でペダルを押す。全身のバランスとふくらはぎのアクティベーション'},
     {lv:'A',desc:'腕の動きを加えたスタンディングポンプ。バランス難易度を上げる'},
-    {lv:'M',desc:'片脚スタンディング。高度なバランスと下肢の協調性を要求'},
+    {lv:'A',desc:'片脚スタンディング。高度なバランスと下肢の協調性を要求'},
   ]},
 
   // ════════════ UNIT 03: ABDOMINAL WORK ════════════
@@ -3371,7 +3729,7 @@ const EX = [
     {lv:'F',desc:'膝を曲げてテーブルトップ。頭を持ち上げ、基本の呼吸リズム（5拍×10回）'},
     {lv:'I',desc:'脚を90度に伸ばすフルポジション。体幹の安定を保ち腕のパンプ'},
     {lv:'A',desc:'脚を低く保つ（45度以下）。体幹への負荷を最大化。呼吸の深度も増す'},
-    {lv:'M',desc:'脚を10度まで下げ、フローでCoordinationへ移行。最大コア強度'},
+    {lv:'A',desc:'脚を10度まで下げ、フローでCoordinationへ移行。最大コア強度'},
   ]},
   {u:3,app:'R',name:'Frog（フロッグ）',variations:[
     {lv:'F',desc:'ストラップで脚をサポート。骨盤ニュートラルを保ち股関節を動かす'},
@@ -3381,12 +3739,12 @@ const EX = [
   {u:3,app:'R',name:'Coordination（コーディネーション）',variations:[
     {lv:'I',desc:'膝曲げのベーシック。腕の伸展と脚の動きを別々に意識しながら協調'},
     {lv:'A',desc:'脚を伸ばしたフルバージョン。上下肢の同時コントロールを要求'},
-    {lv:'M',desc:'速いテンポでの連続実施。動作パターンの完全な自動化が前提'},
+    {lv:'A',desc:'速いテンポでの連続実施。動作パターンの完全な自動化が前提'},
   ]},
   {u:3,app:'R',name:'Overhead（オーバーヘッド）',variations:[
     {lv:'I',desc:'体幹を使って脚を頭上へ。コントロールされたロールオーバーの入口'},
     {lv:'A',desc:'脚を真上から床方向へのコントロール。脊柱の完全なアーティキュレーション'},
-    {lv:'M',desc:'連続動作でRolloverへ直接つなぐ。上級フロー構成の核となる種目'},
+    {lv:'A',desc:'連続動作でRolloverへ直接つなぐ。上級フロー構成の核となる種目'},
   ]},
   {u:3,app:'R',name:'Short Box — Round（ラウンド）',variations:[
     {lv:'F',desc:'Cカーブを作り骨盤後傾。背面の伸長と体幹の基本的な安定を習得'},
@@ -3401,17 +3759,17 @@ const EX = [
   {u:3,app:'R',name:'Short Box — Twist & Reach（ツイスト＆リーチ）',variations:[
     {lv:'I',desc:'ツイストのみ（到達なし）。脊柱の回旋と骨盤の固定を分離して習得'},
     {lv:'A',desc:'ツイスト＋リーチ。側方への重心移動を制御しながら深い回旋'},
-    {lv:'M',desc:'最大可動域でのツイスト＆リーチ。フローで次の種目へノンストップ移行'},
+    {lv:'A',desc:'最大可動域でのツイスト＆リーチ。フローで次の種目へノンストップ移行'},
   ]},
   {u:3,app:'R',name:'Tree（ツリー）',variations:[
     {lv:'I',desc:'片脚を手で支えながらロールダウン。ハムストリングと脊柱の協調'},
     {lv:'A',desc:'手の支えを減らしたバージョン。バランスと柔軟性の両立を要求'},
-    {lv:'M',desc:'ノーハンドのツリー。体幹だけでコントロールする最高難度バリエーション'},
+    {lv:'A',desc:'ノーハンドのツリー。体幹だけでコントロールする最高難度バリエーション'},
   ]},
   {u:3,app:'R',name:'Teaser（ティーザー）',variations:[
     {lv:'I',desc:'Teaser Prep（膝を曲げたバージョン）。V字バランスの感覚をつかむ'},
     {lv:'A',desc:'脚を伸ばしたフルティーザー。バランスを保ちながらロールアップ・ダウン'},
-    {lv:'M',desc:'ティーザーI/II/III全バリエーション。腕の動きを加えた連続バランス'},
+    {lv:'A',desc:'ティーザーI/II/III全バリエーション。腕の動きを加えた連続バランス'},
   ]},
   {u:3,app:'B',name:'SC — Hundred / Double Leg Stretch（ハンドレッド）',variations:[
     {lv:'F',desc:'バレルのサポートで頭・首の負担を軽減。基本の呼吸パターンと体幹収縮'},
@@ -3434,28 +3792,28 @@ const EX = [
     {lv:'F',desc:'脚上げと小さなサークル。側臥位での骨盤安定と中臀筋の基礎強化'},
     {lv:'I',desc:'レッグプレス・バイシクルを追加。側臥位シリーズをフローで組み合わせ'},
     {lv:'A',desc:'上側の脚に軽い抵抗を加える。臀部・腸腰筋の高強度活性化'},
-    {lv:'M',desc:'ニーリングサイドキックへ発展。バランスと全身の統合を要求'},
+    {lv:'A',desc:'ニーリングサイドキックへ発展。バランスと全身の統合を要求'},
   ]},
   {u:4,app:'C',name:'Leg Springs — Frog / Circles（レッグスプリング）',variations:[
     {lv:'F',desc:'スプリングで脚をサポート。仰臥位でのフロッグ＆サークル基礎'},
     {lv:'I',desc:'よりダイナミックな動作。スプリング抵抗を活かしながらリズミカルに'},
     {lv:'A',desc:'Stag・Arabesque等の上級バリエーションへ。股関節の三次元的な動き'},
-    {lv:'M',desc:'全バリエーションをフローで連続実施。スプリング設定を変えながら高強度に'},
+    {lv:'A',desc:'全バリエーションをフローで連続実施。スプリング設定を変えながら高強度に'},
   ]},
 
   // ════════════ UNIT 05: SPINAL ARTICULATION ════════════
   {u:5,app:'R',name:'Short Spine Massage（ショートスパイン）',variations:[
     {lv:'I',desc:'ストラップで脚を支えながら骨盤を持ち上げる。脊柱の節々を意識'},
     {lv:'A',desc:'骨盤をより高く引き上げ。ショルダースタンドに近い高さへ'},
-    {lv:'M',desc:'フルショートスパイン。上部から下部まで完全にアーティキュレーション'},
+    {lv:'A',desc:'フルショートスパイン。上部から下部まで完全にアーティキュレーション'},
   ]},
   {u:5,app:'R',name:'Long Spine Massage（ロングスパイン）',variations:[
     {lv:'A',desc:'ショートスパインより可動域が大きい。肩甲骨の安定と体幹の強さが必要'},
-    {lv:'M',desc:'脚を床と平行まで下ろすフルバージョン。最大限の脊柱の柔軟性を要求'},
+    {lv:'A',desc:'脚を床と平行まで下ろすフルバージョン。最大限の脊柱の柔軟性を要求'},
   ]},
   {u:5,app:'R',name:'Semicircle（セミサークル）',variations:[
     {lv:'A',desc:'キャレッジの上で橋のポーズをとりながら押す。股関節伸展と体幹安定の統合'},
-    {lv:'M',desc:'脚の伸展と屈曲のサイクルを完全にコントロール。上級体幹制御種目'},
+    {lv:'A',desc:'脚の伸展と屈曲のサイクルを完全にコントロール。上級体幹制御種目'},
   ]},
   {u:5,app:'C',name:'Tower（タワー）',variations:[
     {lv:'F',desc:'バーを足で押してヒップを持ち上げる基本。脊柱伸展の安全な入口'},
@@ -3464,7 +3822,7 @@ const EX = [
   ]},
   {u:5,app:'C',name:'Rollover / Jackknife（ロールオーバー）',variations:[
     {lv:'A',desc:'ロールオーバー基本。脊柱を節ごとに使い、コントロールされた倒立動作'},
-    {lv:'M',desc:'ジャックナイフ：垂直まで脚を上げる高難度バリエーション。強い体幹が前提'},
+    {lv:'A',desc:'ジャックナイフ：垂直まで脚を上げる高難度バリエーション。強い体幹が前提'},
   ]},
 
   // ════════════ UNIT 06: FULL BODY INTEGRATION ════════════
@@ -3472,7 +3830,7 @@ const EX = [
     {lv:'F',desc:'Round: Cカーブで座り、キャレッジを押す。腹部のマッサージ効果と体幹'},
     {lv:'I',desc:'Flat: 背面を平らにして前傾。より高い股関節屈筋の柔軟性を要求'},
     {lv:'A',desc:'Twist: 押した状態でのロテーション追加。三次元的な体幹の安定'},
-    {lv:'M',desc:'Reach: 高い伸展位でのバランス保持。最大可動域での体幹統合'},
+    {lv:'A',desc:'Reach: 高い伸展位でのバランス保持。最大可動域での体幹統合'},
   ]},
   {u:6,app:'R',name:'Knee Stretch（ニーストレッチ）',variations:[
     {lv:'F',desc:'Round: 四つ這い姿勢でCカーブ。腰椎の屈曲保持と体幹安定の基礎'},
@@ -3482,12 +3840,12 @@ const EX = [
   {u:6,app:'R',name:'Long Stretch（ロングストレッチ）',variations:[
     {lv:'I',desc:'プランク姿勢でキャレッジを前後に動かす。肩甲骨安定と全身の繋がり'},
     {lv:'A',desc:'Up Stretch: ヒップを高く持ち上げパイクポーズから押し出す。高強度'},
-    {lv:'M',desc:'Down/Up Stretchをシームレスに連続。フローの中でのコントロール'},
+    {lv:'A',desc:'Down/Up Stretchをシームレスに連続。フローの中でのコントロール'},
   ]},
   {u:6,app:'R',name:'Elephant（エレファント）',variations:[
     {lv:'I',desc:'足をフットバーに乗せ、ヒップ高くしてキャレッジを押す。股関節と背面の伸長'},
     {lv:'A',desc:'脊柱の伸長を保ちながら素早く動かす。Pikeへの準備'},
-    {lv:'M',desc:'片脚エレファント。高度な体重移動とバランスコントロール'},
+    {lv:'A',desc:'片脚エレファント。高度な体重移動とバランスコントロール'},
   ]},
   {u:6,app:'R',name:'Running（ランニング）',variations:[
     {lv:'F',desc:'交互に踵を下ろすことでふくらはぎのストレッチ。リズミカルなクールダウン'},
@@ -3497,7 +3855,7 @@ const EX = [
   {u:6,app:'W',name:'Mountain Climber / Pike（マウンテンクライマー）',variations:[
     {lv:'I',desc:'マウンテンクライマー: 脚を交互に動かす。全身の協調と体幹安定'},
     {lv:'A',desc:'Pike: 両腕でペダルを押しながらヒップを高く。倒立系動作の入口'},
-    {lv:'M',desc:'Pike Twisted: パイクから回旋を加える。最高難度のチェア種目の一つ'},
+    {lv:'A',desc:'Pike Twisted: パイクから回旋を加える。最高難度のチェア種目の一つ'},
   ]},
 
   // ════════════ UNIT 07: ARM WORK ════════════
@@ -3505,7 +3863,7 @@ const EX = [
     {lv:'F',desc:'From the Sternum / Into the Sternum: 基本のロウイング。肩甲骨の動きと体幹の安定を習得'},
     {lv:'I',desc:'From the Chest / Hip: 前方へのリーチを加えた発展形。脊柱の屈曲・伸展を統合'},
     {lv:'A',desc:'全6種類のRowingをフローで連続。上半身と体幹の完全な統合を要求'},
-    {lv:'M',desc:'テンポと呼吸を変化させながらシリーズを自在に組み合わせ'},
+    {lv:'A',desc:'テンポと呼吸を変化させながらシリーズを自在に組み合わせ'},
   ]},
   {u:7,app:'R',name:'Shaving / Hug / Chest Expansion（アームワーク基礎）',variations:[
     {lv:'F',desc:'シェービング・ハグ・チェストエクスパンション: 肩甲骨周囲筋の基礎活性化'},
@@ -3516,7 +3874,7 @@ const EX = [
     {lv:'F',desc:'座位でのチェストエクスパンション・ハグ。スプリング抵抗で肩甲骨を安定させる基礎'},
     {lv:'I',desc:'Bug・Row・Boxingを追加。多方向での上肢筋力と肩甲帯安定性の強化'},
     {lv:'A',desc:'立位・ニーリングへの発展。重心が高くなるため体幹コントロールが増大'},
-    {lv:'M',desc:'全バリエーションをシームレスに連続。高度なプログラムデザインで実施'},
+    {lv:'A',desc:'全バリエーションをシームレスに連続。高度なプログラムデザインで実施'},
   ]},
   {u:7,app:'W',name:'Press Down Series（プレスダウンシリーズ）',variations:[
     {lv:'F',desc:'座位でのプレスダウン。肩関節の安定と広背筋の活性化を習得'},
@@ -3527,20 +3885,20 @@ const EX = [
   // ════════════ UNIT 08: LEG WORK ════════════
   {u:8,app:'R',name:'Side Splits（サイドスプリット）',variations:[
     {lv:'A',desc:'キャレッジの上に立ち、脚を横に広げる。バランスと内転筋のエキセントリック強度'},
-    {lv:'M',desc:'動的サイドスプリット。体重移動と下肢のコントロールを最大限に要求'},
+    {lv:'A',desc:'動的サイドスプリット。体重移動と下肢のコントロールを最大限に要求'},
   ]},
   {u:8,app:'R',name:'Front Splits（フロントスプリット）',variations:[
     {lv:'A',desc:'前後に脚を開くランジ系。股関節前後の柔軟性と体幹バランスが必要'},
-    {lv:'M',desc:'キャレッジを前後に動かしながらのダイナミックフロントスプリット'},
+    {lv:'A',desc:'キャレッジを前後に動かしながらのダイナミックフロントスプリット'},
   ]},
   {u:8,app:'W',name:'Standing Leg Press（スタンディング）',variations:[
     {lv:'I',desc:'立位で片脚ずつペダルを押す。バランスと下肢の機能的な筋力強化'},
     {lv:'A',desc:'ペダルを押しながら体幹の回旋を加える。全身の協調性を要求'},
-    {lv:'M',desc:'バランスチャレンジを追加した最高難度スタンディングバリエーション'},
+    {lv:'A',desc:'バランスチャレンジを追加した最高難度スタンディングバリエーション'},
   ]},
   {u:8,app:'C',name:'Trapeze — Hanging / Walking（トラピーズ）',variations:[
     {lv:'A',desc:'トラピーズにぶら下がり、脊柱の牽引とデコンプレッション'},
-    {lv:'M',desc:'トラピーズ・ウォーキング。上肢と体幹の高度な連携が要求される'},
+    {lv:'A',desc:'トラピーズ・ウォーキング。上肢と体幹の高度な連携が要求される'},
   ]},
 
   // ════════════ UNIT 09: LATERAL FLEXION & ROTATION ════════════
@@ -3548,16 +3906,16 @@ const EX = [
     {lv:'F',desc:'片側に傾けるだけのシンプルサイドベンド。側屈の可動域と側腹筋の伸長'},
     {lv:'I',desc:'傾けた後に反対側への伸長を加える。脊柱の側屈の対称性を確認'},
     {lv:'A',desc:'手をフットバーに乗せ、キャレッジを使ったダイナミックマーメイド'},
-    {lv:'M',desc:'両側をフローで連結。ローテーションを加え三次元的なラテラルフレクション'},
+    {lv:'A',desc:'両側をフローで連結。ローテーションを加え三次元的なラテラルフレクション'},
   ]},
   {u:9,app:'R',name:'Short Box — Twist / Side to Side（ショートボックス）',variations:[
     {lv:'I',desc:'Side to Side: ボックス上で体を横に傾ける基本側屈。骨盤固定を意識'},
     {lv:'A',desc:'Twist: 脊柱の回旋を加え、骨盤と胸郭の分離制御を習得'},
-    {lv:'M',desc:'Twist and Reach: 最大回旋＋側方へのリーチ。高度な体幹三次元制御'},
+    {lv:'A',desc:'Twist and Reach: 最大回旋＋側方へのリーチ。高度な体幹三次元制御'},
   ]},
   {u:9,app:'R',name:'Snake & Twist（スネーク＆ツイスト）',variations:[
     {lv:'A',desc:'スネーク: 斜め向きでのPike系動作。脊柱の側屈と回旋の複合パターン'},
-    {lv:'M',desc:'Twist: さらに上半身の回旋を加えた最高難度。コントロールの芸術'},
+    {lv:'A',desc:'Twist: さらに上半身の回旋を加えた最高難度。コントロールの芸術'},
   ]},
   {u:9,app:'C',name:'Push Through — Spine Twist / Side Bend（キャデラック回旋）',variations:[
     {lv:'I',desc:'スパインツイスト: バーを使い、脊柱の回旋を補助。骨盤固定の意識づけ'},
@@ -3567,7 +3925,7 @@ const EX = [
     {lv:'F',desc:'スパインコレクターで基本サイドストレッチ。側屈の心地よい可動域開放'},
     {lv:'I',desc:'マーメイド・Saw（ソー）: バレルの形状を活かした深い側屈と前方回旋'},
     {lv:'A',desc:'ラダーバレルで大きな可動域のサイドベンド。肋骨から骨盤までの全側面'},
-    {lv:'M',desc:'回旋系全バリエーションをフローで組み合わせ。インストラクターの自由構成'},
+    {lv:'A',desc:'回旋系全バリエーションをフローで組み合わせ。インストラクターの自由構成'},
   ]},
 
   // ════════════ UNIT 10: BACK EXTENSION ════════════
@@ -3575,7 +3933,7 @@ const EX = [
     {lv:'F',desc:'Swan Prep: 胸椎を少しだけ伸展。首・腰への過負荷なく、体幹前面の伸長'},
     {lv:'I',desc:'Pulling Straps: ストラップを引きながらフルスワン。背面全体の筋力強化'},
     {lv:'A',desc:'Swan Dive Prep: 体を前後に揺らす予備動作。高い胸椎可動域が必要'},
-    {lv:'M',desc:'Swan Dive / Rocking: 腹部をピボットに前後ロッキング。最大バックエクステンション'},
+    {lv:'A',desc:'Swan Dive / Rocking: 腹部をピボットに前後ロッキング。最大バックエクステンション'},
   ]},
   {u:10,app:'R',name:'Long Box — Pulling Straps / T-Pull（ロングボックス背面）',variations:[
     {lv:'F',desc:'Pulling Straps 1: 腕を体側で後ろへ引く。僧帽筋・菱形筋の基礎強化'},
@@ -3585,7 +3943,7 @@ const EX = [
   {u:10,app:'R',name:'Breaststroke / Grasshopper（プローン上級）',variations:[
     {lv:'I',desc:'Breaststroke: 腕の循環動作＋背面伸展。協調性と背面全体の強さを要求'},
     {lv:'A',desc:'Grasshopper: 膝の屈曲を加えた高難度プローン。ハムと背面の総合強化'},
-    {lv:'M',desc:'連続バックエクステンションシリーズ。フローで組み合わせ全種目を通す'},
+    {lv:'A',desc:'連続バックエクステンションシリーズ。フローで組み合わせ全種目を通す'},
   ]},
   {u:10,app:'C',name:'Swan / Back Extension（キャデラック）',variations:[
     {lv:'F',desc:'Prone Arm Springs: うつ伏せでのアームプッシュ。胸椎伸展と肩甲帯の基礎'},
@@ -3596,7 +3954,7 @@ const EX = [
     {lv:'F',desc:'Swan: ラダーバレルで安全に胸椎伸展。背面の自然なカーブを感じる'},
     {lv:'I',desc:'Backbend: ラダーを使いバックベンド。徐々に深めていく段階的アプローチ'},
     {lv:'A',desc:'Swan Dive: 胸椎から倒れ込む高難度。バレル上での大きな後屈伸展'},
-    {lv:'M',desc:'全バックエクステンションバリエーションをフロー構成。ロッキング系も含む'},
+    {lv:'A',desc:'全バックエクステンションバリエーションをフロー構成。ロッキング系も含む'},
   ]},
   {u:10,app:'B',name:'AB — Swan / Kick（アークバレル背面）',variations:[
     {lv:'F',desc:'Back Extension: アークバレル上でうつ伏せになり背面を緩やかに伸展'},
@@ -3610,12 +3968,12 @@ const EX = [
    EXERCISE MASTER LIST (Slide 17)
 ══════════════════════════════════ */
 (function(){
-  const LV_FULL={F:'FUNDAMENTAL',I:'INTERMEDIATE',A:'ADVANCE',M:'MASTER'};
-  const LV_COL={F:'var(--fundamental)',I:'var(--intermediate)',A:'var(--advance)',M:'var(--master)'};
+  const LV_FULL={F:'FUNDAMENTAL',I:'INTERMEDIATE',A:'ADVANCE'};
+  const LV_COL={F:'var(--fundamental)',I:'var(--intermediate)',A:'var(--advance)'};
   const APP_COL={R:'#4a8fd4',C:'#2da878',W:'#d4903a',B:'#c45880'};
 
   let emlUnit=0;
-  let emlLvFilter=new Set(['F','I','A','M']);
+  let emlLvFilter=new Set(['F','I','A']);
   let emlAppFilter=new Set(['R','C','W','B']);
 
   window.emlInit=function emlInit(){
@@ -3633,7 +3991,7 @@ const EX = [
   function emlRenderControls(){
     const lfs=document.getElementById('eml-lv-filters');
     if(lfs){
-      lfs.innerHTML=['F','I','A','M'].map(lv=>`
+      lfs.innerHTML=['F','I','A'].map(lv=>`
         <button class="eml-lv-btn eml-lv-on-${lv}" data-lv="${lv}" onclick="emlToggleLv('${lv}')"
           style="${emlLvFilter.has(lv)?'opacity:1':'opacity:0.28'}">${LV_FULL[lv]}</button>
       `).join('');
@@ -3694,9 +4052,9 @@ const EX = [
       const appTxt=APP_COL[ex.app];
       const matchedVars=ex.variations.filter(v=>emlLvFilter.has(v.lv));
 
-      // level bar: 4 segments, colored if active
+      // level bar: 3 segments, colored if active
       let lvBar='';
-      ['F','I','A','M'].forEach(lv=>{
+      ['F','I','A'].forEach(lv=>{
         const has=ex.variations.some(v=>v.lv===lv);
         const active=has&&emlLvFilter.has(lv);
         const col=LV_COL[lv];
@@ -3722,7 +4080,7 @@ const EX = [
         <div class="eml-card-foot" style="padding:0 11px 9px;position:relative">
           <div style="display:flex;gap:3px;margin-bottom:4px">${lvBar}</div>
           <div style="display:flex;gap:3px">
-            ${['F','I','A','M'].map(lv=>{
+            ${['F','I','A'].map(lv=>{
               const has=ex.variations.some(v=>v.lv===lv);
               const active=has&&emlLvFilter.has(lv);
               return `<span style="flex:1;text-align:center;font:700 8px Montserrat;letter-spacing:.5px;color:${active?LV_COL[lv]:'var(--dim)'}${has?'':';opacity:.2'}">${lv}</span>`;
@@ -3746,7 +4104,6 @@ const EX = [
 .eml-lv-on-F{border-color:var(--fundamental);color:var(--fundamental)}
 .eml-lv-on-I{border-color:var(--intermediate);color:var(--intermediate)}
 .eml-lv-on-A{border-color:var(--advance);color:var(--advance)}
-.eml-lv-on-M{border-color:var(--master);color:var(--master)}
 .eml-app-btn{font:600 9px Montserrat;letter-spacing:1px;padding:5px 10px;border:1px solid;border-radius:3px;background:transparent;cursor:pointer;transition:opacity .15s;white-space:nowrap}
 .eml-app-on-R{border-color:#4a8fd4;color:#4a8fd4}
 .eml-app-on-C{border-color:#2da878;color:#2da878}
@@ -3765,7 +4122,7 @@ const EX = [
   document.head.appendChild(st);
 
   document.addEventListener('DOMContentLoaded',()=>{
-    if(document.querySelector('.slide[data-slide="14"].active'))emlInit();
+    if(document.querySelector('.slide[data-slide="13"].active'))emlInit();
   });
 })();
 /* ══════════════════════════════════
@@ -3774,8 +4131,8 @@ const EX = [
 (function(){
 
   const ADM_APP_COL={R:'#4a8fd4',C:'#2da878',W:'#d4903a',B:'#c45880'};
-  const ADM_LV_COL={F:'var(--fundamental)',I:'var(--intermediate)',A:'var(--advance)',M:'var(--master)'};
-  const ADM_LV_FULL={F:'FUNDAMENTAL',I:'INTERMEDIATE',A:'ADVANCE',M:'MASTER'};
+  const ADM_LV_COL={F:'var(--fundamental)',I:'var(--intermediate)',A:'var(--advance)'};
+  const ADM_LV_FULL={F:'FUNDAMENTAL',I:'INTERMEDIATE',A:'ADVANCE'};
   const ADM_APP_NAMES={R:'REFORMER',C:'CADILLAC',W:'CHAIR',B:'BARREL'};
 
   let admSelected = null; // index into EX array
@@ -3868,7 +4225,7 @@ const EX = [
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
           <select onchange="admSetVarLv(${idx},${vi},this.value)"
             style="font:700 9px Montserrat;letter-spacing:1px;padding:4px 8px;border-radius:3px;border:1px solid ${ADM_LV_COL[v.lv]}44;background:${ADM_LV_COL[v.lv]}22;color:${ADM_LV_COL[v.lv]};outline:none;cursor:pointer">
-            ${['F','I','A','M'].map(lv=>`<option value="${lv}" ${v.lv===lv?'selected':''}>${ADM_LV_FULL[lv]}</option>`).join('')}
+            ${['F','I','A'].map(lv=>`<option value="${lv}" ${v.lv===lv?'selected':''}>${ADM_LV_FULL[lv]}</option>`).join('')}
           </select>
           <button onclick="admRemoveVar(${idx},${vi})" style="margin-left:auto;font:400 10px 'Noto Sans JP';padding:3px 9px;border:1px solid rgba(239,68,68,.3);border-radius:3px;background:rgba(239,68,68,.08);color:#EF4444;cursor:pointer;transition:.15s" onmouseover="this.style.background='rgba(239,68,68,.2)'" onmouseout="this.style.background='rgba(239,68,68,.08)'">削除</button>
         </div>
@@ -3953,7 +4310,7 @@ const EX = [
   };
   window.admAddVar = function(idx){
     const used = EX[idx].variations.map(v=>v.lv);
-    const next = ['F','I','A','M'].find(l=>!used.includes(l)) || 'F';
+    const next = ['F','I','A'].find(l=>!used.includes(l)) || 'F';
     EX[idx].variations.push({lv:next, desc:'説明を入力してください'});
     admRenderEditor(idx);
     admShowSaved(idx);
@@ -4035,7 +4392,7 @@ const EX = [
 
   // Hook into go()
   document.addEventListener('DOMContentLoaded',()=>{
-    if(document.querySelector('.slide[data-slide="15"].active')) admInit();
+    if(document.querySelector('.slide[data-slide="14"].active')) admInit();
   });
 
   window.admExportData = function(){
