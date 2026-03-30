@@ -584,7 +584,8 @@ var MACHINE_DATA = {
                 "price": 33000
               }
             ],
-            "image": "images/cropped/product-x02-b.jpg"
+            "image": "images/cropped/product-x02-b.jpg",
+            "images": ["images/cropped/product-x02-b.jpg", "images/lineup/x-02-B-1.jpeg", ""]
           },
           {
             "model": "X02-C",
