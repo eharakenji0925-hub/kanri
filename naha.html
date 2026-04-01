@@ -257,7 +257,7 @@ input[type="checkbox"] { width:18px; height:18px; cursor:pointer; accent-color:#
           <div class="info-label">役職</div><div class="info-value">専務取締役</div>
           <div class="info-label">TEL</div><div class="info-value">055-943-6371</div>
           <div class="info-label">携帯</div><div class="info-value">080-1627-2270</div>
-          <div class="info-label">E-mail</div><div class="info-value">h_shimoda.add-corp@pure.ocn.ne.jp</div>
+          <div class="info-label">E-mail</div><div class="info-value"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="670f38140f0e0a080306490603034a04081517271712150249080409490902490d17">[email&#160;protected]</a></div>
           <div class="info-label">FAX</div><div class="info-value">055-943-6372</div>
           <div class="info-label">住所</div><div class="info-value">〒410-0301 静岡県沼津市宮本25番地の1</div>
           <div class="info-label">URL</div><div class="info-value"><a href="http://www.add-corp.jp/" target="_blank">http://www.add-corp.jp/</a></div>
@@ -282,7 +282,7 @@ input[type="checkbox"] { width:18px; height:18px; cursor:pointer; accent-color:#
           <div class="info-label">役職</div><div class="info-value">取締役 経営企画室室長</div>
           <div class="info-label">TEL</div><div class="info-value">098-877-6848</div>
           <div class="info-label">携帯</div><div class="info-value">080-5641-4092</div>
-          <div class="info-label">E-mail</div><div class="info-value">watanabe@l-maruchu.com</div>
+          <div class="info-label">E-mail</div><div class="info-value"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="770016031619161512371b5a1a160502141f025914181a">[email&#160;protected]</a></div>
           <div class="info-label">FAX</div><div class="info-value">098-877-4323</div>
           <div class="info-label">住所</div><div class="info-value">〒901-2131 沖縄県浦添市牧港5-19-8</div>
           <div class="info-label">URL</div><div class="info-value"><a href="https://maruchu-kirei.com/" target="_blank">https://maruchu-kirei.com/</a></div>
@@ -307,7 +307,7 @@ input[type="checkbox"] { width:18px; height:18px; cursor:pointer; accent-color:#
           <div class="info-label">役職</div><div class="info-value">代表取締役 ／ コラーゲンスタジオ協会 代表理事 ／ PSGA Japan</div>
           <div class="info-label">TEL</div><div class="info-value">03-5604-9088</div>
           <div class="info-label">携帯</div><div class="info-value">090-3209-3600</div>
-          <div class="info-label">E-mail</div><div class="info-value">k.ehara@ace-axiscore.com</div>
+          <div class="info-label">E-mail</div><div class="info-value"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e289cc878a839083a2838187cf839a8b91818d9087cc818d8f">[email&#160;protected]</a></div>
           <div class="info-label">FAX</div><div class="info-value">03-5604-9089</div>
           <div class="info-label">住所</div><div class="info-value">〒116-0013 東京都荒川区西日暮里2丁目17-7 大石ビル3階</div>
           <div class="info-label">URL</div><div class="info-value"><a href="https://www.daimaruplanning.com/" target="_blank">daimaruplanning.com</a> ／ <a href="https://axiscore-pilates.com/" target="_blank">axiscore-pilates.com</a></div>
@@ -604,33 +604,54 @@ input[type="checkbox"] { width:18px; height:18px; cursor:pointer; accent-color:#
   <h2 class="section-title">キックオフミーティング 候補日程</h2>
   <p style="color:#666;margin-bottom:16px;">開催場所：沖縄（詳細会場 未定）</p>
 
+  <!-- 共有・保存パネル -->
+  <div id="share-panel" style="background:#e8f4fd;border:1px solid #90caf9;border-radius:10px;padding:16px 20px;margin-bottom:20px;">
+    <div style="display:flex;align-items:center;flex-wrap:wrap;gap:12px;">
+      <div style="flex:1;min-width:200px;">
+        <div style="font-size:13px;font-weight:bold;color:#1565c0;margin-bottom:4px;">📋 出欠を入力 → 自動保存・全員に即時反映</div>
+        <div id="share-status" style="font-size:12px;color:#555;">読み込み中…</div>
+      </div>
+      <button onclick="manualSave()" style="background:#1565c0;color:#fff;border:none;border-radius:6px;padding:10px 20px;font-size:13px;font-weight:bold;cursor:pointer;white-space:nowrap;">💾 今すぐ保存</button>
+      <button onclick="manualLoad()" style="background:#fff;color:#1565c0;border:1px solid #1565c0;border-radius:6px;padding:10px 16px;font-size:13px;font-weight:bold;cursor:pointer;white-space:nowrap;">🔄 最新を取得</button>
+      <button onclick="resetSelects()" style="background:#fff;color:#888;border:1px solid #ccc;border-radius:6px;padding:10px 16px;font-size:12px;cursor:pointer;white-space:nowrap;">リセット</button>
+    </div>
+    <div id="save-notice" style="display:none;margin-top:10px;padding:8px 12px;background:#e8f5e9;border-radius:6px;font-size:13px;color:#2e7d32;font-weight:bold;"></div>
+    <div id="error-notice" style="display:none;margin-top:10px;padding:8px 12px;background:#ffebee;border-radius:6px;font-size:13px;color:#c62828;font-weight:bold;"></div>
+  </div>
+
+  <!-- 確定候補バナー -->
+  <div id="confirmed-banner" style="display:none;background:#e8f5e9;border:2px solid #2e7d32;border-radius:10px;padding:14px 20px;margin-bottom:20px;font-weight:bold;color:#1b5e20;font-size:15px;"></div>
+
   <div class="kickoff-grid">
     <div class="kickoff-date" style="border-color:#1565c0;">
       <h4 style="color:#1565c0;">第1候補</h4>
       <p><strong>4/6（月）・4/7（火）</strong></p>
       <div class="avail-grid">
-        <div><div class="name">ADD 下田氏</div><select><option>―</option><option>○ 可</option><option>△ 調整中</option><option>× 不可</option></select></div>
-        <div><div class="name">丸忠 渡邊氏</div><select><option>―</option><option>○ 可</option><option>△ 調整中</option><option>× 不可</option></select></div>
-        <div><div class="name">大丸P 江原</div><select><option>―</option><option>○ 可</option><option>△ 調整中</option><option>× 不可</option></select></div>
+        <div><div class="name">ADD 下田氏</div><select id="s1a" onchange="onSelectChange()"><option value="0">―</option><option value="1">○ 可</option><option value="2">△ 調整中</option><option value="3">× 不可</option></select></div>
+        <div><div class="name">丸忠 渡邊氏</div><select id="s1b" onchange="onSelectChange()"><option value="0">―</option><option value="1">○ 可</option><option value="2">△ 調整中</option><option value="3">× 不可</option></select></div>
+        <div><div class="name">大丸P 江原</div><select id="s1c" onchange="onSelectChange()"><option value="0">―</option><option value="1">○ 可</option><option value="2">△ 調整中</option><option value="3">× 不可</option></select></div>
       </div>
+      <div id="result1" style="margin-top:10px;font-size:12px;text-align:center;min-height:18px;"></div>
     </div>
     <div class="kickoff-date" style="border-color:#2e7d32;">
       <h4 style="color:#2e7d32;">第2候補</h4>
       <p><strong>4/13（月）・4/14（火）</strong></p>
       <div class="avail-grid">
-        <div><div class="name">ADD 下田氏</div><select><option>―</option><option>○ 可</option><option>△ 調整中</option><option>× 不可</option></select></div>
-        <div><div class="name">丸忠 渡邊氏</div><select><option>―</option><option>○ 可</option><option>△ 調整中</option><option>× 不可</option></select></div>
-        <div><div class="name">大丸P 江原</div><select><option>―</option><option>○ 可</option><option>△ 調整中</option><option>× 不可</option></select></div>
+        <div><div class="name">ADD 下田氏</div><select id="s2a" onchange="onSelectChange()"><option value="0">―</option><option value="1">○ 可</option><option value="2">△ 調整中</option><option value="3">× 不可</option></select></div>
+        <div><div class="name">丸忠 渡邊氏</div><select id="s2b" onchange="onSelectChange()"><option value="0">―</option><option value="1">○ 可</option><option value="2">△ 調整中</option><option value="3">× 不可</option></select></div>
+        <div><div class="name">大丸P 江原</div><select id="s2c" onchange="onSelectChange()"><option value="0">―</option><option value="1">○ 可</option><option value="2">△ 調整中</option><option value="3">× 不可</option></select></div>
       </div>
+      <div id="result2" style="margin-top:10px;font-size:12px;text-align:center;min-height:18px;"></div>
     </div>
     <div class="kickoff-date" style="border-color:#e65100;">
       <h4 style="color:#e65100;">第3候補</h4>
       <p><strong>4/21（月）・4/22（火）</strong></p>
       <div class="avail-grid">
-        <div><div class="name">ADD 下田氏</div><select><option>―</option><option>○ 可</option><option>△ 調整中</option><option>× 不可</option></select></div>
-        <div><div class="name">丸忠 渡邊氏</div><select><option>―</option><option>○ 可</option><option>△ 調整中</option><option>× 不可</option></select></div>
-        <div><div class="name">大丸P 江原</div><select><option>―</option><option>○ 可</option><option>△ 調整中</option><option>× 不可</option></select></div>
+        <div><div class="name">ADD 下田氏</div><select id="s3a" onchange="onSelectChange()"><option value="0">―</option><option value="1">○ 可</option><option value="2">△ 調整中</option><option value="3">× 不可</option></select></div>
+        <div><div class="name">丸忠 渡邊氏</div><select id="s3b" onchange="onSelectChange()"><option value="0">―</option><option value="1">○ 可</option><option value="2">△ 調整中</option><option value="3">× 不可</option></select></div>
+        <div><div class="name">大丸P 江原</div><select id="s3c" onchange="onSelectChange()"><option value="0">―</option><option value="1">○ 可</option><option value="2">△ 調整中</option><option value="3">× 不可</option></select></div>
       </div>
+      <div id="result3" style="margin-top:10px;font-size:12px;text-align:center;min-height:18px;"></div>
     </div>
   </div>
 
@@ -656,6 +677,166 @@ input[type="checkbox"] { width:18px; height:18px; cursor:pointer; accent-color:#
 </div><!-- /app-content -->
 
 <script>
+// ============================================================
+//  ★ GitHub 設定（2行だけ書き換えてください）
+// ============================================================
+var GH_REPO  = 'eharakenji0925-hub/kanri';   // owner/repo
+var GH_TOKEN = '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';             // ghp_xxxx...
+// ============================================================
+
+var GH_FILE  = 'naha_kickoff.json';
+var GH_API   = 'https://api.github.com/repos/' + GH_REPO + '/contents/' + GH_FILE;
+
+var SELECTS = ['s1a','s1b','s1c','s2a','s2b','s2c','s3a','s3b','s3c'];
+var DATES   = ['4/6・7','4/13・14','4/21・22'];
+var NAMES   = ['下田氏','渡邊氏','江原'];
+var _fileSha = null;
+
+function isConfigured() {
+  return GH_TOKEN !== 'YOUR_PAT_HERE';
+}
+
+// --- GitHub API ---
+function apiLoad(callback) {
+  fetch(GH_API + '?ref=main&t=' + Date.now(), {
+    headers: {
+      'Authorization': 'token ' + GH_TOKEN,
+      'Accept': 'application/vnd.github.v3+json'
+    }
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(data) {
+    _fileSha = data.sha;
+    var decoded = atob(data.content.replace(/\n/g,''));
+    var record = JSON.parse(decoded);
+    callback(null, record);
+  })
+  .catch(function(e){ callback(e); });
+}
+
+function apiSave(record, callback) {
+  var body = JSON.stringify({
+    message: 'kickoff update',
+    content: btoa(JSON.stringify(record)),
+    sha: _fileSha
+  });
+  fetch(GH_API, {
+    method: 'PUT',
+    headers: {
+      'Authorization': 'token ' + GH_TOKEN,
+      'Accept': 'application/vnd.github.v3+json',
+      'Content-Type': 'application/json'
+    },
+    body: body
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(data){
+    if (data.content) _fileSha = data.content.sha;
+    callback(null, data);
+  })
+  .catch(function(e){ callback(e); });
+}
+
+// --- State helpers ---
+function getState() {
+  return SELECTS.map(function(id){ return document.getElementById(id).value; }).join('');
+}
+function setState(str) {
+  if (!str || str.length < 9) return;
+  for (var i = 0; i < SELECTS.length; i++) {
+    var el = document.getElementById(SELECTS[i]);
+    if (el) el.value = str[i] || '0';
+  }
+  updateResults();
+}
+
+// --- UI helpers ---
+function setStatus(msg, color) {
+  var el = document.getElementById('share-status');
+  el.style.color = color || '#555';
+  el.textContent = msg;
+}
+function showNotice(id, msg) {
+  var el = document.getElementById(id);
+  el.textContent = msg;
+  el.style.display = 'block';
+  setTimeout(function(){ el.style.display = 'none'; }, 5000);
+}
+function fmt(d) {
+  return (d.getMonth()+1)+'/'+d.getDate()+' '+d.getHours()+':'+(('0'+d.getMinutes()).slice(-2));
+}
+function showUnconfigured() {
+  showNotice('error-notice','⚠️ GH_TOKEN が未設定です。HTMLの GH_TOKEN を書き換えてください。');
+}
+
+// --- Load / Save ---
+function manualLoad() {
+  if (!isConfigured()) { showUnconfigured(); return; }
+  setStatus('🔄 読み込み中…');
+  apiLoad(function(err, record) {
+    if (err) { setStatus('⚠️ 読み込み失敗', '#c62828'); return; }
+    setState(record.v || '000000000');
+    setStatus('✅ 読み込み完了：' + fmt(new Date()) + '（GitHub同期済み）', '#2e7d32');
+  });
+}
+
+function manualSave() {
+  if (!isConfigured()) { showUnconfigured(); return; }
+  setStatus('💾 保存中…');
+  apiSave({ v: getState() }, function(err) {
+    if (err) { showNotice('error-notice','❌ 保存に失敗しました。'); setStatus('エラー','#c62828'); return; }
+    setStatus('✅ 保存完了：' + fmt(new Date()) + '（全員に反映済み）', '#2e7d32');
+    showNotice('save-notice','✅ GitHubに保存しました。他のメンバーが「最新を取得」すると反映されます。');
+  });
+}
+
+function onSelectChange() {
+  updateResults();
+  if (!isConfigured()) return;
+  clearTimeout(window._saveTimer);
+  window._saveTimer = setTimeout(function(){ manualSave(); }, 1200);
+}
+
+function resetSelects() {
+  SELECTS.forEach(function(id){ document.getElementById(id).value = '0'; });
+  updateResults();
+  if (!isConfigured()) return;
+  apiSave({ v: '000000000' }, function(err) {
+    if (!err) setStatus('リセット・保存済み', '#888');
+  });
+}
+
+// --- Result display ---
+function updateResults() {
+  var groups = [[0,1,2],[3,4,5],[6,7,8]];
+  var confirmed = [];
+  for (var c = 0; c < 3; c++) {
+    var vals = groups[c].map(function(i){ return parseInt(document.getElementById(SELECTS[i]).value); });
+    var allAnswered = vals.every(function(v){ return v > 0; });
+    var allOK       = vals.every(function(v){ return v === 1; });
+    var el = document.getElementById('result'+(c+1));
+    if (allOK) {
+      el.innerHTML = '<span style="color:#2e7d32;font-weight:bold;">✅ 全員 可</span>';
+      confirmed.push(c);
+    } else if (allAnswered) {
+      var labels = vals.map(function(v,i){ return NAMES[i]+':'+(['―','○','△','×'][v]); });
+      el.innerHTML = '<span style="color:#555;">'+labels.join('　')+'</span>';
+    } else if (vals.some(function(v){ return v > 0; })) {
+      el.innerHTML = '<span style="color:#888;">'+vals.filter(function(v){return v>0;}).length+'/3名 回答済</span>';
+    } else {
+      el.innerHTML = '';
+    }
+  }
+  var banner = document.getElementById('confirmed-banner');
+  if (confirmed.length > 0) {
+    banner.innerHTML = '🎉 全員参加可能：' + confirmed.map(function(c){ return '第'+(c+1)+'候補（'+DATES[c]+'）'; }).join('、') + '　← 日程を確定してください';
+    banner.style.display = 'block';
+  } else {
+    banner.style.display = 'none';
+  }
+}
+
+// --- Login / init ---
 function handleLogin(e) {
   e.preventDefault();
   var pass = document.getElementById('login-pass').value;
@@ -663,19 +844,33 @@ function handleLogin(e) {
     document.getElementById('login-screen').classList.add('hidden');
     document.getElementById('app-content').classList.add('visible');
     document.getElementById('login-error').textContent = '';
+    init();
   } else {
-    document.getElementById('login-error').textContent = 'パスワードが正しくありません';
-    document.getElementById('login-pass').value = '';
-    document.getElementById('login-pass').focus();
+    document.getElementById('login-error').textContent = 'パスワードが違います';
   }
-  return false;
 }
 
-function switchTab(tabId) {
-  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.getElementById(tabId).classList.add('active');
+function switchTab(id) {
+  document.querySelectorAll('.tab-content').forEach(function(t){ t.classList.remove('active'); });
+  document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
   event.target.classList.add('active');
+}
+
+function init() {
+  if (!isConfigured()) {
+    setStatus('⚠️ GH_TOKEN 未設定。HTMLを編集してください。', '#c62828');
+    return;
+  }
+  setStatus('🔄 GitHubから読み込み中…');
+  apiLoad(function(err, record) {
+    if (err) {
+      setStatus('⚠️ 読み込み失敗。Token・リポジトリ設定を確認してください。', '#c62828');
+      return;
+    }
+    setState(record.v || '000000000');
+    setStatus('✅ 同期済み — 選択すると自動保存・全員に反映されます', '#2e7d32');
+  });
 }
 </script>
 </body>
