@@ -20,7 +20,7 @@ body{font-family:'Segoe UI','Hiragino Kaku Gothic ProN','Meiryo',sans-serif;back
 .login-error{color:#e74c3c;font-size:13px;margin-top:12px;display:none}
 
 /* ===== MAIN APP ===== */
-#app{display:none;max-width:1400px;margin:0 auto;padding:24px}
+#app{display:none;max-width:1500px;margin:0 auto;padding:24px}
 header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
 header h1{font-size:22px;color:#1a1a2e}
 .header-right{display:flex;align-items:center;gap:16px}
@@ -51,20 +51,13 @@ header h1{font-size:22px;color:#1a1a2e}
 
 /* Table */
 .table-wrap{background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.06);overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:13px;min-width:1280px}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:1350px}
 thead{background:#1a1a2e;color:#fff}
 th{padding:14px 12px;text-align:left;font-weight:600;font-size:12px;white-space:nowrap}
 td{padding:12px;border-bottom:1px solid #f0f0f0;vertical-align:top}
 tr:hover{background:#f8f9ff}
 tr.row-done{background:#f0faf4}
 tr.row-done td{color:#888}
-
-/* Status badges */
-.badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap}
-.badge-done{background:#d4edda;color:#155724}
-.badge-progress{background:#fff3cd;color:#856404}
-.badge-pending{background:#f8d7da;color:#721c24}
-.badge-none{background:#e9ecef;color:#666}
 
 /* Status select */
 .status-select{padding:6px 10px;border:1px solid #ddd;border-radius:8px;font-size:12px;cursor:pointer;background:#fff;min-width:120px}
@@ -76,16 +69,10 @@ tr.row-done td{color:#888}
 .label-sekiguchi{background:#e8d5f5;color:#6b21a8}
 .label-ehara{background:#d5e8f5;color:#1e5f8a}
 
-/* Date display */
-.date-cell{font-size:11px;color:#888}
-
 /* Contact info */
 .contact-detail{font-size:11px;color:#666;line-height:1.6}
 .company-name{font-weight:700;font-size:14px;color:#1a1a2e}
 .person-name{font-weight:600;color:#333}
-
-/* Tooltip */
-.info-icon{cursor:help;color:#0f3460;font-weight:700}
 
 /* Save indicator */
 .save-indicator{position:fixed;bottom:24px;right:24px;background:#27ae60;color:#fff;padding:12px 24px;border-radius:10px;font-size:13px;font-weight:600;opacity:0;transition:.3s;pointer-events:none;box-shadow:0 4px 12px rgba(0,0,0,.2)}
@@ -94,11 +81,10 @@ tr.row-done td{color:#888}
 /* Email template panel */
 .email-panel{background:#fff;border-radius:12px;padding:24px;margin-bottom:24px;box-shadow:0 2px 8px rgba(0,0,0,.06);border-left:4px solid #0f3460}
 .email-panel h3{font-size:16px;color:#1a1a2e;margin-bottom:16px}
-.email-toggle-btn{padding:10px 20px;border:none;border-radius:10px;cursor:pointer;font-size:13px;font-weight:600;background:#0f3460;color:#fff;transition:.2s;margin-bottom:24px}
+.email-toggle-btn{padding:10px 20px;border:none;border-radius:10px;cursor:pointer;font-size:13px;font-weight:600;background:#0f3460;color:#fff;transition:.2s;margin-right:8px;margin-bottom:24px}
 .email-toggle-btn:hover{background:#1a1a2e}
 .email-preview{background:#fafafa;border:1px solid #e0e0e0;border-radius:10px;padding:20px;font-size:13px;line-height:2;color:#333;white-space:pre-wrap;max-height:400px;overflow-y:auto}
-.email-preview .subject-line{font-weight:700;color:#0f3460;font-size:14px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px dashed #ddd}
-.email-actions{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;align-items:center}
+.email-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .email-select{padding:8px 12px;border:1px solid #ddd;border-radius:8px;font-size:13px;cursor:pointer;background:#fff;min-width:200px}
 .copy-btn{padding:10px 20px;border:none;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;background:#27ae60;color:#fff;transition:.2s}
 .copy-btn:hover{background:#219a52}
@@ -114,10 +100,34 @@ tr.row-done td{color:#888}
 .deadline-info .text strong{color:#e74c3c}
 .deadline-info .days-left{margin-left:auto;font-size:28px;font-weight:700;color:#e74c3c}
 
+/* Add store modal */
+.modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:1000;align-items:center;justify-content:center}
+.modal-overlay.show{display:flex}
+.modal{background:#fff;border-radius:16px;padding:32px;width:520px;max-width:90vw;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.modal h2{font-size:18px;color:#1a1a2e;margin-bottom:20px}
+.modal-field{margin-bottom:14px}
+.modal-field label{display:block;font-size:12px;font-weight:600;color:#555;margin-bottom:4px}
+.modal-field input,.modal-field textarea{width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:8px;font-size:13px;outline:none;transition:.2s}
+.modal-field input:focus,.modal-field textarea:focus{border-color:#0f3460}
+.modal-field textarea{resize:vertical;min-height:60px}
+.modal-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.modal-actions{display:flex;gap:10px;margin-top:20px;justify-content:flex-end}
+.btn-save{padding:10px 24px;border:none;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;background:#27ae60;color:#fff;transition:.2s}
+.btn-save:hover{background:#219a52}
+.btn-cancel{padding:10px 24px;border:1px solid #ddd;border-radius:8px;cursor:pointer;font-size:13px;font-weight:500;background:#fff;color:#666;transition:.2s}
+.btn-cancel:hover{background:#f5f5f5}
+.add-store-btn{padding:10px 20px;border:none;border-radius:10px;cursor:pointer;font-size:13px;font-weight:600;background:#27ae60;color:#fff;transition:.2s;margin-bottom:24px}
+.add-store-btn:hover{background:#219a52}
+
+/* Delete button */
+.delete-btn{background:none;border:1px solid #ddd;border-radius:6px;padding:4px 8px;cursor:pointer;font-size:11px;color:#999;transition:.2s;margin-top:4px}
+.delete-btn:hover{border-color:#e74c3c;color:#e74c3c}
+
 @media(max-width:768px){
   .stats-bar{grid-template-columns:repeat(2,1fr)}
   #app{padding:12px}
   .login-box{width:90%;padding:32px 24px}
+  .modal-row{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -167,8 +177,13 @@ tr.row-done td{color:#888}
     </div>
   </div>
 
+  <!-- Action buttons -->
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <button class="email-toggle-btn" onclick="toggleEmail()">&#9993; メールテンプレート</button>
+    <button class="add-store-btn" onclick="openAddModal()">&#65291; 店舗を追加</button>
+  </div>
+
   <!-- Email Template -->
-  <button class="email-toggle-btn" onclick="toggleEmail()">&#9993; メールテンプレートを表示</button>
   <div class="email-panel" id="email-panel" style="display:none">
     <h3>&#9993; アポイント依頼メール</h3>
     <div class="email-actions">
@@ -210,10 +225,40 @@ tr.row-done td{color:#888}
           <th>ステータス</th>
           <th>関口メモ</th>
           <th>江原メモ</th>
+          <th></th>
         </tr>
       </thead>
       <tbody id="table-body"></tbody>
     </table>
+  </div>
+</div>
+
+<!-- Add Store Modal -->
+<div class="modal-overlay" id="add-modal">
+  <div class="modal">
+    <h2>&#65291; 新しい店舗・連絡先を追加</h2>
+    <div class="modal-row">
+      <div class="modal-field"><label>会社名 *</label><input type="text" id="add-company" placeholder="例：スポーツクラブ〇〇"></div>
+      <div class="modal-field"><label>担当者名 *</label><input type="text" id="add-person" placeholder="例：山田 様"></div>
+    </div>
+    <div class="modal-row">
+      <div class="modal-field"><label>役職・備考</label><input type="text" id="add-role" placeholder="例：店長"></div>
+      <div class="modal-field"><label>店舗名</label><input type="text" id="add-store" placeholder="例：新宿店"></div>
+    </div>
+    <div class="modal-field"><label>住所</label><input type="text" id="add-address" placeholder="例：東京都新宿区..."></div>
+    <div class="modal-row">
+      <div class="modal-field"><label>電話番号（店舗）</label><input type="tel" id="add-phone" placeholder="例：03-1234-5678"></div>
+      <div class="modal-field"><label>携帯番号</label><input type="tel" id="add-mobile" placeholder="例：080-1234-5678"></div>
+    </div>
+    <div class="modal-row">
+      <div class="modal-field"><label>メールアドレス</label><input type="email" id="add-email" placeholder="例：name@example.com"></div>
+      <div class="modal-field"><label>連絡タイミング</label><input type="text" id="add-timing" placeholder="例：随時、4月人事編成後"></div>
+    </div>
+    <div class="modal-field"><label>連絡予定日</label><input type="date" id="add-date"></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeAddModal()">キャンセル</button>
+      <button class="btn-save" onclick="saveNewContact()">追加する</button>
+    </div>
   </div>
 </div>
 
@@ -222,8 +267,8 @@ tr.row-done td{color:#888}
 <script>
 const PASS = 'daimaru';
 
-// Contact data from Excel
-const contacts = [
+// Default contact data from Excel
+const defaultContacts = [
   {id:1, company:'ドゥスポーツ', person:'竹口 様', role:'既に話を通し済み', store:'', address:'', phone:'', mobile:'', email:'takeguchi.hitoshi@wellneo-sugar.co.jp', timing:'4月人事編成前（要確認）', status:'話済み', memoSekiguchi:'大丸より正式連絡予定。4月に人事編成あり。', memoEhara:'', scheduleDate:''},
   {id:2, company:'ドゥスポーツ', person:'川口 様', role:'4月人事編成後の窓口（第一候補）', store:'', address:'', phone:'', mobile:'', email:'kawaguchi.keiko@wellneo-sugar.co.jp', timing:'4月人事編成後', status:'連絡予定', memoSekiguchi:'竹口さんから川口さんに連絡済み。川口さんへメール連絡する。', memoEhara:'', scheduleDate:''},
   {id:3, company:'ドゥスポーツ', person:'木村 様', role:'4月人事編成後の窓口（第二候補）', store:'上里店', address:'埼玉県児玉郡上里町七本木2272−１ ウニクス上里内', phone:'0495-35-0145', mobile:'', email:'kimura.momoko@wellneo-sugar.co.jp', timing:'4月人事編成後', status:'連絡予定', memoSekiguchi:'川口様不在時の連絡先。', memoEhara:'', scheduleDate:''},
@@ -241,25 +286,37 @@ let data = [];
 let currentFilter = 'all';
 
 function loadData() {
-  const saved = localStorage.getItem('daimaru_progress');
+  const saved = localStorage.getItem('daimaru_progress_v2');
   if (saved) {
-    const parsed = JSON.parse(saved);
-    data = contacts.map(c => {
-      const s = parsed.find(p => p.id === c.id);
-      return s ? {...c, status: s.status, memoSekiguchi: s.memoSekiguchi !== undefined ? s.memoSekiguchi : c.memoSekiguchi, memoEhara: s.memoEhara || c.memoEhara, scheduleDate: s.scheduleDate || c.scheduleDate} : {...c};
-    });
+    data = JSON.parse(saved);
   } else {
-    data = contacts.map(c => ({...c}));
+    // Migrate from v1 if exists
+    const v1 = localStorage.getItem('daimaru_progress');
+    if (v1) {
+      const parsed = JSON.parse(v1);
+      data = defaultContacts.map(c => {
+        const s = parsed.find(p => p.id === c.id);
+        return s ? {...c, status: s.status, memoSekiguchi: s.memoSekiguchi !== undefined ? s.memoSekiguchi : (s.memo || c.memoSekiguchi), memoEhara: s.memoEhara || c.memoEhara, scheduleDate: s.scheduleDate || c.scheduleDate} : {...c};
+      });
+    } else {
+      data = defaultContacts.map(c => ({...c}));
+    }
+    saveData(true);
   }
 }
 
-function saveData() {
-  const toSave = data.map(d => ({id:d.id, status:d.status, memoSekiguchi:d.memoSekiguchi, memoEhara:d.memoEhara, scheduleDate:d.scheduleDate}));
-  localStorage.setItem('daimaru_progress', JSON.stringify(toSave));
-  const el = document.getElementById('save-indicator');
-  el.classList.add('show');
-  setTimeout(() => el.classList.remove('show'), 1500);
-  document.getElementById('last-saved').textContent = '最終保存: ' + new Date().toLocaleTimeString('ja-JP');
+function saveData(silent) {
+  localStorage.setItem('daimaru_progress_v2', JSON.stringify(data));
+  if (!silent) {
+    const el = document.getElementById('save-indicator');
+    el.classList.add('show');
+    setTimeout(() => el.classList.remove('show'), 1500);
+    document.getElementById('last-saved').textContent = '最終保存: ' + new Date().toLocaleTimeString('ja-JP');
+  }
+}
+
+function getNextId() {
+  return data.length > 0 ? Math.max(...data.map(d => d.id)) + 1 : 1;
 }
 
 function doLogin() {
@@ -291,16 +348,6 @@ function setFilter(f, btn) {
   renderTable();
 }
 
-function getStatusBadge(status) {
-  const map = {
-    '話済み': 'badge-done',
-    '連絡予定': 'badge-progress',
-    'アポ済': 'badge-done',
-    '未着手': 'badge-pending'
-  };
-  return `<span class="badge ${map[status]||'badge-none'}">${status||'未設定'}</span>`;
-}
-
 function buildContactHTML(d) {
   let parts = [];
   if (d.email) parts.push('&#9993; <a href="mailto:'+d.email+'" style="color:#0f3460">'+d.email+'</a>');
@@ -315,20 +362,25 @@ function updateStatus(id, val) {
   const item = data.find(d => d.id === id);
   if (item) { item.status = val; saveData(); render(); }
 }
-
 function updateMemoSekiguchi(id, val) {
   const item = data.find(d => d.id === id);
   if (item) { item.memoSekiguchi = val; saveData(); }
 }
-
 function updateMemoEhara(id, val) {
   const item = data.find(d => d.id === id);
   if (item) { item.memoEhara = val; saveData(); }
 }
-
 function updateDate(id, val) {
   const item = data.find(d => d.id === id);
   if (item) { item.scheduleDate = val; saveData(); }
+}
+function deleteContact(id) {
+  const item = data.find(d => d.id === id);
+  if (item && confirm(item.company + '（' + item.person + '）を削除しますか？')) {
+    data = data.filter(d => d.id !== id);
+    saveData();
+    render();
+  }
 }
 
 function renderTable() {
@@ -337,7 +389,7 @@ function renderTable() {
   tbody.innerHTML = filtered.map((d, i) => {
     const rowClass = (d.status === '話済み' || d.status === 'アポ済') ? 'row-done' : '';
     return `<tr class="${rowClass}">
-      <td style="font-weight:600;color:#888">${d.id}</td>
+      <td style="font-weight:600;color:#888">${i+1}</td>
       <td><div class="company-name">${d.company}</div></td>
       <td><div class="person-name">${d.person}</div><div style="font-size:11px;color:#888">${d.role||''}</div></td>
       <td style="font-size:12px">${d.timing||'—'}</td>
@@ -353,6 +405,7 @@ function renderTable() {
       </td>
       <td class="notes-cell"><div class="notes-label label-sekiguchi">関口</div><textarea class="notes-input" onchange="updateMemoSekiguchi(${d.id},this.value)">${d.memoSekiguchi||''}</textarea></td>
       <td class="notes-cell"><div class="notes-label label-ehara">江原</div><textarea class="notes-input" onchange="updateMemoEhara(${d.id},this.value)">${d.memoEhara||''}</textarea></td>
+      <td><button class="delete-btn" onclick="deleteContact(${d.id})">削除</button></td>
     </tr>`;
   }).join('');
 }
@@ -368,11 +421,10 @@ function renderStats() {
   document.getElementById('stat-progress').textContent = progress;
   document.getElementById('stat-pending').textContent = pending;
 
-  const pct = Math.round((done / total) * 100);
+  const pct = total > 0 ? Math.round((done / total) * 100) : 0;
   document.getElementById('progress-fill').style.width = pct + '%';
   document.getElementById('progress-pct').textContent = pct + '%';
 
-  // Days left in April
   const now = new Date();
   const endOfApril = new Date(now.getFullYear(), 3, 30);
   if (now.getMonth() > 3) endOfApril.setFullYear(now.getFullYear() + 1);
@@ -385,7 +437,46 @@ function render() {
   renderTable();
 }
 
-// Email template
+// ===== Add Store Modal =====
+function openAddModal() {
+  document.getElementById('add-modal').classList.add('show');
+}
+function closeAddModal() {
+  document.getElementById('add-modal').classList.remove('show');
+  ['add-company','add-person','add-role','add-store','add-address','add-phone','add-mobile','add-email','add-timing','add-date'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+}
+function saveNewContact() {
+  const company = document.getElementById('add-company').value.trim();
+  const person = document.getElementById('add-person').value.trim();
+  if (!company || !person) {
+    alert('会社名と担当者名は必須です。');
+    return;
+  }
+  const newContact = {
+    id: getNextId(),
+    company: company,
+    person: person,
+    role: document.getElementById('add-role').value.trim(),
+    store: document.getElementById('add-store').value.trim(),
+    address: document.getElementById('add-address').value.trim(),
+    phone: document.getElementById('add-phone').value.trim(),
+    mobile: document.getElementById('add-mobile').value.trim(),
+    email: document.getElementById('add-email').value.trim(),
+    timing: document.getElementById('add-timing').value.trim(),
+    status: '未着手',
+    memoSekiguchi: '',
+    memoEhara: '',
+    scheduleDate: document.getElementById('add-date').value || ''
+  };
+  data.push(newContact);
+  saveData();
+  render();
+  closeAddModal();
+}
+
+// ===== Email Template =====
 const EMAIL_SUBJECT = '【コラーゲンスタジオ協会】契約移行に伴うご挨拶のお願い';
 
 function getEmailBody(company, person) {
@@ -425,12 +516,12 @@ function toggleEmail() {
   const btn = event.target;
   if (panel.style.display === 'none') {
     panel.style.display = 'block';
-    btn.textContent = '\u2709 メールテンプレートを閉じる';
+    btn.innerHTML = '&#9993; メールテンプレートを閉じる';
     populateEmailSelect();
     renderEmailPreview();
   } else {
     panel.style.display = 'none';
-    btn.textContent = '\u2709 メールテンプレートを表示';
+    btn.innerHTML = '&#9993; メールテンプレート';
   }
 }
 
@@ -459,17 +550,12 @@ function renderEmailPreview() {
     mailtoLink.href = '#';
     return;
   }
-
   const d = data.find(x => x.id === parseInt(sel.value));
   const personName = d.person.replace(/\s*様\s*$/, '') + '様';
   const body = getEmailBody(d.company, personName);
-
   subjectEl.textContent = EMAIL_SUBJECT;
   previewEl.textContent = body;
-
-  const mailtoBody = encodeURIComponent(body);
-  const mailtoSubject = encodeURIComponent(EMAIL_SUBJECT);
-  mailtoLink.href = 'mailto:' + d.email + '?subject=' + mailtoSubject + '&body=' + mailtoBody;
+  mailtoLink.href = 'mailto:' + d.email + '?subject=' + encodeURIComponent(EMAIL_SUBJECT) + '&body=' + encodeURIComponent(body);
 }
 
 function copyEmail() {
@@ -496,6 +582,13 @@ window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('app').style.display = 'block';
     loadData();
     render();
+  }
+});
+
+// Close modal on overlay click
+document.addEventListener('click', (e) => {
+  if (e.target.classList.contains('modal-overlay')) {
+    closeAddModal();
   }
 });
 </script>
