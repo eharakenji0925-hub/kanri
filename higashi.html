@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>連絡先 進捗管理 - 大丸プランニング</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI','Hiragino Kaku Gothic ProN','Meiryo',sans-serif;background:#f0f2f5;color:#333}
+
+/* ===== LOGIN ===== */
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%)}
+.login-box{background:#fff;border-radius:16px;padding:48px 40px;width:380px;box-shadow:0 20px 60px rgba(0,0,0,.3);text-align:center}
+.login-box h1{font-size:22px;color:#1a1a2e;margin-bottom:6px}
+.login-box p{font-size:13px;color:#888;margin-bottom:32px}
+.login-box input{width:100%;padding:14px 16px;border:2px solid #e0e0e0;border-radius:10px;font-size:15px;outline:none;transition:.2s;letter-spacing:2px;text-align:center}
+.login-box input:focus{border-color:#0f3460}
+.login-box button{width:100%;padding:14px;background:#0f3460;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;margin-top:16px;transition:.2s}
+.login-box button:hover{background:#1a1a2e}
+.login-error{color:#e74c3c;font-size:13px;margin-top:12px;display:none}
+
+/* ===== MAIN APP ===== */
+#app{display:none;max-width:1400px;margin:0 auto;padding:24px}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+header h1{font-size:22px;color:#1a1a2e}
+.header-right{display:flex;align-items:center;gap:16px}
+.logout-btn{background:none;border:1px solid #ccc;border-radius:8px;padding:8px 16px;cursor:pointer;font-size:13px;color:#666;transition:.2s}
+.logout-btn:hover{border-color:#e74c3c;color:#e74c3c}
+
+/* Stats bar */
+.stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.stat-card{background:#fff;border-radius:12px;padding:20px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.stat-card .num{font-size:32px;font-weight:700;margin-bottom:4px}
+.stat-card .label{font-size:12px;color:#888;font-weight:500}
+.stat-card.total .num{color:#0f3460}
+.stat-card.done .num{color:#27ae60}
+.stat-card.progress .num{color:#f39c12}
+.stat-card.pending .num{color:#e74c3c}
+
+/* Progress bar */
+.progress-container{background:#fff;border-radius:12px;padding:20px;margin-bottom:24px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.progress-container h3{font-size:14px;color:#888;margin-bottom:10px;font-weight:500}
+.progress-bar-bg{background:#e9ecef;border-radius:20px;height:28px;overflow:hidden;position:relative}
+.progress-bar-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,#27ae60,#2ecc71);transition:width .5s;display:flex;align-items:center;justify-content:center}
+.progress-bar-fill span{color:#fff;font-size:12px;font-weight:700}
+
+/* Filter */
+.filter-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.filter-btn{padding:8px 18px;border:none;border-radius:20px;cursor:pointer;font-size:13px;font-weight:500;background:#e9ecef;color:#555;transition:.2s}
+.filter-btn.active{background:#0f3460;color:#fff}
+
+/* Table */
+.table-wrap{background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.06);overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:1280px}
+thead{background:#1a1a2e;color:#fff}
+th{padding:14px 12px;text-align:left;font-weight:600;font-size:12px;white-space:nowrap}
+td{padding:12px;border-bottom:1px solid #f0f0f0;vertical-align:top}
+tr:hover{background:#f8f9ff}
+tr.row-done{background:#f0faf4}
+tr.row-done td{color:#888}
+
+/* Status badges */
+.badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap}
+.badge-done{background:#d4edda;color:#155724}
+.badge-progress{background:#fff3cd;color:#856404}
+.badge-pending{background:#f8d7da;color:#721c24}
+.badge-none{background:#e9ecef;color:#666}
+
+/* Status select */
+.status-select{padding:6px 10px;border:1px solid #ddd;border-radius:8px;font-size:12px;cursor:pointer;background:#fff;min-width:120px}
+
+/* Notes input */
+.notes-input{width:100%;padding:6px 10px;border:1px solid #ddd;border-radius:8px;font-size:12px;resize:vertical;min-height:36px}
+.notes-cell{min-width:160px}
+.notes-label{font-size:10px;font-weight:600;margin-bottom:3px;padding:2px 8px;border-radius:4px;display:inline-block}
+.label-sekiguchi{background:#e8d5f5;color:#6b21a8}
+.label-ehara{background:#d5e8f5;color:#1e5f8a}
+
+/* Date display */
+.date-cell{font-size:11px;color:#888}
+
+/* Contact info */
+.contact-detail{font-size:11px;color:#666;line-height:1.6}
+.company-name{font-weight:700;font-size:14px;color:#1a1a2e}
+.person-name{font-weight:600;color:#333}
+
+/* Tooltip */
+.info-icon{cursor:help;color:#0f3460;font-weight:700}
+
+/* Save indicator */
+.save-indicator{position:fixed;bottom:24px;right:24px;background:#27ae60;color:#fff;padding:12px 24px;border-radius:10px;font-size:13px;font-weight:600;opacity:0;transition:.3s;pointer-events:none;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.save-indicator.show{opacity:1}
+
+/* Email template panel */
+.email-panel{background:#fff;border-radius:12px;padding:24px;margin-bottom:24px;box-shadow:0 2px 8px rgba(0,0,0,.06);border-left:4px solid #0f3460}
+.email-panel h3{font-size:16px;color:#1a1a2e;margin-bottom:16px}
+.email-toggle-btn{padding:10px 20px;border:none;border-radius:10px;cursor:pointer;font-size:13px;font-weight:600;background:#0f3460;color:#fff;transition:.2s;margin-bottom:24px}
+.email-toggle-btn:hover{background:#1a1a2e}
+.email-preview{background:#fafafa;border:1px solid #e0e0e0;border-radius:10px;padding:20px;font-size:13px;line-height:2;color:#333;white-space:pre-wrap;max-height:400px;overflow-y:auto}
+.email-preview .subject-line{font-weight:700;color:#0f3460;font-size:14px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px dashed #ddd}
+.email-actions{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;align-items:center}
+.email-select{padding:8px 12px;border:1px solid #ddd;border-radius:8px;font-size:13px;cursor:pointer;background:#fff;min-width:200px}
+.copy-btn{padding:10px 20px;border:none;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;background:#27ae60;color:#fff;transition:.2s}
+.copy-btn:hover{background:#219a52}
+.mailto-btn{padding:10px 20px;border:none;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;background:#2980b9;color:#fff;transition:.2s;text-decoration:none;display:inline-block}
+.mailto-btn:hover{background:#1f6da0}
+.copy-done{color:#27ae60;font-size:12px;font-weight:600;opacity:0;transition:.3s}
+.copy-done.show{opacity:1}
+
+/* Deadline bar */
+.deadline-info{background:#fff;border-radius:12px;padding:16px 20px;margin-bottom:24px;box-shadow:0 2px 8px rgba(0,0,0,.06);display:flex;align-items:center;gap:12px;border-left:4px solid #e74c3c}
+.deadline-info .icon{font-size:24px}
+.deadline-info .text{font-size:14px;color:#333}
+.deadline-info .text strong{color:#e74c3c}
+.deadline-info .days-left{margin-left:auto;font-size:28px;font-weight:700;color:#e74c3c}
+
+@media(max-width:768px){
+  .stats-bar{grid-template-columns:repeat(2,1fr)}
+  #app{padding:12px}
+  .login-box{width:90%;padding:32px 24px}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="login-screen">
+  <div class="login-box">
+    <h1>大丸プランニング</h1>
+    <p>連絡先 進捗管理シート</p>
+    <input type="password" id="password" placeholder="パスワードを入力" onkeydown="if(event.key==='Enter')doLogin()">
+    <button onclick="doLogin()">ログイン</button>
+    <div class="login-error" id="login-error">パスワードが正しくありません</div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app">
+  <header>
+    <h1>連絡先 進捗管理シート</h1>
+    <div class="header-right">
+      <span style="font-size:13px;color:#888" id="last-saved"></span>
+      <button class="logout-btn" onclick="doLogout()">ログアウト</button>
+    </div>
+  </header>
+
+  <!-- Deadline -->
+  <div class="deadline-info">
+    <div class="icon">&#9200;</div>
+    <div class="text">ゴール：<strong>4月中に全社へ連絡＆直接お話のアポイントを取る</strong></div>
+    <div class="days-left" id="days-left"></div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-bar">
+    <div class="stat-card total"><div class="num" id="stat-total">0</div><div class="label">全件数</div></div>
+    <div class="stat-card done"><div class="num" id="stat-done">0</div><div class="label">完了（話済み）</div></div>
+    <div class="stat-card progress"><div class="num" id="stat-progress">0</div><div class="label">連絡予定</div></div>
+    <div class="stat-card pending"><div class="num" id="stat-pending">0</div><div class="label">未着手</div></div>
+  </div>
+
+  <!-- Progress bar -->
+  <div class="progress-container">
+    <h3>全体進捗</h3>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progress-fill" style="width:0%"><span id="progress-pct">0%</span></div>
+    </div>
+  </div>
+
+  <!-- Email Template -->
+  <button class="email-toggle-btn" onclick="toggleEmail()">&#9993; メールテンプレートを表示</button>
+  <div class="email-panel" id="email-panel" style="display:none">
+    <h3>&#9993; アポイント依頼メール</h3>
+    <div class="email-actions">
+      <select class="email-select" id="email-target" onchange="renderEmailPreview()">
+        <option value="">-- 送信先を選択 --</option>
+      </select>
+      <button class="copy-btn" onclick="copyEmail()">本文をコピー</button>
+      <a class="mailto-btn" id="mailto-link" href="#" target="_blank">メーラーで開く</a>
+      <span class="copy-done" id="copy-done">コピーしました</span>
+    </div>
+    <div style="margin-top:16px">
+      <div style="font-size:12px;color:#888;margin-bottom:4px;font-weight:600">件名：</div>
+      <div id="email-subject" style="font-size:14px;font-weight:600;color:#0f3460;margin-bottom:12px"></div>
+      <div style="font-size:12px;color:#888;margin-bottom:4px;font-weight:600">本文：</div>
+      <div class="email-preview" id="email-preview"></div>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filter-row">
+    <button class="filter-btn active" onclick="setFilter('all',this)">すべて</button>
+    <button class="filter-btn" onclick="setFilter('話済み',this)">話済み</button>
+    <button class="filter-btn" onclick="setFilter('連絡予定',this)">連絡予定</button>
+    <button class="filter-btn" onclick="setFilter('未着手',this)">未着手</button>
+    <button class="filter-btn" onclick="setFilter('アポ済',this)">アポ済</button>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>会社名</th>
+          <th>担当者</th>
+          <th>役職・備考</th>
+          <th>連絡先</th>
+          <th>連絡予定日</th>
+          <th>ステータス</th>
+          <th>関口メモ</th>
+          <th>江原メモ</th>
+        </tr>
+      </thead>
+      <tbody id="table-body"></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="save-indicator" id="save-indicator">保存しました</div>
+
+<script>
+const PASS = 'daimaru';
+
+// Contact data from Excel
+const contacts = [
+  {id:1, company:'ドゥスポーツ', person:'竹口 様', role:'既に話を通し済み', store:'', address:'', phone:'', mobile:'', email:'takeguchi.hitoshi@wellneo-sugar.co.jp', timing:'4月人事編成前（要確認）', status:'話済み', memoSekiguchi:'大丸より正式連絡予定。4月に人事編成あり。', memoEhara:'', scheduleDate:''},
+  {id:2, company:'ドゥスポーツ', person:'川口 様', role:'4月人事編成後の窓口（第一候補）', store:'', address:'', phone:'', mobile:'', email:'kawaguchi.keiko@wellneo-sugar.co.jp', timing:'4月人事編成後', status:'連絡予定', memoSekiguchi:'竹口さんから川口さんに連絡済み。川口さんへメール連絡する。', memoEhara:'', scheduleDate:''},
+  {id:3, company:'ドゥスポーツ', person:'木村 様', role:'4月人事編成後の窓口（第二候補）', store:'上里店', address:'埼玉県児玉郡上里町七本木2272−１ ウニクス上里内', phone:'0495-35-0145', mobile:'', email:'kimura.momoko@wellneo-sugar.co.jp', timing:'4月人事編成後', status:'連絡予定', memoSekiguchi:'川口様不在時の連絡先。', memoEhara:'', scheduleDate:''},
+  {id:4, company:'スポレッシュ', person:'三上 様', role:'既に話を通し済み', store:'', address:'', phone:'', mobile:'080-4102-6720', email:'t.mikami@nexus-dstation.co.jp', timing:'随時', status:'話済み', memoSekiguchi:'大丸より正式連絡予定。', memoEhara:'', scheduleDate:''},
+  {id:5, company:'ライフティック平塚', person:'近藤 様', role:'既に話を通し済み', store:'平塚店', address:'神奈川県平塚市宝町１０−４ スポーツプラザ神奈中平塚 4階', phone:'0463-24-1010', mobile:'', email:'t_kondo@kanachu-sports.co.jp', timing:'随時', status:'話済み', memoSekiguchi:'メールで連絡する', memoEhara:'', scheduleDate:''},
+  {id:6, company:'東急スポーツシステム', person:'小笠原 様', role:'', store:'青葉台店', address:'神奈川県横浜市青葉区青葉台１丁目2−４ 東急スクエア', phone:'03-6427-8521', mobile:'', email:'yukihiko.ogasawara@tokyu-sports.co.jp', timing:'', status:'未着手', memoSekiguchi:'4/6予定', memoEhara:'', scheduleDate:'2026-04-06'},
+  {id:7, company:'ベストスタイルフィットネス', person:'澤田 様', role:'', store:'大宮店', address:'埼玉県さいたま市北区植竹町１丁目８１６−８', phone:'048-669-6611', mobile:'', email:'h.sawada@best-style-fitness.jp', timing:'', status:'未着手', memoSekiguchi:'4/2予定', memoEhara:'', scheduleDate:'2026-04-02'},
+  {id:8, company:'アピアスポーツ', person:'村井 様', role:'', store:'', address:'富山県富山市 稲荷元町２丁目１１−１ ショッピングシティアピア', phone:'076-431-3321', mobile:'', email:'murai@apa-sports.com', timing:'', status:'未着手', memoSekiguchi:'4/3予定', memoEhara:'', scheduleDate:'2026-04-03'},
+  {id:9, company:'オークスポーツ', person:'江守 様', role:'', store:'', address:'', phone:'', mobile:'090-4821-8190', email:'t.emori@shinwa-sports-service.co.jp', timing:'', status:'未着手', memoSekiguchi:'4/7予定', memoEhara:'', scheduleDate:'2026-04-07'},
+  {id:10, company:'vace1', person:'森 様', role:'', store:'', address:'', phone:'', mobile:'', email:'a_mori@provanet.co.jp', timing:'', status:'未着手', memoSekiguchi:'', memoEhara:'', scheduleDate:''}
+];
+
+// State
+let data = [];
+let currentFilter = 'all';
+
+function loadData() {
+  const saved = localStorage.getItem('daimaru_progress');
+  if (saved) {
+    const parsed = JSON.parse(saved);
+    data = contacts.map(c => {
+      const s = parsed.find(p => p.id === c.id);
+      return s ? {...c, status: s.status, memoSekiguchi: s.memoSekiguchi !== undefined ? s.memoSekiguchi : c.memoSekiguchi, memoEhara: s.memoEhara || c.memoEhara, scheduleDate: s.scheduleDate || c.scheduleDate} : {...c};
+    });
+  } else {
+    data = contacts.map(c => ({...c}));
+  }
+}
+
+function saveData() {
+  const toSave = data.map(d => ({id:d.id, status:d.status, memoSekiguchi:d.memoSekiguchi, memoEhara:d.memoEhara, scheduleDate:d.scheduleDate}));
+  localStorage.setItem('daimaru_progress', JSON.stringify(toSave));
+  const el = document.getElementById('save-indicator');
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 1500);
+  document.getElementById('last-saved').textContent = '最終保存: ' + new Date().toLocaleTimeString('ja-JP');
+}
+
+function doLogin() {
+  const pw = document.getElementById('password').value;
+  if (pw === PASS) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    sessionStorage.setItem('daimaru_auth','1');
+    loadData();
+    render();
+  } else {
+    document.getElementById('login-error').style.display = 'block';
+    document.getElementById('password').value = '';
+  }
+}
+
+function doLogout() {
+  sessionStorage.removeItem('daimaru_auth');
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('password').value = '';
+  document.getElementById('login-error').style.display = 'none';
+}
+
+function setFilter(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTable();
+}
+
+function getStatusBadge(status) {
+  const map = {
+    '話済み': 'badge-done',
+    '連絡予定': 'badge-progress',
+    'アポ済': 'badge-done',
+    '未着手': 'badge-pending'
+  };
+  return `<span class="badge ${map[status]||'badge-none'}">${status||'未設定'}</span>`;
+}
+
+function buildContactHTML(d) {
+  let parts = [];
+  if (d.email) parts.push('&#9993; <a href="mailto:'+d.email+'" style="color:#0f3460">'+d.email+'</a>');
+  if (d.phone) parts.push('&#9742; '+d.phone);
+  if (d.mobile) parts.push('&#128241; '+d.mobile);
+  if (d.store) parts.push('&#127970; '+d.store);
+  if (d.address) parts.push('<span style="font-size:10px;color:#999">'+d.address+'</span>');
+  return '<div class="contact-detail">'+parts.join('<br>')+'</div>';
+}
+
+function updateStatus(id, val) {
+  const item = data.find(d => d.id === id);
+  if (item) { item.status = val; saveData(); render(); }
+}
+
+function updateMemoSekiguchi(id, val) {
+  const item = data.find(d => d.id === id);
+  if (item) { item.memoSekiguchi = val; saveData(); }
+}
+
+function updateMemoEhara(id, val) {
+  const item = data.find(d => d.id === id);
+  if (item) { item.memoEhara = val; saveData(); }
+}
+
+function updateDate(id, val) {
+  const item = data.find(d => d.id === id);
+  if (item) { item.scheduleDate = val; saveData(); }
+}
+
+function renderTable() {
+  const tbody = document.getElementById('table-body');
+  const filtered = currentFilter === 'all' ? data : data.filter(d => d.status === currentFilter);
+  tbody.innerHTML = filtered.map((d, i) => {
+    const rowClass = (d.status === '話済み' || d.status === 'アポ済') ? 'row-done' : '';
+    return `<tr class="${rowClass}">
+      <td style="font-weight:600;color:#888">${d.id}</td>
+      <td><div class="company-name">${d.company}</div></td>
+      <td><div class="person-name">${d.person}</div><div style="font-size:11px;color:#888">${d.role||''}</div></td>
+      <td style="font-size:12px">${d.timing||'—'}</td>
+      <td>${buildContactHTML(d)}</td>
+      <td><input type="date" value="${d.scheduleDate||''}" onchange="updateDate(${d.id},this.value)" style="border:1px solid #ddd;border-radius:6px;padding:4px 8px;font-size:12px"></td>
+      <td>
+        <select class="status-select" onchange="updateStatus(${d.id},this.value)">
+          <option value="未着手" ${d.status==='未着手'?'selected':''}>未着手</option>
+          <option value="連絡予定" ${d.status==='連絡予定'?'selected':''}>連絡予定</option>
+          <option value="話済み" ${d.status==='話済み'?'selected':''}>話済み</option>
+          <option value="アポ済" ${d.status==='アポ済'?'selected':''}>アポ済</option>
+        </select>
+      </td>
+      <td class="notes-cell"><div class="notes-label label-sekiguchi">関口</div><textarea class="notes-input" onchange="updateMemoSekiguchi(${d.id},this.value)">${d.memoSekiguchi||''}</textarea></td>
+      <td class="notes-cell"><div class="notes-label label-ehara">江原</div><textarea class="notes-input" onchange="updateMemoEhara(${d.id},this.value)">${d.memoEhara||''}</textarea></td>
+    </tr>`;
+  }).join('');
+}
+
+function renderStats() {
+  const total = data.length;
+  const done = data.filter(d => d.status === '話済み' || d.status === 'アポ済').length;
+  const progress = data.filter(d => d.status === '連絡予定').length;
+  const pending = data.filter(d => d.status === '未着手' || !d.status).length;
+
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-done').textContent = done;
+  document.getElementById('stat-progress').textContent = progress;
+  document.getElementById('stat-pending').textContent = pending;
+
+  const pct = Math.round((done / total) * 100);
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-pct').textContent = pct + '%';
+
+  // Days left in April
+  const now = new Date();
+  const endOfApril = new Date(now.getFullYear(), 3, 30);
+  if (now.getMonth() > 3) endOfApril.setFullYear(now.getFullYear() + 1);
+  const daysLeft = Math.max(0, Math.ceil((endOfApril - now) / 86400000));
+  document.getElementById('days-left').textContent = '残り ' + daysLeft + ' 日';
+}
+
+function render() {
+  renderStats();
+  renderTable();
+}
+
+// Email template
+const EMAIL_SUBJECT = '【コラーゲンスタジオ協会】契約移行に伴うご挨拶のお願い';
+
+function getEmailBody(company, person) {
+  return `${company}
+${person}
+
+お世話になっております。
+コラーゲンスタジオ協会 本部事務局 株式会社大丸プランニングの江原と申します。
+
+平素より、コラーゲンスタジオ協会のプログラムをご導入いただき、誠にありがとうございます。
+
+さて、弊協会の担当・関口より既にご連絡を差し上げているかと存じますが、このたび契約元が株式会社わらわらから、協会本部である株式会社大丸プランニングへ移行する運びとなりました。
+
+つきましては、今後のお取引にあたりまして、直接お目にかかるか、もしくはオンラインにて改めてご挨拶の機会をいただければ幸いに存じます。
+
+ご多用のところ大変恐れ入りますが、ご都合のよろしい日時をいくつかお知らせいただけますと幸いです。
+
+何卒よろしくお願い申し上げます。
+
+━━━━━━━━━━━━━━━━━━━━━━
+株式会社大丸プランニング　代表取締役
+コラーゲンスタジオ協会　代表理事
+PSGA Japan
+
+江原　健次（Kenji Ehara）
+
+〒116-0013
+東京都荒川区西日暮里2丁目17-7 大石ビル3階
+TEL：03-5604-9088
+FAX：03-5604-9089
+E-mail：ehara.kenji0925@gmail.com
+━━━━━━━━━━━━━━━━━━━━━━`;
+}
+
+function toggleEmail() {
+  const panel = document.getElementById('email-panel');
+  const btn = event.target;
+  if (panel.style.display === 'none') {
+    panel.style.display = 'block';
+    btn.textContent = '\u2709 メールテンプレートを閉じる';
+    populateEmailSelect();
+    renderEmailPreview();
+  } else {
+    panel.style.display = 'none';
+    btn.textContent = '\u2709 メールテンプレートを表示';
+  }
+}
+
+function populateEmailSelect() {
+  const sel = document.getElementById('email-target');
+  sel.innerHTML = '<option value="">-- 送信先を選択 --</option>';
+  data.forEach(d => {
+    if (d.email) {
+      const opt = document.createElement('option');
+      opt.value = d.id;
+      opt.textContent = d.company + ' / ' + d.person;
+      sel.appendChild(opt);
+    }
+  });
+}
+
+function renderEmailPreview() {
+  const sel = document.getElementById('email-target');
+  const subjectEl = document.getElementById('email-subject');
+  const previewEl = document.getElementById('email-preview');
+  const mailtoLink = document.getElementById('mailto-link');
+
+  if (!sel.value) {
+    subjectEl.textContent = EMAIL_SUBJECT;
+    previewEl.textContent = getEmailBody('【会社名】', '【担当者名】様');
+    mailtoLink.href = '#';
+    return;
+  }
+
+  const d = data.find(x => x.id === parseInt(sel.value));
+  const personName = d.person.replace(/\s*様\s*$/, '') + '様';
+  const body = getEmailBody(d.company, personName);
+
+  subjectEl.textContent = EMAIL_SUBJECT;
+  previewEl.textContent = body;
+
+  const mailtoBody = encodeURIComponent(body);
+  const mailtoSubject = encodeURIComponent(EMAIL_SUBJECT);
+  mailtoLink.href = 'mailto:' + d.email + '?subject=' + mailtoSubject + '&body=' + mailtoBody;
+}
+
+function copyEmail() {
+  const sel = document.getElementById('email-target');
+  let body;
+  if (!sel.value) {
+    body = getEmailBody('【会社名】', '【担当者名】様');
+  } else {
+    const d = data.find(x => x.id === parseInt(sel.value));
+    const personName = d.person.replace(/\s*様\s*$/, '') + '様';
+    body = getEmailBody(d.company, personName);
+  }
+  navigator.clipboard.writeText(body).then(() => {
+    const el = document.getElementById('copy-done');
+    el.classList.add('show');
+    setTimeout(() => el.classList.remove('show'), 2000);
+  });
+}
+
+// Auto-login check
+window.addEventListener('DOMContentLoaded', () => {
+  if (sessionStorage.getItem('daimaru_auth') === '1') {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    loadData();
+    render();
+  }
+});
+</script>
+</body>
+</html>
