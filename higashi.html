@@ -130,6 +130,8 @@ tr.row-done td{color:#888}
   .modal-row{grid-template-columns:1fr}
 }
 </style>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 </head>
 <body>
 
@@ -265,6 +267,21 @@ tr.row-done td{color:#888}
 <div class="save-indicator" id="save-indicator">保存しました</div>
 
 <script>
+// ★★★ Firebase設定 ★★★
+// Firebaseコンソールで取得した設定をここに貼り付けてください
+const firebaseConfig = {
+  apiKey: "AIzaSyAE2L-nQewrz5ngQKXbRyayzUvHHGYfwG0",
+  authDomain: "higashi-f2cd0.firebaseapp.com",
+  databaseURL: "https://higashi-f2cd0-default-rtdb.firebaseio.com",
+  projectId: "higashi-f2cd0",
+  storageBucket: "higashi-f2cd0.firebasestorage.app",
+  messagingSenderId: "388069523380",
+  appId: "1:388069523380:web:f1434f39c411da54c6bce1"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+const dataRef = db.ref('contacts');
+
 const PASS = 'daimaru';
 
 // Default contact data from Excel
@@ -285,28 +302,29 @@ const defaultContacts = [
 let data = [];
 let currentFilter = 'all';
 
-function loadData() {
-  const saved = localStorage.getItem('daimaru_progress_v2');
-  if (saved) {
-    data = JSON.parse(saved);
-  } else {
-    // Migrate from v1 if exists
-    const v1 = localStorage.getItem('daimaru_progress');
-    if (v1) {
-      const parsed = JSON.parse(v1);
-      data = defaultContacts.map(c => {
-        const s = parsed.find(p => p.id === c.id);
-        return s ? {...c, status: s.status, memoSekiguchi: s.memoSekiguchi !== undefined ? s.memoSekiguchi : (s.memo || c.memoSekiguchi), memoEhara: s.memoEhara || c.memoEhara, scheduleDate: s.scheduleDate || c.scheduleDate} : {...c};
-      });
+function loadData(callback) {
+  dataRef.once('value', (snapshot) => {
+    const saved = snapshot.val();
+    if (saved) {
+      data = saved;
     } else {
       data = defaultContacts.map(c => ({...c}));
+      dataRef.set(data);
     }
-    saveData(true);
-  }
+    if (callback) callback();
+  });
+  // リアルタイム同期：他のPCでの変更を即座に反映
+  dataRef.on('value', (snapshot) => {
+    const saved = snapshot.val();
+    if (saved) {
+      data = saved;
+      render();
+    }
+  });
 }
 
 function saveData(silent) {
-  localStorage.setItem('daimaru_progress_v2', JSON.stringify(data));
+  dataRef.set(data);
   if (!silent) {
     const el = document.getElementById('save-indicator');
     el.classList.add('show');
@@ -325,8 +343,7 @@ function doLogin() {
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('app').style.display = 'block';
     sessionStorage.setItem('daimaru_auth','1');
-    loadData();
-    render();
+    loadData(() => { render(); });
   } else {
     document.getElementById('login-error').style.display = 'block';
     document.getElementById('password').value = '';
@@ -580,8 +597,7 @@ window.addEventListener('DOMContentLoaded', () => {
   if (sessionStorage.getItem('daimaru_auth') === '1') {
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('app').style.display = 'block';
-    loadData();
-    render();
+    loadData(() => { render(); });
   }
 });
 
