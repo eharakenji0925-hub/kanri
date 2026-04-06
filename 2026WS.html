@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PSGAヘザー・レオン 2026WS アンケート集計 / Survey Summary</title>
+<style>
+  :root {
+    --primary: #2c5f7c;
+    --primary-light: #e8f1f5;
+    --accent: #e8913a;
+    --accent-light: #fdf0e2;
+    --bg: #f7f8fa;
+    --card: #ffffff;
+    --text: #2d3436;
+    --text-light: #636e72;
+    --border: #dfe6e9;
+    --green: #00b894;
+    --yellow: #fdcb6e;
+    --red: #e17055;
+    --purple: #a29bfe;
+    --pink: #fd79a8;
+    --day1: #3d8eb9;
+    --day2: #e8913a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    padding: 24px;
+  }
+  .container { max-width: 1020px; margin: 0 auto; }
+  .header {
+    background: linear-gradient(135deg, var(--primary), #3d8eb9);
+    color: #fff;
+    padding: 40px 32px;
+    border-radius: 16px;
+    margin-bottom: 28px;
+    text-align: center;
+  }
+  .header h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; }
+  .header .en { font-size: 1.05rem; font-weight: 400; opacity: 0.85; margin-bottom: 8px; }
+  .header p { font-size: 0.9rem; opacity: 0.8; }
+
+  /* Login overlay */
+  .login-overlay {
+    position: fixed; inset: 0; z-index: 9999;
+    background: linear-gradient(135deg, #1a3a4f 0%, #2c5f7c 50%, #3d8eb9 100%);
+    display: flex; align-items: center; justify-content: center;
+    transition: opacity .5s ease, visibility .5s ease;
+  }
+  .login-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+  .login-box {
+    background: #fff; border-radius: 20px; padding: 48px 40px;
+    width: 380px; max-width: 90vw;
+    box-shadow: 0 20px 60px rgba(0,0,0,.25);
+    text-align: center;
+    animation: loginSlideUp .5s ease;
+  }
+  @keyframes loginSlideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .login-box .login-icon {
+    width: 64px; height: 64px; margin: 0 auto 20px;
+    background: var(--primary-light); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem;
+  }
+  .login-box h2 {
+    font-size: 1.2rem; color: var(--primary); margin-bottom: 4px;
+  }
+  .login-box .login-sub {
+    font-size: 0.82rem; color: var(--text-light); margin-bottom: 24px;
+  }
+  .login-box input[type="password"] {
+    width: 100%; padding: 12px 16px; border: 2px solid var(--border);
+    border-radius: 10px; font-size: 1rem; font-family: inherit;
+    outline: none; transition: border-color .2s;
+    text-align: center; letter-spacing: 2px;
+  }
+  .login-box input[type="password"]:focus { border-color: var(--primary); }
+  .login-box input[type="password"].error {
+    border-color: var(--red);
+    animation: loginShake .4s ease;
+  }
+  @keyframes loginShake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-8px); }
+    40%, 80% { transform: translateX(8px); }
+  }
+  .login-box .login-btn {
+    width: 100%; padding: 12px; margin-top: 16px;
+    background: var(--primary); color: #fff;
+    border: none; border-radius: 10px;
+    font-size: 0.95rem; font-weight: 600;
+    cursor: pointer; font-family: inherit;
+    transition: background .2s;
+  }
+  .login-box .login-btn:hover { background: #1a4a63; }
+  .login-box .login-error-msg {
+    color: var(--red); font-size: 0.82rem; margin-top: 10px;
+    min-height: 1.2em;
+  }
+
+  /* Main content hidden until login */
+  .main-content { display: none; }
+  .main-content.visible { display: block; }
+
+  /* Lang toggle */
+  .lang-toggle {
+    display: flex; justify-content: flex-end; margin-bottom: 6px; gap: 6px;
+  }
+  .lang-btn {
+    padding: 5px 14px; border: 2px solid var(--primary); border-radius: 6px;
+    background: transparent; color: var(--primary); font-size: 0.82rem;
+    font-weight: 600; cursor: pointer; font-family: inherit;
+  }
+  .lang-btn.active { background: var(--primary); color: #fff; }
+
+  /* Bilingual text */
+  .ja, .en-text { display: block; }
+  body.en-mode .ja { display: none; }
+  body.en-mode .en-text { display: block; }
+  body:not(.en-mode) .en-text { display: none; }
+  body:not(.en-mode) .ja { display: block; }
+
+  /* Tab navigation */
+  .tab-nav {
+    display: flex; gap: 4px; margin-bottom: 24px;
+    background: var(--card); border-radius: 12px; padding: 4px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.06);
+  }
+  .tab-btn {
+    flex: 1; padding: 12px 16px; border: none; background: transparent;
+    border-radius: 10px; font-size: 0.92rem; font-weight: 600;
+    cursor: pointer; color: var(--text-light); transition: all .2s; font-family: inherit;
+  }
+  .tab-btn.active { background: var(--primary); color: #fff; }
+  .tab-btn:hover:not(.active) { background: var(--primary-light); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .summary-strip {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(148px, 1fr));
+    gap: 14px; margin-bottom: 24px;
+  }
+  .stat-card {
+    background: var(--card); border-radius: 12px; padding: 18px 12px;
+    text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,.06);
+  }
+  .stat-card .number { font-size: 1.8rem; font-weight: 800; color: var(--primary); }
+  .stat-card .label { font-size: 0.76rem; color: var(--text-light); margin-top: 4px; }
+  .stat-card.day1 .number { color: var(--day1); }
+  .stat-card.day2 .number { color: var(--day2); }
+
+  .section {
+    background: var(--card); border-radius: 14px; padding: 26px;
+    margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,.06);
+  }
+  .section h2 {
+    font-size: 1.02rem; color: var(--primary); margin-bottom: 16px;
+    padding-bottom: 10px; border-bottom: 2px solid var(--primary-light);
+  }
+
+  .day-badge {
+    display: inline-block; font-size: 0.72rem; font-weight: 700;
+    padding: 2px 8px; border-radius: 4px; margin-right: 6px; color: #fff; vertical-align: middle;
+  }
+  .day-badge.d1 { background: var(--day1); }
+  .day-badge.d2 { background: var(--day2); }
+
+  .bar-row { display: flex; align-items: center; margin-bottom: 9px; gap: 8px; }
+  .bar-label { min-width: 140px; font-size: 0.82rem; text-align: right; flex-shrink: 0; }
+  .bar-track {
+    flex: 1; background: var(--primary-light); border-radius: 6px;
+    height: 26px; overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%; border-radius: 6px; display: flex; align-items: center;
+    padding-left: 10px; font-size: 0.78rem; font-weight: 700; color: #fff;
+  }
+  .bar-fill.c1 { background: var(--primary); }
+  .bar-fill.c2 { background: var(--accent); }
+  .bar-fill.c3 { background: var(--green); }
+  .bar-fill.c4 { background: var(--purple); }
+  .bar-fill.cred { background: var(--red); }
+  .bar-count { min-width: 56px; font-size: 0.82rem; font-weight: 600; color: var(--text-light); }
+
+  .cmp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .cmp-card { border: 2px solid var(--border); border-radius: 12px; padding: 18px; }
+  .cmp-card.d1 { border-color: var(--day1); }
+  .cmp-card.d2 { border-color: var(--day2); }
+  .cmp-card h3 { font-size: 0.88rem; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+
+  .donut-wrapper { display: flex; align-items: center; gap: 28px; flex-wrap: wrap; }
+  .donut { width: 140px; height: 140px; border-radius: 50%; position: relative; flex-shrink: 0; }
+  .donut-center {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 70px; height: 70px; background: var(--card); border-radius: 50%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+  }
+  .donut-center .big { font-size: 1.2rem; font-weight: 800; color: var(--primary); }
+  .donut-center .small { font-size: 0.68rem; color: var(--text-light); }
+
+  .comment-list { list-style: none; }
+  .comment-list li {
+    padding: 12px 14px; border-radius: 0 8px 8px 0;
+    margin-bottom: 8px; font-size: 0.84rem; line-height: 1.7;
+  }
+  .comment-list li.day1-comment { border-left: 3px solid var(--day1); background: #e8f1f5; }
+  .comment-list li.day2-comment { border-left: 3px solid var(--day2); background: var(--accent-light); }
+  .comment-list li .name { display: inline-block; font-size: 0.74rem; color: var(--text-light); margin-top: 4px; }
+  .comment-list li .en-line { color: var(--text-light); font-size: 0.82rem; font-style: italic; margin-top: 2px; }
+
+  table.data-table { width: 100%; border-collapse: collapse; font-size: 0.84rem; }
+  table.data-table th {
+    background: var(--primary-light); color: var(--primary);
+    padding: 9px 12px; text-align: left; font-weight: 600;
+  }
+  table.data-table td { padding: 9px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  table.data-table tr:hover td { background: #f0f5f8; }
+
+  .note { font-size: 0.8rem; color: var(--text-light); margin-top: 8px; }
+  .footer {
+    text-align: center; font-size: 0.76rem; color: var(--text-light);
+    margin-top: 28px; padding-top: 14px; border-top: 1px solid var(--border);
+  }
+  @media (max-width: 700px) {
+    body { padding: 12px; }
+    .header { padding: 24px 16px; }
+    .section { padding: 16px; }
+    .bar-label { min-width: 100px; font-size: 0.78rem; }
+    .cmp-grid { grid-template-columns: 1fr; }
+    .donut-wrapper { justify-content: center; }
+  }
+</style>
+</head>
+<body>
+<!-- Login Screen -->
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-box">
+    <div class="login-icon">&#128274;</div>
+    <h2>PSGA Workshop Survey</h2>
+    <p class="login-sub">アンケート集計を閲覧するにはパスワードを入力してください<br>Please enter the password to view the survey results</p>
+    <form onsubmit="return handleLogin(event)">
+      <input type="password" id="loginPassword" placeholder="Password" autocomplete="off" autofocus>
+      <button type="submit" class="login-btn">ログイン / Login</button>
+      <div class="login-error-msg" id="loginError"></div>
+    </form>
+  </div>
+</div>
+
+<div class="container main-content" id="mainContent">
+
+  <!-- Language Toggle -->
+  <div class="lang-toggle">
+    <button class="lang-btn active" onclick="setLang('ja')">日本語</button>
+    <button class="lang-btn" onclick="setLang('en')">English</button>
+  </div>
+
+  <!-- Header -->
+  <div class="header">
+    <h1>PSGAヘザー・レオン 2026 ワークショップ アンケート集計</h1>
+    <div class="en">PSGA Heather Leon 2026 Workshop Survey Summary</div>
+    <p>
+      <span class="ja">1日目：2026年4月4日（WS①） ｜ 2日目：2026年4月5日（WS②） ｜ 合計回答数：33件</span>
+      <span class="en-text">Day 1: April 4, 2026 (WS①) ｜ Day 2: April 5, 2026 (WS②) ｜ Total Responses: 33</span>
+    </p>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="showTab('overview')">
+      <span class="ja">全体サマリー</span><span class="en-text">Overview</span>
+    </button>
+    <button class="tab-btn" onclick="showTab('day1')">
+      <span class="ja">1日目（4/4）</span><span class="en-text">Day 1 (4/4)</span>
+    </button>
+    <button class="tab-btn" onclick="showTab('day2')">
+      <span class="ja">2日目（4/5）</span><span class="en-text">Day 2 (4/5)</span>
+    </button>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- OVERVIEW TAB -->
+  <!-- ============================================ -->
+  <div id="tab-overview" class="tab-content active">
+
+    <div class="summary-strip">
+      <div class="stat-card">
+        <div class="number">33</div>
+        <div class="label"><span class="ja">合計回答数</span><span class="en-text">Total Responses</span></div>
+      </div>
+      <div class="stat-card day1">
+        <div class="number">19</div>
+        <div class="label"><span class="ja">1日目（4/4）</span><span class="en-text">Day 1 (4/4)</span></div>
+      </div>
+      <div class="stat-card day2">
+        <div class="number">14</div>
+        <div class="label"><span class="ja">2日目（4/5）</span><span class="en-text">Day 2 (4/5)</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="number">6</div>
+        <div class="label"><span class="ja">ワークショップ数</span><span class="en-text">Workshops</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="number">51.5%</div>
+        <div class="label"><span class="ja">内容「とても良かった」</span><span class="en-text">Content "Very Good"</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="number">54.5%</div>
+        <div class="label"><span class="ja">講師「とても良かった」</span><span class="en-text">Instructor "Very Good"</span></div>
+      </div>
+    </div>
+
+    <!-- 満足度比較 -->
+    <div class="section">
+      <h2>
+        <span class="ja">ワークショップ内容の満足度（1日目 vs 2日目）</span>
+        <span class="en-text">Workshop Content Satisfaction (Day 1 vs Day 2)</span>
+      </h2>
+      <div class="cmp-grid">
+        <div class="cmp-card d1">
+          <h3><span class="day-badge d1">DAY 1</span>
+            <span class="ja">4月4日（19件）</span><span class="en-text">Apr 4 (19 resp.)</span>
+          </h3>
+          <div class="bar-row">
+            <div class="bar-label"><span class="ja">とても良かった</span><span class="en-text">Very Good</span></div>
+            <div class="bar-track"><div class="bar-fill c1" style="width:50%">10</div></div>
+            <div class="bar-count">50.0%</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label"><span class="ja">まぁまぁ良かった</span><span class="en-text">Good</span></div>
+            <div class="bar-track"><div class="bar-fill c2" style="width:25%">5</div></div>
+            <div class="bar-count">25.0%</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label"><span class="ja">普通</span><span class="en-text">Average</span></div>
+            <div class="bar-track"><div class="bar-fill c4" style="width:20%">4</div></div>
+            <div class="bar-count">20.0%</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label"><span class="ja">期待と違った</span><span class="en-text">Below Expectations</span></div>
+            <div class="bar-track"><div class="bar-fill cred" style="width:5%"></div></div>
+            <div class="bar-count">5.0%</div>
+          </div>
+        </div>
+        <div class="cmp-card d2">
+          <h3><span class="day-badge d2">DAY 2</span>
+            <span class="ja">4月5日（14件）</span><span class="en-text">Apr 5 (14 resp.)</span>
+          </h3>
+          <div class="bar-row">
+            <div class="bar-label"><span class="ja">とても良かった</span><span class="en-text">Very Good</span></div>
+            <div class="bar-track"><div class="bar-fill c1" style="width:50%">7</div></div>
+            <div class="bar-count">50.0%</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label"><span class="ja">まぁまぁ良かった</span><span class="en-text">Good</span></div>
+            <div class="bar-track"><div class="bar-fill c2" style="width:43%">6</div></div>
+            <div class="bar-count">42.9%</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label"><span class="ja">普通</span><span class="en-text">Average</span></div>
+            <div class="bar-track"><div class="bar-fill c4" style="width:7%"></div></div>
+            <div class="bar-count">7.1%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 講師比較 -->
+    <div class="section">
+      <h2>
+        <span class="ja">講師の指導について（1日目 vs 2日目）</span>
+        <span class="en-text">Instructor Evaluation (Day 1 vs Day 2)</span>
+      </h2>
+      <div class="cmp-grid">
+        <div class="cmp-card d1">
+          <h3><span class="day-badge d1">DAY 1</span>
+            <span class="ja">4月4日（19件）</span><span class="en-text">Apr 4 (19 resp.)</span>
+          </h3>
+          <div class="bar-row">
+            <div class="bar-label"><span class="ja">とても良かった</span><span class="en-text">Very Good</span></div>
+            <div class="bar-track"><div class="bar-fill c3" style="width:42%">8</div></div>
+            <div class="bar-count">42.1%</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label"><span class="ja">まぁまぁ良かった</span><span class="en-text">Good</span></div>
+            <div class="bar-track"><div class="bar-fill c2" style="width:37%">7</div></div>
+            <div class="bar-count">36.8%</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label"><span class="ja">普通</span><span class="en-text">Average</span></div>
+            <div class="bar-track"><div class="bar-fill c4" style="width:21%">4</div></div>
+            <div class="bar-count">21.1%</div>
+          </div>
+        </div>
+        <div class="cmp-card d2">
+          <h3><span class="day-badge d2">DAY 2</span>
+            <span class="ja">4月5日（14件）</span><span class="en-text">Apr 5 (14 resp.)</span>
+          </h3>
+          <div class="bar-row">
+            <div class="bar-label"><span class="ja">とても良かった</span><span class="en-text">Very Good</span></div>
+            <div class="bar-track"><div class="bar-fill c3" style="width:71%">10</div></div>
+            <div class="bar-count">71.4%</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label"><span class="ja">まぁまぁ良かった</span><span class="en-text">Good</span></div>
+            <div class="bar-track"><div class="bar-fill c2" style="width:29%">4</div></div>
+            <div class="bar-count">28.6%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 認知チャネル -->
+    <div class="section">
+      <h2>
+        <span class="ja">認知経路（両日合計・複数回答あり）</span>
+        <span class="en-text">How Participants Learned About the Workshop (Both Days, Multiple Answers)</span>
+      </h2>
+      <div class="bar-row">
+        <div class="bar-label">PSGA LINE</div>
+        <div class="bar-track"><div class="bar-fill c1" style="width:100%">17</div></div>
+        <div class="bar-count">56.7%</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Instagram / SNS</div>
+        <div class="bar-track"><div class="bar-fill c2" style="width:65%">12</div></div>
+        <div class="bar-count">40.0%</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><span class="ja">PSGAホームページ</span><span class="en-text">PSGA Website</span></div>
+        <div class="bar-track"><div class="bar-fill c3" style="width:53%">9</div></div>
+        <div class="bar-count">30.0%</div>
+      </div>
+      <p class="note">
+        <span class="ja">※ 複数回答あり。PSGA公式LINEが最大の集客チャネル。</span>
+        <span class="en-text">* Multiple answers allowed. PSGA Official LINE is the largest acquisition channel.</span>
+      </p>
+    </div>
+
+    <!-- 今後の希望テーマ -->
+    <div class="section">
+      <h2>
+        <span class="ja">今後実施して欲しいワークショップテーマ（両日まとめ）</span>
+        <span class="en-text">Requested Future Workshop Topics (Both Days Combined)</span>
+      </h2>
+      <table class="data-table">
+        <thead><tr>
+          <th><span class="ja">カテゴリ</span><span class="en-text">Category</span></th>
+          <th><span class="ja">具体的な要望</span><span class="en-text">Specific Requests</span></th>
+          <th><span class="ja">人数</span><span class="en-text">Count</span></th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td style="font-weight:600;"><span class="ja">クラシカルピラティス深掘り</span><span class="en-text">Classical Pilates (Deep Dive)</span></td>
+            <td><span class="ja">PSGAやクラシカルピラティスの学びを深める内容</span><span class="en-text">Deepen understanding of PSGA and Classical Pilates</span></td>
+            <td>4</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;"><span class="ja">各種器具の活用</span><span class="en-text">Equipment Usage</span></td>
+            <td><span class="ja">チェア・バレル・キャデラック・ピラティスリングの活用</span><span class="en-text">Chair, Barrel, Cadillac, Pilates Ring techniques</span></td>
+            <td>5</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;"><span class="ja">解剖学 × 実技</span><span class="en-text">Anatomy × Practice</span></td>
+            <td><span class="ja">解剖学の座学とエクササイズの組み合わせ、関節（肩・股・膝・足）</span><span class="en-text">Combining anatomy lectures with exercises; joints (shoulder, hip, knee, ankle)</span></td>
+            <td>3</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;"><span class="ja">足・フットワーク</span><span class="en-text">Feet / Footwork</span></td>
+            <td><span class="ja">Footに特化した内容、骨盤の細かい見方・修正の仕方</span><span class="en-text">Foot-focused content, detailed pelvic assessment and correction</span></td>
+            <td>2</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;"><span class="ja">リハビリ・疾患対応</span><span class="en-text">Rehab / Conditions</span></td>
+            <td><span class="ja">膝・足首のリハビリ、骨粗鬆症・人工関節対応</span><span class="en-text">Knee/ankle rehab, osteoporosis, joint replacement approaches</span></td>
+            <td>3</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;"><span class="ja">高齢者対応</span><span class="en-text">Senior Clients</span></td>
+            <td><span class="ja">70代〜の方への提案、変形性膝・股関節症</span><span class="en-text">Approaches for clients aged 70+, degenerative joint conditions</span></td>
+            <td>2</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;"><span class="ja">ケーススタディ</span><span class="en-text">Case Studies</span></td>
+            <td><span class="ja">代償動作への対応、疾患別アプローチ、参加型形式</span><span class="en-text">Compensation patterns, condition-specific approaches, interactive format</span></td>
+            <td>3</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;"><span class="ja">若年層・ダンサー</span><span class="en-text">Young / Dancers</span></td>
+            <td><span class="ja">若いダンサーへのアプローチ</span><span class="en-text">Approaches for young dancers</span></td>
+            <td>1</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;"><span class="ja">集中コース</span><span class="en-text">Intensive Course</span></td>
+            <td><span class="ja">リフォーマーを4日間かけてじっくり学ぶコース</span><span class="en-text">4-day intensive Reformer deep-dive course</span></td>
+            <td>1</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 総合まとめ -->
+    <div class="section" style="border-left: 4px solid var(--primary);">
+      <h2>
+        <span class="ja">総合まとめ</span>
+        <span class="en-text">Overall Summary</span>
+      </h2>
+      <table class="data-table">
+        <tbody>
+          <tr>
+            <td style="font-weight:600;width:160px;"><span class="ja">全体の満足度</span><span class="en-text">Overall Satisfaction</span></td>
+            <td>
+              <span class="ja">両日とも「とても良かった」が <strong>50%</strong>。2日目は「期待と違った」の回答がゼロで改善。両日合計で「まぁまぁ良かった」以上が <strong>84.8%</strong>。</span>
+              <span class="en-text">"Very Good" at <strong>50%</strong> on both days. Day 2 had zero "Below Expectations" responses, showing improvement. Combined "Good" or above: <strong>84.8%</strong>.</span>
+            </td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;"><span class="ja">講師評価の変化</span><span class="en-text">Instructor Rating Trend</span></td>
+            <td>
+              <span class="ja">2日目は「とても良かった」が <strong>71.4%</strong>（1日目は42.1%）と大幅に向上。「普通」の回答も2日目はゼロに。</span>
+              <span class="en-text">Day 2 "Very Good" jumped to <strong>71.4%</strong> (vs. 42.1% on Day 1). "Average" responses dropped to zero on Day 2.</span>
+            </td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;"><span class="ja">参加動機</span><span class="en-text">Participation Motives</span></td>
+            <td>
+              <span class="ja">「ヘザーさんから直接学びたい」「スキルアップ」「特定の症状へのアプローチ習得」が三大動機。</span>
+              <span class="en-text">Top 3 motives: "Learn directly from Heather," "Skill development," and "Learn approaches for specific conditions."</span>
+            </td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;"><span class="ja">改善要望</span><span class="en-text">Improvement Requests</span></td>
+            <td>
+              <span class="ja">1日目は「もう少し深い内容」「疾患別の具体的対応」への期待あり。2日目もロングコース・ケーススタディの要望。</span>
+              <span class="en-text">Day 1: desire for deeper, condition-specific content. Day 2: requests for longer courses and case studies.</span>
+            </td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;"><span class="ja">人気テーマ</span><span class="en-text">Popular Future Topics</span></td>
+            <td>
+              <span class="ja">「各種器具（チェア・バレル等）」と「クラシカルの深掘り」が最多。「解剖学×実技」「リハビリ」「ケーススタディ」も需要高。</span>
+              <span class="en-text">"Equipment (Chair, Barrel, etc.)" and "Classical Pilates deep-dive" most requested. "Anatomy × Practice," "Rehab," and "Case Studies" also in high demand.</span>
+            </td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;"><span class="ja">集客チャネル</span><span class="en-text">Acquisition Channels</span></td>
+            <td>
+              <span class="ja">PSGA公式LINEが約57%で最大。Instagram/SNSが40%で続き、SNSの強化で更なる集客が期待できる。</span>
+              <span class="en-text">PSGA Official LINE leads at ~57%. Instagram/SNS follows at 40% — strengthening social media could further boost sign-ups.</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div><!-- /overview -->
+
+  <!-- ============================================ -->
+  <!-- DAY 1 TAB -->
+  <!-- ============================================ -->
+  <div id="tab-day1" class="tab-content">
+
+    <div class="summary-strip">
+      <div class="stat-card day1"><div class="number">19</div><div class="label"><span class="ja">回答数</span><span class="en-text">Responses</span></div></div>
+      <div class="stat-card day1"><div class="number">3</div><div class="label"><span class="ja">ワークショップ数</span><span class="en-text">Workshops</span></div></div>
+      <div class="stat-card day1"><div class="number">50.0%</div><div class="label"><span class="ja">内容「とても良かった」</span><span class="en-text">Content "Very Good"</span></div></div>
+      <div class="stat-card day1"><div class="number">42.1%</div><div class="label"><span class="ja">講師「とても良かった」</span><span class="en-text">Instructor "Very Good"</span></div></div>
+    </div>
+
+    <!-- Day1: 参加項目 -->
+    <div class="section">
+      <h2><span class="day-badge d1">DAY 1</span>
+        <span class="ja">参加された項目（複数回答あり）</span><span class="en-text">Sessions Attended (Multiple Answers)</span>
+      </h2>
+      <div class="bar-row">
+        <div class="bar-label"><span class="ja">腰痛の構造理解とアプローチ</span><span class="en-text">Low Back Pain Approach</span></div>
+        <div class="bar-track"><div class="bar-fill c1" style="width:100%">10</div></div>
+        <div class="bar-count">40.0%</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><span class="ja">側湾症のアプローチ</span><span class="en-text">Scoliosis Approach</span></div>
+        <div class="bar-track"><div class="bar-fill c2" style="width:80%">8</div></div>
+        <div class="bar-count">32.0%</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><span class="ja">クラシカルピラティスレッスン</span><span class="en-text">Classical Pilates Lesson</span></div>
+        <div class="bar-track"><div class="bar-fill c3" style="width:70%">7</div></div>
+        <div class="bar-count">28.0%</div>
+      </div>
+      <p class="note"><span class="ja">※ 延べ参加数25件</span><span class="en-text">* 25 total session attendances</span></p>
+    </div>
+
+    <!-- Day1: 満足度 -->
+    <div class="section">
+      <h2><span class="day-badge d1">DAY 1</span>
+        <span class="ja">ワークショップ内容の満足度</span><span class="en-text">Content Satisfaction</span>
+      </h2>
+      <div class="donut-wrapper">
+        <div class="donut" style="background: conic-gradient(var(--primary) 0deg 180deg, var(--accent) 180deg 270deg, var(--purple) 270deg 342deg, var(--red) 342deg 360deg);">
+          <div class="donut-center"><span class="big">19</span><span class="small"><span class="ja">回答</span><span class="en-text">resp.</span></span></div>
+        </div>
+        <div>
+          <div class="bar-row"><div class="bar-label"><span class="ja">とても良かった</span><span class="en-text">Very Good</span></div><div class="bar-track"><div class="bar-fill c1" style="width:50%">10</div></div><div class="bar-count">50.0%</div></div>
+          <div class="bar-row"><div class="bar-label"><span class="ja">まぁまぁ良かった</span><span class="en-text">Good</span></div><div class="bar-track"><div class="bar-fill c2" style="width:25%">5</div></div><div class="bar-count">25.0%</div></div>
+          <div class="bar-row"><div class="bar-label"><span class="ja">普通</span><span class="en-text">Average</span></div><div class="bar-track"><div class="bar-fill c4" style="width:20%">4</div></div><div class="bar-count">20.0%</div></div>
+          <div class="bar-row"><div class="bar-label"><span class="ja">期待と違った</span><span class="en-text">Below Exp.</span></div><div class="bar-track"><div class="bar-fill cred" style="width:5%"></div></div><div class="bar-count">5.0%</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day1: 講師 -->
+    <div class="section">
+      <h2><span class="day-badge d1">DAY 1</span>
+        <span class="ja">講師の指導について</span><span class="en-text">Instructor Evaluation</span>
+      </h2>
+      <div class="bar-row"><div class="bar-label"><span class="ja">とても良かった</span><span class="en-text">Very Good</span></div><div class="bar-track"><div class="bar-fill c3" style="width:42%">8</div></div><div class="bar-count">42.1%</div></div>
+      <div class="bar-row"><div class="bar-label"><span class="ja">まぁまぁ良かった</span><span class="en-text">Good</span></div><div class="bar-track"><div class="bar-fill c2" style="width:37%">7</div></div><div class="bar-count">36.8%</div></div>
+      <div class="bar-row"><div class="bar-label"><span class="ja">普通</span><span class="en-text">Average</span></div><div class="bar-track"><div class="bar-fill c4" style="width:21%">4</div></div><div class="bar-count">21.1%</div></div>
+    </div>
+
+    <!-- Day1: 参加理由 -->
+    <div class="section">
+      <h2><span class="day-badge d1">DAY 1</span>
+        <span class="ja">参加理由・期待していた内容</span><span class="en-text">Reasons for Attending / Expectations</span>
+      </h2>
+      <ul class="comment-list">
+        <li class="day1-comment">ヘザーが来日されるから<div class="en-line">Because Heather was visiting Japan</div><span class="name">— 松本いずみ</span></li>
+        <li class="day1-comment">側湾症のクライアントがいるため。HeatherのリアルWSが久しぶりだったため。<div class="en-line">Have scoliosis clients; first in-person Heather WS in a while</div><span class="name">— 田畑英理子</span></li>
+        <li class="day1-comment">クラシカルを学べる機会が少ないので、学びを深めたかった<div class="en-line">Few opportunities to learn Classical Pilates, wanted to deepen knowledge</div><span class="name">— 井手上有希恵</span></li>
+        <li class="day1-comment">腰痛（ヘルニア、坐骨神経痛）のクライアントがいるため<div class="en-line">Have clients with herniated disc and sciatica</div><span class="name">— 田畑英理子</span></li>
+        <li class="day1-comment">ライブでヘザーのリフォーマーを受けたことがなかったので<div class="en-line">Never attended Heather's live Reformer session before</div><span class="name">— 松本いずみ</span></li>
+        <li class="day1-comment">腰痛の疾患に対応する内容があるのかと思ったから<div class="en-line">Expected content addressing specific back pain conditions</div><span class="name">— 松本いずみ</span></li>
+        <li class="day1-comment">より指導力を上げたいため<div class="en-line">To improve teaching skills</div><span class="name">— 加藤千絵</span></li>
+        <li class="day1-comment">資格更新の為と、ヘザーさんのWS受けてみたかった<div class="en-line">For certification renewal and to experience Heather's workshop</div><span class="name">— 石川惠子</span></li>
+        <li class="day1-comment">クラシカルピラティスについての学びを深めたいと思っていたため<div class="en-line">Wanted to deepen understanding of Classical Pilates</div><span class="name">— 泉田淳子</span></li>
+        <li class="day1-comment">側湾症や腰痛の方へのアプローチ方法を学びたかった。ヘザーさんに会いたかった。<div class="en-line">Wanted to learn scoliosis/back pain approaches, and meet Heather</div><span class="name">— 山田裕子</span></li>
+        <li class="day1-comment">リフォーマーでの側湾症アプローチは初めてだったので興味があった<div class="en-line">First time seeing Reformer-based scoliosis approach — was interested</div><span class="name">— 千間弘勝</span></li>
+        <li class="day1-comment">ヘザーのワークショップを受けたかったから / ロマーナの弟子であるヘザーのレッスンを受けたかったから<div class="en-line">Wanted to attend Heather's WS / Take a lesson from Romana's student</div><span class="name">— 大貫晴子</span></li>
+        <li class="day1-comment">直接ヘザーから指導していただけるので<div class="en-line">Opportunity for direct instruction from Heather</div><span class="name">— 春日井アリサ</span></li>
+        <li class="day1-comment">ヘザーさんのレッスンを1度受けてみたかった。腰痛もたまに出るので受けて良かった。<div class="en-line">Always wanted to try Heather's class; also have occasional back pain</div><span class="name">— 臼井利江</span></li>
+        <li class="day1-comment">PSGAのインストラクターとして、ヘザーの考え方を学びたいと思ったから<div class="en-line">As a PSGA instructor, wanted to learn Heather's methodology</div><span class="name">— 畑田奈津美</span></li>
+      </ul>
+    </div>
+
+    <!-- Day1: 感想 -->
+    <div class="section">
+      <h2><span class="day-badge d1">DAY 1</span>
+        <span class="ja">ワークショップ全体の感想</span><span class="en-text">Overall Workshop Feedback</span>
+      </h2>
+      <ul class="comment-list">
+        <li class="day1-comment">プロップの活用法など面白かった<div class="en-line">Interesting use of props</div><span class="name">— 松本いずみ</span></li>
+        <li class="day1-comment">今まで思っていた側湾症へのアプローチと「逆？」って思う部分もあり目から鱗でした<div class="en-line">Some approaches were the opposite of what I expected for scoliosis — eye-opening</div><span class="name">— 田畑英理子</span></li>
+        <li class="day1-comment">リフォーマーのグループレッスンは上級まで初めて受けたので良い経験になりました<div class="en-line">First time doing an advanced group Reformer class — great experience</div><span class="name">— 井手上有希恵</span></li>
+        <li class="day1-comment">とても勉強になりました。この先のレッスンに生かしていきます！<div class="en-line">Very educational. Will apply it to future lessons!</div><span class="name">— 田畑英理子</span></li>
+        <li class="day1-comment">シークエンスをわかってない参加者に前もって予習用に送ったほうがいいのでは<div class="en-line">Suggest sending the sequence to participants beforehand for preparation</div><span class="name">— 松本いずみ</span></li>
+        <li class="day1-comment">疾患について深掘りしてくれるのかと期待していたので残念だった。スプリングテンション軽減の話は良かった。<div class="en-line">Hoped for deeper condition-specific content; spring tension reduction discussion was good</div><span class="name">— 松本いずみ</span></li>
+        <li class="day1-comment">側弯症の方のレッスンがとてもためになりました<div class="en-line">The scoliosis session was very informative</div><span class="name">— 加藤千絵</span></li>
+        <li class="day1-comment">側湾症と腰痛のエクササイズが似ていたので違う内容だとよかった。もっと動きたかった。<div class="en-line">Scoliosis and back pain exercises were similar — would prefer differentiated content. Wanted more movement.</div><span class="name">— 石川惠子</span></li>
+        <li class="day1-comment">1時間たっぷりと動かしてもらえた。前後の空き時間がタイトだったので余裕があると嬉しい。<div class="en-line">Good full hour of movement. Breaks between sessions could be longer.</div><span class="name">— 泉田淳子</span></li>
+        <li class="day1-comment">わかりやすい説明で、実際に動いてどこの筋肉を使っているか感じ取れました。PSGAの方々にお会いできたことも良かった。<div class="en-line">Clear explanations; could feel which muscles were engaged. Great meeting other PSGA members.</div><span class="name">— 山田裕子</span></li>
+        <li class="day1-comment">他のインストラクターの動きや活動を知れて刺激的でした。評価よりエクササイズの時間がもう少しあれば。<div class="en-line">Inspiring to see other instructors. Would prefer more exercise time vs. assessment time.</div><span class="name">— 千間弘勝</span></li>
+        <li class="day1-comment">楽しかったです<div class="en-line">It was fun</div><span class="name">— 大貫晴子</span></li>
+        <li class="day1-comment">テキストに沿って丁寧に行われたと思います<div class="en-line">Well-organized, following the text materials carefully</div><span class="name">— 春日井アリサ</span></li>
+        <li class="day1-comment">初めての事ばかりで緊張でしたが、解説も分かりやすく、雰囲気も活気的で良き学びでした<div class="en-line">Nervous as everything was new, but explanations were clear and the atmosphere was lively — great learning</div><span class="name">— 臼井利江</span></li>
+        <li class="day1-comment">より個別性のある対応を学べたらよかった（ボディ役の方に適切なプロップスの使い方など）<div class="en-line">Would have liked more individualized instruction (e.g., proper prop use for demo subjects)</div><span class="name">— 畑田奈津美</span></li>
+        <li class="day1-comment">応用的なエクササイズも知れて良かった<div class="en-line">Good to learn advanced exercise variations</div><span class="name">— 畑田奈津美</span></li>
+        <li class="day1-comment">慢性的腰痛はよく学ぶので、より疾患に対応する内容だとよかった<div class="en-line">Chronic back pain is well-covered elsewhere — hoped for more condition-specific content</div><span class="name">— 畑田奈津美</span></li>
+      </ul>
+    </div>
+
+    <!-- Day1: 今後のテーマ -->
+    <div class="section">
+      <h2><span class="day-badge d1">DAY 1</span>
+        <span class="ja">今後実施して欲しいテーマ</span><span class="en-text">Requested Future Topics</span>
+      </h2>
+      <table class="data-table">
+        <thead><tr><th><span class="ja">希望テーマ</span><span class="en-text">Requested Topic</span></th><th><span class="ja">回答者</span><span class="en-text">Respondent</span></th></tr></thead>
+        <tbody>
+          <tr><td>若いダンサーへのアプローチ<div class="en-line">Approaches for young dancers</div></td><td>松本いずみ</td></tr>
+          <tr><td>ピラティスリングを使ったレッスン構成のWS<div class="en-line">WS on structuring lessons with Pilates Ring</div></td><td>田畑英理子</td></tr>
+          <tr><td>クラシカルピラティス、側弯症・肩こりのアプローチ<div class="en-line">Classical Pilates; scoliosis & stiff shoulder approaches</div></td><td>井手上有希恵</td></tr>
+          <tr><td>膝や足首などのリハビリメニュー<div class="en-line">Rehab programs for knees and ankles</div></td><td>加藤千絵</td></tr>
+          <tr><td>各マシンのブラッシュアップ<div class="en-line">Equipment skill refresher</div></td><td>石川惠子</td></tr>
+          <tr><td>骨粗鬆症・変形性膝関節症・人工関節の方へのアプローチ<div class="en-line">Approaches for osteoporosis, degenerative joints, joint replacements</div></td><td>山田裕子</td></tr>
+          <tr><td>新規体験者へのアプローチ方法とポイント<div class="en-line">How to approach first-time clients</div></td><td>千間弘勝</td></tr>
+          <tr><td>チェアやバレル、キャデラック<div class="en-line">Chair, Barrel, Cadillac</div></td><td>大貫晴子</td></tr>
+          <tr><td>腰痛の疾患別ケーススタディ<div class="en-line">Back pain case studies by condition type</div></td><td>松本いずみ</td></tr>
+          <tr><td>解剖学、関節（肩・股・膝・足関節）<div class="en-line">Anatomy: shoulder, hip, knee, ankle joints</div></td><td>春日井アリサ</td></tr>
+          <tr><td>骨盤の歪みと膝の関係<div class="en-line">Pelvic alignment and its relationship to the knee</div></td><td>臼井利江</td></tr>
+          <tr><td>PSGAやクラシカルピラティスを深く学べる内容<div class="en-line">Content to deeply study PSGA and Classical Pilates</div></td><td>畑田奈津美</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div><!-- /day1 -->
+
+  <!-- ============================================ -->
+  <!-- DAY 2 TAB -->
+  <!-- ============================================ -->
+  <div id="tab-day2" class="tab-content">
+
+    <div class="summary-strip">
+      <div class="stat-card day2"><div class="number">14</div><div class="label"><span class="ja">回答数</span><span class="en-text">Responses</span></div></div>
+      <div class="stat-card day2"><div class="number">3</div><div class="label"><span class="ja">ワークショップ数</span><span class="en-text">Workshops</span></div></div>
+      <div class="stat-card day2"><div class="number">50.0%</div><div class="label"><span class="ja">内容「とても良かった」</span><span class="en-text">Content "Very Good"</span></div></div>
+      <div class="stat-card day2"><div class="number">71.4%</div><div class="label"><span class="ja">講師「とても良かった」</span><span class="en-text">Instructor "Very Good"</span></div></div>
+    </div>
+
+    <!-- Day2: 参加項目 -->
+    <div class="section">
+      <h2><span class="day-badge d2">DAY 2</span>
+        <span class="ja">参加された項目（複数回答あり）</span><span class="en-text">Sessions Attended (Multiple Answers)</span>
+      </h2>
+      <div class="bar-row">
+        <div class="bar-label"><span class="ja">シェイプアップレッスン</span><span class="en-text">Shape-Up Lesson</span></div>
+        <div class="bar-track"><div class="bar-fill c2" style="width:100%">6</div></div>
+        <div class="bar-count">37.5%</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><span class="ja">肩の痛み・肩こり対策</span><span class="en-text">Shoulder Pain Approach</span></div>
+        <div class="bar-track"><div class="bar-fill c1" style="width:83%">5</div></div>
+        <div class="bar-count">31.3%</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><span class="ja">クラシカルの本質を深める</span><span class="en-text">Classical Pilates Essence</span></div>
+        <div class="bar-track"><div class="bar-fill c3" style="width:83%">5</div></div>
+        <div class="bar-count">31.3%</div>
+      </div>
+      <p class="note"><span class="ja">※ 延べ参加数16件</span><span class="en-text">* 16 total session attendances</span></p>
+    </div>
+
+    <!-- Day2: 満足度 -->
+    <div class="section">
+      <h2><span class="day-badge d2">DAY 2</span>
+        <span class="ja">ワークショップ内容の満足度</span><span class="en-text">Content Satisfaction</span>
+      </h2>
+      <div class="donut-wrapper">
+        <div class="donut" style="background: conic-gradient(var(--primary) 0deg 180deg, var(--accent) 180deg 334deg, var(--purple) 334deg 360deg);">
+          <div class="donut-center"><span class="big">14</span><span class="small"><span class="ja">回答</span><span class="en-text">resp.</span></span></div>
+        </div>
+        <div>
+          <div class="bar-row"><div class="bar-label"><span class="ja">とても良かった</span><span class="en-text">Very Good</span></div><div class="bar-track"><div class="bar-fill c1" style="width:50%">7</div></div><div class="bar-count">50.0%</div></div>
+          <div class="bar-row"><div class="bar-label"><span class="ja">まぁまぁ良かった</span><span class="en-text">Good</span></div><div class="bar-track"><div class="bar-fill c2" style="width:43%">6</div></div><div class="bar-count">42.9%</div></div>
+          <div class="bar-row"><div class="bar-label"><span class="ja">普通</span><span class="en-text">Average</span></div><div class="bar-track"><div class="bar-fill c4" style="width:7%"></div></div><div class="bar-count">7.1%</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day2: 講師 -->
+    <div class="section">
+      <h2><span class="day-badge d2">DAY 2</span>
+        <span class="ja">講師の指導について</span><span class="en-text">Instructor Evaluation</span>
+      </h2>
+      <div class="bar-row"><div class="bar-label"><span class="ja">とても良かった</span><span class="en-text">Very Good</span></div><div class="bar-track"><div class="bar-fill c3" style="width:71%">10</div></div><div class="bar-count">71.4%</div></div>
+      <div class="bar-row"><div class="bar-label"><span class="ja">まぁまぁ良かった</span><span class="en-text">Good</span></div><div class="bar-track"><div class="bar-fill c2" style="width:29%">4</div></div><div class="bar-count">28.6%</div></div>
+    </div>
+
+    <!-- Day2: 参加理由 -->
+    <div class="section">
+      <h2><span class="day-badge d2">DAY 2</span>
+        <span class="ja">参加理由・期待していた内容</span><span class="en-text">Reasons for Attending / Expectations</span>
+      </h2>
+      <ul class="comment-list">
+        <li class="day2-comment">肩凝りや肩周りのお悩みの方が多かったため。ヘザーさんのお話を直接聞きたかった。<div class="en-line">Many clients with shoulder/stiffness issues; wanted to hear Heather speak directly</div><span class="name">— 村上桃子</span></li>
+        <li class="day2-comment">ロマーナさんのピラティスに触れたかった<div class="en-line">Wanted to experience Romana's Pilates approach</div><span class="name">— REIKO</span></li>
+        <li class="day2-comment">PSGAのインストラクターとして、ヘザーの考え方を学びたいと思ったから<div class="en-line">As a PSGA instructor, wanted to learn Heather's methodology</div><span class="name">— 畑田奈津美</span></li>
+        <li class="day2-comment">スキルアップのため<div class="en-line">For skill development</div><span class="name">— 加藤千絵</span></li>
+        <li class="day2-comment">クラシカルピラティスを伝えている方が行う"シェイプアップピラティス"がどういうものかを知りたかった<div class="en-line">Curious about what "Shape-Up Pilates" looks like from a Classical Pilates instructor</div><span class="name">— 泉田淳子</span></li>
+        <li class="day2-comment">エクササイズの新たな組み合わせやヴァリエーションがあれば良いと思い<div class="en-line">Hoping for new exercise combinations and variations</div><span class="name">— 春日井アリサ</span></li>
+        <li class="day2-comment">四十肩の方が多いので、ヘザーの意見を聞きたかった<div class="en-line">Many clients with frozen shoulder; wanted Heather's perspective</div><span class="name">— 松本いずみ</span></li>
+        <li class="day2-comment">養成コースをする上で、どう伝えたら良いのか？を復習するため<div class="en-line">Reviewing how to teach effectively for instructor training courses</div><span class="name">— 松本いずみ</span></li>
+        <li class="day2-comment">リフォーマーに乗ってみたかった<div class="en-line">Wanted to try the Reformer</div><span class="name">— 近藤勇輝</span></li>
+        <li class="day2-comment">キャン待ちが空き、ヘザーさんのリフォーマーでしたのでチャレンジ<div class="en-line">Got off the waitlist for Heather's Reformer session — decided to try it</div><span class="name">— 臼井利江</span></li>
+        <li class="day2-comment">肩のお悩みのある方が多く、効果的なアプローチを学びたいと思い参加<div class="en-line">Many clients with shoulder issues; wanted to learn effective approaches</div><span class="name">— 津波さやか</span></li>
+        <li class="day2-comment">クラシカルピラティスを学びたかったから<div class="en-line">Wanted to learn Classical Pilates</div><span class="name">— 加藤美和</span></li>
+      </ul>
+    </div>
+
+    <!-- Day2: 感想 -->
+    <div class="section">
+      <h2><span class="day-badge d2">DAY 2</span>
+        <span class="ja">ワークショップ全体の感想</span><span class="en-text">Overall Workshop Feedback</span>
+      </h2>
+      <ul class="comment-list">
+        <li class="day2-comment">直接お話を聞けて、資格取得時の勉強と結びつきとても勉強になりました。自分の苦手な動作にも気づけました。<div class="en-line">Great to hear directly — connected with certification studies. Also noticed my own weak movements.</div><span class="name">— 村上桃子</span></li>
+        <li class="day2-comment">ヘザーさんの優しい指導がとっても楽しかった<div class="en-line">Heather's gentle teaching style was really enjoyable</div><span class="name">— REIKO</span></li>
+        <li class="day2-comment">通常のシークエンス以外の内容も含まれていたのでよかった<div class="en-line">Good that it included content beyond the standard sequence</div><span class="name">— 畑田奈津美</span></li>
+        <li class="day2-comment">ヘザーさんの指導、キューのタイミングなどを実際に受けられてよかった<div class="en-line">Great to experience Heather's instruction and cueing timing firsthand</div><span class="name">— 畑田奈津美</span></li>
+        <li class="day2-comment">クラシカルのリフォーマーで実際にやれたらさらに素晴らしいと思った<div class="en-line">Would be even better if done on a Classical Reformer</div><span class="name">— 畑田奈津美</span></li>
+        <li class="day2-comment">とても勉強になりました。鼻呼吸について確認したいです。<div class="en-line">Very educational. Would like to confirm about nasal breathing technique.</div><span class="name">— 加藤千絵</span></li>
+        <li class="day2-comment">クラシカルとシェイプアップクラスの違いがわかると嬉しかったです<div class="en-line">Would have appreciated clearer distinction between Classical and Shape-Up classes</div><span class="name">— 泉田淳子</span></li>
+        <li class="day2-comment">普段入れ込まないエクササイズもあり全体的に復習になり良かったです<div class="en-line">Included exercises not usually in my routine — good overall review</div><span class="name">— 春日井アリサ</span></li>
+        <li class="day2-comment">理解していた内容が多かった。具体的なケーススタディを期待していた。内旋・外旋の筋肉が知れたのは良かった。<div class="en-line">Much was already familiar. Expected specific case studies. Learning internal/external rotation muscles was valuable.</div><span class="name">— 松本いずみ</span></li>
+        <li class="day2-comment">あまりプラスになる内容はなかったけど、復習にはなった<div class="en-line">Not much new content, but served as a good review</div><span class="name">— 松本いずみ</span></li>
+        <li class="day2-comment">一つ一つのエクササイズを学びたかった。次はもっとロングで細かくやるものに参加したい。<div class="en-line">Wanted to learn each exercise in detail. Next time, would prefer a longer, more in-depth format.</div><span class="name">— 近藤勇輝</span></li>
+        <li class="day2-comment">リフォーマーで自分の弱い部位を気づけました。補佐していただき楽しく過ごせました。<div class="en-line">Discovered weak areas using the Reformer. Assistance made it enjoyable.</div><span class="name">— 臼井利江</span></li>
+        <li class="day2-comment">初めてのリアル参加でしたが学びの多い時間でした。質問しやすい雰囲気で安心して参加できました。<div class="en-line">First in-person attendance — rich learning experience. Comfortable atmosphere for asking questions.</div><span class="name">— 津波さやか</span></li>
+        <li class="day2-comment">内容も分かりやすくて、リフォーマーのエクササイズが分からなくても理解できました<div class="en-line">Content was easy to understand even without prior Reformer exercise knowledge</div><span class="name">— 加藤美和</span></li>
+      </ul>
+    </div>
+
+    <!-- Day2: 今後のテーマ -->
+    <div class="section">
+      <h2><span class="day-badge d2">DAY 2</span>
+        <span class="ja">今後実施して欲しいテーマ</span><span class="en-text">Requested Future Topics</span>
+      </h2>
+      <table class="data-table">
+        <thead><tr><th><span class="ja">希望テーマ</span><span class="en-text">Requested Topic</span></th><th><span class="ja">回答者</span><span class="en-text">Respondent</span></th></tr></thead>
+        <tbody>
+          <tr><td>フットワークの足や骨盤の細かい見方・修正の仕方<div class="en-line">Detailed foot/pelvic assessment and correction for Footwork</div></td><td>村上桃子</td></tr>
+          <tr><td>Foot（足）に特化した内容<div class="en-line">Foot-focused content</div></td><td>REIKO</td></tr>
+          <tr><td>PSGAやクラシカルピラティスの内容 / クラシカルピラティスを深める内容<div class="en-line">PSGA and Classical Pilates deep-dive</div></td><td>畑田奈津美</td></tr>
+          <tr><td>リフォーマー・チェア・バレルを使ったリハビリメニュー<div class="en-line">Rehab programs using Reformer, Chair, and Barrel</div></td><td>加藤千絵</td></tr>
+          <tr><td>解剖学に基づきクラシカルの良さを大切にしたリフォーマー活用の学び<div class="en-line">Anatomy-based Reformer learning that honors Classical Pilates values</div></td><td>春日井アリサ</td></tr>
+          <tr><td>代償動作に対するケーススタディ・参加型ワークショップ<div class="en-line">Compensation pattern case studies — interactive format</div></td><td>松本いずみ</td></tr>
+          <tr><td>リフォーマーの動きを4日間かけて学ぶコース<div class="en-line">4-day intensive Reformer deep-dive course</div></td><td>近藤勇輝</td></tr>
+          <tr><td>首・肩コリと鎖骨・胸筋の関連性<div class="en-line">Neck/shoulder stiffness and its relationship to clavicle/pectoral muscles</div></td><td>臼井利江</td></tr>
+          <tr><td>年齢が上の方（70代〜）にも提案しやすいアプローチ<div class="en-line">Approaches suitable for older clients (70+)</div></td><td>津波さやか</td></tr>
+          <tr><td>解剖学の座学とエクササイズを組み合わせたクラス<div class="en-line">Classes combining anatomy lectures with exercises</div></td><td>加藤美和</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div><!-- /day2 -->
+
+  <div class="footer">
+    <span class="ja">PSGAヘザー・レオン 2026 ワークショップ アンケート集計 ｜ 1日目：19件 + 2日目：14件 = 合計33件 ｜ 集計日：2026年4月6日</span>
+    <span class="en-text">PSGA Heather Leon 2026 Workshop Survey Summary ｜ Day 1: 19 + Day 2: 14 = 33 Total ｜ Compiled: April 6, 2026</span>
+  </div>
+
+</div>
+
+<script>
+function handleLogin(e) {
+  e.preventDefault();
+  var pw = document.getElementById('loginPassword');
+  var err = document.getElementById('loginError');
+  if (pw.value === 'daimaru') {
+    document.getElementById('loginOverlay').classList.add('hidden');
+    document.getElementById('mainContent').classList.add('visible');
+    return false;
+  }
+  pw.classList.add('error');
+  err.textContent = 'パスワードが違います / Incorrect password';
+  setTimeout(function(){ pw.classList.remove('error'); }, 500);
+  pw.value = '';
+  pw.focus();
+  return false;
+}
+function showTab(name) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  const idx = { overview: 0, day1: 1, day2: 2 };
+  document.querySelectorAll('.tab-btn').forEach((el, i) => {
+    el.classList.toggle('active', i === idx[name]);
+  });
+}
+function setLang(lang) {
+  document.body.classList.toggle('en-mode', lang === 'en');
+  document.querySelectorAll('.lang-btn').forEach(el => {
+    el.classList.toggle('active', el.textContent.trim() === (lang === 'en' ? 'English' : '日本語'));
+  });
+}
+</script>
+</body>
+</html>
