@@ -1,0 +1,468 @@
+{
+  "sections": [
+    {
+      "num": "01",
+      "en": "Reformer",
+      "jp": "リフォーマー",
+      "products": [
+        {
+          "id": "X01-A",
+          "nameEN": "STANDARD REFORMER",
+          "nameJP": "スタンダードリフォーマー",
+          "desc": "メープル材フレーム、コンパクト設計。",
+          "p1": "$905",
+          "size": "2280×720×1850mm",
+          "pack": "2360×780×495mm",
+          "weight": "90 KG",
+          "packW": "120 KG",
+          "height": "340mm",
+          "eva1": "EVA +$80",
+          "paint1": "塗装 +$100",
+          "springs": "",
+          "photos": []
+        },
+        {
+          "id": "X01-B",
+          "nameEN": "ENHANCED REFORMER",
+          "nameJP": "エンハンスドリフォーマー",
+          "desc": "ヘッドレスト・ショルダーブロック付き。メープル材フレーム。",
+          "p1": "$1,052",
+          "size": "2280×720×1850mm",
+          "pack": "2360×780×495mm",
+          "weight": "100 KG",
+          "packW": "130 KG",
+          "height": "340mm",
+          "eva1": "EVA +$80",
+          "paint1": "塗装 +$100",
+          "springs": "",
+          "photos": []
+        },
+        {
+          "id": "X01-C",
+          "nameEN": "PROFESSIONAL REFORMER",
+          "nameJP": "プロフェッショナルリフォーマー",
+          "desc": "スチールフレーム、モダンブラックデザイン。",
+          "p1": "$862",
+          "size": "2300×600×375mm",
+          "pack": "2380×680×420mm",
+          "weight": "110 KG",
+          "packW": "140 KG",
+          "height": "312mm",
+          "eva1": "EVA +$80",
+          "paint1": "塗装 N/A",
+          "springs": "",
+          "photos": []
+        },
+        {
+          "id": "—",
+          "nameEN": "3.5mm HARD MAPLE",
+          "nameJP": "3.5mm 輸入ハードメープル",
+          "desc": "3.5mm 輸入ハードメープル材使用。",
+          "p1": "$965",
+          "size": "—",
+          "pack": "—",
+          "weight": "—",
+          "packW": "—",
+          "height": "—",
+          "eva1": "EVA +$80",
+          "paint1": "塗装 +$100（白）",
+          "springs": "",
+          "photos": []
+        },
+        {
+          "id": "—",
+          "nameEN": "4:6 RATIO FRAME",
+          "nameJP": "4対6の比率フレームワーク",
+          "desc": "4対6の比率フレームワーク。",
+          "p1": "$635",
+          "size": "—",
+          "pack": "—",
+          "weight": "—",
+          "packW": "—",
+          "height": "—",
+          "eva1": "EVA +$80",
+          "paint1": "塗装 +$100",
+          "springs": "",
+          "photos": []
+        },
+        {
+          "id": "—",
+          "nameEN": "50/50 FOLDING FRAME",
+          "nameJP": "50/50 折りたたみフレーム",
+          "desc": "50/50 折りたたみフレーム。省スペース収納可能。",
+          "p1": "$635",
+          "size": "—",
+          "pack": "—",
+          "weight": "—",
+          "packW": "—",
+          "height": "—",
+          "eva1": "EVA +$80",
+          "paint1": "塗装 +$100",
+          "springs": "",
+          "photos": []
+        }
+      ]
+    },
+    {
+      "num": "02",
+      "en": "Half Tower",
+      "jp": "ハーフタワー",
+      "products": [
+        {
+          "id": "X02-A",
+          "nameEN": "HALF TOWER REFORMER",
+          "nameJP": "ハーフタワーリフォーマー",
+          "desc": "リフォーマー＋ハーフタワー。メープル材、フルスプリングシステム。",
+          "p1": "$1,154",
+          "size": "2280×720×1850mm",
+          "pack": "2360×780×495mm",
+          "weight": "110 KG",
+          "packW": "140 KG",
+          "height": "340mm",
+          "eva1": "EVA +$80",
+          "paint1": "塗装 +$100",
+          "springs": "ベッド: 赤×2 緑×2 黄×2 ／ タワー: 緑L×2 緑S×2 黄L×2 黄S×2",
+          "photos": []
+        },
+        {
+          "id": "X02-B",
+          "nameEN": "FOLDING HALF TOWER",
+          "nameJP": "折りたたみ式タワー付きリフォーマー",
+          "desc": "折りたたみ式タワー付きリフォーマー。省スペース設計。",
+          "p1": "$1,050",
+          "size": "2280×690×1850mm",
+          "pack": "2510×770×520mm",
+          "weight": "110 KG",
+          "packW": "140 KG",
+          "height": "340mm",
+          "eva1": "EVA +$80",
+          "paint1": "塗装 +$100",
+          "springs": "ベッド: 赤×2 緑×2 黄×2 ／ タワー: 緑L×2 緑S×2 黄L×2 黄S×2",
+          "photos": []
+        },
+        {
+          "id": "X02-C",
+          "nameEN": "PREMIUM HALF TOWER",
+          "nameJP": "プレミアム・ハーフタワー",
+          "desc": "プレミアム・ハーフタワー。高品質パッド、フルアクセサリー付属。",
+          "p1": "$1,350",
+          "size": "2280×720×1850mm",
+          "pack": "2360×780×495mm",
+          "weight": "120 KG",
+          "packW": "150 KG",
+          "height": "340mm",
+          "eva1": "EVA +$80",
+          "paint1": "塗装 +$100",
+          "springs": "ベッド: 赤×4 緑×4 黄×4 ／ タワー: 緑L×2 緑S×2 黄L×2 黄S×2",
+          "photos": []
+        }
+      ]
+    },
+    {
+      "num": "03",
+      "en": "Cadillac",
+      "jp": "キャデラック",
+      "products": [
+        {
+          "id": "X03-A",
+          "nameEN": "STEEL CADILLAC",
+          "nameJP": "スチール製キャデラック",
+          "desc": "スチール製キャデラック。フルフレーム、各種アタッチメント付属。",
+          "p1": "$836",
+          "size": "2320×760×1990mm",
+          "pack": "2350×770×340mm",
+          "weight": "90 KG",
+          "packW": "120 KG",
+          "height": "550mm",
+          "eva1": "EVA N/A",
+          "paint1": "塗装 N/A",
+          "springs": "緑L×2 緑S×2 黄L×2 黄S×2 赤S×2",
+          "photos": []
+        },
+        {
+          "id": "X03-B",
+          "nameEN": "MAPLE CADILLAC",
+          "nameJP": "メープル材キャデラック",
+          "desc": "メープル材キャデラック。天然木の質感、プロ仕様。",
+          "p1": "$890",
+          "size": "2190×800×2120mm",
+          "pack": "2310×820×690mm",
+          "weight": "100 KG",
+          "packW": "120 KG",
+          "height": "635mm",
+          "eva1": "EVA +$80",
+          "paint1": "塗装 +$100",
+          "springs": "緑L×2 緑S×2 黄L×2 黄S×2 赤S×2",
+          "photos": []
+        },
+        {
+          "id": "X03-C",
+          "nameEN": "PREMIUM MAPLE CADILLAC",
+          "nameJP": "リフォーマーベッド一体型キャデラック",
+          "desc": "リフォーマーベッド一体型キャデラック。最高グレード仕様。",
+          "p1": "$1,135",
+          "size": "2190×800×2120mm",
+          "pack": "2310×820×690mm",
+          "weight": "120 KG",
+          "packW": "150 KG",
+          "height": "635mm",
+          "eva1": "EVA +$80",
+          "paint1": "塗装 +$100",
+          "springs": "ベッド: 赤×2 緑×2 黄×2 ／ タワー: 緑L×2 緑S×2 黄L×2 黄S×2 赤S×2",
+          "photos": []
+        }
+      ]
+    },
+    {
+      "num": "04",
+      "en": "Chair",
+      "jp": "チェア",
+      "products": [
+        {
+          "id": "X04-A",
+          "nameEN": "STABILITY CHAIR",
+          "nameJP": "ワンダチェア",
+          "desc": "メープル材、スプリット・ペダルシステム。",
+          "p1": "$650",
+          "size": "840×680×615mm",
+          "pack": "900×725×758mm",
+          "weight": "45 KG",
+          "packW": "65 KG",
+          "height": "—",
+          "eva1": "EVA +$40",
+          "paint1": "塗装 +$60",
+          "springs": "赤×2 緑×2",
+          "photos": []
+        },
+        {
+          "id": "X04-B",
+          "nameEN": "WUNDA CHAIR",
+          "nameJP": "コンボチェア",
+          "desc": "天然木フレーム、コンパクト設計。",
+          "p1": "$500",
+          "size": "840×600×600mm",
+          "pack": "800×720×770mm",
+          "weight": "45 KG",
+          "packW": "65 KG",
+          "height": "—",
+          "eva1": "EVA +$40",
+          "paint1": "塗装 +$60",
+          "springs": "赤×2 緑×2",
+          "photos": []
+        },
+        {
+          "id": "X04-C",
+          "nameEN": "PROFESSIONAL CHAIR",
+          "nameJP": "ハイバックチェア",
+          "desc": "スチール＋ホワイトパネル。",
+          "p1": "$458",
+          "size": "750×600×1300mm",
+          "pack": "910×720×710mm",
+          "weight": "45 KG",
+          "packW": "65 KG",
+          "height": "—",
+          "eva1": "EVA N/A",
+          "paint1": "塗装 N/A",
+          "springs": "赤×2 緑×2",
+          "photos": []
+        }
+      ]
+    },
+    {
+      "num": "05",
+      "en": "Ladder Barrel",
+      "jp": "ラダーバレル",
+      "products": [
+        {
+          "id": "X05-A",
+          "nameEN": "MAPLE LADDER BARREL",
+          "nameJP": "通常スポンジ・フットペダル付き",
+          "desc": "メープル材。フットペダル機能付き。",
+          "p1": "$435",
+          "size": "1100×620×980mm",
+          "pack": "1170×690×1110mm",
+          "weight": "90 KG",
+          "packW": "110 KG",
+          "height": "—",
+          "eva1": "EVA +$40",
+          "paint1": "塗装 +$60",
+          "springs": "",
+          "photos": []
+        },
+        {
+          "id": "X05-B",
+          "nameEN": "IRON FRAME MAPLE BARREL",
+          "nameJP": "鉄製フレーム・メープル材",
+          "desc": "鉄製フレーム、メープル材板。フットペダル調節可能。",
+          "p1": "$455",
+          "size": "1100×620×980mm",
+          "pack": "1170×690×1110mm",
+          "weight": "90 KG",
+          "packW": "110 KG",
+          "height": "—",
+          "eva1": "EVA +$40",
+          "paint1": "塗装 +$60",
+          "springs": "",
+          "photos": []
+        },
+        {
+          "id": "X05-C",
+          "nameEN": "STEEL LADDER BARREL",
+          "nameJP": "スチールフレーム・ペダル付き",
+          "desc": "オールスチールフレーム。フットペダル機能付き。",
+          "p1": "$425",
+          "size": "1100×620×980mm",
+          "pack": "1170×690×1110mm",
+          "weight": "90 KG",
+          "packW": "110 KG",
+          "height": "—",
+          "eva1": "EVA N/A",
+          "paint1": "塗装 N/A",
+          "springs": "",
+          "photos": []
+        },
+        {
+          "id": "X05-D",
+          "nameEN": "BASIC LADDER BARREL",
+          "nameJP": "ベーシック・ペダルなし",
+          "desc": "フットペダル機能なし。クラシックデザイン。",
+          "p1": "$396",
+          "size": "1100×620×980mm",
+          "pack": "1170×690×1110mm",
+          "weight": "90 KG",
+          "packW": "110 KG",
+          "height": "—",
+          "eva1": "EVA +$40",
+          "paint1": "塗装 +$60",
+          "springs": "",
+          "photos": []
+        }
+      ]
+    }
+  ],
+  "accessories": {
+    "small": [
+      {
+        "name": "Pilates Circle",
+        "nameJP": "ピラティスリング",
+        "p1": "$3.2",
+        "spec": "38cm",
+        "photo": ""
+      },
+      {
+        "name": "Pilates Ball",
+        "nameJP": "ピラティスボール",
+        "p1": "$1.3〜2.3",
+        "spec": "25cm",
+        "photo": ""
+      },
+      {
+        "name": "Foam Roller",
+        "nameJP": "フォームローラー",
+        "p1": "$6〜6.5",
+        "spec": "33×13 / 45×13cm",
+        "photo": ""
+      },
+      {
+        "name": "Elastic Band",
+        "nameJP": "エラスティックバンド",
+        "p1": "$1.2",
+        "spec": "1500×150×0.35mm",
+        "photo": ""
+      },
+      {
+        "name": "Yoga Block",
+        "nameJP": "ヨガブロック",
+        "p1": "$5",
+        "spec": "23×15×7.5cm",
+        "photo": ""
+      },
+      {
+        "name": "Balance Disc",
+        "nameJP": "バランスディスク",
+        "p1": "$3.8",
+        "spec": "直径34cm",
+        "photo": ""
+      },
+      {
+        "name": "Spinal Corrector (Wood)",
+        "nameJP": "スパイナルコレクター（木製）",
+        "p1": "$70",
+        "spec": "",
+        "photo": ""
+      },
+      {
+        "name": "EPP Spinal Corrector",
+        "nameJP": "EPPスパイナルコレクター",
+        "p1": "$23",
+        "spec": "96×36×26cm",
+        "photo": ""
+      },
+      {
+        "name": "Spine Trainer",
+        "nameJP": "スパイントレーナー",
+        "p1": "$183",
+        "spec": "",
+        "photo": ""
+      },
+      {
+        "name": "Massage Stick",
+        "nameJP": "マッサージスティック",
+        "p1": "$21",
+        "spec": "",
+        "photo": ""
+      },
+      {
+        "name": "Balance Pad",
+        "nameJP": "バランスパッド",
+        "p1": "$6",
+        "spec": "28×17×6cm",
+        "photo": ""
+      },
+      {
+        "name": "Pilates Mat",
+        "nameJP": "ピラティスマット",
+        "p1": "$18",
+        "spec": "5mm",
+        "photo": ""
+      }
+    ],
+    "large": [
+      {
+        "name": "Box",
+        "nameJP": "ボックス",
+        "p1": "$50",
+        "spec": "寸法カスタマイズ可",
+        "photo": ""
+      },
+      {
+        "name": "Maple Stick 80cm",
+        "nameJP": "メープルスティック 80cm",
+        "p1": "$12",
+        "spec": "80cm",
+        "photo": ""
+      },
+      {
+        "name": "Maple Stick 120cm",
+        "nameJP": "メープルスティック 120cm",
+        "p1": "$16",
+        "spec": "120cm",
+        "photo": ""
+      },
+      {
+        "name": "Arc Barrel",
+        "nameJP": "アークバレル（取っ手なし）",
+        "p1": "$40",
+        "spec": "中空・取っ手なし",
+        "photo": ""
+      },
+      {
+        "name": "Arc Barrel (Handle)",
+        "nameJP": "アークバレル（取っ手付き）",
+        "p1": "$45",
+        "spec": "取っ手付き",
+        "photo": ""
+      }
+    ]
+  }
+}

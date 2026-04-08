@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>axiscore X Series</title>
+<style>
+
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --gold:#C4A45A;--gold-lt:#D4B86A;
+  --dark:#1A1A1A;--cream:#F5F0E8;--cream2:#EDE8DF;
+  --purple:#2D0A8C;--purple-lt:#F0ECFF;--purple2:#E4DFFF;--purple-mid:#4A1BD4;
+  --panel-w:480px;
+}
+body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN',sans-serif;background:#111;color:#fff;min-height:100vh}
+
+/* ─ LOGIN ─ */
+#login-screen{
+  position:fixed;inset:0;z-index:2000;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#0e0e0e 60%,#1a0a40 100%);
+}
+.lb{width:340px;padding:48px 40px;background:rgba(255,255,255,.04);border:1px solid rgba(196,164,90,.3);border-radius:4px;text-align:center}
+.lb h1{font-size:26px;letter-spacing:8px;color:var(--gold);font-weight:300;margin-bottom:6px}
+.lb sub{font-size:10px;letter-spacing:4px;color:rgba(255,255,255,.35);display:block;margin-bottom:36px}
+.lb input{width:100%;padding:13px 16px;margin-bottom:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:2px;color:#fff;font-size:14px;letter-spacing:2px;outline:none;text-align:center}
+.lb input:focus{border-color:var(--gold)}
+.lb button{width:100%;padding:13px;background:var(--gold);border:none;border-radius:2px;color:#111;font-size:12px;letter-spacing:4px;font-weight:700;cursor:pointer}
+.lb button:hover{background:var(--gold-lt)}
+.lb-err{color:#ff6b6b;font-size:11px;margin-top:10px;height:14px}
+.lb-loading{color:rgba(255,255,255,.5);font-size:11px;margin-top:10px;height:14px}
+
+/* ─ CATALOG ─ */
+#catalog{display:none}
+
+.c-head{position:sticky;top:0;z-index:100;height:56px;padding:0 28px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.1)}
+.mode-d .c-head{background:#1a1a1a}
+.mode-f .c-head{background:var(--purple)}
+.mode-a .c-head{background:#0d0d0d}
+.c-brand{font-size:16px;letter-spacing:5px;color:var(--gold);font-weight:300}
+#logout-btn{padding:5px 14px;background:transparent;border:1px solid rgba(255,255,255,.3);border-radius:2px;color:rgba(255,255,255,.6);font-size:11px;letter-spacing:2px;cursor:pointer;transition:all .2s}
+#logout-btn:hover{border-color:rgba(255,255,255,.7);color:#fff}
+.c-badge{padding:3px 14px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:2px}
+.mode-d .c-badge{background:var(--gold);color:#111}
+.mode-f .c-badge{background:#7B3FC4;color:#fff}
+.mode-a .c-badge{background:linear-gradient(90deg,var(--gold),#7B3FC4);color:#fff}
+
+.c-nav{display:flex;padding:0 28px;overflow-x:auto;border-bottom:1px solid rgba(255,255,255,.07)}
+.mode-d .c-nav{background:#111}
+.mode-f .c-nav{background:#1a0050}
+.mode-a .c-nav{background:#0a0a0a}
+.c-nav a{padding:13px 18px;font-size:11px;letter-spacing:2px;color:rgba(255,255,255,.45);text-decoration:none;white-space:nowrap;border-bottom:2px solid transparent;transition:all .2s}
+.c-nav a:hover{color:var(--gold);border-bottom-color:var(--gold)}
+
+.s-hd{padding:72px 40px 52px;display:flex;align-items:flex-end;gap:20px}
+.mode-d .s-hd{background:var(--dark)}
+.mode-f .s-hd{background:var(--purple)}
+.mode-a .s-hd{background:#0d0d0d}
+.s-num{font-size:88px;font-weight:700;line-height:1;color:var(--gold);opacity:.55}
+.s-en{font-size:44px;font-weight:300;letter-spacing:4px;color:#fff;line-height:1}
+.s-jp{font-size:14px;letter-spacing:6px;color:rgba(255,255,255,.45);margin-top:7px}
+
+/* product card */
+.p-card{display:grid;grid-template-columns:1fr 1fr;min-height:400px;border-bottom:1px solid rgba(0,0,0,.12)}
+.mode-d .p-card:nth-child(odd){background:var(--cream)}
+.mode-d .p-card:nth-child(even){background:var(--cream2)}
+.mode-f .p-card:nth-child(odd){background:var(--purple-lt)}
+.mode-f .p-card:nth-child(even){background:var(--purple2)}
+.mode-a .p-card:nth-child(odd){background:#f8f6f2}
+.mode-a .p-card:nth-child(even){background:#ede8df}
+
+.p-img-wrap{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.mode-d .p-img-wrap{background:#e6e0d5}
+.mode-f .p-img-wrap{background:#d8d2f5}
+.mode-a .p-img-wrap{background:#e6e0d5}
+.p-main-img{width:100%;height:100%;object-fit:contain;padding:28px}
+.p-thumbs{position:absolute;bottom:10px;right:10px;display:flex;gap:5px}
+.p-thumb{width:48px;height:48px;object-fit:cover;border:2px solid rgba(255,255,255,.7);border-radius:2px;cursor:pointer;transition:border-color .2s}
+.p-thumb:hover{border-color:var(--gold)}
+
+.p-info{padding:36px;display:flex;flex-direction:column;color:#1a1a1a}
+.p-id{font-size:10px;letter-spacing:4px;font-weight:700;color:var(--gold);margin-bottom:3px}
+.p-nen{font-size:20px;font-weight:700;letter-spacing:1px;margin-bottom:3px}
+.p-njp{font-size:12px;color:#666;margin-bottom:6px}
+.p-desc{font-size:12px;color:#777;border-top:1px solid rgba(0,0,0,.1);padding-top:10px;margin-bottom:14px}
+
+.price-single{display:flex;align-items:baseline;gap:6px;margin-bottom:16px}
+.pv{font-size:48px;font-weight:700;color:var(--gold);line-height:1}
+.pu{font-size:12px;color:#aaa;align-self:flex-end;margin-bottom:5px}
+.price-dual{display:flex;gap:16px;margin-bottom:16px}
+.pd-col{flex:1;padding:10px 12px;background:rgba(0,0,0,.05);border-radius:3px;text-align:center}
+.pd-lbl{font-size:9px;letter-spacing:1px;color:#999;display:block;margin-bottom:3px}
+.pd-v{font-size:28px;font-weight:700;line-height:1;color:var(--gold)}
+.pd-col.col2 .pd-v{color:var(--purple-mid)}
+
+.spec-tbl{width:100%;border-collapse:collapse;margin-bottom:14px;font-size:11px}
+.spec-tbl td{padding:4px 0;border-bottom:1px solid rgba(0,0,0,.07)}
+.spec-tbl td:first-child{color:#999;width:80px;font-size:10px}
+.spec-tbl td:last-child{font-weight:600;color:#1a1a1a}
+
+.opts{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px}
+.opt{padding:4px 11px;font-size:10px;font-weight:600;border-radius:20px;border:1px solid rgba(0,0,0,.13);color:#555;background:rgba(0,0,0,.03)}
+.opt.na{color:#ccc;border-color:#e5e5e5}
+.spr{font-size:10px;color:#777;padding-top:8px;border-top:1px solid rgba(0,0,0,.07)}
+.spr-lbl{font-size:9px;letter-spacing:2px;color:#bbb;margin-bottom:2px}
+
+/* accessories */
+.acc-sec{padding:36px}
+.mode-d .acc-sec{background:var(--cream)}
+.mode-f .acc-sec{background:var(--purple-lt)}
+.mode-a .acc-sec{background:#f8f6f2}
+.acc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(188px,1fr));gap:16px;margin-top:20px}
+.acc-card{background:#fff;border-radius:3px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.07)}
+.mode-f .acc-card{background:rgba(74,27,212,.05);border:1px solid rgba(74,27,212,.1)}
+.acc-img{width:100%;height:130px;object-fit:contain;padding:14px;background:#fafafa}
+.acc-body{padding:12px}
+.acc-name{font-size:12px;font-weight:700;color:#1a1a1a;margin-bottom:2px}
+.acc-spec{font-size:10px;color:#aaa;margin-bottom:6px}
+.acc-price{font-size:18px;font-weight:700;color:var(--gold)}
+.acc-dual{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.ad1{font-size:15px;color:var(--gold)}
+.ad2{font-size:15px;color:var(--purple-mid)}
+.ad-lbl{font-size:8px;color:#bbb;display:block}
+
+.c-foot{padding:40px;text-align:center;font-size:10px;letter-spacing:4px;color:rgba(255,255,255,.25)}
+.mode-d .c-foot{background:#111}
+.mode-f .c-foot{background:#0d0020}
+.mode-a .c-foot{background:#050505}
+
+/* ─ ADMIN PANEL ─ */
+#admin-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:500}
+#admin-overlay.open{display:block}
+#admin-panel{
+  position:fixed;top:0;right:-520px;width:var(--panel-w);height:100vh;
+  background:#fff;z-index:501;overflow-y:auto;
+  transition:right .3s ease;display:flex;flex-direction:column;
+  box-shadow:-4px 0 24px rgba(0,0,0,.3);
+}
+#admin-panel.open{right:0}
+.ap-head{padding:20px 24px;background:#1a1a1a;color:#fff;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.ap-head h2{font-size:14px;letter-spacing:3px;color:var(--gold)}
+.ap-close{background:none;border:none;color:rgba(255,255,255,.6);font-size:22px;cursor:pointer}
+.ap-close:hover{color:#fff}
+.ap-body{flex:1;padding:20px 24px;background:#f8f7f5}
+
+.tok-box{background:#fff;border-radius:4px;padding:16px;margin-bottom:20px;border:1px solid #e8e5e0}
+.tok-box label{font-size:10px;letter-spacing:2px;color:#999;display:block;margin-bottom:6px}
+.tok-row{display:flex;gap:8px}
+.tok-inp{flex:1;padding:9px 12px;border:1px solid #ddd;border-radius:3px;font-size:12px;font-family:monospace}
+.btn-connect{padding:9px 16px;background:var(--gold);border:none;border-radius:3px;color:#111;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap}
+.btn-connect:hover{background:var(--gold-lt)}
+.tok-status{font-size:10px;margin-top:6px;padding:4px 8px;border-radius:2px}
+.tok-status.ok{background:#d4edda;color:#155724}
+.tok-status.ng{background:#f8d7da;color:#721c24}
+
+.save-bar{padding:14px 24px;background:#1a1a1a;display:flex;gap:10px;align-items:center;justify-content:space-between;position:sticky;bottom:0;z-index:10}
+.save-bar span{font-size:11px;color:rgba(255,255,255,.5)}
+.btn-save{padding:10px 22px;background:var(--gold);border:none;border-radius:3px;color:#111;font-size:11px;font-weight:700;cursor:pointer}
+.btn-save:disabled{background:#555;color:#999;cursor:default}
+.btn-save:hover:not(:disabled){background:var(--gold-lt)}
+.save-msg{font-size:10px;color:var(--gold)}
+
+.ap-sec-title{font-size:10px;letter-spacing:3px;color:#999;padding:12px 0 6px;border-top:1px solid #e0dcd6;margin-top:8px;display:flex;align-items:center;justify-content:space-between}
+.ap-sec-title:first-child{border-top:none;margin-top:0}
+.btn-add{padding:3px 10px;background:var(--gold);border:none;border-radius:20px;color:#111;font-size:9px;font-weight:700;cursor:pointer}
+
+.ap-row{display:flex;align-items:center;gap:10px;padding:9px 12px;background:#fff;border-radius:3px;margin-bottom:5px;border:1px solid #e8e5e0;cursor:pointer;transition:border-color .15s}
+.ap-row:hover{border-color:var(--gold)}
+.ap-thumb{width:40px;height:40px;object-fit:cover;border-radius:2px;background:#eee;flex-shrink:0}
+.ap-names{flex:1;min-width:0}
+.ap-rid{font-size:9px;color:var(--gold);font-weight:700;letter-spacing:1px}
+.ap-ren{font-size:11px;font-weight:600;color:#1a1a1a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ap-rpr{font-size:10px;color:#aaa}
+.ap-del{background:none;border:none;color:#ccc;font-size:16px;cursor:pointer;padding:0 2px;flex-shrink:0}
+.ap-del:hover{color:#e74c3c}
+
+/* ─ EDITOR ─ */
+#editor-panel{
+  position:fixed;top:0;right:-560px;width:540px;height:100vh;
+  background:#fff;z-index:502;overflow-y:auto;
+  transition:right .3s ease;display:flex;flex-direction:column;
+  box-shadow:-4px 0 24px rgba(0,0,0,.4);
+}
+#editor-panel.open{right:0}
+.ep-head{padding:18px 22px;background:#1a1a1a;color:#fff;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:10}
+.ep-back{background:none;border:none;color:rgba(255,255,255,.6);font-size:20px;cursor:pointer;padding:0}
+.ep-back:hover{color:#fff}
+.ep-head h3{font-size:13px;letter-spacing:2px;color:var(--gold);flex:1}
+.ep-body{flex:1;padding:22px}
+
+.f-group{margin-bottom:16px}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.f-lbl{font-size:9px;letter-spacing:2px;color:#999;display:block;margin-bottom:5px}
+.f-inp,.f-sel,.f-ta{width:100%;padding:9px 11px;border:1px solid #ddd;border-radius:3px;font-size:12px;font-family:inherit;color:#1a1a1a;background:#fff;transition:border-color .15s}
+.f-inp:focus,.f-sel:focus,.f-ta:focus{outline:none;border-color:var(--gold)}
+.f-ta{resize:vertical;min-height:64px}
+.f-div{border:none;border-top:1px solid #e8e5e0;margin:18px 0}
+.f-sec{font-size:10px;letter-spacing:3px;color:#aaa;margin-bottom:12px}
+
+/* factory: p2フィールドのみ強調 */
+.field-factory{border-left:3px solid var(--purple-mid)!important;padding-left:8px}
+
+.photo-grid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.photo-item{position:relative;width:80px;height:80px}
+.photo-item img{width:100%;height:100%;object-fit:cover;border-radius:3px;border:1px solid #e0e0e0}
+.photo-del{position:absolute;top:-5px;right:-5px;width:18px;height:18px;background:#e74c3c;border:none;border-radius:50%;color:#fff;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.photo-add{width:80px;height:80px;border:2px dashed #ccc;border-radius:3px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;color:#bbb;font-size:10px;gap:4px;background:none;transition:border-color .15s}
+.photo-add:hover{border-color:var(--gold);color:var(--gold)}
+#photo-file-input{display:none}
+
+.ep-foot{padding:14px 22px;background:#f8f7f5;border-top:1px solid #e8e5e0;display:flex;gap:10px;justify-content:flex-end;position:sticky;bottom:0}
+.btn-cancel{padding:10px 20px;background:#e8e5e0;border:none;border-radius:3px;font-size:11px;cursor:pointer;color:#555}
+.btn-apply{padding:10px 22px;background:var(--gold);border:none;border-radius:3px;color:#111;font-size:11px;font-weight:700;cursor:pointer}
+.btn-apply:hover{background:var(--gold-lt)}
+
+#admin-fab{display:none;position:fixed;bottom:24px;right:24px;z-index:400;width:52px;height:52px;background:var(--gold);border:none;border-radius:50%;color:#111;font-size:22px;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.35);transition:transform .2s;align-items:center;justify-content:center}
+#admin-fab:hover{transform:scale(1.08)}
+#admin-fab.show{display:flex}
+.dirty-dot{width:8px;height:8px;background:#e74c3c;border-radius:50%;display:inline-block;margin-left:6px}
+
+/* 価格未設定バッジ */
+.badge-unset{
+  display:inline-block;padding:3px 10px;
+  background:#e74c3c;color:#fff;
+  font-size:10px;font-weight:700;letter-spacing:1px;border-radius:2px;
+  margin-bottom:10px;
+}
+.badge-unset-admin{
+  display:inline-block;padding:2px 8px;
+  background:#e74c3c;color:#fff;
+  font-size:9px;font-weight:700;border-radius:2px;margin-left:6px;
+  vertical-align:middle;
+}
+
+/* permission notice */
+.perm-note{
+  background:rgba(74,27,212,.08);border:1px solid rgba(74,27,212,.2);
+  border-radius:3px;padding:10px 14px;margin-bottom:16px;
+  font-size:11px;color:var(--purple-mid);
+}
+
+/* ─ SEARCH BAR ─ */
+.search-bar{padding:10px 28px;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(255,255,255,.07)}
+.mode-d .search-bar{background:#111}.mode-f .search-bar{background:#1a0050}.mode-a .search-bar{background:#0a0a0a}
+.search-wrap{position:relative;flex:1;max-width:420px}
+.search-inp{width:100%;padding:8px 36px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:3px;color:#fff;font-size:13px;outline:none;transition:border-color .2s}
+.search-inp:focus{border-color:var(--gold)}.search-inp::placeholder{color:rgba(255,255,255,.3)}
+.search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.3);font-size:13px;pointer-events:none}
+.search-clear{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,.4);font-size:16px;cursor:pointer;display:none;line-height:1;padding:0}
+.search-clear.show{display:block}.search-clear:hover{color:#fff}
+.search-count{font-size:11px;color:rgba(255,255,255,.35);white-space:nowrap}
+.cat-tabs{display:flex;gap:6px;flex-wrap:wrap}
+.cat-tab{padding:5px 14px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:1px;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.5);background:transparent;cursor:pointer;transition:all .2s;white-space:nowrap}
+.cat-tab:hover{border-color:rgba(196,164,90,.5);color:rgba(196,164,90,.8)}.cat-tab.active{background:var(--gold);border-color:var(--gold);color:#111}
+.no-results{padding:80px 40px;text-align:center;font-size:14px;color:rgba(255,255,255,.3);letter-spacing:2px;background:var(--dark)}
+.p-card{position:relative}
+.p-edit-hover{display:none;position:absolute;top:12px;right:12px;z-index:10;padding:6px 14px;background:var(--gold);border:none;border-radius:2px;color:#111;font-size:10px;font-weight:700;cursor:pointer}
+.can-edit .p-card:hover .p-edit-hover{display:block}
+#toast{position:fixed;bottom:84px;right:24px;z-index:9999;padding:12px 20px;border-radius:3px;font-size:12px;font-weight:600;letter-spacing:1px;opacity:0;transform:translateY(8px);transition:all .3s;pointer-events:none}
+#toast.show{opacity:1;transform:translateY(0)}#toast.ok{background:#27ae60;color:#fff}#toast.ng{background:#e74c3c;color:#fff}
+#logout-btn{padding:5px 14px;background:transparent;border:1px solid rgba(255,255,255,.3);border-radius:2px;color:rgba(255,255,255,.6);font-size:11px;letter-spacing:2px;cursor:pointer;transition:all .2s}
+#logout-btn:hover{border-color:rgba(255,255,255,.7);color:#fff}
+.badge-unset{display:inline-block;padding:3px 10px;background:#e74c3c;color:#fff;font-size:10px;font-weight:700;border-radius:2px;margin-bottom:10px}
+.ap-cat-hd{display:flex;align-items:center;justify-content:space-between;padding:10px 0 6px;border-top:1px solid #e0dcd6;margin-top:8px;cursor:pointer;user-select:none}
+.ap-cat-hd:first-child{border-top:none;margin-top:0}
+.ap-cat-left{display:flex;align-items:center;gap:8px}
+.ap-cat-lbl{font-size:10px;letter-spacing:3px;color:#999}
+.ap-cat-cnt{font-size:9px;background:#e8e5e0;color:#888;padding:1px 7px;border-radius:20px;font-weight:700}
+.ap-cat-ico{color:#bbb;font-size:12px;transition:transform .2s}.ap-cat-ico.open{transform:rotate(180deg)}
+.ap-cat-body{overflow:hidden;transition:max-height .25s ease}
+.ap-unset{font-size:9px;color:#e74c3c;font-weight:700;background:rgba(231,76,60,.1);padding:1px 6px;border-radius:2px;display:inline-block;margin-left:4px}
+/* p3 */
+.p3-block{margin-top:12px;padding:12px;background:rgba(196,164,90,.08);border:1px solid rgba(196,164,90,.2);border-radius:3px}
+.p3-lbl{font-size:9px;letter-spacing:2px;color:#888;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between}
+.p3-val{font-size:24px;font-weight:700;color:var(--gold);flex:1;cursor:pointer;min-height:32px;display:flex;align-items:center}
+.p3-val.empty{font-size:13px;color:#bbb;font-weight:400;border-bottom:1px dashed #ccc;padding-bottom:2px}
+.p3-inp{flex:1;padding:6px 10px;border:1px solid var(--gold);border-radius:2px;font-size:18px;font-weight:700;color:#1a1a1a;background:#fff;outline:none}
+.p3-save{padding:6px 14px;background:var(--gold);border:none;border-radius:2px;color:#111;font-size:11px;font-weight:700;cursor:pointer}
+.p3-clear{padding:6px 10px;background:#e8e5e0;border:none;border-radius:2px;color:#888;font-size:11px;cursor:pointer}
+.p3-margin{font-size:11px;color:#27ae60;font-weight:600;margin-top:4px}
+.p3-margin.neg{color:#e74c3c}
+.p3-row{display:flex;align-items:center;gap:8px}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="lb">
+    <h1>AXISCORE</h1>
+    <sub>X SERIES — PROFESSIONAL PILATES EQUIPMENT</sub>
+    <input type="password" id="pw-inp" placeholder="パスワードを入力" autocomplete="off">
+    <button onclick="doLogin()">入 室</button>
+    <div class="lb-err" id="pw-err"></div>
+    <div class="lb-loading" id="pw-loading"></div>
+  </div>
+</div>
+
+<!-- CATALOG -->
+<div id="catalog">
+  <header class="c-head">
+    <div class="c-brand">axiscore &nbsp; X Series</div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <div class="c-badge" id="mode-badge"></div>
+      <button id="logout-btn" onclick="doLogout()">ログアウト</button>
+    </div>
+  </header>
+  <nav class="c-nav" id="c-nav"></nav>
+  <div class="search-bar">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input class="search-inp" id="search-inp" type="text" placeholder="製品名・モデル番号で検索...">
+      <button class="search-clear" id="search-clear" onclick="clearSearch()">✕</button>
+    </div>
+    <div class="cat-tabs" id="cat-tabs"></div>
+    <span class="search-count" id="search-count"></span>
+  </div>
+  <main id="cat-main"></main>
+  <footer class="c-foot">AXISCORE X Series — Professional Pilates Equipment</footer>
+</div>
+
+<div id="toast"></div>
+<button id="admin-fab" onclick="openAdmin()" title="管理パネル">⚙</button>
+<div id="admin-overlay" onclick="closeAdmin()"></div>
+<div id="admin-panel">
+  <div class="ap-head">
+    <h2 id="ap-title">ADMIN PANEL</h2>
+    <div style="display:flex;align-items:center;gap:8px">
+      <span class="dirty-dot" id="dirty-dot" style="display:none"></span>
+      <button class="btn-save" id="btn-save" onclick="saveToGitHub()" disabled>GitHubに保存</button>
+      <span class="tok-status" id="save-status">— 未接続</span>
+    </div>
+  </div>
+  <div id="ap-body" class="ap-body"></div>
+</div>
+<div id="editor-panel">
+  <div class="ep-hd">
+    <div id="ep-title">製品を編集</div>
+    <button class="ep-close" onclick="closeEditor()">✕</button>
+  </div>
+  <div id="ep-body" class="ep-body"></div>
+  <div class="ep-foot">
+    <button class="btn-cancel" onclick="closeEditor()">キャンセル</button>
+    <button class="btn-apply" onclick="applyEdit()">適 用</button>
+  </div>
+</div>
+
+<script>
+
+/* ====================================================
+   AXISCORE X Series Catalog  —  Complete clean build
+   ==================================================== */
+
+/* ── 1. INLINE DATA (no network needed) ── */
+var DATA_FULL    = {"sections":[{"num":"01","en":"Reformer","jp":"リフォーマー","products":[{"id":"X01-A","nameEN":"STANDARD REFORMER","nameJP":"スタンダードリフォーマー","desc":"メープル材フレーム、コンパクト設計。","p1":"$905","p2":"$605","size":"2280×720×1850mm","pack":"2360×780×495mm","weight":"90 KG","packW":"120 KG","height":"340mm","eva1":"EVA +$80","eva2":"EVA +$40","paint1":"塗装 +$100","paint2":"塗装 +$50","springs":"","photos":[]},{"id":"X01-B","nameEN":"ENHANCED REFORMER","nameJP":"エンハンスドリフォーマー","desc":"ヘッドレスト・ショルダーブロック付き。メープル材フレーム。","p1":"$1,052","p2":"$752","size":"2280×720×1850mm","pack":"2360×780×495mm","weight":"100 KG","packW":"130 KG","height":"340mm","eva1":"EVA +$80","eva2":"EVA +$40","paint1":"塗装 +$100","paint2":"塗装 +$50","springs":"","photos":[]},{"id":"X01-C","nameEN":"PROFESSIONAL REFORMER","nameJP":"プロフェッショナルリフォーマー","desc":"スチールフレーム、モダンブラックデザイン。","p1":"$862","p2":"$562","size":"2300×600×375mm","pack":"2380×680×420mm","weight":"110 KG","packW":"140 KG","height":"312mm","eva1":"EVA +$80","eva2":"EVA +$40","paint1":"塗装 N/A","paint2":"塗装 N/A","springs":"","photos":[]},{"id":"—","nameEN":"3.5mm HARD MAPLE","nameJP":"3.5mm 輸入ハードメープル","desc":"3.5mm 輸入ハードメープル材使用。","p1":"$965","p2":"$665","size":"—","pack":"—","weight":"—","packW":"—","height":"—","eva1":"EVA +$80","eva2":"EVA +$40","paint1":"塗装 +$100（白）","paint2":"塗装 +$50（白）","springs":"","photos":[]},{"id":"—","nameEN":"4:6 RATIO FRAME","nameJP":"4対6の比率フレームワーク","desc":"4対6の比率フレームワーク。","p1":"$635","p2":"$335","size":"—","pack":"—","weight":"—","packW":"—","height":"—","eva1":"EVA +$80","eva2":"EVA +$40","paint1":"塗装 +$100","paint2":"塗装 +$50","springs":"","photos":[]},{"id":"—","nameEN":"50/50 FOLDING FRAME","nameJP":"50/50 折りたたみフレーム","desc":"50/50 折りたたみフレーム。省スペース収納可能。","p1":"$635","p2":"$335","size":"—","pack":"—","weight":"—","packW":"—","height":"—","eva1":"EVA +$80","eva2":"EVA +$40","paint1":"塗装 +$100","paint2":"塗装 +$50","springs":"","photos":[]}]},{"num":"02","en":"Half Tower","jp":"ハーフタワー","products":[{"id":"X02-A","nameEN":"HALF TOWER REFORMER","nameJP":"ハーフタワーリフォーマー","desc":"リフォーマー＋ハーフタワー。メープル材、フルスプリングシステム。","p1":"$1,154","p2":"$854","size":"2280×720×1850mm","pack":"2360×780×495mm","weight":"110 KG","packW":"140 KG","height":"340mm","eva1":"EVA +$80","eva2":"EVA +$40","paint1":"塗装 +$100","paint2":"塗装 +$50","springs":"ベッド: 赤×2 緑×2 黄×2 ／ タワー: 緑L×2 緑S×2 黄L×2 黄S×2","photos":[]},{"id":"X02-B","nameEN":"FOLDING HALF TOWER","nameJP":"折りたたみ式タワー付きリフォーマー","desc":"折りたたみ式タワー付きリフォーマー。省スペース設計。","p1":"$1,050","p2":"$750","size":"2280×690×1850mm","pack":"2510×770×520mm","weight":"110 KG","packW":"140 KG","height":"340mm","eva1":"EVA +$80","eva2":"EVA +$40","paint1":"塗装 +$100","paint2":"塗装 +$50","springs":"ベッド: 赤×2 緑×2 黄×2 ／ タワー: 緑L×2 緑S×2 黄L×2 黄S×2","photos":[]},{"id":"X02-C","nameEN":"PREMIUM HALF TOWER","nameJP":"プレミアム・ハーフタワー","desc":"プレミアム・ハーフタワー。高品質パッド、フルアクセサリー付属。","p1":"$1,350","p2":"$1,050","size":"2280×720×1850mm","pack":"2360×780×495mm","weight":"120 KG","packW":"150 KG","height":"340mm","eva1":"EVA +$80","eva2":"EVA +$40","paint1":"塗装 +$100","paint2":"塗装 +$50","springs":"ベッド: 赤×4 緑×4 黄×4 ／ タワー: 緑L×2 緑S×2 黄L×2 黄S×2","photos":[]}]},{"num":"03","en":"Cadillac","jp":"キャデラック","products":[{"id":"X03-A","nameEN":"STEEL CADILLAC","nameJP":"スチール製キャデラック","desc":"スチール製キャデラック。フルフレーム、各種アタッチメント付属。","p1":"$836","p2":"$536","size":"2320×760×1990mm","pack":"2350×770×340mm","weight":"90 KG","packW":"120 KG","height":"550mm","eva1":"EVA N/A","eva2":"EVA N/A","paint1":"塗装 N/A","paint2":"塗装 N/A","springs":"緑L×2 緑S×2 黄L×2 黄S×2 赤S×2","photos":[]},{"id":"X03-B","nameEN":"MAPLE CADILLAC","nameJP":"メープル材キャデラック","desc":"メープル材キャデラック。天然木の質感、プロ仕様。","p1":"$890","p2":"$590","size":"2190×800×2120mm","pack":"2310×820×690mm","weight":"100 KG","packW":"120 KG","height":"635mm","eva1":"EVA +$80","eva2":"EVA +$40","paint1":"塗装 +$100","paint2":"塗装 +$50","springs":"緑L×2 緑S×2 黄L×2 黄S×2 赤S×2","photos":[]},{"id":"X03-C","nameEN":"PREMIUM MAPLE CADILLAC","nameJP":"リフォーマーベッド一体型キャデラック","desc":"リフォーマーベッド一体型キャデラック。最高グレード仕様。","p1":"$1,135","p2":"$835","size":"2190×800×2120mm","pack":"2310×820×690mm","weight":"120 KG","packW":"150 KG","height":"635mm","eva1":"EVA +$80","eva2":"EVA +$40","paint1":"塗装 +$100","paint2":"塗装 +$50","springs":"ベッド: 赤×2 緑×2 黄×2 ／ タワー: 緑L×2 緑S×2 黄L×2 黄S×2 赤S×2","photos":[]}]},{"num":"04","en":"Chair","jp":"チェア","products":[{"id":"X04-A","nameEN":"STABILITY CHAIR","nameJP":"ワンダチェア","desc":"メープル材、スプリット・ペダルシステム。","p1":"$650","p2":"$450","size":"840×680×615mm","pack":"900×725×758mm","weight":"45 KG","packW":"65 KG","height":"—","eva1":"EVA +$40","eva2":"EVA +$20","paint1":"塗装 +$60","paint2":"塗装 +$30","springs":"赤×2 緑×2","photos":[]},{"id":"X04-B","nameEN":"WUNDA CHAIR","nameJP":"コンボチェア","desc":"天然木フレーム、コンパクト設計。","p1":"$500","p2":"$300","size":"840×600×600mm","pack":"800×720×770mm","weight":"45 KG","packW":"65 KG","height":"—","eva1":"EVA +$40","eva2":"EVA +$20","paint1":"塗装 +$60","paint2":"塗装 +$30","springs":"赤×2 緑×2","photos":[]},{"id":"X04-C","nameEN":"PROFESSIONAL CHAIR","nameJP":"ハイバックチェア","desc":"スチール＋ホワイトパネル。","p1":"$458","p2":"$258","size":"750×600×1300mm","pack":"910×720×710mm","weight":"45 KG","packW":"65 KG","height":"—","eva1":"EVA N/A","eva2":"EVA N/A","paint1":"塗装 N/A","paint2":"塗装 N/A","springs":"赤×2 緑×2","photos":[]}]},{"num":"05","en":"Ladder Barrel","jp":"ラダーバレル","products":[{"id":"X05-A","nameEN":"MAPLE LADDER BARREL","nameJP":"通常スポンジ・フットペダル付き","desc":"メープル材。フットペダル機能付き。","p1":"$435","p2":"$235","size":"1100×620×980mm","pack":"1170×690×1110mm","weight":"90 KG","packW":"110 KG","height":"—","eva1":"EVA +$40","eva2":"EVA +$20","paint1":"塗装 +$60","paint2":"塗装 +$30","springs":"","photos":[]},{"id":"X05-B","nameEN":"IRON FRAME MAPLE BARREL","nameJP":"鉄製フレーム・メープル材","desc":"鉄製フレーム、メープル材板。フットペダル調節可能。","p1":"$455","p2":"$255","size":"1100×620×980mm","pack":"1170×690×1110mm","weight":"90 KG","packW":"110 KG","height":"—","eva1":"EVA +$40","eva2":"EVA +$20","paint1":"塗装 +$60","paint2":"塗装 +$30","springs":"","photos":[]},{"id":"X05-C","nameEN":"STEEL LADDER BARREL","nameJP":"スチールフレーム・ペダル付き","desc":"オールスチールフレーム。フットペダル機能付き。","p1":"$425","p2":"$225","size":"1100×620×980mm","pack":"1170×690×1110mm","weight":"90 KG","packW":"110 KG","height":"—","eva1":"EVA N/A","eva2":"EVA N/A","paint1":"塗装 N/A","paint2":"塗装 N/A","springs":"","photos":[]},{"id":"X05-D","nameEN":"BASIC LADDER BARREL","nameJP":"ベーシック・ペダルなし","desc":"フットペダル機能なし。クラシックデザイン。","p1":"$396","p2":"$196","size":"1100×620×980mm","pack":"1170×690×1110mm","weight":"90 KG","packW":"110 KG","height":"—","eva1":"EVA +$40","eva2":"EVA +$20","paint1":"塗装 +$60","paint2":"塗装 +$30","springs":"","photos":[]}]}],"accessories":{"small":[{"name":"Pilates Circle","nameJP":"ピラティスリング","p1":"$3.2","p2":"$2.2","spec":"38cm","photo":""},{"name":"Pilates Ball","nameJP":"ピラティスボール","p1":"$1.3〜2.3","p2":"$0.8〜1.8","spec":"25cm","photo":""},{"name":"Foam Roller","nameJP":"フォームローラー","p1":"$6〜6.5","p2":"$5〜5.5","spec":"33×13 / 45×13cm","photo":""},{"name":"Elastic Band","nameJP":"エラスティックバンド","p1":"$1.2","p2":"$0.7","spec":"1500×150×0.35mm","photo":""},{"name":"Yoga Block","nameJP":"ヨガブロック","p1":"$5","p2":"$4","spec":"23×15×7.5cm","photo":""},{"name":"Balance Disc","nameJP":"バランスディスク","p1":"$3.8","p2":"$2.8","spec":"直径34cm","photo":""},{"name":"Spinal Corrector (Wood)","nameJP":"スパイナルコレクター（木製）","p1":"$70","p2":"$65","spec":"","photo":""},{"name":"EPP Spinal Corrector","nameJP":"EPPスパイナルコレクター","p1":"$23","p2":"$18","spec":"96×36×26cm","photo":""},{"name":"Spine Trainer","nameJP":"スパイントレーナー","p1":"$183","p2":"$178","spec":"","photo":""},{"name":"Massage Stick","nameJP":"マッサージスティック","p1":"$21","p2":"$16","spec":"","photo":""},{"name":"Balance Pad","nameJP":"バランスパッド","p1":"$6","p2":"$5","spec":"28×17×6cm","photo":""},{"name":"Pilates Mat","nameJP":"ピラティスマット","p1":"$18","p2":"$13","spec":"5mm","photo":""}],"large":[{"name":"Box","nameJP":"ボックス","p1":"$50","p2":"$45","spec":"寸法カスタマイズ可","photo":""},{"name":"Maple Stick 80cm","nameJP":"メープルスティック 80cm","p1":"$12","p2":"$7","spec":"80cm","photo":""},{"name":"Maple Stick 120cm","nameJP":"メープルスティック 120cm","p1":"$16","p2":"$11","spec":"120cm","photo":""},{"name":"Arc Barrel","nameJP":"アークバレル（取っ手なし）","p1":"$40","p2":"$35","spec":"中空・取っ手なし","photo":""},{"name":"Arc Barrel (Handle)","nameJP":"アークバレル（取っ手付き）","p1":"$45","p2":"$40","spec":"取っ手付き","photo":""}]}};
+var DATA_DAIMARU = {"sections":[{"num":"01","en":"Reformer","jp":"リフォーマー","products":[{"id":"X01-A","nameEN":"STANDARD REFORMER","nameJP":"スタンダードリフォーマー","desc":"メープル材フレーム、コンパクト設計。","p1":"$905","size":"2280×720×1850mm","pack":"2360×780×495mm","weight":"90 KG","packW":"120 KG","height":"340mm","eva1":"EVA +$80","paint1":"塗装 +$100","springs":"","photos":[]},{"id":"X01-B","nameEN":"ENHANCED REFORMER","nameJP":"エンハンスドリフォーマー","desc":"ヘッドレスト・ショルダーブロック付き。メープル材フレーム。","p1":"$1,052","size":"2280×720×1850mm","pack":"2360×780×495mm","weight":"100 KG","packW":"130 KG","height":"340mm","eva1":"EVA +$80","paint1":"塗装 +$100","springs":"","photos":[]},{"id":"X01-C","nameEN":"PROFESSIONAL REFORMER","nameJP":"プロフェッショナルリフォーマー","desc":"スチールフレーム、モダンブラックデザイン。","p1":"$862","size":"2300×600×375mm","pack":"2380×680×420mm","weight":"110 KG","packW":"140 KG","height":"312mm","eva1":"EVA +$80","paint1":"塗装 N/A","springs":"","photos":[]},{"id":"—","nameEN":"3.5mm HARD MAPLE","nameJP":"3.5mm 輸入ハードメープル","desc":"3.5mm 輸入ハードメープル材使用。","p1":"$965","size":"—","pack":"—","weight":"—","packW":"—","height":"—","eva1":"EVA +$80","paint1":"塗装 +$100（白）","springs":"","photos":[]},{"id":"—","nameEN":"4:6 RATIO FRAME","nameJP":"4対6の比率フレームワーク","desc":"4対6の比率フレームワーク。","p1":"$635","size":"—","pack":"—","weight":"—","packW":"—","height":"—","eva1":"EVA +$80","paint1":"塗装 +$100","springs":"","photos":[]},{"id":"—","nameEN":"50/50 FOLDING FRAME","nameJP":"50/50 折りたたみフレーム","desc":"50/50 折りたたみフレーム。省スペース収納可能。","p1":"$635","size":"—","pack":"—","weight":"—","packW":"—","height":"—","eva1":"EVA +$80","paint1":"塗装 +$100","springs":"","photos":[]}]},{"num":"02","en":"Half Tower","jp":"ハーフタワー","products":[{"id":"X02-A","nameEN":"HALF TOWER REFORMER","nameJP":"ハーフタワーリフォーマー","desc":"リフォーマー＋ハーフタワー。メープル材、フルスプリングシステム。","p1":"$1,154","size":"2280×720×1850mm","pack":"2360×780×495mm","weight":"110 KG","packW":"140 KG","height":"340mm","eva1":"EVA +$80","paint1":"塗装 +$100","springs":"ベッド: 赤×2 緑×2 黄×2 ／ タワー: 緑L×2 緑S×2 黄L×2 黄S×2","photos":[]},{"id":"X02-B","nameEN":"FOLDING HALF TOWER","nameJP":"折りたたみ式タワー付きリフォーマー","desc":"折りたたみ式タワー付きリフォーマー。省スペース設計。","p1":"$1,050","size":"2280×690×1850mm","pack":"2510×770×520mm","weight":"110 KG","packW":"140 KG","height":"340mm","eva1":"EVA +$80","paint1":"塗装 +$100","springs":"ベッド: 赤×2 緑×2 黄×2 ／ タワー: 緑L×2 緑S×2 黄L×2 黄S×2","photos":[]},{"id":"X02-C","nameEN":"PREMIUM HALF TOWER","nameJP":"プレミアム・ハーフタワー","desc":"プレミアム・ハーフタワー。高品質パッド、フルアクセサリー付属。","p1":"$1,350","size":"2280×720×1850mm","pack":"2360×780×495mm","weight":"120 KG","packW":"150 KG","height":"340mm","eva1":"EVA +$80","paint1":"塗装 +$100","springs":"ベッド: 赤×4 緑×4 黄×4 ／ タワー: 緑L×2 緑S×2 黄L×2 黄S×2","photos":[]}]},{"num":"03","en":"Cadillac","jp":"キャデラック","products":[{"id":"X03-A","nameEN":"STEEL CADILLAC","nameJP":"スチール製キャデラック","desc":"スチール製キャデラック。フルフレーム、各種アタッチメント付属。","p1":"$836","size":"2320×760×1990mm","pack":"2350×770×340mm","weight":"90 KG","packW":"120 KG","height":"550mm","eva1":"EVA N/A","paint1":"塗装 N/A","springs":"緑L×2 緑S×2 黄L×2 黄S×2 赤S×2","photos":[]},{"id":"X03-B","nameEN":"MAPLE CADILLAC","nameJP":"メープル材キャデラック","desc":"メープル材キャデラック。天然木の質感、プロ仕様。","p1":"$890","size":"2190×800×2120mm","pack":"2310×820×690mm","weight":"100 KG","packW":"120 KG","height":"635mm","eva1":"EVA +$80","paint1":"塗装 +$100","springs":"緑L×2 緑S×2 黄L×2 黄S×2 赤S×2","photos":[]},{"id":"X03-C","nameEN":"PREMIUM MAPLE CADILLAC","nameJP":"リフォーマーベッド一体型キャデラック","desc":"リフォーマーベッド一体型キャデラック。最高グレード仕様。","p1":"$1,135","size":"2190×800×2120mm","pack":"2310×820×690mm","weight":"120 KG","packW":"150 KG","height":"635mm","eva1":"EVA +$80","paint1":"塗装 +$100","springs":"ベッド: 赤×2 緑×2 黄×2 ／ タワー: 緑L×2 緑S×2 黄L×2 黄S×2 赤S×2","photos":[]}]},{"num":"04","en":"Chair","jp":"チェア","products":[{"id":"X04-A","nameEN":"STABILITY CHAIR","nameJP":"ワンダチェア","desc":"メープル材、スプリット・ペダルシステム。","p1":"$650","size":"840×680×615mm","pack":"900×725×758mm","weight":"45 KG","packW":"65 KG","height":"—","eva1":"EVA +$40","paint1":"塗装 +$60","springs":"赤×2 緑×2","photos":[]},{"id":"X04-B","nameEN":"WUNDA CHAIR","nameJP":"コンボチェア","desc":"天然木フレーム、コンパクト設計。","p1":"$500","size":"840×600×600mm","pack":"800×720×770mm","weight":"45 KG","packW":"65 KG","height":"—","eva1":"EVA +$40","paint1":"塗装 +$60","springs":"赤×2 緑×2","photos":[]},{"id":"X04-C","nameEN":"PROFESSIONAL CHAIR","nameJP":"ハイバックチェア","desc":"スチール＋ホワイトパネル。","p1":"$458","size":"750×600×1300mm","pack":"910×720×710mm","weight":"45 KG","packW":"65 KG","height":"—","eva1":"EVA N/A","paint1":"塗装 N/A","springs":"赤×2 緑×2","photos":[]}]},{"num":"05","en":"Ladder Barrel","jp":"ラダーバレル","products":[{"id":"X05-A","nameEN":"MAPLE LADDER BARREL","nameJP":"通常スポンジ・フットペダル付き","desc":"メープル材。フットペダル機能付き。","p1":"$435","size":"1100×620×980mm","pack":"1170×690×1110mm","weight":"90 KG","packW":"110 KG","height":"—","eva1":"EVA +$40","paint1":"塗装 +$60","springs":"","photos":[]},{"id":"X05-B","nameEN":"IRON FRAME MAPLE BARREL","nameJP":"鉄製フレーム・メープル材","desc":"鉄製フレーム、メープル材板。フットペダル調節可能。","p1":"$455","size":"1100×620×980mm","pack":"1170×690×1110mm","weight":"90 KG","packW":"110 KG","height":"—","eva1":"EVA +$40","paint1":"塗装 +$60","springs":"","photos":[]},{"id":"X05-C","nameEN":"STEEL LADDER BARREL","nameJP":"スチールフレーム・ペダル付き","desc":"オールスチールフレーム。フットペダル機能付き。","p1":"$425","size":"1100×620×980mm","pack":"1170×690×1110mm","weight":"90 KG","packW":"110 KG","height":"—","eva1":"EVA N/A","paint1":"塗装 N/A","springs":"","photos":[]},{"id":"X05-D","nameEN":"BASIC LADDER BARREL","nameJP":"ベーシック・ペダルなし","desc":"フットペダル機能なし。クラシックデザイン。","p1":"$396","size":"1100×620×980mm","pack":"1170×690×1110mm","weight":"90 KG","packW":"110 KG","height":"—","eva1":"EVA +$40","paint1":"塗装 +$60","springs":"","photos":[]}]}],"accessories":{"small":[{"name":"Pilates Circle","nameJP":"ピラティスリング","p1":"$3.2","spec":"38cm","photo":""},{"name":"Pilates Ball","nameJP":"ピラティスボール","p1":"$1.3〜2.3","spec":"25cm","photo":""},{"name":"Foam Roller","nameJP":"フォームローラー","p1":"$6〜6.5","spec":"33×13 / 45×13cm","photo":""},{"name":"Elastic Band","nameJP":"エラスティックバンド","p1":"$1.2","spec":"1500×150×0.35mm","photo":""},{"name":"Yoga Block","nameJP":"ヨガブロック","p1":"$5","spec":"23×15×7.5cm","photo":""},{"name":"Balance Disc","nameJP":"バランスディスク","p1":"$3.8","spec":"直径34cm","photo":""},{"name":"Spinal Corrector (Wood)","nameJP":"スパイナルコレクター（木製）","p1":"$70","spec":"","photo":""},{"name":"EPP Spinal Corrector","nameJP":"EPPスパイナルコレクター","p1":"$23","spec":"96×36×26cm","photo":""},{"name":"Spine Trainer","nameJP":"スパイントレーナー","p1":"$183","spec":"","photo":""},{"name":"Massage Stick","nameJP":"マッサージスティック","p1":"$21","spec":"","photo":""},{"name":"Balance Pad","nameJP":"バランスパッド","p1":"$6","spec":"28×17×6cm","photo":""},{"name":"Pilates Mat","nameJP":"ピラティスマット","p1":"$18","spec":"5mm","photo":""}],"large":[{"name":"Box","nameJP":"ボックス","p1":"$50","spec":"寸法カスタマイズ可","photo":""},{"name":"Maple Stick 80cm","nameJP":"メープルスティック 80cm","p1":"$12","spec":"80cm","photo":""},{"name":"Maple Stick 120cm","nameJP":"メープルスティック 120cm","p1":"$16","spec":"120cm","photo":""},{"name":"Arc Barrel","nameJP":"アークバレル（取っ手なし）","p1":"$40","spec":"中空・取っ手なし","photo":""},{"name":"Arc Barrel (Handle)","nameJP":"アークバレル（取っ手付き）","p1":"$45","spec":"取っ手付き","photo":""}]}};
+
+/* ── 2. STATE (all var, no TDZ) ── */
+var S        = { mode:null, token:null, data:null, dirty:false };
+var EDIT     = {};
+var editData = {};
+var AP_OPEN  = {};
+var activeFilter = 'all';
+
+/* ── 3. CONFIG ── */
+var REPO_OWNER = 'eharakenji0925-hub';
+var REPO_NAME  = 'kanri';
+var BRANCH     = 'main';
+var FILES = {
+  full:    { name:'products_full.json',    sha:null },
+  daimaru: { name:'products_daimaru.json', sha:null }
+};
+var PASSWORDS = {
+  'daimaru2026': 'd',
+  'factory2026': 'f',
+  'ehara2026':   'a'
+};
+var MODE_INFO = {
+  d: { label:'大丸 仕入れ価格', dataFile:'daimaru', canEdit:false, lang:'ja' },
+  f: { label:'工厂管理模式',    dataFile:'full',    canEdit:true,  lang:'zh' },
+  a: { label:'江原 管理モード', dataFile:'full',    canEdit:true,  lang:'ja' }
+};
+var LANG = {
+  ja:{
+    logout:'ログアウト', admin:'ADMIN PANEL', save:'GitHubに保存',
+    disconnected:'— 未接続', connected:'接続済み', connect:'接 続',
+    add:'＋ 追加', edit:'✎ 編集', apply:'適 用', cancel:'キャンセル',
+    addPhoto:'写真を追加', search:'製品名・モデル番号で検索...',
+    saveOk:'✓ GitHubに保存しました', saveFail:'保存失敗',
+    unsaved:'未保存の変更があります。閉じますか？',
+    logoutDirty:'未保存の変更があります。ログアウトしますか？',
+    logoutConfirm:'ログアウトしますか？',
+    noResult:'に一致する製品が見つかりません',
+    catAll:'ALL', wholesale:'仕入れ価格', factory:'原 価',
+    priceUnset:'⚠ 価格未設定', priceUnsetMsg:'⚠ 仕入れ価格 未設定 — 江原さんの入力が必要です',
+    apUnset:'⚠ 仕入れ未設定',
+    fldId:'MODEL ID', fldCat:'CATEGORY', fldNameEN:'ENGLISH NAME',
+    fldNameJP:'日本語名', fldDesc:'説明', fldP1:'仕入れ価格', fldP2:'原価 (p2)',
+    fldSize:'SIZE (mm)', fldPack:'PACK (mm)', fldWt:'本体重量', fldPw:'梱包重量', fldHt:'高さ',
+    fldEva1:'EVA — 仕入れ', fldEva2:'EVA — 原価', fldPnt1:'塗装 — 仕入れ', fldPnt2:'塗装 — 原価',
+    fldSpr:'SPRINGS', fldPic:'PHOTOS', roNote:'（変更不可）',
+    accName:'NAME', accNameJP:'名前（日本語）', accSpec:'SPEC',
+  },
+  zh:{
+    logout:'退出登录', admin:'管理面板', save:'保存到 GitHub',
+    disconnected:'— 未连接', connected:'已连接', connect:'连 接',
+    add:'＋ 添加', edit:'✎ 编辑', apply:'确 认', cancel:'取 消',
+    addPhoto:'添加照片', search:'按产品名称·型号搜索...',
+    saveOk:'✓ 已保存到 GitHub', saveFail:'保存失败',
+    unsaved:'有未保存的更改，确认关闭？',
+    logoutDirty:'有未保存的更改，确认退出？',
+    logoutConfirm:'确认退出登录？',
+    noResult:'未找到匹配的产品',
+    catAll:'全部', wholesale:'批发价', factory:'出厂价',
+    priceUnset:'⚠ 批发价未设定', priceUnsetMsg:'⚠ 批发价未设定 — 需要 Ehara 填写',
+    apUnset:'⚠ 批发价未设定',
+    fldId:'型号', fldCat:'分类', fldNameEN:'英文名称', fldNameJP:'日文名称',
+    fldDesc:'说明', fldP1:'批发价', fldP2:'出厂价',
+    fldSize:'尺寸 (mm)', fldPack:'包装尺寸 (mm)', fldWt:'净重', fldPw:'毛重', fldHt:'高度',
+    fldEva1:'EVA — 批发', fldEva2:'EVA — 出厂', fldPnt1:'喷涂 — 批发', fldPnt2:'喷涂 — 出厂',
+    fldSpr:'弹簧配置', fldPic:'产品图片', roNote:'（只读）',
+    accName:'名称', accNameJP:'日文名称', accSpec:'规格',
+  }
+};
+
+/* ── 4. UTILITY ── */
+function L(key){
+  if(!LANG) return String(key);
+  var lang = (S && S.mode && MODE_INFO && MODE_INFO[S.mode]) ? (MODE_INFO[S.mode].lang||'ja') : 'ja';
+  var d = LANG[lang] || LANG.ja || {};
+  return d[key] !== undefined ? d[key] : String(key);
+}
+function RAW(f){ return 'https://raw.githubusercontent.com/'+REPO_OWNER+'/'+REPO_NAME+'/'+BRANCH+'/'+f; }
+function API(f){ return 'https://api.github.com/repos/'+REPO_OWNER+'/'+REPO_NAME+'/contents/'+f; }
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function showToast(msg, type){
+  type = type || 'ok';
+  var el = document.getElementById('toast');
+  el.textContent = msg; el.className = 'show '+type;
+  clearTimeout(el._t); el._t = setTimeout(function(){ el.className=''; }, 3000);
+}
+
+/* ── 5. LOGIN / LOGOUT ── */
+function doLogin(){
+  var pw   = document.getElementById('pw-inp').value.trim();
+  var err  = document.getElementById('pw-err');
+  var load = document.getElementById('pw-loading');
+
+  if(!PASSWORDS[pw]){
+    err.textContent = 'パスワードが正しくありません';
+    setTimeout(function(){ err.textContent=''; }, 2500);
+    return;
+  }
+
+  S.mode = PASSWORDS[pw];
+  var info = MODE_INFO[S.mode];
+
+  /* 1. まず埋め込みデータで即座にログイン */
+  S.data = (info.dataFile === 'full') ? DATA_FULL : DATA_DAIMARU;
+
+  if(!S.data || !S.data.sections || !S.data.sections.length){
+    err.textContent = 'データエラー';
+    return;
+  }
+
+  /* 2. バックグラウンドでGitHubから最新データを取得 */
+  var _fname = FILES[info.dataFile].name;
+  fetch('https://raw.githubusercontent.com/'+REPO_OWNER+'/'+REPO_NAME+'/'+BRANCH+'/'+_fname+'?t='+Date.now())
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(d){ if(d && d.sections && d.sections.length){ S.data = d; renderCatalog(); } })
+    .catch(function(){}); /* オフラインでも問題なし */
+
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('catalog').style.display = 'block';
+  document.body.className = 'mode-' + S.mode;
+  document.getElementById('mode-badge').textContent = info.label;
+  document.getElementById('logout-btn').textContent = L('logout');
+  document.getElementById('search-inp').placeholder = L('search');
+
+  renderNav();
+  renderCatalog();
+  initSearch();
+
+  if(info.canEdit){
+    document.getElementById('admin-fab').classList.add('show');
+    document.getElementById('catalog').classList.add('can-edit');
+    document.getElementById('btn-save').textContent = L('save');
+    document.getElementById('save-status').textContent = L('disconnected');
+  }
+}
+
+function doLogout(){
+  var msg = S.dirty ? L('logoutDirty') : L('logoutConfirm');
+  if(!confirm(msg)) return;
+  S = { mode:null, token:null, data:null, dirty:false };
+  document.getElementById('catalog').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('catalog').className = '';
+  document.getElementById('pw-inp').value = '';
+  document.getElementById('pw-err').textContent = '';
+  document.getElementById('cat-main').innerHTML = '';
+  document.getElementById('admin-fab').classList.remove('show');
+  document.body.className = '';
+  closeAdmin();
+  closeEditor();
+}
+
+document.getElementById('pw-inp').addEventListener('keydown', function(e){
+  if(e.key === 'Enter') doLogin();
+});
+
+/* ── 6. GITHUB SAVE (optional) ── */
+function connectGitHub(){
+  var tok = document.getElementById('tok-inp').value.trim();
+  if(!tok) return;
+  S.token = tok;
+  var el = document.getElementById('tok-status');
+  el.textContent = '✓ '+L('connected'); el.className='tok-status ok';
+  document.getElementById('btn-save').disabled = false;
+  document.getElementById('save-status').textContent = '✓ '+L('connected');
+}
+
+async function saveToGitHub(){
+  if(!S.token){ showToast(L('disconnected'),'ng'); return; }
+  document.getElementById('btn-save').disabled = true;
+  try{
+    var saveResult = await _ghSave('full', S.data);
+    var daimaru = buildDaimaruData(S.data);
+    await _ghSave('daimaru', daimaru);
+    S.dirty = false;
+    updateDirtyUI();
+    showToast(L('saveOk'));
+  } catch(e){
+    showToast(L('saveFail')+': '+e.message,'ng');
+  } finally{
+    document.getElementById('btn-save').disabled = false;
+  }
+}
+
+async function _ghSave(fileKey, data){
+  var fname = FILES[fileKey].name;
+  var body  = JSON.stringify(data, null, 2);
+  var b64   = btoa(unescape(encodeURIComponent(body)));
+  var sha   = FILES[fileKey].sha || null;
+  if(!sha){
+    try{
+      var r0 = await fetch(API(fname), {headers:{'Authorization':'token '+S.token}});
+      if(r0.ok){ var m = await r0.json(); sha = m.sha; FILES[fileKey].sha = sha; }
+    } catch(e){}
+  }
+  var payload = {message:'Update '+fname, content:b64};
+  if(sha) payload.sha = sha;
+  var r = await fetch(API(fname), {
+    method:'PUT', headers:{'Authorization':'token '+S.token,'Content-Type':'application/json'},
+    body: JSON.stringify(payload)
+  });
+  if(!r.ok){ var err=await r.json(); throw new Error(err.message||r.status); }
+  var res=await r.json(); FILES[fileKey].sha=res.content.sha;
+}
+
+function buildDaimaruData(fullData){
+  var d = JSON.parse(JSON.stringify(fullData));
+  d.sections.forEach(function(sec){
+    sec.products.forEach(function(p){ delete p.p2; delete p.eva2; delete p.paint2; });
+  });
+  (d.accessories.small||[]).forEach(function(a){ delete a.p2; });
+  (d.accessories.large||[]).forEach(function(a){ delete a.p2; });
+  return d;
+}
+
+function updateDirtyUI(){
+  var dot = document.getElementById('dirty-dot');
+  var btn = document.getElementById('btn-save');
+  if(dot) dot.style.display = S.dirty ? 'inline-block' : 'none';
+  if(btn && S.token) btn.disabled = !S.dirty;
+}
+
+/* ── 7. RENDER ── */
+function renderNav(){
+  var nav = document.getElementById('c-nav');
+  var h = '';
+  S.data.sections.forEach(function(sec){ h += '<a href="#sec-'+sec.num+'">'+sec.num+' '+sec.en+'</a>'; });
+  h += '<a href="#sec-06">06 Accessories</a>';
+  nav.innerHTML = h;
+}
+
+function renderCatalog(){
+  var main = document.getElementById('cat-main');
+  var h = '';
+  S.data.sections.forEach(function(sec, si){
+    h += '<section id="sec-'+sec.num+'" data-si="'+si+'">';
+    h += '<div class="s-hd"><div class="s-num">'+sec.num+'</div>';
+    h += '<div><div class="s-en">'+sec.en+'</div><div class="s-jp">'+sec.jp+'</div></div></div>';
+    h += '<div>';
+    sec.products.forEach(function(p, pi){ h += renderCard(p, si, pi); });
+    h += '</div></section>';
+  });
+  h += renderAccessories();
+  main.innerHTML = h;
+  main.querySelectorAll('.p-thumb').forEach(function(t){
+    t.addEventListener('click', function(){
+      t.closest('.p-img-wrap').querySelector('.p-main-img').src = t.src;
+    });
+  });
+}
+
+function renderCard(p, si, pi){
+  var photos  = (p.photos||[]).filter(Boolean);
+  var mainP   = photos[0]||'';
+  var extras  = photos.slice(1);
+  var p1empty = !p.p1 || p.p1.trim()==='' || p.p1==='—';
+  var mode    = S.mode;
+  var canEdit = MODE_INFO[mode].canEdit;
+
+  /* 価格表示 */
+  var priceH = '';
+  if(mode==='a'||mode==='f'){
+    priceH  = p1empty ? '<div class="badge-unset">'+L('priceUnsetMsg')+'</div>' : '';
+    priceH += '<div class="price-dual">';
+    priceH += '<div class="pd-col col1"><span class="pd-lbl">'+L('wholesale')+'</span><div class="pd-v">'+(p1empty?'未設定':p.p1)+'</div></div>';
+    priceH += '<div class="pd-col col2"><span class="pd-lbl">'+L('factory')+'</span><div class="pd-v">'+(p.p2||'—')+'</div></div>';
+    priceH += '</div>';
+  } else {
+    priceH = p1empty
+      ? '<div class="badge-unset">'+L('priceUnset')+'</div>'
+      : '<div class="price-single"><div class="pv">'+p.p1+'</div><div class="pu">USD</div></div>';
+  }
+
+  /* スペック */
+  var specs = [];
+  if(p.size   && p.size!=='—')   specs.push(['SIZE',    p.size]);
+  if(p.pack   && p.pack!=='—')   specs.push(['PACK',    p.pack]);
+  if(p.weight && p.weight!=='—') specs.push([L('fldWt'),p.weight]);
+  if(p.packW  && p.packW!=='—')  specs.push([L('fldPw'),p.packW]);
+  if(p.height && p.height!=='—') specs.push([L('fldHt'),p.height]);
+  var specH = specs.length ? '<table class="spec-tbl">'+specs.map(function(kv){return '<tr><td>'+kv[0]+'</td><td>'+kv[1]+'</td></tr>';}).join('')+'</table>' : '';
+
+  /* オプション */
+  var eva  = mode==='f' ? (p.eva2||'') : (p.eva1||'');
+  var pnt  = mode==='f' ? (p.paint2||'') : (p.paint1||'');
+  var optH = '<div class="opts"><span class="opt'+(eva.includes('N/A')?' na':'')+'">'+eva+'</span><span class="opt'+(pnt.includes('N/A')?' na':'')+'">'+pnt+'</span></div>';
+
+  var sprH    = p.springs ? '<div class="spr"><div class="spr-lbl">SPRINGS</div>'+p.springs+'</div>' : '';
+  var thumbsH = extras.length ? '<div class="p-thumbs">'+photos.map(function(ph){return '<img class="p-thumb" src="'+ph+'" loading="lazy">';}).join('')+'</div>' : '';
+  var editBtn = canEdit ? '<button class="p-edit-hover" onclick="editProduct('+si+',\"+pi+\");openAdmin()">'+L('edit')+'</button>' : '';
+  var p3H     = mode==='d' ? renderP3Block(p) : '';
+
+  var searchData = (p.id+' '+p.nameEN+' '+(p.nameJP||'')+' '+(p.desc||'')).toLowerCase();
+
+  return '<div class="p-card" data-search="'+esc(searchData)+'">'
+    + editBtn
+    + '<div class="p-img-wrap">'
+    + (mainP ? '<img class="p-main-img" src="'+mainP+'" loading="lazy" alt="'+esc(p.nameEN)+'">' : '<div style="color:#bbb;font-size:11px">NO IMAGE</div>')
+    + thumbsH + '</div>'
+    + '<div class="p-info">'
+    + '<div class="p-id">'+esc(p.id)+'</div>'
+    + '<div class="p-nen">'+esc(p.nameEN)+'</div>'
+    + '<div class="p-njp">'+esc(p.nameJP||'')+'</div>'
+    + '<div class="p-desc">'+esc(p.desc||'')+'</div>'
+    + priceH + specH + optH + sprH + p3H
+    + '</div></div>';
+}
+
+function renderAccessories(){
+  var acc  = S.data.accessories;
+  var show = S.mode==='a'||S.mode==='f';
+  function accCard(item){
+    var pH = show
+      ? '<div class="acc-dual"><div><span class="ad-lbl">'+L('wholesale')+'</span><span class="ad1">'+item.p1+'</span></div><span style="color:#ddd">/</span><div><span class="ad-lbl">'+L('factory')+'</span><span class="ad2">'+(item.p2||'—')+'</span></div></div>'
+      : '<div class="acc-price">'+item.p1+'<span style="font-size:10px;color:#aaa;margin-left:4px">USD</span></div>';
+    return '<div class="acc-card">'
+      +(item.photo?'<img class="acc-img" src="'+item.photo+'" loading="lazy">':'<div class="acc-img" style="display:flex;align-items:center;justify-content:center;color:#ddd">—</div>')
+      +'<div class="acc-body"><div class="acc-name">'+esc(item.name)+'</div>'+(item.spec?'<div class="acc-spec">'+esc(item.spec)+'</div>':'')+pH+'</div></div>';
+  }
+  var sH='', lH='';
+  (acc.small||[]).forEach(function(i){ sH+=accCard(i); });
+  (acc.large||[]).forEach(function(i){ lH+=accCard(i); });
+  return '<section id="sec-06"><div class="s-hd"><div class="s-num">06</div><div><div class="s-en">Accessories</div><div class="s-jp">アクセサリー</div></div></div>'
+    +'<div class="acc-grid-sm">'+sH+'</div><div class="acc-grid-lg">'+lH+'</div></section>';
+}
+
+/* ── 8. P3 販売価格（大丸専用） ── */
+function p3Key(p){ return 'axp3_'+(p.id||p.nameEN||'').replace(/[^a-zA-Z0-9]/g,'_'); }
+function renderP3Block(p){
+  var key = p3Key(p);
+  var val = localStorage.getItem(key) || '';
+  var p1n = parseFloat((p.p1||'').replace(/[^0-9.]/g,'')) || 0;
+  var p3n = parseFloat((val||'').replace(/[^0-9.]/g,'')) || 0;
+  var margH = '';
+  if(p1n > 0 && p3n > 0){
+    var diff = (p3n - p1n).toFixed(0);
+    var pct  = ((p3n - p1n) / p1n * 100).toFixed(1);
+    var cls  = p3n >= p1n ? '' : ' neg';
+    margH = '<div class="p3-margin' + cls + '">粗利: $' + diff + ' (' + pct + '%)</div>';
+  }
+  var dq = '"';
+  var sq = "'";
+  if(val){
+    return '<div class="p3-block">'
+      + '<div class="p3-lbl">販売価格（自社設定）<span>クリックで編集</span></div>'
+      + '<div class="p3-row">'
+      + '<div class="p3-val" onclick=' + dq + 'editP3(' + sq + key + sq + ',this)' + dq + '>'
+        + esc(val) + ' <span style="font-size:13px;color:#aaa">USD</span></div>'
+      + '<button class="p3-clear" onclick=' + dq + 'clearP3(' + sq + key + sq + ')' + dq + '>クリア</button>'
+      + '</div>' + margH + '</div>';
+  }
+  return '<div class="p3-block">'
+    + '<div class="p3-lbl">販売価格（自社設定）<span>クリックで設定</span></div>'
+    + '<div class="p3-row">'
+    + '<div class="p3-val empty" onclick=' + dq + 'editP3(' + sq + key + sq + ',this)' + dq + '>'
+      + 'クリックして販売価格を入力</div>'
+    + '</div></div>';
+}
+function editP3(key, el){
+  var block = el.closest('.p3-block');
+  var cur   = localStorage.getItem(key) || '';
+  var dq = '"';
+  var sq = "'";
+  block.innerHTML = '<div class="p3-lbl">販売価格（自社設定）</div>'
+    + '<div class="p3-row">'
+    + '<input class="p3-inp" id="p3inp" type="text" value="' + esc(cur) + '" placeholder="例: $1,350">'
+    + '<button class="p3-save" onclick=' + dq + 'saveP3(' + sq + key + sq + ')' + dq + '>保存</button>'
+    + '<button class="p3-clear" onclick=' + dq + 'renderCatalog()' + dq + '>キャンセル</button>'
+    + '</div>';
+  var inp = document.getElementById('p3inp');
+  if(inp){ inp.focus(); inp.select(); inp.onkeydown = function(e){ if(e.key==='Enter') saveP3(key); }; }
+}
+function saveP3(key){
+  var inp = document.getElementById('p3inp');
+  if(!inp) return;
+  var v = inp.value.trim();
+  if(v) localStorage.setItem(key, v); else localStorage.removeItem(key);
+  renderCatalog();
+}
+function clearP3(key){
+  if(confirm('販売価格をクリアしますか？')){ localStorage.removeItem(key); renderCatalog(); }
+}
+
+/* ── 9. SEARCH ── */
+function initSearch(){
+  var tabs = document.getElementById('cat-tabs');
+  var btns = [{ cat:'all', label: L('catAll') }];
+  S.data.sections.forEach(function(sec){ btns.push({ cat: sec.num, label: sec.num+' '+sec.en }); });
+  btns.push({ cat:'06', label:'06 Acc' });
+  var h = '';
+  btns.forEach(function(b, i){
+    h += '<button class="cat-tab'+(i===0?' active':'')+'" data-cat="'+b.cat+'">'+b.label+'</button>';
+  });
+  tabs.innerHTML = h;
+  tabs.querySelectorAll('.cat-tab').forEach(function(btn){
+    btn.addEventListener('click', function(){ filterCat(this.dataset.cat, this); });
+  });
+  document.getElementById('search-inp').addEventListener('input', function(){
+    document.getElementById('search-clear').classList.toggle('show', this.value.length > 0);
+    applySearch(this.value.trim());
+  });
+}
+function clearSearch(){ document.getElementById('search-inp').value=''; document.getElementById('search-clear').classList.remove('show'); applySearch(''); }
+function filterCat(cat,btn){ activeFilter=cat; document.querySelectorAll('.cat-tab').forEach(function(t){t.classList.remove('active');});btn.classList.add('active');applySearch(document.getElementById('search-inp').value.trim()); }
+function applySearch(q){
+  var lower=q.toLowerCase(), count=0;
+  document.querySelectorAll('#cat-main section').forEach(function(sec){
+    var num=sec.id.replace('sec-','');
+    if(activeFilter!=='all'&&activeFilter!==num){ sec.style.display='none'; return; }
+    if(num==='06'){ sec.style.display=''; count++; return; }
+    var vis=0;
+    sec.querySelectorAll('.p-card').forEach(function(card){
+      var match=!lower||(card.dataset.search||'').includes(lower);
+      card.style.display=match?'':'none'; if(match)vis++;
+    });
+    sec.style.display=vis>0?'':'none'; if(vis>0)count++;
+  });
+  document.getElementById('search-count').textContent=lower?count+'件':'';
+  var nr=document.getElementById('no-results');
+  if(count===0&&lower){
+    if(!nr){nr=document.createElement('div');nr.id='no-results';nr.className='no-results';document.getElementById('cat-main').appendChild(nr);}
+    nr.textContent='"'+q+'" '+L('noResult');
+  } else if(nr) nr.remove();
+}
+
+/* ── 10. ADMIN PANEL ── */
+function openAdmin(){ renderAdminPanel(); document.getElementById('admin-panel').classList.add('open'); document.getElementById('admin-overlay').classList.add('open'); }
+function closeAdmin(){ document.getElementById('admin-panel').classList.remove('open'); document.getElementById('admin-overlay').classList.remove('open'); }
+function toggleAP(k){
+  AP_OPEN[k]=!AP_OPEN[k];
+  var bd=document.getElementById('bd-'+k), ico=document.getElementById('ico-'+k);
+  if(AP_OPEN[k]){ bd.style.maxHeight='0'; ico.classList.remove('open'); }
+  else{ bd.style.maxHeight=bd.scrollHeight+'px'; ico.classList.add('open'); }
+}
+
+function renderAdminPanel(){
+  var body=document.getElementById('ap-body'); var h='';
+  document.getElementById('ap-title').textContent=L('admin');
+  document.getElementById('btn-save').textContent=L('save');
+
+  h+='<div class="tok-box"><label>GITHUB TOKEN（repo scope）</label><div class="tok-row">'
+    +'<input class="tok-inp" type="password" id="tok-inp" value="'+(S.token||'')+'" placeholder="ghp_xxxxxxxxxxxx">'
+    +'<button class="btn-connect" onclick="connectGitHub()">'+L('connect')+'</button></div>'
+    +'<div class="tok-status '+(S.token?'ok':'ng')+'" id="tok-status">'+(S.token?'✓ '+L('connected'):L('disconnected'))+'</div></div>';
+
+  S.data.sections.forEach(function(sec,si){
+    var k='sec'+si, open=AP_OPEN[k]!==true, issues=sec.products.filter(function(p){return !p.p1||p.p1.trim()===''||p.p1==='—';}).length;
+    h+='<div class="ap-cat-hd" onclick="toggleAP(\"+\1+")"><div class="ap-cat-left">'
+      +'<span class="ap-cat-lbl">'+sec.num+' '+sec.en+'</span>'
+      +'<span class="ap-cat-cnt">'+sec.products.length+'</span>'
+      +(issues>0?'<span class="ap-unset">⚠ '+issues+'</span>':'')
+      +'</div><div style="display:flex;align-items:center;gap:8px">'
+      +'<button class="btn-add" onclick="event.stopPropagation();newProduct(\"+si+\")">'+L('add')+'</button>'
+      +'<span class="ap-cat-ico '+(open?'open':'')+'" id="ico-'+k+'">▼</span></div></div>'
+      +'<div class="ap-cat-body" id="bd-'+k+'" style="max-height:'+(open?'3000px':'0')+'">';
+    sec.products.forEach(function(p,pi){
+      var ph=(p.photos||[])[0]||'', p1e=!p.p1||p.p1.trim()===''||p.p1==='—';
+      var prDisp=p1e?'<span class="ap-unset">'+L('apUnset')+'</span>':L('wholesale')+': '+p.p1+' / '+L('factory')+': '+(p.p2||'—');
+      h+='<div class="ap-row" onclick="editProduct('+si+',\"+pi+\")">'
+        +(ph?'<img class="ap-thumb" src="'+ph+'">':'<div class="ap-thumb"></div>')
+        +'<div class="ap-names"><div class="ap-rid">'+esc(p.id)+'</div><div class="ap-ren">'+esc(p.nameEN)+'</div><div class="ap-rpr">'+prDisp+'</div></div>'
+        +'<button class="ap-del" onclick="deleteProd(event,'+si+',\"+pi+\")">✕</button></div>';
+    });
+    h+='</div>';
+  });
+
+  ['small','large'].forEach(function(type){
+    var k='acc_'+type, open=AP_OPEN[k]!==true, items=S.data.accessories[type]||[];
+    h+='<div class="ap-cat-hd" onclick="toggleAP(\"+\1+")"><div class="ap-cat-left">'
+      +'<span class="ap-cat-lbl">06 Accessories — '+type+'</span>'
+      +'<span class="ap-cat-cnt">'+items.length+'</span>'
+      +'</div><div style="display:flex;align-items:center;gap:8px">'
+      +'<button class="btn-add" onclick="event.stopPropagation();newAcc(\"+\1+")">'+L('add')+'</button>'
+      +'<span class="ap-cat-ico '+(open?'open':'')+'" id="ico-'+k+'">▼</span></div></div>'
+      +'<div class="ap-cat-body" id="bd-'+k+'" style="max-height:'+(open?'3000px':'0')+'">';
+    items.forEach(function(item,ai){
+      h+='<div class="ap-row" onclick="editAcc(\"+\1+",'+ai+')">'
+        +(item.photo?'<img class="ap-thumb" src="'+item.photo+'">':'<div class="ap-thumb"></div>')
+        +'<div class="ap-names"><div class="ap-ren">'+esc(item.name)+'</div>'
+        +'<div class="ap-rpr">'+L('wholesale')+': '+item.p1+' / '+L('factory')+': '+(item.p2||'—')+'</div></div>'
+        +'<button class="ap-del" onclick="deleteAcc(event,\"+\1+",'+ai+')">✕</button></div>';
+    });
+    h+='</div>';
+  });
+
+  body.innerHTML=h;
+}
+
+/* ── 11. EDITOR ── */
+function fld(id,val,label,ro){
+  var roA=ro&&S.mode==='f'?'readonly':'', roS=ro&&S.mode==='f'?' style="background:#f0f0f0;color:#aaa"':'';
+  var roN=ro&&S.mode==='f'?'<span style="font-size:9px;color:#bbb;margin-left:4px">'+L('roNote')+'</span>':'';
+  return '<div><label class="f-lbl">'+label+roN+'</label><input class="f-inp" id="'+id+'" value="'+esc(val||'')+'"'+roA+roS+'></div>';
+}
+function sel(id,val,opts){
+  return '<div><label class="f-lbl">'+L('fldCat')+'</label><select class="f-inp" id="'+id+'">'+opts+'</select></div>';
+}
+function editProduct(si,pi){
+  EDIT={type:'prod',si:si,pi:pi};
+  editData=JSON.parse(JSON.stringify(S.data.sections[si].products[pi]));
+  document.getElementById('ep-title').textContent=editData.nameEN||'製品を編集';
+  renderProdEditor(); document.getElementById('editor-panel').classList.add('open');
+}
+function newProduct(si){
+  EDIT={type:'prod',si:si,pi:-1};
+  editData={id:'',nameEN:'',nameJP:'',desc:'',p1:'',p2:'',size:'',pack:'',weight:'',packW:'',height:'',eva1:'EVA +$',eva2:'EVA +$',paint1:'塗装 +$',paint2:'塗装 +$',springs:'',photos:[]};
+  document.getElementById('ep-title').textContent='新規製品を追加';
+  renderProdEditor(); document.getElementById('editor-panel').classList.add('open');
+}
+function editAcc(type,ai){
+  EDIT={type:'acc',accType:type,ai:ai};
+  editData=JSON.parse(JSON.stringify(S.data.accessories[type][ai]));
+  document.getElementById('ep-title').textContent=editData.name||'アクセサリーを編集';
+  renderAccEditor(); document.getElementById('editor-panel').classList.add('open');
+}
+function newAcc(type){
+  EDIT={type:'acc',accType:type,ai:-1};
+  editData={name:'',nameJP:'',p1:'',p2:'',spec:'',photo:''};
+  document.getElementById('ep-title').textContent='新規アクセサリーを追加';
+  renderAccEditor(); document.getElementById('editor-panel').classList.add('open');
+}
+function closeEditor(){ document.getElementById('editor-panel').classList.remove('open'); }
+
+function renderProdEditor(){
+  var opts=S.data.sections.map(function(sec,si){return '<option value="'+si+'"'+(si===EDIT.si?' selected':'')+'>'+sec.num+' '+sec.en+'</option>';}).join('');
+  var picsH=(editData.photos||[]).map(function(ph,idx){return '<div class="pic-thumb"><img src="'+ph+'" style="width:60px;height:60px;object-fit:cover;border-radius:2px"><button onclick="removePhoto(\"+idx+\")" style="position:absolute;top:2px;right:2px;background:#e74c3c;border:none;color:#fff;border-radius:50%;width:16px;height:16px;font-size:9px;cursor:pointer;padding:0">✕</button></div>';}).join('');
+  document.getElementById('ep-body').innerHTML=
+    '<div class="f-grid">'
+    +sel('e-cat','',opts)
+    +fld('e-id',editData.id,L('fldId'))
+    +fld('e-nen',editData.nameEN,L('fldNameEN'))
+    +fld('e-njp',editData.nameJP,L('fldNameJP'))
+    +'</div><div><label class="f-lbl">'+L('fldDesc')+'</label>'
+    +'<textarea class="f-inp" id="e-desc" rows="2">'+esc(editData.desc||'')+'</textarea></div>'
+    +'<div class="f-grid">'
+    +fld('e-p1',editData.p1,L('fldP1'),true)
+    +fld('e-p2',editData.p2,L('fldP2'))
+    +fld('e-size',editData.size,L('fldSize'))
+    +fld('e-pack',editData.pack,L('fldPack'))
+    +fld('e-wt',editData.weight,L('fldWt'))
+    +fld('e-pw',editData.packW,L('fldPw'))
+    +fld('e-ht',editData.height,L('fldHt'))
+    +fld('e-eva1',editData.eva1,L('fldEva1'),true)
+    +fld('e-eva2',editData.eva2,L('fldEva2'))
+    +fld('e-pnt1',editData.paint1,L('fldPnt1'),true)
+    +fld('e-pnt2',editData.paint2,L('fldPnt2'))
+    +'</div>'
+    +'<div><label class="f-lbl">'+L('fldSpr')+'</label>'
+    +'<textarea class="f-inp" id="e-spr" rows="2">'+esc(editData.springs||'')+'</textarea></div>'
+    +'<div class="f-sec">'+L('fldPic')
+    +'<div class="pic-grid">'+picsH
+    +'<label class="photo-add"><input type="file" id="photo-file-input" accept="image/*" multiple style="display:none" onchange="addPhotos(this)"><span>'+L('addPhoto')+'</span></label>'
+    +'</div></div>';
+}
+function renderAccEditor(){
+  document.getElementById('ep-body').innerHTML=
+    '<div class="f-grid">'
+    +fld('e-acc-name',editData.name,L('accName'))
+    +fld('e-acc-njp',editData.nameJP,L('accNameJP'))
+    +fld('e-p1',editData.p1,L('fldP1'))
+    +fld('e-p2',editData.p2,L('fldP2'))
+    +fld('e-acc-spec',editData.spec,L('accSpec'))
+    +'</div>'
+    +'<div class="f-sec">'+L('fldPic')
+    +(editData.photo?'<div class="pic-grid"><div class="pic-thumb"><img src="'+editData.photo+'" style="width:60px;height:60px;object-fit:cover;border-radius:2px"><button onclick="removeAccPhoto()" style="position:absolute;top:2px;right:2px;background:#e74c3c;border:none;color:#fff;border-radius:50%;width:16px;height:16px;font-size:9px;cursor:pointer;padding:0">✕</button></div></div>':'')
+    +'<label class="photo-add"><input type="file" id="photo-file-input" accept="image/*" onchange="addAccPhoto(this)"><span>'+L('addPhoto')+'</span></label></div>';
+}
+
+function addPhotos(inp){
+  Array.from(inp.files).forEach(function(file){
+    var r=new FileReader(); r.onload=function(e){
+      if(!editData.photos) editData.photos=[];
+      editData.photos.push(e.target.result); renderProdEditor();
+    }; r.readAsDataURL(file);
+  });
+  inp.value='';
+}
+function addAccPhoto(inp){
+  if(!inp.files[0]) return;
+  var r=new FileReader(); r.onload=function(e){ editData.photo=e.target.result; renderAccEditor(); };
+  r.readAsDataURL(inp.files[0]); inp.value='';
+}
+function removePhoto(idx){ editData.photos.splice(idx,1); renderProdEditor(); }
+function removeAccPhoto(){ editData.photo=''; renderAccEditor(); }
+
+function applyEdit(){
+  S.dirty=true; updateDirtyUI();
+  if(EDIT.type==='prod'){
+    var catIdx=parseInt(document.getElementById('e-cat').value);
+    var orig=(EDIT.pi>=0)?S.data.sections[EDIT.si].products[EDIT.pi]:{};
+    var fmode=S.mode==='f';
+    var prod={
+      id:       document.getElementById('e-id').value.trim(),
+      nameEN:   document.getElementById('e-nen').value.trim(),
+      nameJP:   document.getElementById('e-njp').value.trim(),
+      desc:     document.getElementById('e-desc').value.trim(),
+      p1:       fmode?(orig.p1||''):document.getElementById('e-p1').value.trim(),
+      p2:       document.getElementById('e-p2').value.trim(),
+      size:     document.getElementById('e-size').value.trim()||'—',
+      pack:     document.getElementById('e-pack').value.trim()||'—',
+      weight:   document.getElementById('e-wt').value.trim()||'—',
+      packW:    document.getElementById('e-pw').value.trim()||'—',
+      height:   document.getElementById('e-ht').value.trim()||'—',
+      eva1:     fmode?(orig.eva1||''):document.getElementById('e-eva1').value.trim(),
+      eva2:     document.getElementById('e-eva2').value.trim(),
+      paint1:   fmode?(orig.paint1||''):document.getElementById('e-pnt1').value.trim(),
+      paint2:   document.getElementById('e-pnt2').value.trim(),
+      springs:  document.getElementById('e-spr').value.trim(),
+      photos:   editData.photos||[]
+    };
+    if(EDIT.pi===-1){ S.data.sections[catIdx].products.push(prod); }
+    else if(catIdx!==EDIT.si){ S.data.sections[EDIT.si].products.splice(EDIT.pi,1); S.data.sections[catIdx].products.push(prod); }
+    else{ S.data.sections[EDIT.si].products[EDIT.pi]=prod; }
+  } else {
+    var item={
+      name:   document.getElementById('e-acc-name').value.trim(),
+      nameJP: document.getElementById('e-acc-njp').value.trim(),
+      p1:     document.getElementById('e-p1').value.trim(),
+      p2:     document.getElementById('e-p2').value.trim(),
+      spec:   document.getElementById('e-acc-spec').value.trim(),
+      photo:  editData.photo||''
+    };
+    if(EDIT.ai===-1){ S.data.accessories[EDIT.accType].push(item); }
+    else{ S.data.accessories[EDIT.accType][EDIT.ai]=item; }
+  }
+  closeEditor(); renderCatalog(); renderAdminPanel();
+}
+
+function deleteProd(e,si,pi){ e.stopPropagation(); if(!confirm('削除しますか？')) return; S.data.sections[si].products.splice(pi,1); S.dirty=true; updateDirtyUI(); renderCatalog(); renderAdminPanel(); }
+function deleteAcc(e,type,ai){ e.stopPropagation(); if(!confirm('削除しますか？')) return; S.data.accessories[type].splice(ai,1); S.dirty=true; updateDirtyUI(); renderCatalog(); renderAdminPanel(); }
+
+/* ── 12. KEYBOARD SHORTCUTS ── */
+document.addEventListener('keydown', function(e){
+  if(e.key!=='Escape') return;
+  if(document.getElementById('editor-panel').classList.contains('open')){ closeEditor(); return; }
+  if(document.getElementById('admin-panel').classList.contains('open')){
+    if(S.dirty&&!confirm(L('unsaved'))) return;
+    closeAdmin();
+  }
+});
+window.addEventListener('beforeunload', function(e){
+  if(S.dirty){ e.preventDefault(); e.returnValue=''; }
+});
+
+</script>
+</body>
+</html>
