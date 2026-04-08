@@ -103,7 +103,8 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN',sans-serif;b
   <button class="tab-btn active" onclick="switchTab('login')">🔐 ログイン</button>
   <button class="tab-btn" onclick="switchTab('add')">➕ 製品追加</button>
   <button class="tab-btn" onclick="switchTab('photo')">📷 写真追加</button>
-  <button class="tab-btn" onclick="switchTab('save')">💾 GitHub保存</button>
+  <button class="tab-btn" onclick="switchTab('factory')">🏭 工場フロー</button>
+  <button class="tab-btn" onclick="switchTab('save')">💾 江原・大丸保存</button>
 </div>
 
 <!-- ===== TAB 1: LOGIN ===== -->
@@ -317,23 +318,145 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN',sans-serif;b
   <div class="step">
     <div class="step-num">3</div>
     <div class="step-body">
-      <div class="step-title">「適用」→「GitHubに保存」 <span class="zh">点击「确认」→「保存到GitHub」</span></div>
-      <div class="step-desc">
-        写真を追加したら「确认 / 適用」→ 管理パネルで「保存到 GitHub / GitHubに保存」を押します<br>
-        <span class="zh">添加图片后，点击「确认」，再在管理面板中点击「保存到 GitHub」</span>
+      <div class="step-title">「适用」後に保存 <span class="zh">点击「确认」后保存</span></div>
+      <div class="mock">
+        <table style="width:100%;border-collapse:collapse;font-size:12px">
+          <tr style="background:#f0ede8">
+            <th style="padding:8px;text-align:left">対象</th>
+            <th style="padding:8px;text-align:left">写真追加後の操作</th>
+          </tr>
+          <tr style="border-top:1px solid #e5e7eb;background:#faf8ff">
+            <td style="padding:8px"><span class="badge badge-zh">中国工場</span></td>
+            <td style="padding:8px;color:#555">「确认」→ ⚙ → <strong style="color:#7B3FC4">📥 导出JSON</strong> → WeChat/メールで江原へ</td>
+          </tr>
+          <tr style="border-top:1px solid #e5e7eb">
+            <td style="padding:8px"><span class="badge badge-both">江原</span></td>
+            <td style="padding:8px;color:#555">「適用」→ ⚙ → <strong style="color:#16a34a">GitHubに保存</strong></td>
+          </tr>
+        </table>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ===== TAB 4: GITHUB保存 ===== -->
+<!-- ===== TAB 工場フロー ===== -->
+<div class="tab-content" id="tab-factory">
+  <div class="section-title">中国工場の完全フロー / 中国工厂完整流程</div>
+
+  <div class="note" style="background:#f5f0ff;border-color:#7B3FC4">
+    <strong style="color:#7B3FC4">中国工場の方へ：</strong>GitHubは使いません。このフローだけで完結します。<br>
+    <span style="color:#9ca3af">工厂无需使用GitHub，按以下流程操作即可。</span>
+  </div>
+
+  <div class="step">
+    <div class="step-num" style="background:#7B3FC4">1</div>
+    <div class="step-body">
+      <div class="step-title">ログイン <span class="zh">登录</span></div>
+      <div class="step-desc">パスワードは別途ご連絡します。<br><span class="zh">密码将另行通知。</span></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num" style="background:#7B3FC4">2</div>
+    <div class="step-body">
+      <div class="step-title">製品を編集・追加 <span class="zh">编辑/添加产品</span></div>
+      <div class="step-desc">
+        ⚙ボタン → カテゴリを選んで「＋ 添加」→ 情報を入力 →「确 认」<br>
+        <span class="zh">点击⚙按钮 → 选择分类点击「＋ 添加」→ 填写信息 → 点击「确 认」</span>
+      </div>
+      <div class="mock">
+        <div style="font-size:12px;color:#555">
+          <div style="margin-bottom:6px">✅ 编辑できる項目 / 可编辑项目：</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 16px;font-size:11px">
+            <div>• 型号 / MODEL ID</div>
+            <div>• 出厂价 / 原価</div>
+            <div>• 英文・日文名称</div>
+            <div>• 尺寸・重量</div>
+            <div>• 说明 / 説明文</div>
+            <div>• 弹簧配置 / スプリング</div>
+            <div>• 产品图片 / 写真</div>
+            <div>• EVA・塗装（出厂）</div>
+          </div>
+          <div style="margin-top:8px;color:#dc2626;font-size:11px">❌ 批发価格（仕入れ価格）は変更不可 / 批发价不可编辑</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num" style="background:#7B3FC4">3</div>
+    <div class="step-body">
+      <div class="step-title">JSONをエクスポート <span class="zh">导出JSON文件</span></div>
+      <div class="step-desc">
+        ⚙ 管理面板 → 上部の <strong>「📥 导出JSON」</strong> ボタンをクリック<br>
+        <span class="zh">点击⚙管理面板顶部的 <strong>「📥 导出JSON」</strong> 按钮</span>
+      </div>
+      <div class="mock">
+        <div style="display:flex;align-items:center;gap:10px">
+          <button style="padding:8px 16px;background:#7B3FC4;border:none;border-radius:3px;color:#fff;font-size:12px;font-weight:700;cursor:pointer">📥 导出JSON / JSONエクスポート</button>
+          <span style="font-size:11px;color:#555">← ⚙管理面板の上部にあります</span>
+        </div>
+        <div style="margin-top:8px;font-size:11px;color:#9ca3af">
+          ファイル名: <code style="background:#f0f0f0;padding:1px 4px">products_full_20260409.json</code> としてダウンロードされます
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num" style="background:#7B3FC4">4</div>
+    <div class="step-body">
+      <div class="step-title">江原さんに送付 <span class="zh">发送给江原</span></div>
+      <div class="step-desc">
+        ダウンロードしたJSONファイルを <strong>WeChat / メール</strong> で江原さんに送付してください。<br>
+        <span class="zh">将下载的JSON文件通过 <strong>微信 / 邮件</strong> 发送给江原。</span>
+      </div>
+      <div class="note">
+        以上で中国工場側の作業は完了です。あとは江原さんが反映します。<br>
+        <span style="color:#9ca3af">中国工厂的操作到此结束，后续由江原处理上传。</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TAB 5: GITHUB保存（江原・大丸用） ===== -->
 <div class="tab-content" id="tab-save">
-  <div class="section-title">GitHubに保存する / 保存到GitHub</div>
+  <div class="section-title">江原さんの保存手順（GitHubが使える環境）</div>
+  <div class="note" style="background:#f0fff4;border-color:#16a34a"><strong style="color:#16a34a">江原さん・大丸社員の方向け</strong>（中国工場の方はひとつ前の「🏭 工場フロー」タブをご覧ください）</div>
 
   <div class="note">
     <strong>注意：</strong>「适用 / 適用」ボタンを押しただけでは、ブラウザを閉じると変更が消えます。<br>
     必ず <strong>GitHubに保存</strong> してください。<br>
     <span style="color:#9ca3af">注意：点击「确认」后变更只保存在浏览器中。必须点击「保存到GitHub」才能永久保存。</span>
+  </div>
+
+  <div class="section-title">GitHubにアクセスできない場合 / 无法访问GitHub时</div>
+
+  <div class="step">
+    <div class="step-num" style="background:#7B3FC4">工</div>
+    <div class="step-body">
+      <div class="step-title" style="color:#7B3FC4">中国工場の代替手順 <span class="zh" style="color:#9ca3af">中国工厂替代方案</span></div>
+      <div class="step-desc">
+        GitHubにアクセスできない場合は、JSONファイルをエクスポートして江原さんに送付してください。<br>
+        <span class="zh">如无法访问GitHub，请导出JSON文件并发送给江原。</span>
+      </div>
+      <div class="mock">
+        <div style="display:flex;flex-direction:column;gap:12px;font-size:12px">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:28px;height:28px;background:#7B3FC4;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0">1</div>
+            <div>⚙ 管理面板 → <strong style="background:#7B3FC4;color:#fff;padding:2px 8px;border-radius:2px">📥 导出JSON / JSONエクスポート</strong> をクリック</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:28px;height:28px;background:#7B3FC4;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0">2</div>
+            <div>ダウンロードされた <code style="background:#f0f0f0;padding:1px 4px">products_full_YYYYMMDD.json</code> を WeChat・メールで江原さんへ送付<br><span style="color:#9ca3af">通过微信或邮件将文件发送给江原</span></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:28px;height:28px;background:#16a34a;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0">3</div>
+            <div><strong>江原さん：</strong> ⚙ 管理面板 → <strong style="background:#16a34a;color:#fff;padding:2px 8px;border-radius:2px">📤 JSONインポート</strong> → ファイルを選択 → GitHubに保存</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="step">
@@ -404,7 +527,7 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN',sans-serif;b
 <script>
 function switchTab(id){
   document.querySelectorAll('.tab-btn').forEach((b,i)=>{
-    var ids=['login','add','photo','save'];
+    var ids=['login','add','photo','factory','save'];
     b.classList.toggle('active', ids[i]===id);
   });
   document.querySelectorAll('.tab-content').forEach(c=>{
