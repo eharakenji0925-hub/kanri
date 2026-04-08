@@ -281,6 +281,13 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN',sans-serif;b
 .p3-margin{font-size:11px;color:#27ae60;font-weight:600;margin-top:4px}
 .p3-margin.neg{color:#e74c3c}
 .p3-row{display:flex;align-items:center;gap:8px}
+
+/* Export / Import */
+.btn-export{padding:6px 14px;background:#7B3FC4;border:none;border-radius:2px;color:#fff;font-size:11px;font-weight:700;cursor:pointer;letter-spacing:1px}
+.btn-export:hover{background:#9B5FE4}
+.btn-import{padding:6px 14px;background:#16a34a;border:none;border-radius:2px;color:#fff;font-size:11px;font-weight:700;cursor:pointer;letter-spacing:1px}
+.btn-import:hover{background:#15803d}
+.export-note{font-size:11px;color:#888;margin-top:8px;padding:8px 10px;background:#f8f7f4;border-radius:3px;line-height:1.7}
 </style>
 </head>
 <body>
@@ -798,12 +805,52 @@ function toggleAP(k){
 function renderAdminPanel(){
   var body=document.getElementById('ap-body'); var h='';
   document.getElementById('ap-title').textContent=L('admin');
-  document.getElementById('btn-save').textContent=L('save');
+  if(S.mode === 'f'){
+    /* 工場：保存ボタンをエクスポートボタンに */
+    var btn = document.getElementById('btn-save');
+    btn.textContent = '📥 导出JSON';
+    btn.disabled = false;
+    btn.onclick = function(){ exportJSON(); };
+    btn.style.background = '#7B3FC4';
+    document.getElementById('save-status').textContent = '微信/邮件で江原へ送付';
+    document.getElementById('save-status').style.color = '#7B3FC4';
+  } else {
+    document.getElementById('btn-save').textContent=L('save');
+  }
 
-  h+='<div class="tok-box"><label>GITHUB TOKEN（repo scope）</label><div class="tok-row">'
-    +'<input class="tok-inp" type="password" id="tok-inp" value="'+(S.token||'')+'" placeholder="ghp_xxxxxxxxxxxx">'
-    +'<button class="btn-connect" onclick="connectGitHub()">'+L('connect')+'</button></div>'
-    +'<div class="tok-status '+(S.token?'ok':'ng')+'" id="tok-status">'+(S.token?'✓ '+L('connected'):L('disconnected'))+'</div></div>';
+  /* GitHub Token欄：工場には非表示 */
+  if(S.mode !== 'f'){
+    h+='<div class="tok-box"><label>GITHUB TOKEN（repo scope）</label><div class="tok-row">'
+      +'<input class="tok-inp" type="password" id="tok-inp" value="'+(S.token||'')+'" placeholder="ghp_xxxxxxxxxxxx">'
+      +'<button class="btn-connect" onclick="connectGitHub()">'+L('connect')+'</button></div>'
+      +'<div class="tok-status '+(S.token?'ok':'ng')+'" id="tok-status">'+(S.token?'✓ '+L('connected'):L('disconnected'))+'</div></div>';
+  }
+
+  /* GitHub使えない場合のエクスポート・インポート */
+  if(S.mode==='f'){
+    h+='<div class="tok-box">'
+      +'<label style="color:#7B3FC4;font-weight:700">保存方法 / 保存方法</label>'
+      +'<div class="export-note">'
+      +'编辑完成后，点击上方「📥 导出JSON」按钮下载文件，<br>'
+      +'通过 <strong>微信 / 邮件</strong> 发送给 Ehara，由 Ehara 上传到 GitHub。<br>'
+      +'<span style="color:#bbb">編集後、上部「📥 导出JSON」でダウンロードし、<br>WeChat・メールで江原さんに送付してください。</span>'
+      +'</div>'
+      +'</div>';
+  }
+  if(S.mode==='a'){
+    h+='<div class="tok-box">'
+      +'<label style="color:#16a34a;font-weight:700">工場からJSONを受け取った場合 / 从工厂收到JSON时</label>'
+      +'<div class="export-note">'
+      +'工場がエクスポートしたJSONファイルを取り込めます。<br>'
+      +'取り込み後、GitHubに保存してください。'
+      +'</div>'
+      +'<div style="margin-top:10px;display:flex;gap:8px;align-items:center">'
+      +'<button class="btn-import" onclick="document.getElementById(\'import-file\').click()">📤 JSONインポート</button>'
+      +'<input type="file" id="import-file" accept=".json" style="display:none" onchange="importJSON(this)">'
+      +'<span id="import-status" style="font-size:11px;color:#16a34a"></span>'
+      +'</div>'
+      +'</div>';
+  }
 
   S.data.sections.forEach(function(sec,si){
     var k='sec'+si, open=AP_OPEN[k]!==true, issues=sec.products.filter(function(p){return !p.p1||p.p1.trim()===''||p.p1==='—';}).length;
@@ -1003,6 +1050,45 @@ document.addEventListener('keydown', function(e){
 window.addEventListener('beforeunload', function(e){
   if(S.dirty){ e.preventDefault(); e.returnValue=''; }
 });
+
+
+/* ── EXPORT / IMPORT ── */
+function exportJSON(){
+  var data = JSON.stringify(S.data, null, 2);
+  var blob = new Blob([data], {type:'application/json'});
+  var url  = URL.createObjectURL(blob);
+  var a    = document.createElement('a');
+  var date = new Date();
+  var stamp = date.getFullYear()+''+('0'+(date.getMonth()+1)).slice(-2)+('0'+date.getDate()).slice(-2);
+  a.href     = url;
+  a.download = 'products_full_' + stamp + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('导出完成 / エクスポート完了', 'ok');
+}
+
+function importJSON(inp){
+  var file = inp.files[0];
+  if(!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e){
+    try{
+      var data = JSON.parse(e.target.result);
+      if(!data.sections || !data.sections.length) throw new Error('sections missing');
+      S.data  = data;
+      S.dirty = true;
+      updateDirtyUI();
+      renderCatalog();
+      renderAdminPanel();
+      document.getElementById('import-status').textContent = '✓ 取り込み完了 — GitHubに保存してください';
+      showToast('✓ インポート完了', 'ok');
+    } catch(err){
+      showToast('インポート失敗: ' + err.message, 'ng');
+    }
+  };
+  reader.readAsText(file, 'utf-8');
+  inp.value = '';
+}
 
 </script>
 </body>
