@@ -456,20 +456,25 @@ function doLogin(){
   S.mode = PASSWORDS[pw];
   var info = MODE_INFO[S.mode];
 
-  /* 1. まず埋め込みデータで即座にログイン */
+  /* データ直接代入（ネットワーク不要） */
   S.data = (info.dataFile === 'full') ? DATA_FULL : DATA_DAIMARU;
 
   if(!S.data || !S.data.sections || !S.data.sections.length){
-    err.textContent = 'データエラー';
+    err.textContent = 'データエラー: sections未定義';
     return;
   }
 
-  /* 2. バックグラウンドでGitHubから最新データを取得 */
-  var _fname = FILES[info.dataFile].name;
-  fetch('https://raw.githubusercontent.com/'+REPO_OWNER+'/'+REPO_NAME+'/'+BRANCH+'/'+_fname+'?t='+Date.now())
-    .then(function(r){ return r.ok ? r.json() : null; })
-    .then(function(d){ if(d && d.sections && d.sections.length){ S.data = d; renderCatalog(); } })
-    .catch(function(){}); /* オフラインでも問題なし */
+  /* バックグラウンドでGitHubから写真込みデータを取得して再描画 */
+  (function(){
+    var fname = FILES[info.dataFile].name;
+    var url = 'https://raw.githubusercontent.com/'+REPO_OWNER+'/'+REPO_NAME+'/'+BRANCH+'/'+fname+'?t='+Date.now();
+    fetch(url)
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(d){
+        if(d && d.sections && d.sections.length){ S.data = d; renderCatalog(); }
+      })
+      .catch(function(){});
+  })();
 
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('catalog').style.display = 'block';
