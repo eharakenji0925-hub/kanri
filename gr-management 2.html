@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GR プログラム導入管理</title>
+<style>
+:root{
+  --primary:#2563eb;--primary-dark:#1e40af;--primary-light:#dbeafe;
+  --accent:#7c3aed;--accent-light:#ede9fe;
+  --green:#10b981;--green-bg:#ecfdf5;
+  --yellow:#f59e0b;--yellow-bg:#fffbeb;
+  --red:#ef4444;--red-bg:#fef2f2;
+  --teal:#0f766e;--teal-bg:#f0fdfa;
+  --navy:#1e40af;--navy-bg:#eff6ff;
+  --gray50:#f8fafc;--gray100:#f1f5f9;--gray200:#e2e8f0;--gray300:#cbd5e1;--gray400:#94a3b8;--gray500:#64748b;--gray700:#334155;--gray900:#0f172a;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.06);--shadow:0 2px 8px rgba(0,0,0,.08);--shadow-lg:0 8px 30px rgba(0,0,0,.12);
+  --radius:12px;--radius-lg:16px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,'Segoe UI','Hiragino Sans','Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif;background:var(--gray100);color:var(--gray900);line-height:1.5}
+input,select,button{font-family:inherit;outline:none}
+input:focus,select:focus{border-color:var(--primary) !important;box-shadow:0 0 0 3px rgba(37,99,235,.15)}
+button{transition:all .15s ease}
+button:hover{opacity:.9;transform:translateY(-1px)}
+button:active{transform:translateY(0)}
+table{border-collapse:collapse;width:100%}
+::-webkit-scrollbar{height:6px;width:6px}
+::-webkit-scrollbar-thumb{background:var(--gray300);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--gray400)}
+
+/* Badges */
+.badge{display:inline-flex;align-items:center;padding:3px 12px;border-radius:20px;font-size:11px;font-weight:700;color:#fff;letter-spacing:.3px}
+.badge-outline{background:transparent !important;border:1.5px solid;color:inherit}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:10px;border:none;cursor:pointer;font-weight:600;font-size:13px;transition:all .2s}
+.btn-primary{background:var(--primary);color:#fff;box-shadow:0 2px 8px rgba(37,99,235,.25)}
+.btn-primary:hover{background:var(--primary-dark);box-shadow:0 4px 12px rgba(37,99,235,.35)}
+.btn-accent{background:var(--accent);color:#fff;box-shadow:0 2px 8px rgba(124,58,237,.25)}
+.btn-ghost{background:transparent;color:var(--gray500);border:1.5px solid var(--gray200)}
+.btn-ghost:hover{background:var(--gray50);border-color:var(--gray300)}
+.btn-danger{background:var(--red);color:#fff}
+.btn-sm{padding:5px 12px;font-size:11px;border-radius:8px}
+.btn-icon{width:36px;height:36px;padding:0;display:inline-flex;align-items:center;justify-content:center;border-radius:10px;border:1.5px solid var(--gray200);background:#fff;cursor:pointer;font-size:16px}
+.btn-icon:hover{background:var(--gray50);border-color:var(--gray300)}
+
+/* Cards */
+.card{background:#fff;border-radius:var(--radius-lg);padding:20px;box-shadow:var(--shadow);border:1px solid rgba(0,0,0,.04);transition:box-shadow .2s}
+.card:hover{box-shadow:var(--shadow-lg)}
+
+/* Modals */
+.overlay{position:fixed;inset:0;background:rgba(15,23,42,.5);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:1000;opacity:0;pointer-events:none;transition:opacity .25s}
+.overlay.active{opacity:1;pointer-events:auto}
+.modal{background:#fff;border-radius:20px;padding:32px;max-width:980px;width:94%;max-height:90vh;overflow-y:auto;box-shadow:0 25px 65px rgba(0,0,0,.25);transform:scale(.96);transition:transform .25s}
+.overlay.active .modal{transform:scale(1)}
+
+/* Table */
+.th{padding:12px 10px;text-align:left;font-weight:700;color:var(--gray500);border-bottom:2px solid var(--gray200);font-size:11px;white-space:nowrap;text-transform:uppercase;letter-spacing:.5px}
+.td{padding:10px;white-space:nowrap}
+tbody tr{border-bottom:1px solid var(--gray100);transition:background .15s}
+tbody tr:hover{background:var(--gray50)}
+
+/* Grid */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0 16px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.flex{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+
+/* Program Cells */
+.pcell{padding:4px;text-align:center;cursor:pointer}
+.pcell>div{border-radius:10px;padding:6px 3px;min-width:58px;transition:all .15s}
+.pcell>div:hover{transform:scale(1.08);box-shadow:var(--shadow)}
+
+/* Stat cards */
+.stat-card{background:#fff;border-radius:var(--radius-lg);padding:20px 24px;box-shadow:var(--shadow);flex:1 1 160px;min-width:140;position:relative;overflow:hidden;transition:all .2s}
+.stat-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.stat-card::after{content:'';position:absolute;top:0;left:0;width:4px;height:100%}
+
+/* Progress bars */
+.bar-bg{background:var(--gray200);border-radius:6px;overflow:hidden}
+.bar-fill{height:100%;border-radius:6px;transition:width .5s ease-out}
+
+/* Forms */
+.form-field{margin-bottom:14px}
+.form-field label{display:block;font-size:12px;font-weight:700;color:var(--gray500);margin-bottom:4px;text-transform:uppercase;letter-spacing:.3px}
+.form-field input,.form-field select{width:100%;padding:9px 12px;border-radius:10px;border:1.5px solid var(--gray200);font-size:13px;box-sizing:border-box;transition:all .2s;background:#fff}
+.form-field input:hover,.form-field select:hover{border-color:var(--gray300)}
+
+.hidden{display:none !important}
+
+/* Animations */
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.animate-in{animation:fadeIn .3s ease-out}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+.pulse{animation:pulse 2s ease-in-out infinite}
+
+/* Nav pills */
+.nav-pill{padding:8px 18px;border-radius:10px;border:none;cursor:pointer;font-weight:600;font-size:12px;transition:all .2s;position:relative}
+.nav-pill.active{background:#fff;color:var(--primary-dark);box-shadow:var(--shadow)}
+.nav-pill:not(.active){background:rgba(255,255,255,.12);color:rgba(255,255,255,.85)}
+.nav-pill:not(.active):hover{background:rgba(255,255,255,.22)}
+
+/* Tooltip */
+.tip{position:relative}
+.tip::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--gray900);color:#fff;font-size:11px;padding:4px 10px;border-radius:6px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s}
+.tip:hover::after{opacity:1}
+</style>
+</head>
+<body>
+
+<!-- ====== LOGIN ====== -->
+<div id="login" style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 30%,#2563eb 65%,#7c3aed 100%);position:relative;overflow:hidden">
+  <div style="position:absolute;top:-100px;right:-100px;width:400px;height:400px;border-radius:50%;background:rgba(124,58,237,.15)"></div>
+  <div style="position:absolute;bottom:-80px;left:-80px;width:300px;height:300px;border-radius:50%;background:rgba(37,99,235,.12)"></div>
+  <div class="animate-in" style="background:#fff;border-radius:24px;padding:52px 44px;width:400px;box-shadow:0 25px 65px rgba(0,0,0,.35);text-align:center;position:relative;z-index:1">
+    <div style="width:72px;height:72px;border-radius:18px;background:linear-gradient(135deg,var(--primary),var(--accent));margin:0 auto 24px;display:flex;align-items:center;justify-content:center;font-size:30px;color:#fff;font-weight:900;box-shadow:0 8px 24px rgba(37,99,235,.3)">GR</div>
+    <h1 style="font-size:22px;font-weight:800;margin-bottom:6px;color:var(--gray900)">GR プログラム導入管理</h1>
+    <p style="font-size:13px;color:var(--gray400);margin-bottom:32px">管理画面にログインしてください</p>
+    <div style="position:relative;margin-bottom:12px">
+      <input type="password" id="pw-input" placeholder="管理パスワード" style="width:100%;padding:14px 20px;border-radius:14px;border:2px solid var(--gray200);font-size:16px;text-align:center;letter-spacing:3px;box-sizing:border-box;transition:all .2s" onkeydown="if(event.key==='Enter')tryLogin()" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--gray200)'">
+    </div>
+    <div id="pw-error" style="color:var(--red);font-size:12px;font-weight:600;height:22px;line-height:22px"></div>
+    <button onclick="tryLogin()" style="width:100%;padding:14px;border-radius:14px;border:none;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 6px 20px rgba(37,99,235,.35);transition:all .2s;margin-top:4px" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">ログイン</button>
+    <div style="font-size:11px;color:var(--gray300);margin-top:20px;letter-spacing:1px">AUTHORIZED PERSONNEL ONLY</div>
+  </div>
+</div>
+
+<!-- ====== MAIN APP ====== -->
+<div id="app" class="hidden">
+  <!-- Header -->
+  <div style="background:linear-gradient(135deg,var(--primary-dark) 0%,var(--primary) 60%,#4f7df5 100%);color:#fff;padding:0 32px;display:flex;justify-content:space-between;align-items:center;height:64px;position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(30,64,175,.25)">
+    <div style="display:flex;align-items:center;gap:14px">
+      <div style="width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;backdrop-filter:blur(4px)">GR</div>
+      <div>
+        <h1 style="font-size:16px;font-weight:700;letter-spacing:.3px">プログラム導入管理</h1>
+        <div style="font-size:10px;opacity:.7;letter-spacing:.5px">全10種 + スキルアップ研修</div>
+      </div>
+    </div>
+    <div class="flex" style="gap:4px">
+      <div style="background:rgba(0,0,0,.15);border-radius:12px;padding:3px;display:flex;gap:2px">
+        <button class="nav-pill active" id="nav-matrix" onclick="switchView('matrix')">導入マップ</button>
+        <button class="nav-pill" id="nav-skillup" onclick="switchView('skillup')">スキルアップ研修</button>
+        <button class="nav-pill" id="nav-list" onclick="switchView('list')">店舗管理</button>
+      </div>
+      <div style="width:1px;height:28px;background:rgba(255,255,255,.2);margin:0 8px"></div>
+      <button onclick="logout()" style="padding:8px 14px;border-radius:10px;border:1.5px solid rgba(255,255,255,.25);background:transparent;color:#fff;cursor:pointer;font-size:11px;font-weight:600;transition:all .2s" onmouseover="this.style.background='rgba(255,255,255,.1)'" onmouseout="this.style.background='transparent'">ログアウト</button>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div style="padding:24px 32px;max-width:1380px;margin:0 auto">
+    <div id="filter-bar" class="flex" style="margin-bottom:20px">
+      <select id="f-area" onchange="render()" style="padding:10px 14px;border-radius:12px;border:1.5px solid var(--gray200);font-size:13px;background:#fff;cursor:pointer;min-width:120px">
+        <option value="">全エリア</option><option>中央本部</option><option>東エリア</option><option>西エリア</option>
+      </select>
+      <select id="f-status" onchange="render()" style="padding:10px 14px;border-radius:12px;border:1.5px solid var(--gray200);font-size:13px;background:#fff;cursor:pointer;min-width:120px">
+        <option value="">全ステータス</option><option>運営中</option><option>休止中</option><option>終了</option>
+      </select>
+      <div id="search-wrap" class="hidden" style="flex:1 1 180px;position:relative">
+        <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--gray400)">🔍</span>
+        <input id="f-search" placeholder="店舗名・エリアで検索..." oninput="render()" style="width:100%;padding:10px 14px 10px 36px;border-radius:12px;border:1.5px solid var(--gray200);font-size:13px">
+      </div>
+      <div style="margin-left:auto" class="flex">
+        <button class="btn btn-primary hidden" id="btn-add" onclick="openAdd()">＋ 新規登録</button>
+      </div>
+    </div>
+    <div id="content" class="animate-in"></div>
+  </div>
+</div>
+
+<!-- ====== MODAL ====== -->
+<div id="modal-overlay" class="overlay" onclick="closeModal()">
+  <div class="modal" onclick="event.stopPropagation()" id="modal-body"></div>
+</div>
+
+<script>
+const ADMIN_PASSWORD="daimaru";
+const STORAGE_KEY="gr_mgmt_v3";
+
+const BEG=[
+  {key:"beginner1",label:"Intro",short:"IN",color:"#14b8a6"},
+  {key:"beginner2",label:"Basic",short:"BA",color:"#0d9488"},
+  {key:"beginner3",label:"Basic/waist",short:"BW",color:"#0f766e"},
+  {key:"beginner4",label:"Basic/hip",short:"BH",color:"#115e59"},
+];
+const MID=[
+  {key:"intermediate1",label:"①Intermediate",short:"INT",color:"#8b5cf6"},
+  {key:"intermediate2",label:"②Back&Core",short:"B&C",color:"#3b82f6"},
+  {key:"intermediate3",label:"③Lowerbody",short:"LB",color:"#06b6d4"},
+  {key:"intermediate4",label:"④WaistShape",short:"WS",color:"#10b981"},
+  {key:"intermediate5",label:"⑤Jumpboard",short:"JB",color:"#f59e0b"},
+  {key:"intermediate6",label:"⑥Core Flow",short:"CF",color:"#ef4444"},
+];
+const ALL_P=[...BEG,...MID];
+const AREAS=["中央本部","東エリア","西エリア"];
+const S_COL={"運営中":"#10b981","休止中":"#f59e0b","終了":"#ef4444"};
+const A_COL={"中央本部":"#6366f1","東エリア":"#0ea5e9","西エリア":"#f97316"};
+const DOCS=[{k:"intentLetter",l:"意向書"},{k:"estimate",l:"見積書"},{k:"purchaseOrder",l:"発注書"},{k:"deliveryDate",l:"納品日"},{k:"contract",l:"契約書"},{k:"trainingApplication",l:"養成申込"}];
+
+const isIn=v=>v&&v!==""&&v!=="ー";
+const isPlan=v=>v&&v.includes("予定");
+const parseCD=v=>{if(!v)return null;const m=v.match(/^(\d{4})-(\d{1,2})/);return m?{year:+m[1],month:+m[2]}:null;};
+const fmtYM=d=>d?d.year+"年"+d.month+"月":"ー";
+const getSched=(c,n=6)=>{if(!c)return[];const o=[];let y=c.year,m=c.month;for(let i=0;i<n;i++){m+=6;if(m>12){m-=12;y++;}o.push({year:y,month:m,idx:i+1});}return o;};
+const schedSt=s=>{const d=new Date(),ny=d.getFullYear(),nm=d.getMonth()+1;if(s.year<ny||(s.year===ny&&s.month<nm))return"past";if(s.year===ny&&s.month===nm)return"current";return"future";};
+const getNext=st=>{const c=parseCD(st.completionDate);if(!c)return null;const sc=getSched(c,20);const d=new Date(),ny=d.getFullYear(),nm=d.getMonth()+1;return sc.find(s=>s.year>ny||(s.year===ny&&s.month>=nm))||null;};
+const esc=s=>s?s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"):"";
+const pctColor=p=>p===100?"#10b981":p>=50?"#3b82f6":"#f59e0b";
+
+const mk=(id,area,name,status,docs,tr,mo,hist,beg,int,cd)=>({id,area,storeName:name,status,intentLetter:docs[0]||"",estimate:docs[1]||"",purchaseOrder:docs[2]||"",deliveryDate:docs[3]||"",contract:docs[4]||"",trainingSchedule:tr[0]||"",trainingApplication:tr[1]||"",renewalMonth1:mo[0]||"",renewalMonth2:mo[1]||"",trainingHistory:hist,beginner1:beg[0]||"",beginner2:beg[1]||"",beginner3:beg[2]||"",beginner4:beg[3]||"",intermediate1:int[0]||"",intermediate2:int[1]||"",intermediate3:int[2]||"",intermediate4:int[3]||"",intermediate5:int[4]||"",intermediate6:int[5]||"",completionDate:cd||""});
+
+const DEFAULT_DATA=[
+  mk(1,"中央本部","Lucina北小金","運営中",["済","済","済","済","済"],["済","済"],["3月","9月"],"2025/03/10",["済","済","済","済"],["Intermediate","2402_Back &Core","2409_Lowerbody","2503_Waist Shape","2509_Jumpboard","2603_Core Flow"],"2026-03"),
+  mk(2,"中央本部","Lucina北浦和","運営中",["済","済","済","済","済"],["済","済"],["3月","9月"],"2025/03/10",["済","済","済","済"],["Intermediate","2402_Back &Core","2409_Lowerbody","2503_Waist Shape","2509_Jumpboard","2603_Core Flow"],"2026-03"),
+  mk(3,"中央本部","Lucina東久留米","運営中",["済","済","済","済","済"],["済","済"],["3月","9月"],"2025/03/10",["済","済","済","済"],["Intermediate","2402_Back &Core","2409_Lowerbody","2503_Waist Shape","2509_Jumpboard","2603_Core Flow"],"2026-03"),
+  mk(4,"中央本部","Hanakura行田店","運営中",["済","済","済","済","済"],["済","済"],["3月","9月"],"2025/03/10",["済","済","済","済"],["Intermediate","2402_Back &Core","2409_Lowerbody","2503_Waist Shape","2509_Jumpboard","2603_Core Flow"],"2026-03"),
+  mk(5,"中央本部","Lucina那覇新都心","運営中",["済","済","済","済","済"],["済","済"],["3月","9月"],"2025/03/24",["済","済","済","済"],["Intermediate","2403_Back &Core","2409_Lowerbody","2503_Waist Shape","2602_Jumpboard",""],""),
+  mk(6,"東エリア","わらわら航空公園店","運営中",["済","済","済","済","済"],["済","済"],["3月","9月"],"2025/03/25",["済","済","済","済"],["2410_Intermediate","2403_Back &Core","2409_Lowerbody","2503_Waist Shape","2509_Jumpboard",""],""),
+  mk(7,"東エリア","わらわらふじみ野店","休止中",["済","済","済","済","？"],["済","済"],["3月","9月"],"2025/03/06",["済","済","済","済"],["2410_Intermediate","2402_Back &Core","2409_Lowerbody","2503_Waist Shape","2509予定",""],""),
+  mk(8,"西エリア","ラーガ伏見","運営中",["済","済","済","済","済"],["済","済"],["3月","9月"],"2025/05/31",["済","済","済","済"],["2410_Intermediate","2402_Back &Core","","2505_Waist Shape","2511_Jumpboard",""],""),
+  mk(9,"西エリア","As倉敷","運営中",["済","済","済","済","済"],["済","済"],["4月","10月"],"2025/06/23",["済","済","済","済"],["2411_Intermediate","2404_Back &Core","","2506_Waist Shape","2512_Jumpboard",""],""),
+  mk(10,"西エリア","As姫路","終了",["済","済","済","済","済"],["済","済"],["4月","10月"],"2025/06/10",["済","済","済","済"],["2411_Intermediate","2404_Back &Core","ー","2506_Waist Shape","ー","ー"],""),
+  mk(11,"東エリア","A-1笹塚","運営中",["済","済","済","済","済"],["済","済"],["5月","11月"],"2025/05/30",["済","済","済","済"],["2407_Intermediate","ー","2411_Lowerbody","2505_Waist Shape","",""],""),
+  mk(12,"東エリア","Doスポーツ上里","運営中",["済","済","済","済",""],["2023/12〜2024/01","済"],["2月","8月"],"2025/01/24",["済","済","済","済"],["2407_Intermediate","ー","2411_Lowerbody","2507_Waist Shape","2603_Jumpboard",""],""),
+  mk(13,"西エリア","ラーガ出町","運営中",["","済","済","済",""],["2024/02〜2024/03","済"],["4月","10月"],"2025/04/15",["済","済","済","済"],["2410_Intermediate","2504_Back &Core","","2510_Waist Shape","2604_Jumpboard",""],""),
+  mk(14,"中央本部","Lucina京都八幡","運営中",["済","済","済","済",""],["2024/02〜2024/04","済"],["2月","8月"],"2025/02/20",["済","済","済","済"],["2502_Intermediate","2602_Back &Core","2502_Lowerbody","2602_Waist Shape","",""],""),
+  mk(15,"西エリア","SynerGym塚口","運営中",["","","済","済",""],["2024/03〜2024/05","済"],["12月","6月"],"2025/06/26",["済","済","済","済"],["2412_Intermediate","","","2506_Waist Shape","2512_Jumpboard",""],""),
+  mk(16,"西エリア","As岡山","運営中",["","","済","",""],["2024/06〜2024/07","済"],["3月","9月"],"2025/03/10",["済","済","済","済"],["2503_Intermediate","259_Back &Core","","2603_Waist Shape","",""],""),
+  mk(17,"西エリア","As御影","運営中",["","","済","",""],["2024/06〜2024/07","済"],["4月","10月"],"2025/03/17",["済","済","済","済"],["2503_Intermediate","2510_Back &Core","","2606_Waist Shape","",""],""),
+  mk(18,"西エリア","ラーガ亀岡","運営中",["","","","",""],["2024/06〜2024/08","済"],["5月","11月"],"2025/05/15",["済","済","済","済"],["2505_Intermediate","2511_Back &Core","","","",""],""),
+];
+
+let DATA;
+try{const s=localStorage.getItem(STORAGE_KEY);DATA=s?JSON.parse(s):JSON.parse(JSON.stringify(DEFAULT_DATA));}catch(e){DATA=JSON.parse(JSON.stringify(DEFAULT_DATA));}
+const save=()=>{try{localStorage.setItem(STORAGE_KEY,JSON.stringify(DATA));}catch(e){}};
+let VIEW="matrix";
+
+// ━━━ Auth ━━━
+function tryLogin(){
+  const pw=document.getElementById("pw-input").value;
+  if(pw===ADMIN_PASSWORD){document.getElementById("login").classList.add("hidden");document.getElementById("app").classList.remove("hidden");render();}
+  else{const el=document.getElementById("pw-error");el.textContent="パスワードが正しくありません";document.getElementById("pw-input").style.borderColor="var(--red)";setTimeout(()=>{el.textContent="";document.getElementById("pw-input").style.borderColor="var(--gray200)";},2000);}
+}
+function logout(){document.getElementById("app").classList.add("hidden");document.getElementById("login").classList.remove("hidden");document.getElementById("pw-input").value="";}
+
+function getFiltered(){
+  const fa=document.getElementById("f-area").value,fs=document.getElementById("f-status").value,q=(document.getElementById("f-search").value||"").toLowerCase();
+  return DATA.filter(s=>{if(fa&&s.area!==fa)return false;if(fs&&s.status!==fs)return false;if(q&&!s.storeName.toLowerCase().includes(q)&&!s.area.includes(q))return false;return true;});
+}
+
+function switchView(v){
+  VIEW=v;
+  document.querySelectorAll(".nav-pill").forEach(b=>{b.classList.toggle("active",b.id==="nav-"+v);});
+  document.getElementById("search-wrap").classList.toggle("hidden",v!=="list");
+  document.getElementById("btn-add").classList.toggle("hidden",v!=="list");
+  render();
+}
+
+// ━━━ Program Cell ━━━
+function pCell(val,color,sid){
+  const i=isIn(val),pl=isPlan(val),d=val==="済";
+  let inn;
+  if(d) inn=`<div style="background:${color}15;border:2px solid ${color};border-radius:10px;padding:6px 3px"><div style="color:${color};font-size:15px;font-weight:800">✓</div><div style="font-size:8px;color:var(--gray400);margin-top:1px">修了</div></div>`;
+  else if(i){const bc=pl?"var(--yellow-bg)":`${color}08`;const bd=pl?`2px dashed var(--yellow)`:`2px solid ${color}`;const tc=pl?"var(--yellow)":color;const txt=esc(val.replace(/^\d{3,4}_/,""));const cd=(val.match(/^(\d{3,4})_/)||[])[1]||"";
+    inn=`<div style="background:${bc};border:${bd};border-radius:10px;padding:6px 3px"><div style="font-size:9px;font-weight:700;color:${tc};line-height:1.2">${txt}</div>${cd?`<div style="font-size:8px;color:var(--gray400);margin-top:1px">${cd}</div>`:""}</div>`;}
+  else if(val==="ー") inn=`<div style="background:var(--red-bg);border:1.5px solid #fecaca;border-radius:10px;padding:6px 3px"><div style="font-size:9px;color:var(--red);font-weight:600">対象外</div></div>`;
+  else inn=`<div style="background:var(--gray50);border:1.5px dashed var(--gray200);border-radius:10px;padding:6px 3px"><div style="font-size:9px;color:var(--gray300)">未導入</div></div>`;
+  return `<td class="pcell" onclick="openDetail(${sid})">${inn}</td>`;
+}
+
+// ━━━ Schedule Cards ━━━
+function schedCards(store,n){
+  const c=parseCD(store.completionDate);
+  if(!c) return `<div style="background:var(--gray50);border-radius:var(--radius);padding:20px;text-align:center;border:1.5px dashed var(--gray200)"><div style="font-size:14px;color:var(--gray400);font-weight:600">10種修了月が未入力</div><div style="font-size:12px;color:var(--gray300);margin-top:6px">編集画面の「10種修了月」で設定してください</div></div>`;
+  const sc=getSched(c,n||6);
+  let cards=sc.map(s=>{const st=schedSt(s);const isCur=st==="current";const isPast=st==="past";
+    return `<div style="flex:0 0 auto;min-width:100px;padding:12px 14px;border-radius:14px;text-align:center;position:relative;
+      background:${isCur?"linear-gradient(135deg,#7c3aed,#a78bfa)":isPast?"var(--accent-light)":"#fff"};
+      border:${isCur?"none":isPast?"1.5px solid #ddd6fe":"1.5px solid #e9d5ff"};
+      box-shadow:${isCur?"0 6px 20px rgba(124,58,237,.35)":"var(--shadow-sm)"};
+      transition:all .2s" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='none'">
+      ${isCur?`<div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--red);color:#fff;font-size:9px;font-weight:800;padding:2px 10px;border-radius:10px;letter-spacing:.5px" class="pulse">NOW</div>`:""}
+      <div style="font-size:10px;color:${isCur?"rgba(255,255,255,.7)":"var(--gray400)"}">第${s.idx}回</div>
+      <div style="font-size:22px;font-weight:800;color:${isCur?"#fff":isPast?"#a78bfa":"var(--accent)"}; margin:4px 0">${s.month}月</div>
+      <div style="font-size:11px;color:${isCur?"rgba(255,255,255,.8)":isPast?"#c4b5fd":"var(--gray500)"}; font-weight:600">${s.year}</div>
+      <div style="font-size:9px;margin-top:4px;color:${isCur?"rgba(255,255,255,.6)":isPast?"#c4b5fd":"#d8b4fe"}">${isPast?"実施済":"3h研修"}</div>
+    </div>`;
+  }).join("");
+  return `<div style="background:linear-gradient(135deg,#faf5ff,#f0f0ff);border-radius:var(--radius-lg);padding:20px;border:1.5px solid #e9d5ff">
+    <div class="flex" style="justify-content:space-between;margin-bottom:14px">
+      <div><div style="font-size:14px;font-weight:800;color:var(--accent)">スキルアップ研修</div><div style="font-size:11px;color:#8b5cf6">半年ごと / 各3時間</div></div>
+      <div class="badge" style="background:var(--accent)">10種修了 ${fmtYM(c)}</div>
+    </div>
+    <div style="display:flex;gap:10px;overflow-x:auto;padding-bottom:6px">${cards}</div></div>`;
+}
+
+// ━━━ RENDER: Matrix ━━━
+function renderMatrix(){
+  const f=getFiltered();let h="";
+  h+=`<div class="flex" style="margin-bottom:14px;justify-content:flex-end;font-size:11px;color:var(--gray500);gap:16px">
+    ${[["var(--green-bg)","2px solid var(--green)","導入済"],["var(--yellow-bg)","2px dashed var(--yellow)","予定"],["var(--gray50)","1.5px dashed var(--gray200)","未導入"],["var(--red-bg)","1.5px solid #fecaca","対象外"]].map(([b,bd,l])=>`<span class="flex" style="gap:4px"><span style="width:14px;height:14px;border-radius:4px;background:${b};border:${bd};display:inline-block"></span>${l}</span>`).join("")}
+  </div>`;
+  AREAS.filter(a=>!document.getElementById("f-area").value||a===document.getElementById("f-area").value).forEach(area=>{
+    const stores=f.filter(s=>s.area===area);if(!stores.length)return;
+    h+=`<div style="margin-bottom:24px" class="animate-in">
+      <div class="flex" style="margin-bottom:10px"><div class="badge" style="background:${A_COL[area]};font-size:13px;padding:5px 16px;border-radius:10px">${area}</div><span style="font-size:13px;color:var(--gray500);font-weight:600">${stores.length}店舗</span></div>
+      <div class="card" style="padding:0;overflow:hidden"><div style="overflow-x:auto"><table style="font-size:11px">
+        <thead><tr style="background:var(--gray50)">
+          <th class="th" style="min-width:120px;position:sticky;left:0;background:var(--gray50);z-index:2">店舗名</th>
+          <th class="th" style="text-align:center;width:50px">状況</th>
+          <th class="th" colspan="4" style="text-align:center;background:var(--teal-bg);border-bottom:3px solid var(--teal)"><span style="color:var(--teal);font-weight:800">初級4種</span></th>
+          <th class="th" colspan="6" style="text-align:center;background:var(--navy-bg);border-bottom:3px solid var(--navy)"><span style="color:var(--navy);font-weight:800">中級6種</span></th>
+          <th class="th" style="text-align:center;width:55px">進捗</th>
+          <th class="th" style="text-align:center;min-width:90px;background:var(--accent-light);border-bottom:3px solid var(--accent)"><span style="color:var(--accent);font-weight:800;font-size:10px">次回スキルUP</span></th>
+        </tr>
+        <tr style="background:#fafbfe">
+          <th class="th" style="position:sticky;left:0;background:#fafbfe;z-index:2;border-bottom:1px solid var(--gray200)"></th><th class="th" style="border-bottom:1px solid var(--gray200)"></th>
+          ${ALL_P.map(p=>`<th class="th" style="text-align:center;padding:8px 2px;border-bottom:1px solid var(--gray200)"><div style="display:flex;flex-direction:column;align-items:center;gap:3px"><div style="width:24px;height:24px;border-radius:7px;background:${p.color};display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;color:#fff;box-shadow:0 2px 6px ${p.color}40">${p.short}</div><span style="font-size:8px;line-height:1;color:var(--gray500)">${esc(p.label.replace(/^[①-⑥]/,""))}</span></div></th>`).join("")}
+          <th class="th" style="border-bottom:1px solid var(--gray200)"></th><th class="th" style="border-bottom:1px solid var(--gray200)"></th>
+        </tr></thead><tbody>`;
+    stores.forEach(st=>{
+      const done=ALL_P.filter(p=>isIn(st[p.key])).length;const pct=Math.round(done/10*100);const next=getNext(st);const pc=pctColor(pct);
+      h+=`<tr>
+        <td class="td" style="font-weight:700;cursor:pointer;color:var(--primary);position:sticky;left:0;background:inherit;z-index:1;font-size:12px" onclick="openDetail(${st.id})">${esc(st.storeName)}</td>
+        <td class="td" style="text-align:center"><span class="badge" style="background:${S_COL[st.status]};font-size:10px">${st.status}</span></td>
+        ${ALL_P.map(p=>pCell(st[p.key],p.color,st.id)).join("")}
+        <td class="td" style="text-align:center">
+          <div style="font-size:14px;font-weight:800;color:${pc}">${pct}%</div>
+          <div class="bar-bg" style="width:40px;height:5px;margin:3px auto"><div class="bar-fill" style="width:${pct}%;background:${pc}"></div></div>
+          <div style="font-size:9px;color:var(--gray400)">${done}/10</div>
+        </td>
+        <td class="td" style="text-align:center">${next?`<div style="background:var(--accent-light);border-radius:10px;padding:6px 8px;border:1.5px solid #e9d5ff"><div style="font-size:12px;font-weight:800;color:var(--accent)">${next.year}/${next.month}月</div><div style="font-size:9px;color:#a78bfa">第${next.idx}回</div></div>`:st.completionDate?`<div style="font-size:10px;color:var(--green);font-weight:700">完了</div>`:`<span style="color:var(--gray300)">ー</span>`}</td>
+      </tr>`;
+    });
+    h+=`</tbody></table></div></div></div>`;
+  });
+  return h;
+}
+
+// ━━━ RENDER: Skill-Up ━━━
+function renderSkillUp(){
+  const f=getFiltered();const comp=f.filter(s=>s.completionDate);const incomp=f.filter(s=>!s.completionDate);
+  let h=`<div class="flex" style="margin-bottom:24px;gap:16px">
+    <div class="stat-card" style="--c:var(--accent)"><div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--accent);border-radius:4px 0 0 4px"></div><div style="font-size:12px;color:var(--gray500);font-weight:600">10種修了</div><div style="font-size:32px;font-weight:800;color:var(--accent);margin:4px 0">${comp.length}</div><div style="font-size:11px;color:var(--gray400)">/ ${DATA.length}店舗</div></div>
+    <div class="stat-card"><div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--gray300);border-radius:4px 0 0 4px"></div><div style="font-size:12px;color:var(--gray500);font-weight:600">未修了</div><div style="font-size:32px;font-weight:800;color:var(--gray400);margin:4px 0">${incomp.length}</div><div style="font-size:11px;color:var(--gray300)">対象外</div></div>
+  </div>`;
+  if(comp.length){h+=`<h3 style="font-size:16px;font-weight:800;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px"><span style="width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block"></span>スキルアップ研修スケジュール</h3>`;}
+  comp.forEach(st=>{
+    const c=parseCD(st.completionDate);const next=getNext(st);const sc=getSched(c,6);
+    h+=`<div class="card" style="margin-bottom:16px;${next&&schedSt(next)==="current"?"border:2px solid var(--accent);box-shadow:0 4px 20px rgba(124,58,237,.15)":""}">
+      <div class="flex" style="justify-content:space-between;margin-bottom:14px">
+        <div class="flex" style="gap:12px"><span style="font-weight:800;font-size:16px;color:var(--primary);cursor:pointer" onclick="openDetail(${st.id})">${esc(st.storeName)}</span><span class="badge" style="background:${A_COL[st.area]}">${st.area}</span><span class="badge" style="background:${S_COL[st.status]}">${st.status}</span></div>
+        <div class="flex" style="gap:12px"><span style="font-size:12px;color:var(--gray500)">修了: <strong style="color:var(--accent)">${fmtYM(c)}</strong></span>${next?`<span class="badge" style="background:var(--accent);font-size:12px;padding:5px 14px">次回 ${next.year}年${next.month}月</span>`:""}</div>
+      </div>
+      <div style="display:flex;gap:10px;overflow-x:auto;padding-bottom:4px">`;
+    sc.forEach(s=>{const sst=schedSt(s);const isCur=sst==="current";const isP=sst==="past";
+      h+=`<div style="flex:0 0 auto;min-width:100px;padding:12px 14px;border-radius:14px;text-align:center;position:relative;transition:all .2s;
+        background:${isCur?"linear-gradient(135deg,#7c3aed,#a78bfa)":isP?"var(--accent-light)":"#fff"};
+        border:${isCur?"none":isP?"1.5px solid #ddd6fe":"1.5px solid #e9d5ff"};
+        box-shadow:${isCur?"0 6px 20px rgba(124,58,237,.35)":"var(--shadow-sm)"}"
+        onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='none'">
+        ${isCur?`<div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--red);color:#fff;font-size:9px;font-weight:800;padding:2px 10px;border-radius:10px" class="pulse">NOW</div>`:""}
+        <div style="font-size:10px;color:${isCur?"rgba(255,255,255,.7)":"var(--gray400)"}">第${s.idx}回</div>
+        <div style="font-size:22px;font-weight:800;color:${isCur?"#fff":isP?"#a78bfa":"var(--accent)"};margin:4px 0">${s.month}月</div>
+        <div style="font-size:11px;font-weight:600;color:${isCur?"rgba(255,255,255,.8)":"var(--gray500)"}">${s.year}</div>
+      </div>`;
+    });
+    h+=`</div></div>`;
+  });
+  if(incomp.length){
+    h+=`<h3 style="font-size:16px;font-weight:800;color:var(--gray400);margin:28px 0 14px;display:flex;align-items:center;gap:8px"><span style="width:8px;height:8px;border-radius:50%;background:var(--gray300);display:inline-block"></span>未修了店舗</h3>
+    <div class="card" style="padding:0;overflow:hidden"><table style="font-size:13px"><thead><tr style="background:var(--gray50)"><th class="th">店舗名</th><th class="th">エリア</th><th class="th" style="text-align:center">導入済</th><th class="th" style="text-align:center">残り</th><th class="th">未導入プログラム</th></tr></thead><tbody>`;
+    incomp.forEach(st=>{const done=ALL_P.filter(p=>isIn(st[p.key])).length;const miss=ALL_P.filter(p=>!isIn(st[p.key]));
+      h+=`<tr><td class="td" style="font-weight:700;cursor:pointer;color:var(--primary)" onclick="openDetail(${st.id})">${esc(st.storeName)}</td><td class="td"><span class="badge" style="background:${A_COL[st.area]}">${st.area}</span></td><td class="td" style="text-align:center;font-weight:700">${done}/10</td><td class="td" style="text-align:center"><span style="font-weight:800;color:var(--yellow);font-size:16px">${10-done}</span></td>
+      <td class="td"><div class="flex" style="gap:4px">${miss.map(p=>`<span style="background:${p.color}12;color:${p.color};padding:3px 8px;border-radius:8px;font-size:10px;font-weight:700;border:1px solid ${p.color}25">${esc(p.label.replace(/^[①-⑥]/,""))}</span>`).join("")}</div></td></tr>`;
+    });
+    h+=`</tbody></table></div>`;
+  }
+  return h;
+}
+
+// ━━━ RENDER: List ━━━
+function renderList(){
+  const f=getFiltered();
+  let h=`<div style="font-size:13px;color:var(--gray500);margin-bottom:10px;font-weight:600">${f.length} 件 / 全 ${DATA.length} 件</div>
+  <div class="card" style="padding:0;overflow:hidden"><div style="overflow-x:auto"><table style="font-size:13px"><thead><tr style="background:var(--gray50)">
+    <th class="th" style="width:40px">No.</th><th class="th">エリア</th><th class="th">店舗名</th><th class="th">状況</th>
+    <th class="th" style="text-align:center">導入</th><th class="th" style="text-align:center">10種修了月</th><th class="th" style="text-align:center">次回研修</th><th class="th" style="text-align:center">操作</th>
+  </tr></thead><tbody>`;
+  f.forEach(st=>{
+    const done=ALL_P.filter(p=>isIn(st[p.key])).length;const next=getNext(st);const c=parseCD(st.completionDate);const pct=Math.round(done/10*100);const pc=pctColor(pct);
+    h+=`<tr>
+      <td class="td" style="color:var(--gray400);font-weight:600">${st.id}</td>
+      <td class="td"><span class="badge" style="background:${A_COL[st.area]}">${st.area}</span></td>
+      <td class="td" style="font-weight:700;cursor:pointer;color:var(--primary)" onclick="openDetail(${st.id})">${esc(st.storeName)}</td>
+      <td class="td"><span class="badge" style="background:${S_COL[st.status]}">${st.status}</span></td>
+      <td class="td" style="text-align:center"><div class="flex" style="justify-content:center;gap:8px"><div class="bar-bg" style="width:50px;height:6px"><div class="bar-fill" style="width:${pct}%;background:${pc}"></div></div><span style="font-size:12px;font-weight:700;color:${pc}">${done}/10</span></div></td>
+      <td class="td" style="text-align:center">${c?`<span style="font-weight:700;color:var(--accent)">${fmtYM(c)}</span>`:`<span style="color:var(--gray300)">ー</span>`}</td>
+      <td class="td" style="text-align:center">${next?`<span style="font-weight:700;color:var(--accent)">${next.year}/${next.month}月</span>`:`<span style="color:var(--gray300)">ー</span>`}</td>
+      <td class="td" style="text-align:center"><div class="flex" style="justify-content:center;gap:6px">
+        <button class="btn-sm btn-ghost" onclick="openEdit(${st.id})">編集</button>
+        <button class="btn-sm" style="background:var(--red-bg);color:var(--red);border:1px solid #fecaca" onclick="confirmDel(${st.id})">削除</button>
+      </div></td>
+    </tr>`;
+  });
+  h+=`</tbody></table></div></div>`;
+  return h;
+}
+
+function render(){
+  const el=document.getElementById("content");
+  el.className="animate-in";
+  if(VIEW==="matrix")el.innerHTML=renderMatrix();
+  else if(VIEW==="skillup")el.innerHTML=renderSkillUp();
+  else el.innerHTML=renderList();
+}
+
+// ━━━ Detail Modal ━━━
+function openDetail(id){
+  const st=DATA.find(d=>d.id===id);if(!st)return;
+  const bC=BEG.filter(p=>isIn(st[p.key])).length,iC=MID.filter(p=>isIn(st[p.key])).length,tC=bC+iC;const c=parseCD(st.completionDate);const pc=pctColor(Math.round(tC/10*100));
+  let h=`<div class="flex" style="justify-content:space-between;margin-bottom:20px">
+    <div><h2 style="font-size:24px;font-weight:800;margin-bottom:8px">${esc(st.storeName)}</h2>
+    <div class="flex" style="gap:10px"><span class="badge" style="background:${A_COL[st.area]};font-size:12px;padding:4px 14px">${st.area}</span><span class="badge" style="background:${S_COL[st.status]};font-size:12px;padding:4px 14px">${st.status}</span>${c?`<span class="badge" style="background:var(--accent);font-size:12px;padding:4px 14px">10種修了 ${fmtYM(c)}</span>`:""}</div></div>
+    <button class="btn btn-primary" onclick="closeModal();openEdit(${st.id})">編集</button>
+  </div>`;
+  h+=`<div style="background:var(--gray50);border-radius:var(--radius);padding:16px;margin-bottom:18px">
+    <div class="flex" style="justify-content:space-between;font-size:13px;color:var(--gray500);margin-bottom:8px"><span style="font-weight:700">全体進捗</span><span style="font-weight:800;color:${pc}">${tC}/10 (${Math.round(tC/10*100)}%)</span></div>
+    <div class="bar-bg" style="height:14px;border-radius:7px"><div class="bar-fill" style="width:${tC/10*100}%;background:${pc};border-radius:7px"></div></div>
+  </div>`;
+  h+=`<div style="margin-bottom:18px">${schedCards(st)}</div>`;
+  // Beginner
+  h+=`<div style="margin-bottom:18px"><div class="flex" style="margin-bottom:10px"><span class="badge" style="background:var(--teal);font-size:11px;padding:4px 14px">初級 4種</span><span style="font-size:13px;color:var(--gray500);font-weight:700">${bC}/4 修了</span></div><div class="grid4">`;
+  BEG.forEach(p=>{const v=st[p.key],d=isIn(v);h+=`<div style="background:${d?"var(--teal-bg)":"#fff"};border:2px solid ${d?p.color:"var(--gray200)"};border-radius:var(--radius);padding:12px;text-align:center;transition:all .15s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
+    <div style="width:32px;height:32px;border-radius:9px;background:${d?p.color:"var(--gray200)"};margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;box-shadow:${d?`0 3px 10px ${p.color}40`:"none"}">${p.short}</div>
+    <div style="font-size:12px;font-weight:700">${p.label}</div>
+    <div style="font-size:11px;color:${d?p.color:"var(--gray400)"};font-weight:600;margin-top:2px">${d?"修了":"未修了"}</div></div>`;});
+  h+=`</div></div>`;
+  // Intermediate
+  h+=`<div style="margin-bottom:18px"><div class="flex" style="margin-bottom:10px"><span class="badge" style="background:var(--navy);font-size:11px;padding:4px 14px">中級 6種</span><span style="font-size:13px;color:var(--gray500);font-weight:700">${iC}/6 導入</span></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">`;
+  MID.forEach(p=>{const v=st[p.key],d=isIn(v),pl=isPlan(v);h+=`<div style="background:${d?(pl?"var(--yellow-bg)":"#fff"):"#fff"};border:2px ${pl?"dashed":"solid"} ${d?p.color:"var(--gray200)"};border-radius:var(--radius);padding:12px;transition:all .15s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
+    <div class="flex" style="margin-bottom:4px"><div style="width:28px;height:28px;border-radius:8px;background:${d?p.color:"var(--gray200)"};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;box-shadow:${d?`0 3px 10px ${p.color}40`:"none"}">${p.short}</div>
+    <div><div style="font-size:12px;font-weight:700">${esc(p.label)}</div><div style="font-size:10px;color:${d?p.color:"var(--gray400)"};font-weight:600">${d?(pl?"予定":"導入済"):(v==="ー"?"対象外":"未導入")}</div></div></div>
+    ${d?`<div style="font-size:10px;color:var(--gray500);background:var(--gray50);border-radius:6px;padding:3px 8px;margin-top:4px">${esc(v)}</div>`:""}</div>`;});
+  h+=`</div></div>`;
+  h+=`<div style="text-align:right;margin-top:8px"><button class="btn btn-ghost" onclick="closeModal()">閉じる</button></div>`;
+  showModal(h);
+}
+
+// ━━━ Edit Form ━━━
+function openEdit(id){const st=DATA.find(d=>d.id===id);if(!st)return;openForm(st,false);}
+function openAdd(){openForm({id:0,...ALL_P.reduce((o,p)=>({...o,[p.key]:""}),{}),area:"",storeName:"",status:"運営中",intentLetter:"",estimate:"",purchaseOrder:"",deliveryDate:"",contract:"",trainingSchedule:"",trainingApplication:"",renewalMonth1:"",renewalMonth2:"",trainingHistory:"",completionDate:""},true);}
+
+function openForm(st,isNew){
+  let h=`<h2 style="font-size:22px;font-weight:800;margin-bottom:20px">${isNew?"新規店舗登録":"店舗情報の編集"}</h2>
+  <form id="edit-form" onsubmit="return false">
+  <div class="grid3">
+    <div class="form-field"><label>エリア</label><select name="area"><option value="">--</option>${AREAS.map(a=>`<option ${a===st.area?"selected":""}>${a}</option>`).join("")}</select></div>
+    <div class="form-field"><label>店舗名</label><input name="storeName" value="${esc(st.storeName)}"></div>
+    <div class="form-field"><label>営業状況</label><select name="status">${["運営中","休止中","終了"].map(s=>`<option ${s===st.status?"selected":""}>${s}</option>`).join("")}</select></div>
+    <div class="form-field"><label>更新月①</label><input name="renewalMonth1" value="${esc(st.renewalMonth1)}"></div>
+    <div class="form-field"><label>更新月②</label><input name="renewalMonth2" value="${esc(st.renewalMonth2)}"></div>
+    <div class="form-field"><label>研修開催日</label><input name="trainingHistory" value="${esc(st.trainingHistory)}"></div>
+  </div>
+  <div style="background:linear-gradient(135deg,#faf5ff,#f0f0ff);border-radius:var(--radius-lg);padding:20px;margin:18px 0;border:2px solid #e9d5ff">
+    <div class="flex" style="gap:16px;align-items:flex-start">
+      <div style="flex:0 0 280px">
+        <label style="display:block;font-size:14px;font-weight:800;color:var(--accent);margin-bottom:8px">10種修了月</label>
+        <div style="font-size:11px;color:var(--gray400);margin-bottom:8px">スキルアップ研修の起算月になります</div>
+        <input type="month" name="completionDate" value="${st.completionDate}" style="width:100%;padding:12px 16px;border-radius:12px;border:2px solid #d8b4fe;font-size:16px;font-weight:700;color:var(--accent);cursor:pointer;background:#fff;box-sizing:border-box" oninput="updatePreview(this.value)">
+      </div>
+      <div style="flex:1;padding-top:28px" id="sched-preview"></div>
+    </div>
+  </div>
+  <h3 style="font-size:14px;font-weight:800;color:var(--gray700);margin:4px 0 10px;display:flex;align-items:center;gap:8px"><span style="width:6px;height:6px;border-radius:50%;background:var(--gray500);display:inline-block"></span>書類状況</h3>
+  <div class="grid3">${DOCS.map(d=>`<div class="form-field"><label>${d.l}</label><select name="${d.k}"><option value="">--</option><option ${st[d.k]==="済"?"selected":""}>済</option><option ${st[d.k]==="？"?"selected":""}>？</option></select></div>`).join("")}</div>
+  <h3 style="font-size:14px;font-weight:800;color:var(--teal);margin:8px 0 10px;display:flex;align-items:center;gap:8px"><span style="width:6px;height:6px;border-radius:50%;background:var(--teal);display:inline-block"></span>初級（4種）</h3>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0 16px">${BEG.map(p=>`<div class="form-field"><label>${p.label}</label><select name="${p.key}"><option value="">--</option><option ${st[p.key]==="済"?"selected":""}>済</option></select></div>`).join("")}</div>
+  <h3 style="font-size:14px;font-weight:800;color:var(--navy);margin:8px 0 10px;display:flex;align-items:center;gap:8px"><span style="width:6px;height:6px;border-radius:50%;background:var(--navy);display:inline-block"></span>中級（6種）</h3>
+  <div class="grid3">${MID.map(p=>`<div class="form-field"><label>${esc(p.label)}</label><input name="${p.key}" value="${esc(st[p.key])}"></div>`).join("")}</div>
+  <div class="grid2" style="margin-top:8px">
+    <div class="form-field"><label>初回養成スケジュール</label><input name="trainingSchedule" value="${esc(st.trainingSchedule)}"></div>
+    <div class="form-field"><label>養成申込書</label><select name="trainingApplication"><option value="">--</option><option ${st.trainingApplication==="済"?"selected":""}>済</option></select></div>
+  </div>
+  <div class="flex" style="justify-content:flex-end;margin-top:20px;gap:10px">
+    <button type="button" class="btn btn-ghost" onclick="closeModal()">キャンセル</button>
+    <button type="button" class="btn btn-primary" style="padding:10px 28px;font-size:14px" onclick="saveForm(${st.id},${isNew})">${isNew?"登録する":"保存する"}</button>
+  </div></form>`;
+  showModal(h);
+  if(st.completionDate) updatePreview(st.completionDate);
+}
+
+function updatePreview(val){
+  const el=document.getElementById("sched-preview");if(!el)return;
+  const c=parseCD(val);
+  if(!c){el.innerHTML=`<div style="font-size:12px;color:var(--gray400)">修了月を選択すると研修予定が表示されます</div>`;return;}
+  el.innerHTML=`<div style="font-size:11px;color:var(--gray500);margin-bottom:6px;font-weight:700">スキルアップ研修予定</div><div class="flex" style="gap:6px">${getSched(c,4).map(s=>`<div style="background:#fff;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:700;color:var(--accent);border:1.5px solid #e9d5ff;box-shadow:var(--shadow-sm)">第${s.idx}回 ${s.year}/${s.month}月</div>`).join("")}</div>`;
+}
+
+function saveForm(id,isNew){
+  const fd=new FormData(document.getElementById("edit-form"));const obj={};
+  fd.forEach((v,k)=>obj[k]=v);
+  if(isNew){obj.id=Math.max(...DATA.map(d=>d.id),0)+1;DATA.push(obj);}
+  else{const i=DATA.findIndex(d=>d.id===id);if(i>=0)DATA[i]={...DATA[i],...obj};}
+  save();closeModal();render();
+}
+
+function confirmDel(id){
+  const st=DATA.find(d=>d.id===id);if(!st)return;
+  showModal(`<div style="text-align:center;padding:20px 0">
+    <div style="width:56px;height:56px;border-radius:50%;background:var(--red-bg);margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:24px">⚠</div>
+    <h3 style="font-size:18px;font-weight:800;margin-bottom:8px">削除確認</h3>
+    <p style="color:var(--gray500);margin-bottom:24px">「${esc(st.storeName)}」を削除しますか？<br><span style="font-size:12px;color:var(--gray400)">この操作は取り消せません</span></p>
+    <div class="flex" style="justify-content:center;gap:10px">
+      <button class="btn btn-ghost" style="padding:10px 24px" onclick="closeModal()">キャンセル</button>
+      <button class="btn btn-danger" style="padding:10px 24px" onclick="doDelete(${id})">削除する</button>
+    </div></div>`);
+}
+function doDelete(id){DATA.splice(DATA.findIndex(d=>d.id===id),1);save();closeModal();render();}
+
+function showModal(html){document.getElementById("modal-body").innerHTML=html;document.getElementById("modal-overlay").classList.add("active");}
+function closeModal(){document.getElementById("modal-overlay").classList.remove("active");}
+</script>
+</body>
+</html>
