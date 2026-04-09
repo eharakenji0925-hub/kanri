@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GR プログラム導入管理</title>
+<title>プログラム導入管理 - GR / 美彩心</title>
 <style>
 :root{
   --primary:#2563eb;--primary-dark:#1e40af;--primary-light:#dbeafe;
@@ -13,6 +13,7 @@
   --red:#ef4444;--red-bg:#fef2f2;
   --teal:#0f766e;--teal-bg:#f0fdfa;
   --navy:#1e40af;--navy-bg:#eff6ff;
+  --pink:#db2777;--pink-light:#fce7f3;--pink-dark:#9d174d;
   --gray50:#f8fafc;--gray100:#f1f5f9;--gray200:#e2e8f0;--gray300:#cbd5e1;--gray400:#94a3b8;--gray500:#64748b;--gray700:#334155;--gray900:#0f172a;
   --shadow-sm:0 1px 2px rgba(0,0,0,.06);--shadow:0 2px 8px rgba(0,0,0,.08);--shadow-lg:0 8px 30px rgba(0,0,0,.12);
   --radius:12px;--radius-lg:16px;
@@ -29,59 +30,43 @@ table{border-collapse:collapse;width:100%}
 ::-webkit-scrollbar-thumb{background:var(--gray300);border-radius:3px}
 ::-webkit-scrollbar-thumb:hover{background:var(--gray400)}
 
-/* Badges */
 .badge{display:inline-flex;align-items:center;padding:3px 12px;border-radius:20px;font-size:11px;font-weight:700;color:#fff;letter-spacing:.3px}
-.badge-outline{background:transparent !important;border:1.5px solid;color:inherit}
-
-/* Buttons */
 .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:10px;border:none;cursor:pointer;font-weight:600;font-size:13px;transition:all .2s}
 .btn-primary{background:var(--primary);color:#fff;box-shadow:0 2px 8px rgba(37,99,235,.25)}
 .btn-primary:hover{background:var(--primary-dark);box-shadow:0 4px 12px rgba(37,99,235,.35)}
-.btn-accent{background:var(--accent);color:#fff;box-shadow:0 2px 8px rgba(124,58,237,.25)}
 .btn-ghost{background:transparent;color:var(--gray500);border:1.5px solid var(--gray200)}
 .btn-ghost:hover{background:var(--gray50);border-color:var(--gray300)}
 .btn-danger{background:var(--red);color:#fff}
-.btn-sm{padding:5px 12px;font-size:11px;border-radius:8px}
-.btn-icon{width:36px;height:36px;padding:0;display:inline-flex;align-items:center;justify-content:center;border-radius:10px;border:1.5px solid var(--gray200);background:#fff;cursor:pointer;font-size:16px}
-.btn-icon:hover{background:var(--gray50);border-color:var(--gray300)}
+.btn-sm{padding:5px 12px;font-size:11px;border-radius:8px;border:none;cursor:pointer;font-weight:600;transition:all .2s}
 
-/* Cards */
 .card{background:#fff;border-radius:var(--radius-lg);padding:20px;box-shadow:var(--shadow);border:1px solid rgba(0,0,0,.04);transition:box-shadow .2s}
 .card:hover{box-shadow:var(--shadow-lg)}
 
-/* Modals */
 .overlay{position:fixed;inset:0;background:rgba(15,23,42,.5);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:1000;opacity:0;pointer-events:none;transition:opacity .25s}
 .overlay.active{opacity:1;pointer-events:auto}
-.modal{background:#fff;border-radius:20px;padding:32px;max-width:980px;width:94%;max-height:90vh;overflow-y:auto;box-shadow:0 25px 65px rgba(0,0,0,.25);transform:scale(.96);transition:transform .25s}
+.modal{background:#fff;border-radius:20px;padding:32px;max-width:1060px;width:94%;max-height:90vh;overflow-y:auto;box-shadow:0 25px 65px rgba(0,0,0,.25);transform:scale(.96);transition:transform .25s}
 .overlay.active .modal{transform:scale(1)}
 
-/* Table */
 .th{padding:12px 10px;text-align:left;font-weight:700;color:var(--gray500);border-bottom:2px solid var(--gray200);font-size:11px;white-space:nowrap;text-transform:uppercase;letter-spacing:.5px}
 .td{padding:10px;white-space:nowrap}
 tbody tr{border-bottom:1px solid var(--gray100);transition:background .15s}
 tbody tr:hover{background:var(--gray50)}
 
-/* Grid */
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0 16px}
 .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
 .flex{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 
-/* Program Cells */
 .pcell{padding:4px;text-align:center;cursor:pointer}
 .pcell>div{border-radius:10px;padding:6px 3px;min-width:58px;transition:all .15s}
 .pcell>div:hover{transform:scale(1.08);box-shadow:var(--shadow)}
 
-/* Stat cards */
-.stat-card{background:#fff;border-radius:var(--radius-lg);padding:20px 24px;box-shadow:var(--shadow);flex:1 1 160px;min-width:140;position:relative;overflow:hidden;transition:all .2s}
+.stat-card{background:#fff;border-radius:var(--radius-lg);padding:20px 24px;box-shadow:var(--shadow);flex:1 1 160px;min-width:140px;position:relative;overflow:hidden;transition:all .2s}
 .stat-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
-.stat-card::after{content:'';position:absolute;top:0;left:0;width:4px;height:100%}
 
-/* Progress bars */
 .bar-bg{background:var(--gray200);border-radius:6px;overflow:hidden}
 .bar-fill{height:100%;border-radius:6px;transition:width .5s ease-out}
 
-/* Forms */
 .form-field{margin-bottom:14px}
 .form-field label{display:block;font-size:12px;font-weight:700;color:var(--gray500);margin-bottom:4px;text-transform:uppercase;letter-spacing:.3px}
 .form-field input,.form-field select{width:100%;padding:9px 12px;border-radius:10px;border:1.5px solid var(--gray200);font-size:13px;box-sizing:border-box;transition:all .2s;background:#fff}
@@ -89,22 +74,27 @@ tbody tr:hover{background:var(--gray50)}
 
 .hidden{display:none !important}
 
-/* Animations */
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .animate-in{animation:fadeIn .3s ease-out}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
 .pulse{animation:pulse 2s ease-in-out infinite}
 
-/* Nav pills */
 .nav-pill{padding:8px 18px;border-radius:10px;border:none;cursor:pointer;font-weight:600;font-size:12px;transition:all .2s;position:relative}
 .nav-pill.active{background:#fff;color:var(--primary-dark);box-shadow:var(--shadow)}
 .nav-pill:not(.active){background:rgba(255,255,255,.12);color:rgba(255,255,255,.85)}
 .nav-pill:not(.active):hover{background:rgba(255,255,255,.22)}
 
-/* Tooltip */
-.tip{position:relative}
-.tip::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--gray900);color:#fff;font-size:11px;padding:4px 10px;border-radius:6px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s}
-.tip:hover::after{opacity:1}
+/* Program type badges */
+.pgm-badge{display:inline-flex;align-items:center;gap:3px;padding:2px 10px;border-radius:12px;font-size:10px;font-weight:700;letter-spacing:.3px}
+.pgm-gr{background:#dbeafe;color:#1e40af;border:1px solid #93c5fd}
+.pgm-bisai{background:var(--pink-light);color:var(--pink-dark);border:1px solid #f9a8d4}
+
+/* Checkbox toggle */
+.toggle-label{display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;font-weight:600;color:var(--gray700);padding:6px 0}
+.toggle-label input[type=checkbox]{width:18px;height:18px;accent-color:var(--primary);cursor:pointer}
+
+/* Save indicator */
+#save-indicator.show{opacity:1}
 </style>
 </head>
 <body>
@@ -113,10 +103,13 @@ tbody tr:hover{background:var(--gray50)}
 <div id="login" style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 30%,#2563eb 65%,#7c3aed 100%);position:relative;overflow:hidden">
   <div style="position:absolute;top:-100px;right:-100px;width:400px;height:400px;border-radius:50%;background:rgba(124,58,237,.15)"></div>
   <div style="position:absolute;bottom:-80px;left:-80px;width:300px;height:300px;border-radius:50%;background:rgba(37,99,235,.12)"></div>
-  <div class="animate-in" style="background:#fff;border-radius:24px;padding:52px 44px;width:400px;box-shadow:0 25px 65px rgba(0,0,0,.35);text-align:center;position:relative;z-index:1">
-    <div style="width:72px;height:72px;border-radius:18px;background:linear-gradient(135deg,var(--primary),var(--accent));margin:0 auto 24px;display:flex;align-items:center;justify-content:center;font-size:30px;color:#fff;font-weight:900;box-shadow:0 8px 24px rgba(37,99,235,.3)">GR</div>
-    <h1 style="font-size:22px;font-weight:800;margin-bottom:6px;color:var(--gray900)">GR プログラム導入管理</h1>
-    <p style="font-size:13px;color:var(--gray400);margin-bottom:32px">管理画面にログインしてください</p>
+  <div class="animate-in" style="background:#fff;border-radius:24px;padding:52px 44px;width:420px;box-shadow:0 25px 65px rgba(0,0,0,.35);text-align:center;position:relative;z-index:1">
+    <div style="display:flex;gap:10px;justify-content:center;margin-bottom:24px">
+      <div style="width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff;font-weight:900;box-shadow:0 6px 20px rgba(37,99,235,.3)">GR</div>
+      <div style="width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,var(--pink),#f472b6);display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff;font-weight:900;box-shadow:0 6px 20px rgba(219,39,119,.3)">美彩心</div>
+    </div>
+    <h1 style="font-size:22px;font-weight:800;margin-bottom:6px;color:var(--gray900)">プログラム導入管理</h1>
+    <p style="font-size:13px;color:var(--gray400);margin-bottom:32px">GR / 美彩心 統合管理システム</p>
     <div style="position:relative;margin-bottom:12px">
       <input type="password" id="pw-input" placeholder="管理パスワード" style="width:100%;padding:14px 20px;border-radius:14px;border:2px solid var(--gray200);font-size:16px;text-align:center;letter-spacing:3px;box-sizing:border-box;transition:all .2s" onkeydown="if(event.key==='Enter')tryLogin()" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--gray200)'">
     </div>
@@ -128,13 +121,15 @@ tbody tr:hover{background:var(--gray50)}
 
 <!-- ====== MAIN APP ====== -->
 <div id="app" class="hidden">
-  <!-- Header -->
   <div style="background:linear-gradient(135deg,var(--primary-dark) 0%,var(--primary) 60%,#4f7df5 100%);color:#fff;padding:0 32px;display:flex;justify-content:space-between;align-items:center;height:64px;position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(30,64,175,.25)">
     <div style="display:flex;align-items:center;gap:14px">
-      <div style="width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;backdrop-filter:blur(4px)">GR</div>
+      <div style="display:flex;gap:6px">
+        <div style="width:34px;height:34px;border-radius:9px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;backdrop-filter:blur(4px)">GR</div>
+        <div style="width:34px;height:34px;border-radius:9px;background:rgba(219,39,119,.35);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:900;backdrop-filter:blur(4px)">美彩心</div>
+      </div>
       <div>
         <h1 style="font-size:16px;font-weight:700;letter-spacing:.3px">プログラム導入管理</h1>
-        <div style="font-size:10px;opacity:.7;letter-spacing:.5px">全10種 + スキルアップ研修</div>
+        <div style="font-size:10px;opacity:.7;letter-spacing:.5px">GR 全10種+スキルアップ研修 / 美彩心</div>
       </div>
     </div>
     <div class="flex" style="gap:4px">
@@ -148,21 +143,23 @@ tbody tr:hover{background:var(--gray50)}
     </div>
   </div>
 
-  <!-- Content -->
-  <div style="padding:24px 32px;max-width:1380px;margin:0 auto">
+  <div style="padding:24px 32px;max-width:1440px;margin:0 auto">
     <div id="filter-bar" class="flex" style="margin-bottom:20px">
       <select id="f-area" onchange="render()" style="padding:10px 14px;border-radius:12px;border:1.5px solid var(--gray200);font-size:13px;background:#fff;cursor:pointer;min-width:120px">
-        <option value="">全エリア</option><option>中央本部</option><option>東エリア</option><option>西エリア</option>
+        <option value="">全エリア</option><option>中央本部</option><option>西エリア</option>
       </select>
       <select id="f-status" onchange="render()" style="padding:10px 14px;border-radius:12px;border:1.5px solid var(--gray200);font-size:13px;background:#fff;cursor:pointer;min-width:120px">
         <option value="">全ステータス</option><option>運営中</option><option>休止中</option><option>終了</option>
       </select>
+      <select id="f-program" onchange="render()" style="padding:10px 14px;border-radius:12px;border:1.5px solid var(--gray200);font-size:13px;background:#fff;cursor:pointer;min-width:140px">
+        <option value="">全プログラム</option><option value="gr">GR のみ</option><option value="bisai">美彩心 のみ</option><option value="both">両方導入</option>
+      </select>
       <div id="search-wrap" class="hidden" style="flex:1 1 180px;position:relative">
-        <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--gray400)">🔍</span>
+        <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--gray400)">&#128269;</span>
         <input id="f-search" placeholder="店舗名・エリアで検索..." oninput="render()" style="width:100%;padding:10px 14px 10px 36px;border-radius:12px;border:1.5px solid var(--gray200);font-size:13px">
       </div>
       <div style="margin-left:auto" class="flex">
-        <button class="btn btn-primary hidden" id="btn-add" onclick="openAdd()">＋ 新規登録</button>
+        <button class="btn btn-primary hidden" id="btn-add" onclick="openAdd()">+ 新規登録</button>
       </div>
     </div>
     <div id="content" class="animate-in"></div>
@@ -170,14 +167,20 @@ tbody tr:hover{background:var(--gray50)}
 </div>
 
 <!-- ====== MODAL ====== -->
+<!-- Save Indicator -->
+<div id="save-indicator" style="position:fixed;bottom:24px;right:24px;background:var(--green);color:#fff;padding:12px 24px;border-radius:12px;font-size:13px;font-weight:700;opacity:0;pointer-events:none;transition:opacity .3s;box-shadow:0 4px 16px rgba(16,185,129,.35);z-index:2000;display:flex;align-items:center;gap:8px">&#10003; 保存しました（全ユーザーに同期済み）</div>
+
 <div id="modal-overlay" class="overlay" onclick="closeModal()">
   <div class="modal" onclick="event.stopPropagation()" id="modal-body"></div>
 </div>
 
 <script>
-const ADMIN_PASSWORD="daimaru";
-const STORAGE_KEY="gr_mgmt_v3";
+// ━━━ Firebase REST API（CDN不要） ━━━
+const FB_URL="https://higashi-f2cd0-default-rtdb.firebaseio.com/program-management";
 
+const ADMIN_PASSWORD="daimaru";
+
+// ━━━ GR Program Definitions ━━━
 const BEG=[
   {key:"beginner1",label:"Intro",short:"IN",color:"#14b8a6"},
   {key:"beginner2",label:"Basic",short:"BA",color:"#0d9488"},
@@ -193,11 +196,17 @@ const MID=[
   {key:"intermediate6",label:"⑥Core Flow",short:"CF",color:"#ef4444"},
 ];
 const ALL_P=[...BEG,...MID];
-const AREAS=["中央本部","東エリア","西エリア"];
-const S_COL={"運営中":"#10b981","休止中":"#f59e0b","終了":"#ef4444"};
-const A_COL={"中央本部":"#6366f1","東エリア":"#0ea5e9","西エリア":"#f97316"};
-const DOCS=[{k:"intentLetter",l:"意向書"},{k:"estimate",l:"見積書"},{k:"purchaseOrder",l:"発注書"},{k:"deliveryDate",l:"納品日"},{k:"contract",l:"契約書"},{k:"trainingApplication",l:"養成申込"}];
 
+// ━━━ 美彩心 Program Definition ━━━
+const BISAI={key:"bisaishin",label:"美彩心",short:"美彩心",color:"#db2777"};
+
+const AREAS=["中央本部","西エリア"];
+const S_COL={"運営中":"#10b981","休止中":"#f59e0b","終了":"#ef4444"};
+const A_COL={"中央本部":"#6366f1","西エリア":"#f97316"};
+const DOCS_GR=[{k:"intentLetter",l:"意向書"},{k:"estimate",l:"見積書"},{k:"purchaseOrder",l:"発注書"},{k:"deliveryDate",l:"納品日"},{k:"contract",l:"契約書"},{k:"trainingApplication",l:"養成申込"}];
+const DOCS_BISAI=[{k:"b_intentLetter",l:"意向書"},{k:"b_estimate",l:"見積書"},{k:"b_purchaseOrder",l:"発注書"},{k:"b_deliveryDate",l:"納品日"},{k:"b_contract",l:"契約書"},{k:"b_trainingApplication",l:"養成申込"}];
+
+// ━━━ Helpers ━━━
 const isIn=v=>v&&v!==""&&v!=="ー";
 const isPlan=v=>v&&v.includes("予定");
 const parseCD=v=>{if(!v)return null;const m=v.match(/^(\d{4})-(\d{1,2})/);return m?{year:+m[1],month:+m[2]}:null;};
@@ -207,46 +216,143 @@ const schedSt=s=>{const d=new Date(),ny=d.getFullYear(),nm=d.getMonth()+1;if(s.y
 const getNext=st=>{const c=parseCD(st.completionDate);if(!c)return null;const sc=getSched(c,20);const d=new Date(),ny=d.getFullYear(),nm=d.getMonth()+1;return sc.find(s=>s.year>ny||(s.year===ny&&s.month>=nm))||null;};
 const esc=s=>s?s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"):"";
 const pctColor=p=>p===100?"#10b981":p>=50?"#3b82f6":"#f59e0b";
+const hasGR=st=>st.programs&&st.programs.includes("GR");
+const hasBisai=st=>st.programs&&st.programs.includes("美彩心");
+const pgmBadges=st=>{let h="";if(hasGR(st))h+=`<span class="pgm-badge pgm-gr">GR</span>`;if(hasBisai(st))h+=`<span class="pgm-badge pgm-bisai">美彩心</span>`;return h;};
 
-const mk=(id,area,name,status,docs,tr,mo,hist,beg,int,cd)=>({id,area,storeName:name,status,intentLetter:docs[0]||"",estimate:docs[1]||"",purchaseOrder:docs[2]||"",deliveryDate:docs[3]||"",contract:docs[4]||"",trainingSchedule:tr[0]||"",trainingApplication:tr[1]||"",renewalMonth1:mo[0]||"",renewalMonth2:mo[1]||"",trainingHistory:hist,beginner1:beg[0]||"",beginner2:beg[1]||"",beginner3:beg[2]||"",beginner4:beg[3]||"",intermediate1:int[0]||"",intermediate2:int[1]||"",intermediate3:int[2]||"",intermediate4:int[3]||"",intermediate5:int[4]||"",intermediate6:int[5]||"",completionDate:cd||""});
+// ━━━ Data Builder ━━━
+const mk=(id,area,name,status,docs,tr,mo,hist,beg,int,cd,programs,bisaiStatus,bisaiDocs,contact)=>{
+  const ct=contact||{};
+  const o={id,area,storeName:name,status,
+    contactPerson:ct.person||"",contactEmail:ct.email||"",contactAddress:ct.address||"",contactPhone:ct.phone||"",
+    intentLetter:docs[0]||"",estimate:docs[1]||"",purchaseOrder:docs[2]||"",deliveryDate:docs[3]||"",contract:docs[4]||"",
+    trainingSchedule:tr[0]||"",trainingApplication:tr[1]||"",
+    renewalMonth1:mo[0]||"",renewalMonth2:mo[1]||"",trainingHistory:hist,
+    beginner1:beg[0]||"",beginner2:beg[1]||"",beginner3:beg[2]||"",beginner4:beg[3]||"",
+    intermediate1:int[0]||"",intermediate2:int[1]||"",intermediate3:int[2]||"",intermediate4:int[3]||"",intermediate5:int[4]||"",intermediate6:int[5]||"",
+    completionDate:cd||"",
+    programs:programs||["GR"],
+    bisaishin:bisaiStatus||"",
+    b_intentLetter:(bisaiDocs&&bisaiDocs[0])||"",b_estimate:(bisaiDocs&&bisaiDocs[1])||"",b_purchaseOrder:(bisaiDocs&&bisaiDocs[2])||"",b_deliveryDate:(bisaiDocs&&bisaiDocs[3])||"",b_contract:(bisaiDocs&&bisaiDocs[4])||"",b_trainingApplication:(bisaiDocs&&bisaiDocs[5])||"",
+    b_trainingSchedule:"",b_renewalMonth1:"",b_renewalMonth2:"",b_trainingHistory:""
+  };
+  return o;
+};
 
+// ━━━ Default Data (existing GR stores) ━━━
 const DEFAULT_DATA=[
-  mk(1,"中央本部","Lucina北小金","運営中",["済","済","済","済","済"],["済","済"],["3月","9月"],"2025/03/10",["済","済","済","済"],["Intermediate","2402_Back &Core","2409_Lowerbody","2503_Waist Shape","2509_Jumpboard","2603_Core Flow"],"2026-03"),
-  mk(2,"中央本部","Lucina北浦和","運営中",["済","済","済","済","済"],["済","済"],["3月","9月"],"2025/03/10",["済","済","済","済"],["Intermediate","2402_Back &Core","2409_Lowerbody","2503_Waist Shape","2509_Jumpboard","2603_Core Flow"],"2026-03"),
-  mk(3,"中央本部","Lucina東久留米","運営中",["済","済","済","済","済"],["済","済"],["3月","9月"],"2025/03/10",["済","済","済","済"],["Intermediate","2402_Back &Core","2409_Lowerbody","2503_Waist Shape","2509_Jumpboard","2603_Core Flow"],"2026-03"),
-  mk(4,"中央本部","Hanakura行田店","運営中",["済","済","済","済","済"],["済","済"],["3月","9月"],"2025/03/10",["済","済","済","済"],["Intermediate","2402_Back &Core","2409_Lowerbody","2503_Waist Shape","2509_Jumpboard","2603_Core Flow"],"2026-03"),
-  mk(5,"中央本部","Lucina那覇新都心","運営中",["済","済","済","済","済"],["済","済"],["3月","9月"],"2025/03/24",["済","済","済","済"],["Intermediate","2403_Back &Core","2409_Lowerbody","2503_Waist Shape","2602_Jumpboard",""],""),
-  mk(6,"東エリア","わらわら航空公園店","運営中",["済","済","済","済","済"],["済","済"],["3月","9月"],"2025/03/25",["済","済","済","済"],["2410_Intermediate","2403_Back &Core","2409_Lowerbody","2503_Waist Shape","2509_Jumpboard",""],""),
-  mk(7,"東エリア","わらわらふじみ野店","休止中",["済","済","済","済","？"],["済","済"],["3月","9月"],"2025/03/06",["済","済","済","済"],["2410_Intermediate","2402_Back &Core","2409_Lowerbody","2503_Waist Shape","2509予定",""],""),
-  mk(8,"西エリア","ラーガ伏見","運営中",["済","済","済","済","済"],["済","済"],["3月","9月"],"2025/05/31",["済","済","済","済"],["2410_Intermediate","2402_Back &Core","","2505_Waist Shape","2511_Jumpboard",""],""),
-  mk(9,"西エリア","As倉敷","運営中",["済","済","済","済","済"],["済","済"],["4月","10月"],"2025/06/23",["済","済","済","済"],["2411_Intermediate","2404_Back &Core","","2506_Waist Shape","2512_Jumpboard",""],""),
-  mk(10,"西エリア","As姫路","終了",["済","済","済","済","済"],["済","済"],["4月","10月"],"2025/06/10",["済","済","済","済"],["2411_Intermediate","2404_Back &Core","ー","2506_Waist Shape","ー","ー"],""),
-  mk(11,"東エリア","A-1笹塚","運営中",["済","済","済","済","済"],["済","済"],["5月","11月"],"2025/05/30",["済","済","済","済"],["2407_Intermediate","ー","2411_Lowerbody","2505_Waist Shape","",""],""),
-  mk(12,"東エリア","Doスポーツ上里","運営中",["済","済","済","済",""],["2023/12〜2024/01","済"],["2月","8月"],"2025/01/24",["済","済","済","済"],["2407_Intermediate","ー","2411_Lowerbody","2507_Waist Shape","2603_Jumpboard",""],""),
-  mk(13,"西エリア","ラーガ出町","運営中",["","済","済","済",""],["2024/02〜2024/03","済"],["4月","10月"],"2025/04/15",["済","済","済","済"],["2410_Intermediate","2504_Back &Core","","2510_Waist Shape","2604_Jumpboard",""],""),
-  mk(14,"中央本部","Lucina京都八幡","運営中",["済","済","済","済",""],["2024/02〜2024/04","済"],["2月","8月"],"2025/02/20",["済","済","済","済"],["2502_Intermediate","2602_Back &Core","2502_Lowerbody","2602_Waist Shape","",""],""),
-  mk(15,"西エリア","SynerGym塚口","運営中",["","","済","済",""],["2024/03〜2024/05","済"],["12月","6月"],"2025/06/26",["済","済","済","済"],["2412_Intermediate","","","2506_Waist Shape","2512_Jumpboard",""],""),
-  mk(16,"西エリア","As岡山","運営中",["","","済","",""],["2024/06〜2024/07","済"],["3月","9月"],"2025/03/10",["済","済","済","済"],["2503_Intermediate","259_Back &Core","","2603_Waist Shape","",""],""),
-  mk(17,"西エリア","As御影","運営中",["","","済","",""],["2024/06〜2024/07","済"],["4月","10月"],"2025/03/17",["済","済","済","済"],["2503_Intermediate","2510_Back &Core","","2606_Waist Shape","",""],""),
-  mk(18,"西エリア","ラーガ亀岡","運営中",["","","","",""],["2024/06〜2024/08","済"],["5月","11月"],"2025/05/15",["済","済","済","済"],["2505_Intermediate","2511_Back &Core","","","",""],""),
+  mk(1,"中央本部","Lucina北小金","運営中",["済","済","済","済","済"],["済","済"],["3月","9月"],"2025/03/10",["済","済","済","済"],["Intermediate","2402_Back &Core","2409_Lowerbody","2503_Waist Shape","2509_Jumpboard","2603_Core Flow"],"2026-03",["GR"]),
+  mk(2,"中央本部","Lucina北浦和","運営中",["済","済","済","済","済"],["済","済"],["3月","9月"],"2025/03/10",["済","済","済","済"],["Intermediate","2402_Back &Core","2409_Lowerbody","2503_Waist Shape","2509_Jumpboard","2603_Core Flow"],"2026-03",["GR"]),
+  mk(3,"中央本部","Lucina東久留米","運営中",["済","済","済","済","済"],["済","済"],["3月","9月"],"2025/03/10",["済","済","済","済"],["Intermediate","2402_Back &Core","2409_Lowerbody","2503_Waist Shape","2509_Jumpboard","2603_Core Flow"],"2026-03",["GR"]),
+  mk(4,"中央本部","Hanakura行田店","運営中",["済","済","済","済","済"],["済","済"],["3月","9月"],"2025/03/10",["済","済","済","済"],["Intermediate","2402_Back &Core","2409_Lowerbody","2503_Waist Shape","2509_Jumpboard","2603_Core Flow"],"2026-03",["GR"]),
+  mk(5,"中央本部","Lucina那覇新都心","運営中",["済","済","済","済","済"],["済","済"],["3月","9月"],"2025/03/24",["済","済","済","済"],["Intermediate","2403_Back &Core","2409_Lowerbody","2503_Waist Shape","2602_Jumpboard",""],"",["GR"]),
+  mk(6,"中央本部","わらわら航空公園店","運営中",["済","済","済","済","済"],["済","済"],["3月","9月"],"2025/03/25",["済","済","済","済"],["2410_Intermediate","2403_Back &Core","2409_Lowerbody","2503_Waist Shape","2509_Jumpboard",""],"",["GR"]),
+  mk(7,"中央本部","わらわらふじみ野店","休止中",["済","済","済","済","？"],["済","済"],["3月","9月"],"2025/03/06",["済","済","済","済"],["2410_Intermediate","2402_Back &Core","2409_Lowerbody","2503_Waist Shape","2509予定",""],"",["GR"]),
+  mk(8,"西エリア","ラーガ伏見","運営中",["済","済","済","済","済"],["済","済"],["3月","9月"],"2025/05/31",["済","済","済","済"],["2410_Intermediate","2402_Back &Core","","2505_Waist Shape","2511_Jumpboard",""],"",["GR"]),
+  mk(9,"西エリア","As倉敷","運営中",["済","済","済","済","済"],["済","済"],["4月","10月"],"2025/06/23",["済","済","済","済"],["2411_Intermediate","2404_Back &Core","","2506_Waist Shape","2512_Jumpboard",""],"",["GR"]),
+  mk(10,"西エリア","As姫路","終了",["済","済","済","済","済"],["済","済"],["4月","10月"],"2025/06/10",["済","済","済","済"],["2411_Intermediate","2404_Back &Core","ー","2506_Waist Shape","ー","ー"],"",["GR"]),
+  mk(11,"中央本部","A-1笹塚","運営中",["済","済","済","済","済"],["済","済"],["5月","11月"],"2025/05/30",["済","済","済","済"],["2407_Intermediate","ー","2411_Lowerbody","2505_Waist Shape","",""],"",["GR"]),
+  mk(12,"中央本部","Doスポーツ上里","運営中",["済","済","済","済",""],["2023/12〜2024/01","済"],["2月","8月"],"2025/01/24",["済","済","済","済"],["2407_Intermediate","ー","2411_Lowerbody","2507_Waist Shape","2603_Jumpboard",""],"",["GR"],null,null,{person:"木村 様",email:"kimura.momoko@wellneo-sugar.co.jp",address:"埼玉県児玉郡上里町七本木2272−１ ウニクス上里内",phone:"0495-35-0145"}),
+  mk(13,"西エリア","ラーガ出町","運営中",["","済","済","済",""],["2024/02〜2024/03","済"],["4月","10月"],"2025/04/15",["済","済","済","済"],["2410_Intermediate","2504_Back &Core","","2510_Waist Shape","2604_Jumpboard",""],"",["GR"]),
+  mk(14,"中央本部","Lucina京都八幡","運営中",["済","済","済","済",""],["2024/02〜2024/04","済"],["2月","8月"],"2025/02/20",["済","済","済","済"],["2502_Intermediate","2602_Back &Core","2502_Lowerbody","2602_Waist Shape","",""],"",["GR"]),
+  mk(15,"西エリア","SynerGym塚口","運営中",["","","済","済",""],["2024/03〜2024/05","済"],["12月","6月"],"2025/06/26",["済","済","済","済"],["2412_Intermediate","","","2506_Waist Shape","2512_Jumpboard",""],"",["GR"]),
+  mk(16,"西エリア","As岡山","運営中",["","","済","",""],["2024/06〜2024/07","済"],["3月","9月"],"2025/03/10",["済","済","済","済"],["2503_Intermediate","259_Back &Core","","2603_Waist Shape","",""],"",["GR"]),
+  mk(17,"西エリア","As御影","運営中",["","","済","",""],["2024/06〜2024/07","済"],["4月","10月"],"2025/03/17",["済","済","済","済"],["2503_Intermediate","2510_Back &Core","","2606_Waist Shape","",""],"",["GR"]),
+  mk(18,"西エリア","ラーガ亀岡","運営中",["","","","",""],["2024/06〜2024/08","済"],["5月","11月"],"2025/05/15",["済","済","済","済"],["2505_Intermediate","2511_Back &Core","","","",""],"",["GR"]),
+  // ━━━ 5月以降 本部付 新規店舗（higashi.htmlより） ━━━
+  mk(19,"中央本部","スポレッシュ","運営中",["","","","",""],["",""],["",""],"",["","","",""],["","","","","",""],"",["GR"],null,null,{person:"三上 様",email:"t.mikami@nexus-dstation.co.jp",address:"",phone:"080-4102-6720"}),
+  mk(20,"中央本部","ライフティック平塚","運営中",["","","","",""],["",""],["",""],"",["","","",""],["","","","","",""],"",["GR"],null,null,{person:"近藤 様",email:"t_kondo@kanachu-sports.co.jp",address:"神奈川県平塚市宝町１０−４ スポーツプラザ神奈中平塚 4階",phone:"0463-24-1010"}),
+  mk(21,"中央本部","東急スポーツ青葉台","運営中",["","","","",""],["",""],["",""],"",["","","",""],["","","","","",""],"",["GR"],null,null,{person:"小笠原 様",email:"yukihiko.ogasawara@tokyu-sports.co.jp",address:"神奈川県横浜市青葉区青葉台１丁目2−４ 東急スクエア",phone:"03-6427-8521"}),
+  mk(22,"中央本部","ベストスタイル大宮","運営中",["","","","",""],["",""],["",""],"",["","","",""],["","","","","",""],"",["GR"],null,null,{person:"澤田 様",email:"h.sawada@best-style-fitness.jp",address:"埼玉県さいたま市北区植竹町１丁目８１６−８",phone:"048-669-6611"}),
+  mk(23,"中央本部","アピアスポーツ","運営中",["","","","",""],["",""],["",""],"",["","","",""],["","","","","",""],"",["GR"],null,null,{person:"村井 様",email:"murai@apa-sports.com",address:"富山県富山市稲荷元町２丁目１１−１ ショッピングシティアピア",phone:"076-431-3321"}),
+  mk(24,"中央本部","オークスポーツ","運営中",["","","","",""],["",""],["",""],"",["","","",""],["","","","","",""],"",["GR"],null,null,{person:"江守 様",email:"t.emori@shinwa-sports-service.co.jp",address:"",phone:"090-4821-8190"}),
+  mk(25,"中央本部","vace1","運営中",["","","","",""],["",""],["",""],"",["","","",""],["","","","","",""],"",["GR"],null,null,{person:"森 様",email:"a_mori@provanet.co.jp",address:"",phone:""}),
+  mk(26,"中央本部","ベストスタイル新浦安","運営中",["","","","",""],["",""],["",""],"",["","","",""],["","","","","",""],"",["GR"]),
+  mk(27,"中央本部","スポレッシュ太田","運営中",["","","","",""],["",""],["",""],"",["","","",""],["","","","","",""],"",["GR"]),
+  mk(28,"中央本部","スポレッシュ高崎","運営中",["","","","",""],["",""],["",""],"",["","","",""],["","","","","",""],"",["GR"]),
 ];
 
-let DATA;
-try{const s=localStorage.getItem(STORAGE_KEY);DATA=s?JSON.parse(s):JSON.parse(JSON.stringify(DEFAULT_DATA));}catch(e){DATA=JSON.parse(JSON.stringify(DEFAULT_DATA));}
-const save=()=>{try{localStorage.setItem(STORAGE_KEY,JSON.stringify(DATA));}catch(e){}};
+// ━━━ Data Init (Firebase) ━━━
+let DATA=[];
+let firebaseReady=false;
+
+function migrateData(arr){
+  if(!Array.isArray(arr))arr=Object.values(arr);
+  arr.forEach(d=>{
+    if(!d.programs)d.programs=["GR"];
+    if(d.bisaishin===undefined)d.bisaishin="";
+    if(d.contactPerson===undefined)d.contactPerson="";
+    if(d.contactEmail===undefined)d.contactEmail="";
+    if(d.contactAddress===undefined)d.contactAddress="";
+    if(d.contactPhone===undefined)d.contactPhone="";
+  });
+  return arr;
+}
+
+function loadData(callback){
+  fetch(FB_URL+".json").then(r=>r.json()).then(saved=>{
+    if(saved){
+      DATA=migrateData(Array.isArray(saved)?saved:Object.values(saved));
+      DEFAULT_DATA.forEach(dd=>{if(!DATA.find(d=>d.id===dd.id))DATA.push(JSON.parse(JSON.stringify(dd)));});
+    }else{
+      DATA=JSON.parse(JSON.stringify(DEFAULT_DATA));
+      fetch(FB_URL+".json",{method:"PUT",body:JSON.stringify(DATA),headers:{"Content-Type":"application/json"}});
+    }
+    firebaseReady=true;
+    if(callback)callback();
+    // 定期同期（10秒ごと）
+    setInterval(syncFromServer,10000);
+  }).catch(e=>{
+    console.error("Firebase load error:",e);
+    alert("データ読み込みに失敗しました。インターネット接続を確認してください。");
+  });
+}
+
+function syncFromServer(){
+  fetch(FB_URL+".json").then(r=>r.json()).then(saved=>{
+    if(saved){
+      DATA=migrateData(Array.isArray(saved)?saved:Object.values(saved));
+      if(firebaseReady)render();
+    }
+  }).catch(()=>{});
+}
+
+function save(){
+  fetch(FB_URL+".json",{method:"PUT",body:JSON.stringify(DATA),headers:{"Content-Type":"application/json"}}).then(()=>{
+    updateSaveIndicator();
+  }).catch(e=>console.error("Save error:",e));
+}
+
+function updateSaveIndicator(){
+  const el=document.getElementById('save-indicator');
+  if(el){el.classList.add('show');setTimeout(()=>el.classList.remove('show'),1800);}
+}
 let VIEW="matrix";
 
 // ━━━ Auth ━━━
 function tryLogin(){
   const pw=document.getElementById("pw-input").value;
-  if(pw===ADMIN_PASSWORD){document.getElementById("login").classList.add("hidden");document.getElementById("app").classList.remove("hidden");render();}
+  if(pw===ADMIN_PASSWORD){
+    document.getElementById("login").classList.add("hidden");
+    document.getElementById("app").classList.remove("hidden");
+    loadData(()=>{render();});
+  }
   else{const el=document.getElementById("pw-error");el.textContent="パスワードが正しくありません";document.getElementById("pw-input").style.borderColor="var(--red)";setTimeout(()=>{el.textContent="";document.getElementById("pw-input").style.borderColor="var(--gray200)";},2000);}
 }
 function logout(){document.getElementById("app").classList.add("hidden");document.getElementById("login").classList.remove("hidden");document.getElementById("pw-input").value="";}
 
+// ━━━ Filter ━━━
 function getFiltered(){
-  const fa=document.getElementById("f-area").value,fs=document.getElementById("f-status").value,q=(document.getElementById("f-search").value||"").toLowerCase();
-  return DATA.filter(s=>{if(fa&&s.area!==fa)return false;if(fs&&s.status!==fs)return false;if(q&&!s.storeName.toLowerCase().includes(q)&&!s.area.includes(q))return false;return true;});
+  const fa=document.getElementById("f-area").value,fs=document.getElementById("f-status").value,fp=document.getElementById("f-program").value,q=(document.getElementById("f-search").value||"").toLowerCase();
+  return DATA.filter(s=>{
+    if(fa&&s.area!==fa)return false;
+    if(fs&&s.status!==fs)return false;
+    if(fp==="gr"&&!hasGR(s))return false;
+    if(fp==="bisai"&&!hasBisai(s))return false;
+    if(fp==="both"&&!(hasGR(s)&&hasBisai(s)))return false;
+    if(q&&!s.storeName.toLowerCase().includes(q)&&!s.area.includes(q))return false;
+    return true;
+  });
 }
 
 function switchView(v){
@@ -257,16 +363,25 @@ function switchView(v){
   render();
 }
 
-// ━━━ Program Cell ━━━
+// ━━━ Program Cell (GR) ━━━
 function pCell(val,color,sid){
   const i=isIn(val),pl=isPlan(val),d=val==="済";
   let inn;
-  if(d) inn=`<div style="background:${color}15;border:2px solid ${color};border-radius:10px;padding:6px 3px"><div style="color:${color};font-size:15px;font-weight:800">✓</div><div style="font-size:8px;color:var(--gray400);margin-top:1px">修了</div></div>`;
+  if(d) inn=`<div style="background:${color}15;border:2px solid ${color};border-radius:10px;padding:6px 3px"><div style="color:${color};font-size:15px;font-weight:800">&#10003;</div><div style="font-size:8px;color:var(--gray400);margin-top:1px">修了</div></div>`;
   else if(i){const bc=pl?"var(--yellow-bg)":`${color}08`;const bd=pl?`2px dashed var(--yellow)`:`2px solid ${color}`;const tc=pl?"var(--yellow)":color;const txt=esc(val.replace(/^\d{3,4}_/,""));const cd=(val.match(/^(\d{3,4})_/)||[])[1]||"";
     inn=`<div style="background:${bc};border:${bd};border-radius:10px;padding:6px 3px"><div style="font-size:9px;font-weight:700;color:${tc};line-height:1.2">${txt}</div>${cd?`<div style="font-size:8px;color:var(--gray400);margin-top:1px">${cd}</div>`:""}</div>`;}
   else if(val==="ー") inn=`<div style="background:var(--red-bg);border:1.5px solid #fecaca;border-radius:10px;padding:6px 3px"><div style="font-size:9px;color:var(--red);font-weight:600">対象外</div></div>`;
   else inn=`<div style="background:var(--gray50);border:1.5px dashed var(--gray200);border-radius:10px;padding:6px 3px"><div style="font-size:9px;color:var(--gray300)">未導入</div></div>`;
   return `<td class="pcell" onclick="openDetail(${sid})">${inn}</td>`;
+}
+
+// ━━━ 美彩心 Cell ━━━
+function bisaiCell(val,sid){
+  const color="#db2777";
+  if(!val||val==="") return `<td class="pcell" onclick="openDetail(${sid})"><div style="background:var(--gray50);border:1.5px dashed var(--gray200);border-radius:10px;padding:6px 3px"><div style="font-size:9px;color:var(--gray300)">ー</div></div></td>`;
+  if(val==="済") return `<td class="pcell" onclick="openDetail(${sid})"><div style="background:${color}12;border:2px solid ${color};border-radius:10px;padding:6px 3px"><div style="color:${color};font-size:15px;font-weight:800">&#10003;</div><div style="font-size:8px;color:var(--gray400);margin-top:1px">修了</div></div></td>`;
+  const pl=isPlan(val);const bc=pl?"var(--yellow-bg)":`${color}08`;const bd=pl?`2px dashed var(--yellow)`:`2px solid ${color}`;const tc=pl?"var(--yellow)":color;
+  return `<td class="pcell" onclick="openDetail(${sid})"><div style="background:${bc};border:${bd};border-radius:10px;padding:6px 3px"><div style="font-size:9px;font-weight:700;color:${tc};line-height:1.2">${esc(val)}</div></div></td>`;
 }
 
 // ━━━ Schedule Cards ━━━
@@ -282,8 +397,8 @@ function schedCards(store,n){
       transition:all .2s" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='none'">
       ${isCur?`<div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--red);color:#fff;font-size:9px;font-weight:800;padding:2px 10px;border-radius:10px;letter-spacing:.5px" class="pulse">NOW</div>`:""}
       <div style="font-size:10px;color:${isCur?"rgba(255,255,255,.7)":"var(--gray400)"}">第${s.idx}回</div>
-      <div style="font-size:22px;font-weight:800;color:${isCur?"#fff":isPast?"#a78bfa":"var(--accent)"}; margin:4px 0">${s.month}月</div>
-      <div style="font-size:11px;color:${isCur?"rgba(255,255,255,.8)":isPast?"#c4b5fd":"var(--gray500)"}; font-weight:600">${s.year}</div>
+      <div style="font-size:22px;font-weight:800;color:${isCur?"#fff":isPast?"#a78bfa":"var(--accent)"};margin:4px 0">${s.month}月</div>
+      <div style="font-size:11px;color:${isCur?"rgba(255,255,255,.8)":isPast?"#c4b5fd":"var(--gray500)"};font-weight:600">${s.year}</div>
       <div style="font-size:9px;margin-top:4px;color:${isCur?"rgba(255,255,255,.6)":isPast?"#c4b5fd":"#d8b4fe"}">${isPast?"実施済":"3h研修"}</div>
     </div>`;
   }).join("");
@@ -298,8 +413,15 @@ function schedCards(store,n){
 // ━━━ RENDER: Matrix ━━━
 function renderMatrix(){
   const f=getFiltered();let h="";
-  h+=`<div class="flex" style="margin-bottom:14px;justify-content:flex-end;font-size:11px;color:var(--gray500);gap:16px">
-    ${[["var(--green-bg)","2px solid var(--green)","導入済"],["var(--yellow-bg)","2px dashed var(--yellow)","予定"],["var(--gray50)","1.5px dashed var(--gray200)","未導入"],["var(--red-bg)","1.5px solid #fecaca","対象外"]].map(([b,bd,l])=>`<span class="flex" style="gap:4px"><span style="width:14px;height:14px;border-radius:4px;background:${b};border:${bd};display:inline-block"></span>${l}</span>`).join("")}
+  // Legend
+  h+=`<div class="flex" style="margin-bottom:14px;justify-content:space-between">
+    <div class="flex" style="gap:16px;font-size:11px;color:var(--gray500)">
+      ${[["var(--green-bg)","2px solid var(--green)","導入済"],["var(--yellow-bg)","2px dashed var(--yellow)","予定"],["var(--gray50)","1.5px dashed var(--gray200)","未導入"],["var(--red-bg)","1.5px solid #fecaca","対象外"]].map(([b,bd,l])=>`<span class="flex" style="gap:4px"><span style="width:14px;height:14px;border-radius:4px;background:${b};border:${bd};display:inline-block"></span>${l}</span>`).join("")}
+    </div>
+    <div class="flex" style="gap:8px;font-size:11px">
+      <span class="pgm-badge pgm-gr" style="font-size:11px;padding:3px 12px">GR</span>
+      <span class="pgm-badge pgm-bisai" style="font-size:11px;padding:3px 12px">美彩心</span>
+    </div>
   </div>`;
   AREAS.filter(a=>!document.getElementById("f-area").value||a===document.getElementById("f-area").value).forEach(area=>{
     const stores=f.filter(s=>s.area===area);if(!stores.length)return;
@@ -309,27 +431,38 @@ function renderMatrix(){
         <thead><tr style="background:var(--gray50)">
           <th class="th" style="min-width:120px;position:sticky;left:0;background:var(--gray50);z-index:2">店舗名</th>
           <th class="th" style="text-align:center;width:50px">状況</th>
-          <th class="th" colspan="4" style="text-align:center;background:var(--teal-bg);border-bottom:3px solid var(--teal)"><span style="color:var(--teal);font-weight:800">初級4種</span></th>
-          <th class="th" colspan="6" style="text-align:center;background:var(--navy-bg);border-bottom:3px solid var(--navy)"><span style="color:var(--navy);font-weight:800">中級6種</span></th>
-          <th class="th" style="text-align:center;width:55px">進捗</th>
+          <th class="th" style="text-align:center;width:60px">種別</th>
+          <th class="th" colspan="4" style="text-align:center;background:var(--teal-bg);border-bottom:3px solid var(--teal)"><span style="color:var(--teal);font-weight:800">GR 初級4種</span></th>
+          <th class="th" colspan="6" style="text-align:center;background:var(--navy-bg);border-bottom:3px solid var(--navy)"><span style="color:var(--navy);font-weight:800">GR 中級6種</span></th>
+          <th class="th" style="text-align:center;width:55px">GR進捗</th>
+          <th class="th" style="text-align:center;background:var(--pink-light);border-bottom:3px solid var(--pink)"><span style="color:var(--pink-dark);font-weight:800">美彩心</span></th>
           <th class="th" style="text-align:center;min-width:90px;background:var(--accent-light);border-bottom:3px solid var(--accent)"><span style="color:var(--accent);font-weight:800;font-size:10px">次回スキルUP</span></th>
         </tr>
         <tr style="background:#fafbfe">
-          <th class="th" style="position:sticky;left:0;background:#fafbfe;z-index:2;border-bottom:1px solid var(--gray200)"></th><th class="th" style="border-bottom:1px solid var(--gray200)"></th>
+          <th class="th" style="position:sticky;left:0;background:#fafbfe;z-index:2;border-bottom:1px solid var(--gray200)"></th>
+          <th class="th" style="border-bottom:1px solid var(--gray200)"></th>
+          <th class="th" style="border-bottom:1px solid var(--gray200)"></th>
           ${ALL_P.map(p=>`<th class="th" style="text-align:center;padding:8px 2px;border-bottom:1px solid var(--gray200)"><div style="display:flex;flex-direction:column;align-items:center;gap:3px"><div style="width:24px;height:24px;border-radius:7px;background:${p.color};display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;color:#fff;box-shadow:0 2px 6px ${p.color}40">${p.short}</div><span style="font-size:8px;line-height:1;color:var(--gray500)">${esc(p.label.replace(/^[①-⑥]/,""))}</span></div></th>`).join("")}
-          <th class="th" style="border-bottom:1px solid var(--gray200)"></th><th class="th" style="border-bottom:1px solid var(--gray200)"></th>
+          <th class="th" style="border-bottom:1px solid var(--gray200)"></th>
+          <th class="th" style="text-align:center;padding:8px 2px;border-bottom:1px solid var(--gray200)"><div style="display:flex;flex-direction:column;align-items:center;gap:3px"><div style="width:24px;height:24px;border-radius:7px;background:#db2777;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:800;color:#fff;box-shadow:0 2px 6px rgba(219,39,119,.4)">美</div></div></th>
+          <th class="th" style="border-bottom:1px solid var(--gray200)"></th>
         </tr></thead><tbody>`;
     stores.forEach(st=>{
-      const done=ALL_P.filter(p=>isIn(st[p.key])).length;const pct=Math.round(done/10*100);const next=getNext(st);const pc=pctColor(pct);
+      const done=hasGR(st)?ALL_P.filter(p=>isIn(st[p.key])).length:0;
+      const pct=hasGR(st)?Math.round(done/10*100):0;
+      const next=hasGR(st)?getNext(st):null;
+      const pc=pctColor(pct);
       h+=`<tr>
         <td class="td" style="font-weight:700;cursor:pointer;color:var(--primary);position:sticky;left:0;background:inherit;z-index:1;font-size:12px" onclick="openDetail(${st.id})">${esc(st.storeName)}</td>
         <td class="td" style="text-align:center"><span class="badge" style="background:${S_COL[st.status]};font-size:10px">${st.status}</span></td>
-        ${ALL_P.map(p=>pCell(st[p.key],p.color,st.id)).join("")}
-        <td class="td" style="text-align:center">
+        <td class="td" style="text-align:center"><div style="display:flex;flex-direction:column;gap:2px;align-items:center">${pgmBadges(st)}</div></td>
+        ${hasGR(st)?ALL_P.map(p=>pCell(st[p.key],p.color,st.id)).join(""):`<td colspan="10" class="td" style="text-align:center;color:var(--gray300);font-size:11px">GR 未導入</td>`}
+        <td class="td" style="text-align:center">${hasGR(st)?`
           <div style="font-size:14px;font-weight:800;color:${pc}">${pct}%</div>
           <div class="bar-bg" style="width:40px;height:5px;margin:3px auto"><div class="bar-fill" style="width:${pct}%;background:${pc}"></div></div>
-          <div style="font-size:9px;color:var(--gray400)">${done}/10</div>
+          <div style="font-size:9px;color:var(--gray400)">${done}/10</div>`:`<span style="color:var(--gray300)">ー</span>`}
         </td>
+        ${hasBisai(st)?bisaiCell(st.bisaishin,st.id):`<td class="pcell" onclick="openDetail(${st.id})"><div style="background:var(--gray50);border:1.5px dashed var(--gray200);border-radius:10px;padding:6px 3px"><div style="font-size:9px;color:var(--gray300)">ー</div></div></td>`}
         <td class="td" style="text-align:center">${next?`<div style="background:var(--accent-light);border-radius:10px;padding:6px 8px;border:1.5px solid #e9d5ff"><div style="font-size:12px;font-weight:800;color:var(--accent)">${next.year}/${next.month}月</div><div style="font-size:9px;color:#a78bfa">第${next.idx}回</div></div>`:st.completionDate?`<div style="font-size:10px;color:var(--green);font-weight:700">完了</div>`:`<span style="color:var(--gray300)">ー</span>`}</td>
       </tr>`;
     });
@@ -340,17 +473,19 @@ function renderMatrix(){
 
 // ━━━ RENDER: Skill-Up ━━━
 function renderSkillUp(){
-  const f=getFiltered();const comp=f.filter(s=>s.completionDate);const incomp=f.filter(s=>!s.completionDate);
+  const f=getFiltered().filter(s=>hasGR(s));
+  const comp=f.filter(s=>s.completionDate);const incomp=f.filter(s=>!s.completionDate);
+  const grTotal=DATA.filter(s=>hasGR(s)).length;
   let h=`<div class="flex" style="margin-bottom:24px;gap:16px">
-    <div class="stat-card" style="--c:var(--accent)"><div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--accent);border-radius:4px 0 0 4px"></div><div style="font-size:12px;color:var(--gray500);font-weight:600">10種修了</div><div style="font-size:32px;font-weight:800;color:var(--accent);margin:4px 0">${comp.length}</div><div style="font-size:11px;color:var(--gray400)">/ ${DATA.length}店舗</div></div>
-    <div class="stat-card"><div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--gray300);border-radius:4px 0 0 4px"></div><div style="font-size:12px;color:var(--gray500);font-weight:600">未修了</div><div style="font-size:32px;font-weight:800;color:var(--gray400);margin:4px 0">${incomp.length}</div><div style="font-size:11px;color:var(--gray300)">対象外</div></div>
+    <div class="stat-card" style="--c:var(--accent)"><div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--accent);border-radius:4px 0 0 4px"></div><div style="font-size:12px;color:var(--gray500);font-weight:600">GR 10種修了</div><div style="font-size:32px;font-weight:800;color:var(--accent);margin:4px 0">${comp.length}</div><div style="font-size:11px;color:var(--gray400)">/ ${grTotal}店舗</div></div>
+    <div class="stat-card"><div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--gray300);border-radius:4px 0 0 4px"></div><div style="font-size:12px;color:var(--gray500);font-weight:600">未修了</div><div style="font-size:32px;font-weight:800;color:var(--gray400);margin:4px 0">${incomp.length}</div></div>
   </div>`;
   if(comp.length){h+=`<h3 style="font-size:16px;font-weight:800;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px"><span style="width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block"></span>スキルアップ研修スケジュール</h3>`;}
   comp.forEach(st=>{
     const c=parseCD(st.completionDate);const next=getNext(st);const sc=getSched(c,6);
     h+=`<div class="card" style="margin-bottom:16px;${next&&schedSt(next)==="current"?"border:2px solid var(--accent);box-shadow:0 4px 20px rgba(124,58,237,.15)":""}">
       <div class="flex" style="justify-content:space-between;margin-bottom:14px">
-        <div class="flex" style="gap:12px"><span style="font-weight:800;font-size:16px;color:var(--primary);cursor:pointer" onclick="openDetail(${st.id})">${esc(st.storeName)}</span><span class="badge" style="background:${A_COL[st.area]}">${st.area}</span><span class="badge" style="background:${S_COL[st.status]}">${st.status}</span></div>
+        <div class="flex" style="gap:12px"><span style="font-weight:800;font-size:16px;color:var(--primary);cursor:pointer" onclick="openDetail(${st.id})">${esc(st.storeName)}</span><span class="badge" style="background:${A_COL[st.area]}">${st.area}</span><span class="badge" style="background:${S_COL[st.status]}">${st.status}</span>${pgmBadges(st)}</div>
         <div class="flex" style="gap:12px"><span style="font-size:12px;color:var(--gray500)">修了: <strong style="color:var(--accent)">${fmtYM(c)}</strong></span>${next?`<span class="badge" style="background:var(--accent);font-size:12px;padding:5px 14px">次回 ${next.year}年${next.month}月</span>`:""}</div>
       </div>
       <div style="display:flex;gap:10px;overflow-x:auto;padding-bottom:4px">`;
@@ -369,10 +504,10 @@ function renderSkillUp(){
     h+=`</div></div>`;
   });
   if(incomp.length){
-    h+=`<h3 style="font-size:16px;font-weight:800;color:var(--gray400);margin:28px 0 14px;display:flex;align-items:center;gap:8px"><span style="width:8px;height:8px;border-radius:50%;background:var(--gray300);display:inline-block"></span>未修了店舗</h3>
-    <div class="card" style="padding:0;overflow:hidden"><table style="font-size:13px"><thead><tr style="background:var(--gray50)"><th class="th">店舗名</th><th class="th">エリア</th><th class="th" style="text-align:center">導入済</th><th class="th" style="text-align:center">残り</th><th class="th">未導入プログラム</th></tr></thead><tbody>`;
+    h+=`<h3 style="font-size:16px;font-weight:800;color:var(--gray400);margin:28px 0 14px;display:flex;align-items:center;gap:8px"><span style="width:8px;height:8px;border-radius:50%;background:var(--gray300);display:inline-block"></span>未修了店舗 (GR)</h3>
+    <div class="card" style="padding:0;overflow:hidden"><table style="font-size:13px"><thead><tr style="background:var(--gray50)"><th class="th">店舗名</th><th class="th">エリア</th><th class="th">種別</th><th class="th" style="text-align:center">導入済</th><th class="th" style="text-align:center">残り</th><th class="th">未導入プログラム</th></tr></thead><tbody>`;
     incomp.forEach(st=>{const done=ALL_P.filter(p=>isIn(st[p.key])).length;const miss=ALL_P.filter(p=>!isIn(st[p.key]));
-      h+=`<tr><td class="td" style="font-weight:700;cursor:pointer;color:var(--primary)" onclick="openDetail(${st.id})">${esc(st.storeName)}</td><td class="td"><span class="badge" style="background:${A_COL[st.area]}">${st.area}</span></td><td class="td" style="text-align:center;font-weight:700">${done}/10</td><td class="td" style="text-align:center"><span style="font-weight:800;color:var(--yellow);font-size:16px">${10-done}</span></td>
+      h+=`<tr><td class="td" style="font-weight:700;cursor:pointer;color:var(--primary)" onclick="openDetail(${st.id})">${esc(st.storeName)}</td><td class="td"><span class="badge" style="background:${A_COL[st.area]}">${st.area}</span></td><td class="td">${pgmBadges(st)}</td><td class="td" style="text-align:center;font-weight:700">${done}/10</td><td class="td" style="text-align:center"><span style="font-weight:800;color:var(--yellow);font-size:16px">${10-done}</span></td>
       <td class="td"><div class="flex" style="gap:4px">${miss.map(p=>`<span style="background:${p.color}12;color:${p.color};padding:3px 8px;border-radius:8px;font-size:10px;font-weight:700;border:1px solid ${p.color}25">${esc(p.label.replace(/^[①-⑥]/,""))}</span>`).join("")}</div></td></tr>`;
     });
     h+=`</tbody></table></div>`;
@@ -385,17 +520,22 @@ function renderList(){
   const f=getFiltered();
   let h=`<div style="font-size:13px;color:var(--gray500);margin-bottom:10px;font-weight:600">${f.length} 件 / 全 ${DATA.length} 件</div>
   <div class="card" style="padding:0;overflow:hidden"><div style="overflow-x:auto"><table style="font-size:13px"><thead><tr style="background:var(--gray50)">
-    <th class="th" style="width:40px">No.</th><th class="th">エリア</th><th class="th">店舗名</th><th class="th">状況</th>
-    <th class="th" style="text-align:center">導入</th><th class="th" style="text-align:center">10種修了月</th><th class="th" style="text-align:center">次回研修</th><th class="th" style="text-align:center">操作</th>
+    <th class="th" style="width:40px">No.</th><th class="th">エリア</th><th class="th">店舗名</th><th class="th">担当者</th><th class="th">連絡先</th><th class="th">種別</th><th class="th">状況</th>
+    <th class="th" style="text-align:center">GR導入</th><th class="th" style="text-align:center">美彩心</th><th class="th" style="text-align:center">10種修了月</th><th class="th" style="text-align:center">次回研修</th><th class="th" style="text-align:center">操作</th>
   </tr></thead><tbody>`;
   f.forEach(st=>{
-    const done=ALL_P.filter(p=>isIn(st[p.key])).length;const next=getNext(st);const c=parseCD(st.completionDate);const pct=Math.round(done/10*100);const pc=pctColor(pct);
+    const done=hasGR(st)?ALL_P.filter(p=>isIn(st[p.key])).length:0;const next=getNext(st);const c=parseCD(st.completionDate);const pct=hasGR(st)?Math.round(done/10*100):0;const pc=pctColor(pct);
+    const bisaiSt=hasBisai(st)?(isIn(st.bisaishin)?`<span style="font-weight:700;color:var(--pink)">${esc(st.bisaishin)}</span>`:`<span style="color:var(--gray400)">未設定</span>`):`<span style="color:var(--gray300)">ー</span>`;
     h+=`<tr>
       <td class="td" style="color:var(--gray400);font-weight:600">${st.id}</td>
       <td class="td"><span class="badge" style="background:${A_COL[st.area]}">${st.area}</span></td>
       <td class="td" style="font-weight:700;cursor:pointer;color:var(--primary)" onclick="openDetail(${st.id})">${esc(st.storeName)}</td>
+      <td class="td" style="font-size:12px">${st.contactPerson?esc(st.contactPerson):`<span style="color:var(--gray300)">ー</span>`}</td>
+      <td class="td" style="font-size:11px;white-space:normal;max-width:180px">${st.contactEmail?`<a href="mailto:${esc(st.contactEmail)}" style="color:var(--primary);text-decoration:none">${esc(st.contactEmail)}</a>`:""}${st.contactEmail&&st.contactPhone?"<br>":""}${st.contactPhone?`<span style="color:var(--gray500)">${esc(st.contactPhone)}</span>`:""}</td>
+      <td class="td"><div class="flex" style="gap:3px">${pgmBadges(st)}</div></td>
       <td class="td"><span class="badge" style="background:${S_COL[st.status]}">${st.status}</span></td>
-      <td class="td" style="text-align:center"><div class="flex" style="justify-content:center;gap:8px"><div class="bar-bg" style="width:50px;height:6px"><div class="bar-fill" style="width:${pct}%;background:${pc}"></div></div><span style="font-size:12px;font-weight:700;color:${pc}">${done}/10</span></div></td>
+      <td class="td" style="text-align:center">${hasGR(st)?`<div class="flex" style="justify-content:center;gap:8px"><div class="bar-bg" style="width:50px;height:6px"><div class="bar-fill" style="width:${pct}%;background:${pc}"></div></div><span style="font-size:12px;font-weight:700;color:${pc}">${done}/10</span></div>`:`<span style="color:var(--gray300)">ー</span>`}</td>
+      <td class="td" style="text-align:center">${bisaiSt}</td>
       <td class="td" style="text-align:center">${c?`<span style="font-weight:700;color:var(--accent)">${fmtYM(c)}</span>`:`<span style="color:var(--gray300)">ー</span>`}</td>
       <td class="td" style="text-align:center">${next?`<span style="font-weight:700;color:var(--accent)">${next.year}/${next.month}月</span>`:`<span style="color:var(--gray300)">ー</span>`}</td>
       <td class="td" style="text-align:center"><div class="flex" style="justify-content:center;gap:6px">
@@ -419,76 +559,182 @@ function render(){
 // ━━━ Detail Modal ━━━
 function openDetail(id){
   const st=DATA.find(d=>d.id===id);if(!st)return;
-  const bC=BEG.filter(p=>isIn(st[p.key])).length,iC=MID.filter(p=>isIn(st[p.key])).length,tC=bC+iC;const c=parseCD(st.completionDate);const pc=pctColor(Math.round(tC/10*100));
+  const bC=hasGR(st)?BEG.filter(p=>isIn(st[p.key])).length:0;
+  const iC=hasGR(st)?MID.filter(p=>isIn(st[p.key])).length:0;
+  const tC=bC+iC;const c=parseCD(st.completionDate);const pc=pctColor(Math.round(tC/10*100));
   let h=`<div class="flex" style="justify-content:space-between;margin-bottom:20px">
     <div><h2 style="font-size:24px;font-weight:800;margin-bottom:8px">${esc(st.storeName)}</h2>
-    <div class="flex" style="gap:10px"><span class="badge" style="background:${A_COL[st.area]};font-size:12px;padding:4px 14px">${st.area}</span><span class="badge" style="background:${S_COL[st.status]};font-size:12px;padding:4px 14px">${st.status}</span>${c?`<span class="badge" style="background:var(--accent);font-size:12px;padding:4px 14px">10種修了 ${fmtYM(c)}</span>`:""}</div></div>
+    <div class="flex" style="gap:10px"><span class="badge" style="background:${A_COL[st.area]};font-size:12px;padding:4px 14px">${st.area}</span><span class="badge" style="background:${S_COL[st.status]};font-size:12px;padding:4px 14px">${st.status}</span>${pgmBadges(st)}${c?`<span class="badge" style="background:var(--accent);font-size:12px;padding:4px 14px">10種修了 ${fmtYM(c)}</span>`:""}</div></div>
     <button class="btn btn-primary" onclick="closeModal();openEdit(${st.id})">編集</button>
   </div>`;
-  h+=`<div style="background:var(--gray50);border-radius:var(--radius);padding:16px;margin-bottom:18px">
-    <div class="flex" style="justify-content:space-between;font-size:13px;color:var(--gray500);margin-bottom:8px"><span style="font-weight:700">全体進捗</span><span style="font-weight:800;color:${pc}">${tC}/10 (${Math.round(tC/10*100)}%)</span></div>
-    <div class="bar-bg" style="height:14px;border-radius:7px"><div class="bar-fill" style="width:${tC/10*100}%;background:${pc};border-radius:7px"></div></div>
-  </div>`;
-  h+=`<div style="margin-bottom:18px">${schedCards(st)}</div>`;
-  // Beginner
-  h+=`<div style="margin-bottom:18px"><div class="flex" style="margin-bottom:10px"><span class="badge" style="background:var(--teal);font-size:11px;padding:4px 14px">初級 4種</span><span style="font-size:13px;color:var(--gray500);font-weight:700">${bC}/4 修了</span></div><div class="grid4">`;
-  BEG.forEach(p=>{const v=st[p.key],d=isIn(v);h+=`<div style="background:${d?"var(--teal-bg)":"#fff"};border:2px solid ${d?p.color:"var(--gray200)"};border-radius:var(--radius);padding:12px;text-align:center;transition:all .15s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
-    <div style="width:32px;height:32px;border-radius:9px;background:${d?p.color:"var(--gray200)"};margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;box-shadow:${d?`0 3px 10px ${p.color}40`:"none"}">${p.short}</div>
-    <div style="font-size:12px;font-weight:700">${p.label}</div>
-    <div style="font-size:11px;color:${d?p.color:"var(--gray400)"};font-weight:600;margin-top:2px">${d?"修了":"未修了"}</div></div>`;});
-  h+=`</div></div>`;
-  // Intermediate
-  h+=`<div style="margin-bottom:18px"><div class="flex" style="margin-bottom:10px"><span class="badge" style="background:var(--navy);font-size:11px;padding:4px 14px">中級 6種</span><span style="font-size:13px;color:var(--gray500);font-weight:700">${iC}/6 導入</span></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">`;
-  MID.forEach(p=>{const v=st[p.key],d=isIn(v),pl=isPlan(v);h+=`<div style="background:${d?(pl?"var(--yellow-bg)":"#fff"):"#fff"};border:2px ${pl?"dashed":"solid"} ${d?p.color:"var(--gray200)"};border-radius:var(--radius);padding:12px;transition:all .15s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
-    <div class="flex" style="margin-bottom:4px"><div style="width:28px;height:28px;border-radius:8px;background:${d?p.color:"var(--gray200)"};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;box-shadow:${d?`0 3px 10px ${p.color}40`:"none"}">${p.short}</div>
-    <div><div style="font-size:12px;font-weight:700">${esc(p.label)}</div><div style="font-size:10px;color:${d?p.color:"var(--gray400)"};font-weight:600">${d?(pl?"予定":"導入済"):(v==="ー"?"対象外":"未導入")}</div></div></div>
-    ${d?`<div style="font-size:10px;color:var(--gray500);background:var(--gray50);border-radius:6px;padding:3px 8px;margin-top:4px">${esc(v)}</div>`:""}</div>`;});
-  h+=`</div></div>`;
+
+  // Contact info
+  if(st.contactPerson||st.contactEmail||st.contactAddress||st.contactPhone){
+    h+=`<div style="background:var(--gray50);border-radius:var(--radius);padding:16px;margin-bottom:18px;border:1.5px solid var(--gray200)">
+      <div style="font-size:13px;font-weight:800;color:var(--gray700);margin-bottom:10px;display:flex;align-items:center;gap:6px"><span style="font-size:15px">&#128100;</span> 連絡先情報</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 24px;font-size:13px">
+        ${st.contactPerson?`<div><span style="color:var(--gray400);font-size:11px;font-weight:600">担当者</span><div style="font-weight:700">${esc(st.contactPerson)}</div></div>`:""}
+        ${st.contactEmail?`<div><span style="color:var(--gray400);font-size:11px;font-weight:600">メール</span><div><a href="mailto:${esc(st.contactEmail)}" style="color:var(--primary);text-decoration:none;font-weight:600">${esc(st.contactEmail)}</a></div></div>`:""}
+        ${st.contactPhone?`<div><span style="color:var(--gray400);font-size:11px;font-weight:600">電話番号</span><div style="font-weight:600">${esc(st.contactPhone)}</div></div>`:""}
+        ${st.contactAddress?`<div style="grid-column:${st.contactPhone?"2":"1 / -1"}"><span style="color:var(--gray400);font-size:11px;font-weight:600">住所</span><div>${esc(st.contactAddress)}</div></div>`:""}
+      </div>
+    </div>`;
+  }
+
+  // GR Section
+  if(hasGR(st)){
+    h+=`<div style="background:linear-gradient(135deg,#eff6ff,#f0f0ff);border-radius:var(--radius-lg);padding:20px;margin-bottom:18px;border:1.5px solid #bfdbfe">
+    <div class="flex" style="margin-bottom:12px"><span class="pgm-badge pgm-gr" style="font-size:13px;padding:4px 16px">GR プログラム</span></div>
+    <div style="background:#fff;border-radius:var(--radius);padding:16px;margin-bottom:14px">
+      <div class="flex" style="justify-content:space-between;font-size:13px;color:var(--gray500);margin-bottom:8px"><span style="font-weight:700">GR全体進捗</span><span style="font-weight:800;color:${pc}">${tC}/10 (${Math.round(tC/10*100)}%)</span></div>
+      <div class="bar-bg" style="height:14px;border-radius:7px"><div class="bar-fill" style="width:${tC/10*100}%;background:${pc};border-radius:7px"></div></div>
+    </div>`;
+    h+=`<div style="margin-bottom:14px">${schedCards(st)}</div>`;
+    // Beginner
+    h+=`<div style="margin-bottom:14px"><div class="flex" style="margin-bottom:10px"><span class="badge" style="background:var(--teal);font-size:11px;padding:4px 14px">初級 4種</span><span style="font-size:13px;color:var(--gray500);font-weight:700">${bC}/4 修了</span></div><div class="grid4">`;
+    BEG.forEach(p=>{const v=st[p.key],d=isIn(v);h+=`<div style="background:${d?"var(--teal-bg)":"#fff"};border:2px solid ${d?p.color:"var(--gray200)"};border-radius:var(--radius);padding:12px;text-align:center;transition:all .15s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
+      <div style="width:32px;height:32px;border-radius:9px;background:${d?p.color:"var(--gray200)"};margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;box-shadow:${d?`0 3px 10px ${p.color}40`:"none"}">${p.short}</div>
+      <div style="font-size:12px;font-weight:700">${p.label}</div>
+      <div style="font-size:11px;color:${d?p.color:"var(--gray400)"};font-weight:600;margin-top:2px">${d?"修了":"未修了"}</div></div>`;});
+    h+=`</div></div>`;
+    // Intermediate
+    h+=`<div style="margin-bottom:14px"><div class="flex" style="margin-bottom:10px"><span class="badge" style="background:var(--navy);font-size:11px;padding:4px 14px">中級 6種</span><span style="font-size:13px;color:var(--gray500);font-weight:700">${iC}/6 導入</span></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">`;
+    MID.forEach(p=>{const v=st[p.key],d=isIn(v),pl=isPlan(v);h+=`<div style="background:${d?(pl?"var(--yellow-bg)":"#fff"):"#fff"};border:2px ${pl?"dashed":"solid"} ${d?p.color:"var(--gray200)"};border-radius:var(--radius);padding:12px;transition:all .15s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
+      <div class="flex" style="margin-bottom:4px"><div style="width:28px;height:28px;border-radius:8px;background:${d?p.color:"var(--gray200)"};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;box-shadow:${d?`0 3px 10px ${p.color}40`:"none"}">${p.short}</div>
+      <div><div style="font-size:12px;font-weight:700">${esc(p.label)}</div><div style="font-size:10px;color:${d?p.color:"var(--gray400)"};font-weight:600">${d?(pl?"予定":"導入済"):(v==="ー"?"対象外":"未導入")}</div></div></div>
+      ${d?`<div style="font-size:10px;color:var(--gray500);background:var(--gray50);border-radius:6px;padding:3px 8px;margin-top:4px">${esc(v)}</div>`:""}</div>`;});
+    h+=`</div></div></div>`;
+  }
+
+  // 美彩心 Section
+  if(hasBisai(st)){
+    const bv=st.bisaishin;const bd=isIn(bv);
+    h+=`<div style="background:linear-gradient(135deg,#fdf2f8,#fce7f3);border-radius:var(--radius-lg);padding:20px;margin-bottom:18px;border:1.5px solid #f9a8d4">
+    <div class="flex" style="margin-bottom:12px"><span class="pgm-badge pgm-bisai" style="font-size:13px;padding:4px 16px">美彩心 プログラム</span></div>
+    <div style="background:#fff;border-radius:var(--radius);padding:16px;margin-bottom:14px">
+      <div class="flex" style="gap:16px;align-items:center">
+        <div style="width:48px;height:48px;border-radius:12px;background:${bd?"#db2777":"var(--gray200)"};display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;box-shadow:${bd?"0 4px 12px rgba(219,39,119,.3)":"none"}">美</div>
+        <div>
+          <div style="font-size:16px;font-weight:700">美彩心</div>
+          <div style="font-size:13px;color:${bd?"#db2777":"var(--gray400)"};font-weight:600">${bd?(bv==="済"?"導入済":esc(bv)):"未設定"}</div>
+        </div>
+      </div>
+    </div>
+    <div style="font-size:12px;font-weight:700;color:var(--pink-dark);margin-bottom:8px">書類状況</div>
+    <div class="grid3" style="gap:8px">
+      ${DOCS_BISAI.map(d=>`<div style="background:#fff;border-radius:8px;padding:8px 12px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:11px;color:var(--gray500)">${d.l}</span><span style="font-size:12px;font-weight:700;color:${st[d.k]==="済"?"var(--green)":"var(--gray300)"}">${st[d.k]||"ー"}</span></div>`).join("")}
+    </div></div>`;
+  }
+
   h+=`<div style="text-align:right;margin-top:8px"><button class="btn btn-ghost" onclick="closeModal()">閉じる</button></div>`;
   showModal(h);
 }
 
 // ━━━ Edit Form ━━━
 function openEdit(id){const st=DATA.find(d=>d.id===id);if(!st)return;openForm(st,false);}
-function openAdd(){openForm({id:0,...ALL_P.reduce((o,p)=>({...o,[p.key]:""}),{}),area:"",storeName:"",status:"運営中",intentLetter:"",estimate:"",purchaseOrder:"",deliveryDate:"",contract:"",trainingSchedule:"",trainingApplication:"",renewalMonth1:"",renewalMonth2:"",trainingHistory:"",completionDate:""},true);}
+function openAdd(){
+  const empty={id:0,...ALL_P.reduce((o,p)=>({...o,[p.key]:""}),{}),area:"",storeName:"",status:"運営中",
+    contactPerson:"",contactEmail:"",contactAddress:"",contactPhone:"",
+    intentLetter:"",estimate:"",purchaseOrder:"",deliveryDate:"",contract:"",trainingSchedule:"",trainingApplication:"",
+    renewalMonth1:"",renewalMonth2:"",trainingHistory:"",completionDate:"",
+    programs:["GR"],bisaishin:"",
+    b_intentLetter:"",b_estimate:"",b_purchaseOrder:"",b_deliveryDate:"",b_contract:"",b_trainingApplication:"",
+    b_trainingSchedule:"",b_renewalMonth1:"",b_renewalMonth2:"",b_trainingHistory:""
+  };
+  openForm(empty,true);
+}
 
 function openForm(st,isNew){
+  const hasG=hasGR(st),hasB=hasBisai(st);
   let h=`<h2 style="font-size:22px;font-weight:800;margin-bottom:20px">${isNew?"新規店舗登録":"店舗情報の編集"}</h2>
   <form id="edit-form" onsubmit="return false">
   <div class="grid3">
     <div class="form-field"><label>エリア</label><select name="area"><option value="">--</option>${AREAS.map(a=>`<option ${a===st.area?"selected":""}>${a}</option>`).join("")}</select></div>
     <div class="form-field"><label>店舗名</label><input name="storeName" value="${esc(st.storeName)}"></div>
     <div class="form-field"><label>営業状況</label><select name="status">${["運営中","休止中","終了"].map(s=>`<option ${s===st.status?"selected":""}>${s}</option>`).join("")}</select></div>
-    <div class="form-field"><label>更新月①</label><input name="renewalMonth1" value="${esc(st.renewalMonth1)}"></div>
-    <div class="form-field"><label>更新月②</label><input name="renewalMonth2" value="${esc(st.renewalMonth2)}"></div>
-    <div class="form-field"><label>研修開催日</label><input name="trainingHistory" value="${esc(st.trainingHistory)}"></div>
   </div>
-  <div style="background:linear-gradient(135deg,#faf5ff,#f0f0ff);border-radius:var(--radius-lg);padding:20px;margin:18px 0;border:2px solid #e9d5ff">
-    <div class="flex" style="gap:16px;align-items:flex-start">
-      <div style="flex:0 0 280px">
-        <label style="display:block;font-size:14px;font-weight:800;color:var(--accent);margin-bottom:8px">10種修了月</label>
-        <div style="font-size:11px;color:var(--gray400);margin-bottom:8px">スキルアップ研修の起算月になります</div>
-        <input type="month" name="completionDate" value="${st.completionDate}" style="width:100%;padding:12px 16px;border-radius:12px;border:2px solid #d8b4fe;font-size:16px;font-weight:700;color:var(--accent);cursor:pointer;background:#fff;box-sizing:border-box" oninput="updatePreview(this.value)">
-      </div>
-      <div style="flex:1;padding-top:28px" id="sched-preview"></div>
+  <div style="background:#fff;border-radius:var(--radius);padding:16px;margin:14px 0;border:1.5px solid var(--gray200)">
+    <div style="font-size:13px;font-weight:800;color:var(--gray700);margin-bottom:10px;display:flex;align-items:center;gap:6px"><span style="font-size:15px">&#128100;</span> 連絡先情報</div>
+    <div class="grid2">
+      <div class="form-field"><label>担当者</label><input name="contactPerson" value="${esc(st.contactPerson||"")}" placeholder="例：田中 様"></div>
+      <div class="form-field"><label>メールアドレス</label><input name="contactEmail" type="email" value="${esc(st.contactEmail||"")}" placeholder="例：tanaka@example.com"></div>
+    </div>
+    <div class="form-field"><label>住所</label><input name="contactAddress" value="${esc(st.contactAddress||"")}" placeholder="例：東京都渋谷区..."></div>
+    <div class="grid2">
+      <div class="form-field"><label>電話番号</label><input name="contactPhone" type="tel" value="${esc(st.contactPhone||"")}" placeholder="例：03-1234-5678"></div>
+      <div></div>
     </div>
   </div>
-  <h3 style="font-size:14px;font-weight:800;color:var(--gray700);margin:4px 0 10px;display:flex;align-items:center;gap:8px"><span style="width:6px;height:6px;border-radius:50%;background:var(--gray500);display:inline-block"></span>書類状況</h3>
-  <div class="grid3">${DOCS.map(d=>`<div class="form-field"><label>${d.l}</label><select name="${d.k}"><option value="">--</option><option ${st[d.k]==="済"?"selected":""}>済</option><option ${st[d.k]==="？"?"selected":""}>？</option></select></div>`).join("")}</div>
-  <h3 style="font-size:14px;font-weight:800;color:var(--teal);margin:8px 0 10px;display:flex;align-items:center;gap:8px"><span style="width:6px;height:6px;border-radius:50%;background:var(--teal);display:inline-block"></span>初級（4種）</h3>
-  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0 16px">${BEG.map(p=>`<div class="form-field"><label>${p.label}</label><select name="${p.key}"><option value="">--</option><option ${st[p.key]==="済"?"selected":""}>済</option></select></div>`).join("")}</div>
-  <h3 style="font-size:14px;font-weight:800;color:var(--navy);margin:8px 0 10px;display:flex;align-items:center;gap:8px"><span style="width:6px;height:6px;border-radius:50%;background:var(--navy);display:inline-block"></span>中級（6種）</h3>
-  <div class="grid3">${MID.map(p=>`<div class="form-field"><label>${esc(p.label)}</label><input name="${p.key}" value="${esc(st[p.key])}"></div>`).join("")}</div>
-  <div class="grid2" style="margin-top:8px">
-    <div class="form-field"><label>初回養成スケジュール</label><input name="trainingSchedule" value="${esc(st.trainingSchedule)}"></div>
-    <div class="form-field"><label>養成申込書</label><select name="trainingApplication"><option value="">--</option><option ${st.trainingApplication==="済"?"selected":""}>済</option></select></div>
+
+  <div style="background:var(--gray50);border-radius:var(--radius);padding:16px;margin:14px 0;border:1.5px solid var(--gray200)">
+    <div style="font-size:13px;font-weight:800;color:var(--gray700);margin-bottom:10px">導入プログラム</div>
+    <div class="flex" style="gap:24px">
+      <label class="toggle-label"><input type="checkbox" id="chk-gr" ${hasG?"checked":""} onchange="toggleProgramSection()"> <span class="pgm-badge pgm-gr" style="font-size:12px;padding:4px 14px">GR（グループリフォーマー）</span></label>
+      <label class="toggle-label"><input type="checkbox" id="chk-bisai" ${hasB?"checked":""} onchange="toggleProgramSection()"> <span class="pgm-badge pgm-bisai" style="font-size:12px;padding:4px 14px">美彩心</span></label>
+    </div>
   </div>
+
+  <!-- GR Section -->
+  <div id="form-gr" ${hasG?"":' style="display:none"'}>
+    <div style="background:linear-gradient(135deg,#eff6ff,#f8fafc);border-radius:var(--radius-lg);padding:20px;margin-bottom:16px;border:2px solid #bfdbfe">
+      <div class="flex" style="margin-bottom:14px"><span class="pgm-badge pgm-gr" style="font-size:13px;padding:4px 16px">GR プログラム設定</span></div>
+      <div class="grid3">
+        <div class="form-field"><label>更新月①</label><input name="renewalMonth1" value="${esc(st.renewalMonth1)}"></div>
+        <div class="form-field"><label>更新月②</label><input name="renewalMonth2" value="${esc(st.renewalMonth2)}"></div>
+        <div class="form-field"><label>研修開催日</label><input name="trainingHistory" value="${esc(st.trainingHistory)}"></div>
+      </div>
+      <div style="background:#fff;border-radius:var(--radius);padding:16px;margin:10px 0;border:1.5px solid #e9d5ff">
+        <div class="flex" style="gap:16px;align-items:flex-start">
+          <div style="flex:0 0 280px">
+            <label style="display:block;font-size:14px;font-weight:800;color:var(--accent);margin-bottom:8px">10種修了月</label>
+            <div style="font-size:11px;color:var(--gray400);margin-bottom:8px">スキルアップ研修の起算月になります</div>
+            <input type="month" name="completionDate" value="${st.completionDate}" style="width:100%;padding:12px 16px;border-radius:12px;border:2px solid #d8b4fe;font-size:16px;font-weight:700;color:var(--accent);cursor:pointer;background:#fff;box-sizing:border-box" oninput="updatePreview(this.value)">
+          </div>
+          <div style="flex:1;padding-top:28px" id="sched-preview"></div>
+        </div>
+      </div>
+      <h3 style="font-size:14px;font-weight:800;color:var(--gray700);margin:10px 0 10px;display:flex;align-items:center;gap:8px"><span style="width:6px;height:6px;border-radius:50%;background:var(--gray500);display:inline-block"></span>GR 書類状況</h3>
+      <div class="grid3">${DOCS_GR.map(d=>`<div class="form-field"><label>${d.l}</label><select name="${d.k}"><option value="">--</option><option ${st[d.k]==="済"?"selected":""}>済</option><option ${st[d.k]==="？"?"selected":""}>?</option></select></div>`).join("")}</div>
+      <h3 style="font-size:14px;font-weight:800;color:var(--teal);margin:8px 0 10px;display:flex;align-items:center;gap:8px"><span style="width:6px;height:6px;border-radius:50%;background:var(--teal);display:inline-block"></span>初級（4種）</h3>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0 16px">${BEG.map(p=>`<div class="form-field"><label>${p.label}</label><select name="${p.key}"><option value="">--</option><option ${st[p.key]==="済"?"selected":""}>済</option></select></div>`).join("")}</div>
+      <h3 style="font-size:14px;font-weight:800;color:var(--navy);margin:8px 0 10px;display:flex;align-items:center;gap:8px"><span style="width:6px;height:6px;border-radius:50%;background:var(--navy);display:inline-block"></span>中級（6種）</h3>
+      <div class="grid3">${MID.map(p=>`<div class="form-field"><label>${esc(p.label)}</label><input name="${p.key}" value="${esc(st[p.key])}"></div>`).join("")}</div>
+      <div class="grid2" style="margin-top:8px">
+        <div class="form-field"><label>初回養成スケジュール</label><input name="trainingSchedule" value="${esc(st.trainingSchedule)}"></div>
+        <div class="form-field"><label>養成申込書</label><select name="trainingApplication"><option value="">--</option><option ${st.trainingApplication==="済"?"selected":""}>済</option></select></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 美彩心 Section -->
+  <div id="form-bisai" ${hasB?"":' style="display:none"'}>
+    <div style="background:linear-gradient(135deg,#fdf2f8,#fce7f3);border-radius:var(--radius-lg);padding:20px;margin-bottom:16px;border:2px solid #f9a8d4">
+      <div class="flex" style="margin-bottom:14px"><span class="pgm-badge pgm-bisai" style="font-size:13px;padding:4px 16px">美彩心 プログラム設定</span></div>
+      <div class="grid3">
+        <div class="form-field"><label>美彩心 導入状況</label><input name="bisaishin" value="${esc(st.bisaishin)}" placeholder="済 / 予定 など"></div>
+        <div class="form-field"><label>更新月①</label><input name="b_renewalMonth1" value="${esc(st.b_renewalMonth1||"")}"></div>
+        <div class="form-field"><label>更新月②</label><input name="b_renewalMonth2" value="${esc(st.b_renewalMonth2||"")}"></div>
+      </div>
+      <div class="grid2" style="margin-top:4px">
+        <div class="form-field"><label>養成スケジュール</label><input name="b_trainingSchedule" value="${esc(st.b_trainingSchedule||"")}"></div>
+        <div class="form-field"><label>研修開催日</label><input name="b_trainingHistory" value="${esc(st.b_trainingHistory||"")}"></div>
+      </div>
+      <h3 style="font-size:14px;font-weight:800;color:var(--pink-dark);margin:10px 0 10px;display:flex;align-items:center;gap:8px"><span style="width:6px;height:6px;border-radius:50%;background:var(--pink);display:inline-block"></span>美彩心 書類状況</h3>
+      <div class="grid3">${DOCS_BISAI.map(d=>`<div class="form-field"><label>${d.l}</label><select name="${d.k}"><option value="">--</option><option ${(st[d.k]||"")==="済"?"selected":""}>済</option><option ${(st[d.k]||"")==="？"?"selected":""}>?</option></select></div>`).join("")}</div>
+    </div>
+  </div>
+
   <div class="flex" style="justify-content:flex-end;margin-top:20px;gap:10px">
     <button type="button" class="btn btn-ghost" onclick="closeModal()">キャンセル</button>
     <button type="button" class="btn btn-primary" style="padding:10px 28px;font-size:14px" onclick="saveForm(${st.id},${isNew})">${isNew?"登録する":"保存する"}</button>
   </div></form>`;
   showModal(h);
   if(st.completionDate) updatePreview(st.completionDate);
+}
+
+function toggleProgramSection(){
+  document.getElementById("form-gr").style.display=document.getElementById("chk-gr").checked?"":"none";
+  document.getElementById("form-bisai").style.display=document.getElementById("chk-bisai").checked?"":"none";
 }
 
 function updatePreview(val){
@@ -501,6 +747,11 @@ function updatePreview(val){
 function saveForm(id,isNew){
   const fd=new FormData(document.getElementById("edit-form"));const obj={};
   fd.forEach((v,k)=>obj[k]=v);
+  // Build programs array from checkboxes
+  const progs=[];
+  if(document.getElementById("chk-gr").checked)progs.push("GR");
+  if(document.getElementById("chk-bisai").checked)progs.push("美彩心");
+  obj.programs=progs;
   if(isNew){obj.id=Math.max(...DATA.map(d=>d.id),0)+1;DATA.push(obj);}
   else{const i=DATA.findIndex(d=>d.id===id);if(i>=0)DATA[i]={...DATA[i],...obj};}
   save();closeModal();render();
@@ -509,7 +760,7 @@ function saveForm(id,isNew){
 function confirmDel(id){
   const st=DATA.find(d=>d.id===id);if(!st)return;
   showModal(`<div style="text-align:center;padding:20px 0">
-    <div style="width:56px;height:56px;border-radius:50%;background:var(--red-bg);margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:24px">⚠</div>
+    <div style="width:56px;height:56px;border-radius:50%;background:var(--red-bg);margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:24px">&#9888;</div>
     <h3 style="font-size:18px;font-weight:800;margin-bottom:8px">削除確認</h3>
     <p style="color:var(--gray500);margin-bottom:24px">「${esc(st.storeName)}」を削除しますか？<br><span style="font-size:12px;color:var(--gray400)">この操作は取り消せません</span></p>
     <div class="flex" style="justify-content:center;gap:10px">
