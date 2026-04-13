@@ -7,6 +7,7 @@
 <meta name="referrer" content="no-referrer">
 <title>AXISCORE PILATES — UNIT-System</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Montserrat:wght@300;400;500;600;700;800;900&family=Bebas+Neue&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
 <style>
 /* ═══════════════════════════════════════════
    RESET & TOKENS
@@ -1157,13 +1158,88 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .pp-section{margin-bottom:1.5mm;flex-shrink:1;overflow:hidden;}
 .pp-section-title{font:700 8px Montserrat;letter-spacing:1.5px;color:#C8102E;margin-bottom:1mm;padding-bottom:0.5mm;border-bottom:0.5px solid #eee;}
 .pp-body{flex:1;overflow:hidden;display:flex;flex-direction:column;gap:1mm;}
+/* ── Preview mode: missing field indicators ── */
+.pp-missing{border:1.5px dashed #EF4444!important;background:rgba(239,68,68,.06)!important;position:relative;}
+.pp-missing::after{content:'未入力';position:absolute;top:2px;right:4px;font:700 6px 'Noto Sans JP';color:#EF4444;letter-spacing:0.5px;}
+.pp-filled{border:1px solid #22C55E!important;background:rgba(34,197,94,.04)!important;}
+.ppage.pv-screen{height:auto;min-height:277mm;box-shadow:0 4px 24px rgba(0,0,0,.4);border-radius:4px;}
+/* 縦レイアウト: 写真5枚を2段（3+2） */
+.ppage.pp-portrait .pp-photos{grid-template-columns:repeat(3,1fr);}
+.ppage.pp-portrait .pp-photos .pp-photo{aspect-ratio:4/3;}
+/* 横レイアウト: A4横、2カラム */
+.ppage.pp-landscape{width:277mm;height:190mm;}
+.ppage.pp-landscape.pv-screen{height:auto;min-height:190mm;}
+.ppage.pp-landscape .pp-photos{grid-template-columns:repeat(5,1fr);}
+.ppage.pp-landscape .pp-body-cols{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:4mm;overflow:hidden;}
+.ppage.pp-landscape .pp-body-cols > div{display:flex;flex-direction:column;gap:1mm;overflow:hidden;}
+@media print{
+  .ppage.pp-landscape{width:277mm!important;height:190mm!important;}
+  @page{size:A4 portrait;margin:5mm;}
+}
+/* ── mv-modal visibility (classList.add('open')対応) ── */
+#mv-modal.open{display:block!important;}
+/* ── Layout Settings Editor ── */
+#mv-layout-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:260;overflow-y:auto}
+.ls-wrap{max-width:960px;margin:24px auto;padding:0 16px}
+.ls-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;position:sticky;top:0;background:rgba(0,0,0,.9);padding:14px 0;z-index:1}
+.ls-title-grp{display:flex;flex-direction:column}
+.ls-title-sub{font:900 10px Montserrat;letter-spacing:5px;color:#F59E0B}
+.ls-title-main{font:700 14px 'Noto Sans JP';color:#fff;margin-top:2px}
+.ls-actions{display:flex;gap:8px;align-items:center}
+.ls-btn{padding:6px 14px;border-radius:4px;font:700 9px Montserrat;letter-spacing:1px;cursor:pointer;border:none;outline:none}
+.ls-btn-save{background:#22C55E;color:#fff}
+.ls-btn-reset{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2)}
+.ls-btn-close{background:#C8102E;color:#fff}
+.ls-btn-add{background:rgba(212,175,55,.2);color:#D4AF37;border:1px solid rgba(212,175,55,.4)}
+.ls-mode-toggle{display:flex;gap:0;background:rgba(255,255,255,.05);border-radius:6px;padding:3px;margin-bottom:16px;width:fit-content}
+.ls-mode-btn{padding:8px 20px;border:none;background:transparent;color:rgba(255,255,255,.5);font:700 10px Montserrat;letter-spacing:2px;cursor:pointer;border-radius:4px}
+.ls-mode-btn.active{background:rgba(200,16,46,.8);color:#fff}
+.ls-toolbar{display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap}
+.ls-hint{font:300 10px 'Noto Sans JP';color:rgba(255,255,255,.5);margin-left:auto}
+.ls-columns{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.ls-col{background:rgba(255,255,255,.03);border:1px dashed rgba(255,255,255,.15);border-radius:8px;padding:12px;min-height:240px}
+.ls-col-title{font:700 10px Montserrat;letter-spacing:3px;color:rgba(255,255,255,.7);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.ls-col-badge{padding:2px 8px;background:rgba(200,16,46,.2);border:1px solid rgba(200,16,46,.4);border-radius:3px;color:#EF4444;font:600 8px Montserrat}
+.ls-list{min-height:200px;display:flex;flex-direction:column;gap:8px}
+.ls-item{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:10px 12px;cursor:move;display:flex;align-items:center;gap:10px;transition:all .15s}
+.ls-item:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2)}
+.ls-item.sortable-ghost{opacity:0.3;background:rgba(200,16,46,.2)}
+.ls-item.sortable-chosen{background:rgba(200,16,46,.25);border-color:rgba(200,16,46,.5)}
+.ls-drag-handle{font-size:14px;color:rgba(255,255,255,.4);cursor:grab;user-select:none}
+.ls-item-name{flex:1;font:700 11px 'Noto Sans JP';color:#fff}
+.ls-item-type{font:400 9px Montserrat;color:rgba(255,255,255,.4);margin-left:6px}
+.ls-required{display:flex;align-items:center;gap:4px;font:600 9px 'Noto Sans JP';color:#F59E0B;cursor:pointer;user-select:none}
+.ls-required input{accent-color:#F59E0B}
+.ls-delete{background:transparent;border:none;color:rgba(239,68,68,.7);cursor:pointer;font-size:14px;padding:2px 6px;outline:none}
+.ls-delete:hover{color:#EF4444}
+.ls-delete.locked{opacity:0.2;cursor:not-allowed}
+.ls-hidden-zone{background:rgba(0,0,0,.3);border:1px dashed rgba(255,255,255,.1);border-radius:8px;padding:12px;min-height:80px;margin-top:10px}
+.ls-hidden-title{font:700 10px Montserrat;letter-spacing:3px;color:rgba(255,255,255,.4);margin-bottom:8px}
+.ls-addmodal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:270;align-items:center;justify-content:center}
+.ls-addmodal.open{display:flex}
+.ls-addbox{background:#1a1a1a;border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:24px;width:400px}
+.ls-addbox h3{font:700 12px Montserrat;letter-spacing:3px;color:#D4AF37;margin-bottom:16px}
+.ls-addbox label{display:block;font:600 10px 'Noto Sans JP';color:rgba(255,255,255,.7);margin-bottom:5px;margin-top:12px}
+.ls-addbox input,.ls-addbox select{width:100%;padding:8px 10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:4px;color:#fff;font:400 12px 'Noto Sans JP';outline:none}
+.ls-addbox input:focus,.ls-addbox select:focus{border-color:rgba(200,16,46,.5)}
+.ls-addbox .ls-addbtns{display:flex;gap:8px;justify-content:flex-end;margin-top:20px}
 
 @media print{
   *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
   body>*:not(#mv-print-area){display:none!important;}
   #mv-print-area{display:block!important;position:static!important;}
-  .ppage{box-shadow:none!important;margin:0!important;padding:6mm 8mm!important;height:277mm!important;overflow:hidden!important;}
+  .ppage{box-shadow:none!important;margin:0!important;padding:6mm 8mm!important;overflow:hidden!important;}
+  .ppage:not(.pp-landscape){height:277mm!important;}
+  .ppage.pp-landscape{width:277mm!important;height:190mm!important;}
+  /* プレビューの色枠は印刷時には出さない */
+  .pp-missing,.pp-filled{border:none!important;background:transparent!important;}
+  .pp-missing::after{display:none!important;}
+  /* デフォルトはportrait、bodyクラスでlandscapeに切替 */
   @page{size:A4 portrait;margin:5mm;}
+  body.print-landscape #mv-print-area .ppage{width:277mm!important;height:190mm!important;}
+}
+@media print{
+  body.print-landscape{}
 }
 .lv-P{background:rgba(232,121,249,.2)!important;color:#E879F9!important;border:1px solid rgba(232,121,249,.3)!important;}
 .lv-F{background:rgba(34,197,94,.2)!important;color:#22C55E!important;border:1px solid rgba(34,197,94,.3)!important;}
@@ -2768,9 +2844,31 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
 <!-- SLIDE 17 (ADMIN) 削除済み -->
 
 <!-- ════════════════════════════════════════════════════════
-     INSTRUCTOR TRAINING ROADMAP (P18統合済み)
+     APPARATUS CURRICULUM (旧P19 → P18に移動)
 ════════════════════════════════════════════════════════ -->
-<div class="slide" data-slide="18" data-title="新規養成ロードマップ">
+<div class="slide" data-slide="18" data-title="器具別養成種目一覧">
+  <div style="display:flex;flex-direction:column;height:100%;padding:20px 28px;overflow:hidden">
+
+    <!-- ヘッダー -->
+    <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:16px;flex-shrink:0">
+      <div style="font:900 11px Montserrat;letter-spacing:5px;color:var(--red)">● APPARATUS CURRICULUM</div>
+      <div style="font:700 18px Montserrat;color:var(--white);letter-spacing:1px">器具別 養成種目一覧</div>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:12px"><span style="font:600 9px Montserrat;letter-spacing:2px;color:var(--dim)">全</span><span style="font:900 16px 'Bebas Neue';color:var(--white)">372</span><span style="font:600 9px Montserrat;letter-spacing:1px;color:var(--dim)">種目</span><span style="font:300 9px 'Noto Sans JP';color:var(--dim);border-left:1px solid var(--border);padding-left:10px">表示中: <span id="app23-count">—</span></span></div>
+    </div>
+
+    <!-- 器具タブ -->
+    <div style="display:flex;gap:6px;margin-bottom:14px;flex-shrink:0" id="app23-tabs"></div>
+
+    <!-- コンテンツエリア -->
+    <div style="flex:1;overflow-y:auto;display:grid;grid-template-columns:repeat(2,1fr);gap:14px;align-content:start" id="app23-content"></div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     INSTRUCTOR TRAINING ROADMAP (旧P18 → P19に移動)
+════════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="19" data-title="新規養成ロードマップ">
 <div style="display:flex;flex-direction:column;height:100%;padding:20px 28px;overflow:hidden;gap:16px">
 
   <!-- ヘッダー -->
@@ -2980,25 +3078,6 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
 </div>
 </div>
 
-<div class="slide" data-slide="19" data-title="器具別養成種目一覧">
-  <div style="display:flex;flex-direction:column;height:100%;padding:20px 28px;overflow:hidden">
-    
-    <!-- ヘッダー -->
-    <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:16px;flex-shrink:0">
-      <div style="font:900 11px Montserrat;letter-spacing:5px;color:var(--red)">● APPARATUS CURRICULUM</div>
-      <div style="font:700 18px Montserrat;color:var(--white);letter-spacing:1px">器具別 養成種目一覧</div>
-      <div style="margin-left:auto;display:flex;align-items:center;gap:12px"><span style="font:600 9px Montserrat;letter-spacing:2px;color:var(--dim)">全</span><span style="font:900 16px 'Bebas Neue';color:var(--white)">372</span><span style="font:600 9px Montserrat;letter-spacing:1px;color:var(--dim)">種目</span><span style="font:300 9px 'Noto Sans JP';color:var(--dim);border-left:1px solid var(--border);padding-left:10px">表示中: <span id="app23-count">—</span></span></div>
-    </div>
-
-    <!-- 器具タブ -->
-    <div style="display:flex;gap:6px;margin-bottom:14px;flex-shrink:0" id="app23-tabs"></div>
-
-    <!-- コンテンツエリア -->
-    <div style="flex:1;overflow-y:auto;display:grid;grid-template-columns:repeat(2,1fr);gap:14px;align-content:start" id="app23-content"></div>
-
-  </div>
-</div>
-
 <div class="slide" data-slide="20" data-title="マニュアル作成ガイド">
 
   <!-- ambient -->
@@ -3206,9 +3285,9 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
       <div style="font:900 11px Montserrat;letter-spacing:4px;color:var(--red)">● EXERCISE MANUAL</div>
       <div style="font:700 15px Montserrat;color:var(--white);letter-spacing:1px">種目マニュアル</div>
       <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
+        <button onclick="openLayoutEditor()" style="padding:6px 14px;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);outline:none;border-radius:4px;color:#F59E0B;font:700 9px Montserrat;letter-spacing:1px;cursor:pointer">レイアウト設定</button>
         <button onclick="mvExportPDF()" style="padding:6px 14px;background:rgba(200,16,46,.15);border:1px solid rgba(200,16,46,.3);outline:none;border-radius:4px;color:var(--red);font:700 9px Montserrat;letter-spacing:1px;cursor:pointer">絞込PDF出力</button>
         <button onclick="openGuideOverlay()" style="padding:6px 14px;background:rgba(212,175,55,.15);border:1px solid rgba(212,175,55,.3);outline:none;border-radius:4px;color:var(--gold);font:700 9px Montserrat;letter-spacing:1px;cursor:pointer">作成ガイド</button>
-        <button onclick="show(1)" style="padding:6px 14px;background:rgba(200,16,46,.9);border:none;outline:none;border-radius:4px;color:#fff;font:700 9px Montserrat;letter-spacing:1px;cursor:pointer">← スライドに戻る</button>
       </div>
     </div>
 
@@ -3286,7 +3365,7 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
         </div>
         <div style="display:flex;gap:8px;align-items:center;margin-left:auto">
           <button id="mv-fav-btn" onclick="mvToggleFav()" style="width:36px;height:36px;border-radius:50%;background:var(--bg3);border:1px solid var(--border);color:var(--muted);font-size:18px;cursor:pointer;transition:all .2s" title="お気に入り">☆</button>
-          <button class="mv-x" onclick="document.getElementById('mv-modal').style.display='none'">×</button>
+          <button class="mv-x" onclick="var m=document.getElementById('mv-modal');m.classList.remove('open');m.style.display='none'">×</button>
         </div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:0">
@@ -3323,9 +3402,10 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
       </div>
       <div style="padding:14px 20px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end">
         <button id="mv-prev" onclick="mvNav(-1)" style="padding:7px 16px;background:var(--bg3);border:1px solid var(--border2);border-radius:4px;color:var(--muted);font:600 9px Montserrat;cursor:pointer">← PREV</button>
+        <button onclick="mvPreview()" style="padding:7px 16px;background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);border-radius:4px;color:#22C55E;font:600 9px Montserrat;cursor:pointer">プレビュー</button>
         <button id="mv-print-btn" onclick="mvPrintSingle()" style="padding:7px 16px;background:rgba(200,16,46,.15);border:1px solid rgba(200,16,46,.3);border-radius:4px;color:var(--red);font:600 9px Montserrat;cursor:pointer">PDF出力</button>
         <button id="mv-next" onclick="mvNav(1)" style="padding:7px 16px;background:var(--bg3);border:1px solid var(--border2);border-radius:4px;color:var(--muted);font:600 9px Montserrat;cursor:pointer">NEXT →</button>
-        <button onclick="document.getElementById('mv-modal').style.display='none'" style="padding:7px 16px;background:var(--red);border:none;border-radius:4px;color:#fff;font:700 9px Montserrat;cursor:pointer">閉じる</button>
+        <button onclick="var m=document.getElementById('mv-modal');m.classList.remove('open');m.style.display='none'" style="padding:7px 16px;background:var(--red);border:none;border-radius:4px;color:#fff;font:700 9px Montserrat;cursor:pointer">閉じる</button>
       </div>
     </div>
   </div>
@@ -3356,6 +3436,88 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
       <div style="display:flex;gap:10px;justify-content:center">
         <button onclick="mvDownloadExcel()" style="padding:10px 24px;background:rgba(212,175,55,.15);border:1px solid rgba(212,175,55,.4);border-radius:5px;color:var(--gold);font:700 10px Montserrat;letter-spacing:1px;cursor:pointer">DOWNLOAD EXCEL</button>
         <button onclick="document.getElementById('mv-guide-overlay').style.display='none'" style="padding:10px 24px;background:var(--red);border:none;border-radius:5px;color:#fff;font:700 10px Montserrat;cursor:pointer">閉じる</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- プレビューオーバーレイ -->
+  <div id="mv-preview-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:250;overflow-y:auto">
+    <div style="max-width:800px;margin:24px auto;padding:0 16px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;position:sticky;top:0;background:rgba(0,0,0,.85);padding:12px 0;z-index:1">
+        <div>
+          <div style="font:900 10px Montserrat;letter-spacing:4px;color:#22C55E">MANUAL PREVIEW</div>
+          <div id="mv-pv-title" style="font:700 14px 'Noto Sans JP';color:#fff;margin-top:2px"></div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <div id="mv-pv-status" style="font:600 10px Montserrat;padding:4px 10px;border-radius:4px"></div>
+          <button onclick="mvPreviewNav(-1)" style="padding:6px 12px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:4px;color:#fff;font:600 9px Montserrat;cursor:pointer">← PREV</button>
+          <button onclick="mvPreviewNav(1)" style="padding:6px 12px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:4px;color:#fff;font:600 9px Montserrat;cursor:pointer">NEXT →</button>
+          <button onclick="document.getElementById('mv-preview-overlay').style.display='none'" style="padding:6px 14px;background:var(--red);border:none;border-radius:4px;color:#fff;font:700 9px Montserrat;cursor:pointer">閉じる</button>
+        </div>
+      </div>
+      <div id="mv-pv-body" style="display:flex;justify-content:center"></div>
+    </div>
+  </div>
+
+  <!-- レイアウト設定オーバーレイ -->
+  <div id="mv-layout-overlay">
+    <div class="ls-wrap">
+      <div class="ls-hdr">
+        <div class="ls-title-grp">
+          <div class="ls-title-sub">LAYOUT SETTINGS</div>
+          <div class="ls-title-main">マニュアルレイアウト設定</div>
+        </div>
+        <div class="ls-actions">
+          <button class="ls-btn ls-btn-reset" onclick="lsReset()">デフォルトに戻す</button>
+          <button class="ls-btn ls-btn-save" onclick="lsSave()">保存して適用</button>
+          <button class="ls-btn ls-btn-close" onclick="document.getElementById('mv-layout-overlay').style.display='none'">閉じる</button>
+        </div>
+      </div>
+
+      <div class="ls-mode-toggle" id="ls-mode">
+        <button class="ls-mode-btn active" data-mode="portrait" onclick="lsSetMode('portrait')">縦 PORTRAIT</button>
+        <button class="ls-mode-btn" data-mode="landscape" onclick="lsSetMode('landscape')">横 LANDSCAPE</button>
+      </div>
+
+      <div class="ls-toolbar">
+        <button class="ls-btn ls-btn-add" onclick="lsOpenAdd()">＋ セクション追加</button>
+        <div class="ls-hint">ドラッグで並び替え／カラム移動。「必須」チェックをすると、データが空でも常に表示されます（任意項目は空なら非表示）</div>
+      </div>
+
+      <div class="ls-columns">
+        <div class="ls-col">
+          <div class="ls-col-title">左カラム <span style="font:300 9px 'Noto Sans JP';color:rgba(255,255,255,.4);margin-left:auto">（縦では上部）</span></div>
+          <div class="ls-list" id="ls-col-left"></div>
+        </div>
+        <div class="ls-col">
+          <div class="ls-col-title">右カラム <span style="font:300 9px 'Noto Sans JP';color:rgba(255,255,255,.4);margin-left:auto">（縦では下部）</span></div>
+          <div class="ls-list" id="ls-col-right"></div>
+        </div>
+      </div>
+
+      <div class="ls-hidden-zone">
+        <div class="ls-hidden-title">非表示ゾーン（ここにドラッグすると表示されません）</div>
+        <div class="ls-list" id="ls-col-hidden" style="min-height:60px"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- セクション追加モーダル -->
+  <div class="ls-addmodal" id="ls-addmodal">
+    <div class="ls-addbox">
+      <h3>セクション追加</h3>
+      <label>セクション名（表示名）</label>
+      <input type="text" id="ls-add-name" placeholder="例：応用バリエーション">
+      <label>入力形式</label>
+      <select id="ls-add-type">
+        <option value="text">テキスト（単一行）</option>
+        <option value="textarea">長文テキスト（複数行）</option>
+        <option value="list">箇条書き</option>
+        <option value="titled-list">見出し付き項目（タイトル＋説明）</option>
+      </select>
+      <div class="ls-addbtns">
+        <button class="ls-btn ls-btn-reset" onclick="lsCloseAdd()">キャンセル</button>
+        <button class="ls-btn ls-btn-save" onclick="lsConfirmAdd()">追加</button>
       </div>
     </div>
   </div>
@@ -3395,7 +3557,7 @@ function show(n){
   setTimeout(()=>{
     if(n===6){renderRail&&renderRail();renderDetail&&renderDetail();}
     if(n===17 && typeof emlInit==='function') emlInit();
-    if(n===19 && typeof s23Init==='function') s23Init();
+    if(n===18 && typeof s23Init==='function') s23Init();
     if(n===20 && typeof mvInit==='function') mvInit();
   }, 50);
 }
@@ -4722,28 +4884,111 @@ var EX = [
       return r.name===name&&r.app===app&&r.unit===+unit;
     });if(idx>=0)setTimeout(function(){window.mvOpen(idx);},150);}
   };
+  /* 印刷用：必須でなくデータ空のセクションを非表示にする */
+  function renderSectionPrint(section, r){
+    var t = section.type;
+    var title = section.name;
+    function wrap(bodyHtml){ return '<div class="pp-section"><div class="pp-section-title">'+title+'</div>'+bodyHtml+'</div>'; }
+    if(t==='builtin-setup'){
+      var rows = [['スプリング',r.spring],['レップ数',r.reps],['ポジション',r.position],['禁忌・注意',r.contra]];
+      var hasAny = rows.some(function(kv){return !!kv[1];});
+      var body = rows.map(function(kv){
+        if(!kv[1] && !section.required) return '';
+        return '<div class="pp-row"><div class="pp-k">'+kv[0]+'</div><div class="pp-v">'+(kv[1]||'—')+'</div></div>';
+      }).join('');
+      if(!hasAny && !section.required) return { html:'', filled:false };
+      return { html: wrap(body), filled:hasAny };
+    }
+    if(t==='builtin-cues'){
+      var has = r.cues && r.cues.length;
+      if(!has && !section.required) return { html:'', filled:false };
+      var body = has
+        ? r.cues.map(function(c2){return '<div class="pp-v" style="border-left:1.5px solid #C8102E;padding-left:2mm;margin-bottom:1mm">'+c2+'</div>';}).join('')
+        : '<div class="pp-v">—</div>';
+      return { html: wrap(body), filled:has };
+    }
+    if(t==='builtin-purpose'){
+      var has = r.purpose && r.purpose.length;
+      if(!has && !section.required) return { html:'', filled:false };
+      var body = has ? r.purpose.map(function(p){return '<div class="pp-v">• '+p+'</div>';}).join('') : '<div class="pp-v">—</div>';
+      return { html: wrap(body), filled:has };
+    }
+    if(t==='builtin-muscles'){
+      var has = !!r.muscles;
+      if(!has && !section.required) return { html:'', filled:false };
+      var body = has ? '<div class="pp-v">'+r.muscles+'</div>' : '<div class="pp-v">—</div>';
+      return { html: wrap(body), filled:has };
+    }
+    if(t==='builtin-seq'){
+      var has = !!r.sequence;
+      if(!has && !section.required) return { html:'', filled:false };
+      var body = has ? '<div class="pp-v" style="white-space:pre-wrap;line-height:1.4">'+r.sequence+'</div>' : '<div class="pp-v">—</div>';
+      return { html: wrap(body), filled:has };
+    }
+    if(t==='builtin-points'){
+      var pts = r.points && r.points.filter(function(p){return p && p.title;});
+      var has = pts && pts.length;
+      if(!has && !section.required) return { html:'', filled:false };
+      var body = has
+        ? pts.map(function(p){return '<div style="margin-bottom:1mm"><div style="font:700 8px Noto Sans JP;color:#333">'+p.title+'</div><div class="pp-v">'+p.desc+'</div></div>';}).join('')
+        : '<div class="pp-v">—</div>';
+      return { html: wrap(body), filled:has };
+    }
+    // カスタム
+    var cData = r.custom && r.custom[section.id];
+    var hasC = false, body = '<div class="pp-v">—</div>';
+    if(cData){
+      if(section.type==='list' && Array.isArray(cData) && cData.length){
+        body = cData.map(function(x){return '<div class="pp-v">• '+x+'</div>';}).join(''); hasC = true;
+      } else if(section.type==='titled-list' && Array.isArray(cData) && cData.length){
+        body = cData.map(function(x){return '<div style="margin-bottom:1mm"><div style="font:700 8px Noto Sans JP;color:#333">'+(x.title||'')+'</div><div class="pp-v">'+(x.desc||'')+'</div></div>';}).join(''); hasC = true;
+      } else if(typeof cData==='string' && cData.trim()){
+        body = '<div class="pp-v" style="white-space:pre-wrap">'+cData+'</div>'; hasC = true;
+      }
+    }
+    if(!hasC && !section.required) return { html:'', filled:false };
+    return { html: wrap(body), filled:hasC };
+  }
+
   function buildPP(list){
     var c=document.getElementById('mv-print-area');
     if(!c)return;
+    var cfg = (typeof lsLoad==='function') ? lsLoad() : {mode:'portrait', sections:[]};
+    var mode = cfg.mode || 'portrait';
+    var modeCls = mode==='landscape' ? 'pp-landscape' : 'pp-portrait';
+    // 印刷用の@pageサイズを切替
+    var pgStyle = document.getElementById('dynamic-print-page');
+    if(!pgStyle){
+      pgStyle = document.createElement('style');
+      pgStyle.id = 'dynamic-print-page';
+      document.head.appendChild(pgStyle);
+    }
+    pgStyle.textContent = '@media print{@page{size:A4 '+(mode==='landscape'?'landscape':'portrait')+';margin:5mm;}}';
+
+    var visible = (cfg.sections||[]).filter(function(s){return s.column!=='hidden';});
+
     c.innerHTML=list.map(function(r){
-      // purpose section
-      var purposeHtml='';
-      if(r.purpose&&r.purpose.length){
-        purposeHtml='<div class="pp-section"><div class="pp-section-title">PURPOSE</div>'
-          +r.purpose.map(function(p){return '<div class="pp-v">• '+p+'</div>';}).join('')+'</div>';
+      function renderList(list){
+        list.sort(function(a,b){return (a.order||0)-(b.order||0);});
+        return list.map(function(s){
+          var out = renderSectionPrint(s, r);
+          return out.html;
+        }).join('');
       }
-      // muscles
-      var muscleHtml=r.muscles?'<div class="pp-section"><div class="pp-section-title">TARGET MUSCLES</div><div class="pp-v">'+r.muscles+'</div></div>':'';
-      // sequence
-      var seqHtml=r.sequence?'<div class="pp-section"><div class="pp-section-title">MOVEMENT SEQUENCE</div><div class="pp-v" style="white-space:pre-wrap;line-height:1.4">'+r.sequence+'</div></div>':'';
-      // points
-      var ptsHtml='';
-      var pts=r.points&&r.points.filter(function(p){return p&&p.title;});
-      if(pts&&pts.length){
-        ptsHtml='<div class="pp-section"><div class="pp-section-title">KEY POINTS</div>'
-          +pts.map(function(p){return '<div style="margin-bottom:1mm"><div style="font:700 8px Noto Sans JP;color:#333">'+p.title+'</div><div class="pp-v">'+p.desc+'</div></div>';}).join('')+'</div>';
+      var bodyHtml;
+      if(mode==='landscape'){
+        var leftList  = visible.filter(function(s){return s.column==='left';});
+        var rightList = visible.filter(function(s){return s.column==='right';});
+        bodyHtml = '<div class="pp-body-cols"><div>'+renderList(leftList)+'</div><div>'+renderList(rightList)+'</div></div>';
+      } else {
+        var ordered = visible.slice().sort(function(a,b){
+          var ca = a.column==='left'?0:1, cb = b.column==='left'?0:1;
+          if(ca!==cb) return ca-cb;
+          return (a.order||0)-(b.order||0);
+        });
+        bodyHtml = '<div class="pp-body">'+renderList(ordered)+'</div>';
       }
-      return '<div class="ppage">'
+      return '<div class="ppage '+modeCls+'">'
         +'<div class="pp-hdr"><div>'
         +'<div style="font-size:7px;letter-spacing:3px;color:#C8102E;margin-bottom:1mm">AXISCORE PILATES — EXERCISE MANUAL</div>'
         +'<div style="font-size:14px;font-weight:900">'+r.name+'</div>'
@@ -4754,18 +4999,7 @@ var EX = [
         +'<div class="pp-photos">'+r.photos.map(function(l,i){
           return '<div class="pp-photo"><span class="mv-photo-n">'+(i+1)+'</span><br><span>'+(l||'')+'</span></div>';
         }).join('')+'</div>'
-        +'<div class="pp-body">'
-        +'<div class="pp-info"><div>'
-          +[['スプリング',r.spring],['レップ数',r.reps],['ポジション',r.position],['禁忌・注意',r.contra||'なし']].map(function(kv){
-            return '<div class="pp-row"><div class="pp-k">'+kv[0]+'</div><div class="pp-v">'+(kv[1]||'未入力')+'</div></div>';
-          }).join('')
-        +'</div><div><div class="pp-k">キューイング</div>'
-          +(r.cues&&r.cues.length?r.cues.map(function(c2){
-            return '<div class="pp-v" style="border-left:1.5px solid #C8102E;padding-left:2mm;margin-bottom:1mm">'+c2+'</div>';
-          }).join(''):'<div class="pp-v">未入力</div>')
-        +'</div></div>'
-        +purposeHtml+muscleHtml+seqHtml+ptsHtml
-        +'</div>'
+        + bodyHtml
         +'<div class="pp-foot"><span>AXISCORE PILATES — EXERCISE MANUAL</span><span>'+r.id+'</span></div></div>';
     }).join('');
   }
@@ -4784,13 +5018,392 @@ var EX = [
     },200);
   };
 
+  /* ── プレビュー機能 ── */
+  function pvFieldClass(val){
+    /* 値があれば pp-filled、なければ pp-missing */
+    if(!val || (typeof val==='string' && !val.trim()) || val==='—') return 'pp-missing';
+    if(Array.isArray(val) && val.length===0) return 'pp-missing';
+    return 'pp-filled';
+  }
+  function pvPhotoClass(photos){
+    if(!photos) return 'pp-missing';
+    var filled = photos.filter(function(p){return p && p.trim();});
+    return filled.length>0 ? 'pp-filled' : 'pp-missing';
+  }
+  /* ── セクション個別のレンダラー（preview用） ── */
+  function renderSectionHTML(section, r, mode){
+    var t = section.type;
+    var title = section.name;
+    function wrap(bodyHtml, isFilled){
+      var cls = isFilled ? 'pp-filled' : 'pp-missing';
+      return '<div class="pp-section '+cls+'"><div class="pp-section-title">'+title+'</div>'+bodyHtml+'</div>';
+    }
+    function missing(){ return '<div class="pp-v" style="color:#EF4444">未入力</div>'; }
+
+    if(t==='builtin-setup'){
+      var rows = [['スプリング',r.spring],['レップ数',r.reps],['ポジション',r.position],['禁忌・注意',r.contra]];
+      var allEmpty = rows.every(function(kv){return !kv[1];});
+      var body = rows.map(function(kv){
+        var cls = pvFieldClass(kv[1]);
+        return '<div class="pp-row '+cls+'"><div class="pp-k">'+kv[0]+'</div><div class="pp-v">'+(kv[1]||'<span style="color:#EF4444">未入力</span>')+'</div></div>';
+      }).join('');
+      return { html:'<div class="pp-section '+(allEmpty?'pp-missing':'pp-filled')+'"><div class="pp-section-title">'+title+'</div>'+body+'</div>', filled:!allEmpty };
+    }
+    if(t==='builtin-cues'){
+      var has = r.cues && r.cues.length;
+      var body = has
+        ? r.cues.map(function(c2){return '<div class="pp-v" style="border-left:1.5px solid #C8102E;padding-left:2mm;margin-bottom:1mm">'+c2+'</div>';}).join('')
+        : missing();
+      return { html: wrap(body, has), filled:has };
+    }
+    if(t==='builtin-purpose'){
+      var has = r.purpose && r.purpose.length;
+      var body = has
+        ? r.purpose.map(function(p){return '<div class="pp-v">• '+p+'</div>';}).join('')
+        : missing();
+      return { html: wrap(body, has), filled:has };
+    }
+    if(t==='builtin-muscles'){
+      var has = !!r.muscles;
+      var body = has ? '<div class="pp-v">'+r.muscles+'</div>' : missing();
+      return { html: wrap(body, has), filled:has };
+    }
+    if(t==='builtin-seq'){
+      var has = !!r.sequence;
+      var body = has ? '<div class="pp-v" style="white-space:pre-wrap;line-height:1.4">'+r.sequence+'</div>' : missing();
+      return { html: wrap(body, has), filled:has };
+    }
+    if(t==='builtin-points'){
+      var pts = r.points && r.points.filter(function(p){return p && p.title;});
+      var has = pts && pts.length;
+      var body = has
+        ? pts.map(function(p){return '<div style="margin-bottom:1mm"><div style="font:700 8px Noto Sans JP;color:#333">'+p.title+'</div><div class="pp-v">'+p.desc+'</div></div>';}).join('')
+        : missing();
+      return { html: wrap(body, has), filled:has };
+    }
+    // カスタムセクション（Excel側の列で将来データ供給）
+    var customData = r.custom && r.custom[section.id];
+    var has = false, body = missing();
+    if(customData){
+      if(section.type==='list' && Array.isArray(customData) && customData.length){
+        body = customData.map(function(x){return '<div class="pp-v">• '+x+'</div>';}).join(''); has = true;
+      } else if(section.type==='titled-list' && Array.isArray(customData) && customData.length){
+        body = customData.map(function(x){return '<div style="margin-bottom:1mm"><div style="font:700 8px Noto Sans JP;color:#333">'+(x.title||'')+'</div><div class="pp-v">'+(x.desc||'')+'</div></div>';}).join(''); has = true;
+      } else if(typeof customData==='string' && customData.trim()){
+        body = '<div class="pp-v" style="white-space:pre-wrap">'+customData+'</div>'; has = true;
+      }
+    }
+    return { html: wrap(body, has), filled: has };
+  }
+
+  function buildPreviewPage(r){
+    var cfg = lsLoad();
+    var mode = cfg.mode || 'portrait';
+    var sections = (cfg.sections||[]).slice();
+    // 非表示を除外し、column/order でソート
+    var visible = sections.filter(function(s){return s.column!=='hidden';});
+
+    // 完成度算出（データを持つ項目 / 全ビルトイン項目）
+    var tally = [
+      !!r.spring || !!r.reps || !!r.position || !!r.contra,
+      !!(r.cues && r.cues.length),
+      !!(r.purpose && r.purpose.length),
+      !!r.muscles,
+      !!r.sequence,
+      !!(r.points && r.points.filter(function(p){return p&&p.title;}).length),
+      !!(r.photos && r.photos.some(function(p){return p && p.trim();}))
+    ];
+    var pct = Math.round(tally.filter(Boolean).length / tally.length * 100);
+
+    // 各セクションHTML生成。必須でない && 空 → スキップ
+    function renderList(list){
+      list.sort(function(a,b){return (a.order||0)-(b.order||0);});
+      return list.map(function(s){
+        var out = renderSectionHTML(s, r, mode);
+        if(!out.filled && !s.required) return '';  // 任意かつ空 → 非表示
+        return out.html;
+      }).join('');
+    }
+
+    // 写真
+    var hasAnyPhoto = r.photos && r.photos.some(function(p){return p && p.trim();});
+    var photosHtml = r.photos.map(function(l,i){
+      var cls = (l && l.trim()) ? 'pp-filled' : 'pp-missing';
+      return '<div class="pp-photo '+cls+'"><span class="mv-photo-n">'+(i+1)+'</span><br><span>'+(l||'')+'</span></div>';
+    }).join('');
+
+    // ヘッダー
+    var hdrHtml = '<div class="pp-hdr"><div>'
+      +'<div style="font-size:7px;letter-spacing:3px;color:#C8102E;margin-bottom:1mm">AXISCORE PILATES — EXERCISE MANUAL</div>'
+      +'<div style="font-size:14px;font-weight:900">'+r.name+'</div>'
+      +'<div style="font-size:8px;color:#666;margin-top:0.5mm">'+r.id+'</div>'
+      +'</div><div style="text-align:right"><div style="font-size:8px;color:#999">'+r.appName+'</div>'
+      +'<div style="font-size:8px;color:#999">U'+String(r.unit).padStart(2,'0')+' — '+r.unitName+'</div>'
+      +'<div style="font-weight:700;font-size:10px;margin-top:1mm">LEVEL '+r.level+'</div></div></div>';
+
+    var photosBlock = '<div class="pp-photos '+(hasAnyPhoto?'':'pp-missing')+'">'+photosHtml+'</div>';
+
+    var bodyHtml;
+    if(mode==='landscape'){
+      var leftList  = visible.filter(function(s){return s.column==='left';});
+      var rightList = visible.filter(function(s){return s.column==='right';});
+      bodyHtml = '<div class="pp-body-cols">'
+        +'<div>'+renderList(leftList)+'</div>'
+        +'<div>'+renderList(rightList)+'</div>'
+        +'</div>';
+    } else {
+      // 縦：左カラム→右カラムの順に単一カラムで積む
+      var orderedSingle = visible.slice().sort(function(a,b){
+        var ca = a.column==='left'?0:1, cb = b.column==='left'?0:1;
+        if(ca!==cb) return ca-cb;
+        return (a.order||0)-(b.order||0);
+      });
+      bodyHtml = '<div class="pp-body">'+renderList(orderedSingle)+'</div>';
+    }
+
+    var modeCls = mode==='landscape' ? 'pp-landscape' : 'pp-portrait';
+    var page = '<div class="ppage pv-screen '+modeCls+'">'
+      + hdrHtml
+      + photosBlock
+      + bodyHtml
+      +'<div class="pp-foot"><span>AXISCORE PILATES — EXERCISE MANUAL</span><span>'+r.id+'</span></div></div>';
+
+    return { html:page, pct:pct };
+  }
+
+  window.mvPreview = function(){
+    if(typeof mvCur==='undefined' || !MV_RECORDS[mvCur]) return;
+    var r = MV_RECORDS[mvCur];
+    var result = buildPreviewPage(r);
+    var body = document.getElementById('mv-pv-body');
+    if(body) body.innerHTML = result.html;
+    var title = document.getElementById('mv-pv-title');
+    if(title) title.textContent = r.name + '  (' + r.id + ')';
+    var status = document.getElementById('mv-pv-status');
+    if(status){
+      var color = result.pct>=80 ? '#22C55E' : result.pct>=40 ? '#F59E0B' : '#EF4444';
+      status.textContent = '完成度 ' + result.pct + '%';
+      status.style.background = color.replace(')',',0.15)').replace('#','rgba(');
+      status.style.color = color;
+      status.style.border = '1px solid ' + color;
+      /* simple rgba conversion */
+      if(result.pct>=80){ status.style.background='rgba(34,197,94,.15)'; status.style.color='#22C55E'; status.style.border='1px solid rgba(34,197,94,.4)'; }
+      else if(result.pct>=40){ status.style.background='rgba(245,158,11,.15)'; status.style.color='#F59E0B'; status.style.border='1px solid rgba(245,158,11,.4)'; }
+      else { status.style.background='rgba(239,68,68,.15)'; status.style.color='#EF4444'; status.style.border='1px solid rgba(239,68,68,.4)'; }
+    }
+    document.getElementById('mv-preview-overlay').style.display='block';
+  };
+
+  window.mvPreviewNav = function(dir){
+    if(typeof mvCur==='undefined') return;
+    var next = mvCur + dir;
+    if(next<0) next = MV_RECORDS.length - 1;
+    if(next>=MV_RECORDS.length) next = 0;
+    mvCur = next;
+    mvPreview();
+  };
+
+  /* ═══════════════════════════════════════════════════════════
+     LAYOUT CONFIG — ベースレイアウト設定
+     ═══════════════════════════════════════════════════════════ */
+  var LS_KEY = 'axiscore_layout_config_v1';
+  var LS_DEFAULT = {
+    mode: 'portrait',
+    sections: [
+      { id:'setup',    name:'SETUP',              type:'builtin-setup',  column:'left',  order:0, required:true,  isCustom:false, locked:true },
+      { id:'cueing',   name:'CUEING',             type:'builtin-cues',   column:'left',  order:1, required:true,  isCustom:false, locked:true },
+      { id:'purpose',  name:'PURPOSE',            type:'builtin-purpose',column:'right', order:0, required:false, isCustom:false, locked:false },
+      { id:'muscles',  name:'TARGET MUSCLES',     type:'builtin-muscles',column:'right', order:1, required:false, isCustom:false, locked:false },
+      { id:'sequence', name:'MOVEMENT SEQUENCE',  type:'builtin-seq',    column:'right', order:2, required:false, isCustom:false, locked:false },
+      { id:'points',   name:'KEY POINTS',         type:'builtin-points', column:'right', order:3, required:false, isCustom:false, locked:false }
+    ]
+  };
+  function lsLoad(){
+    try{
+      var raw = localStorage.getItem(LS_KEY);
+      if(raw){
+        var cfg = JSON.parse(raw);
+        if(cfg && cfg.sections && cfg.sections.length) return cfg;
+      }
+    }catch(e){}
+    return JSON.parse(JSON.stringify(LS_DEFAULT));
+  }
+  function lsPersist(cfg){
+    try{ localStorage.setItem(LS_KEY, JSON.stringify(cfg)); }catch(e){}
+  }
+  window.getLayoutConfig = function(){ return lsLoad(); };
+
+  /* ── エディタ内の一時状態 ── */
+  var _lsCfg = null;   // 編集中のconfig
+  var _lsSortables = [];
+
+  function lsRenderEditor(){
+    // sort sections by order per column
+    var cols = {left:[], right:[], hidden:[]};
+    (_lsCfg.sections||[]).forEach(function(s){
+      var c = s.column==='hidden' ? 'hidden' : (s.column==='right' ? 'right' : 'left');
+      cols[c].push(s);
+    });
+    ['left','right','hidden'].forEach(function(c){
+      cols[c].sort(function(a,b){return (a.order||0)-(b.order||0);});
+    });
+
+    function itemHtml(s){
+      var reqId = 'lsreq-'+s.id;
+      var lockedCls = s.locked ? 'locked' : '';
+      var typeLabel = (s.isCustom? '【カスタム】' : '');
+      return '<div class="ls-item" data-id="'+s.id+'">'
+        +'<span class="ls-drag-handle">⋮⋮</span>'
+        +'<span class="ls-item-name">'+s.name+'<span class="ls-item-type">'+typeLabel+'</span></span>'
+        +'<label class="ls-required"><input type="checkbox" id="'+reqId+'" '+(s.required?'checked':'')+' onchange="lsToggleRequired(\''+s.id+'\',this.checked)">必須</label>'
+        +'<button class="ls-delete '+lockedCls+'" onclick="lsDeleteSection(\''+s.id+'\')" title="'+(s.locked?'このセクションは削除できません':'削除')+'">✕</button>'
+        +'</div>';
+    }
+    document.getElementById('ls-col-left').innerHTML   = cols.left.map(itemHtml).join('');
+    document.getElementById('ls-col-right').innerHTML  = cols.right.map(itemHtml).join('');
+    document.getElementById('ls-col-hidden').innerHTML = cols.hidden.map(itemHtml).join('');
+
+    // destroy previous sortables
+    _lsSortables.forEach(function(s){try{s.destroy();}catch(e){}});
+    _lsSortables = [];
+    if(typeof Sortable === 'undefined'){
+      console.warn('SortableJS not loaded');
+      return;
+    }
+    ['ls-col-left','ls-col-right','ls-col-hidden'].forEach(function(id){
+      var el = document.getElementById(id);
+      if(!el) return;
+      var s = Sortable.create(el, {
+        group: 'ls-sections',
+        animation: 160,
+        handle: '.ls-drag-handle',
+        ghostClass: 'sortable-ghost',
+        chosenClass: 'sortable-chosen',
+        onEnd: function(){ lsSyncFromDOM(); }
+      });
+      _lsSortables.push(s);
+    });
+
+    // mode toggle active state
+    document.querySelectorAll('#ls-mode .ls-mode-btn').forEach(function(b){
+      b.classList.toggle('active', b.dataset.mode===_lsCfg.mode);
+    });
+  }
+
+  function lsSyncFromDOM(){
+    var map = {'ls-col-left':'left','ls-col-right':'right','ls-col-hidden':'hidden'};
+    var newSections = [];
+    Object.keys(map).forEach(function(elId){
+      var col = map[elId];
+      var el = document.getElementById(elId);
+      if(!el) return;
+      [].slice.call(el.children).forEach(function(child, idx){
+        var id = child.dataset.id;
+        var orig = (_lsCfg.sections||[]).find(function(s){return s.id===id;});
+        if(!orig) return;
+        newSections.push(Object.assign({}, orig, { column: col, order: idx }));
+      });
+    });
+    _lsCfg.sections = newSections;
+  }
+
+  window.openLayoutEditor = function(){
+    _lsCfg = lsLoad();
+    lsRenderEditor();
+    document.getElementById('mv-layout-overlay').style.display='block';
+  };
+
+  window.lsSetMode = function(mode){
+    _lsCfg.mode = mode;
+    document.querySelectorAll('#ls-mode .ls-mode-btn').forEach(function(b){
+      b.classList.toggle('active', b.dataset.mode===mode);
+    });
+  };
+
+  window.lsToggleRequired = function(id, val){
+    var s = (_lsCfg.sections||[]).find(function(x){return x.id===id;});
+    if(s) s.required = !!val;
+  };
+
+  window.lsDeleteSection = function(id){
+    var s = (_lsCfg.sections||[]).find(function(x){return x.id===id;});
+    if(!s) return;
+    if(s.locked){
+      alert('SETUPとCUEINGは削除できません（非表示ゾーンにドラッグすれば非表示にできます）');
+      return;
+    }
+    if(!confirm('「'+s.name+'」を削除しますか？')) return;
+    _lsCfg.sections = (_lsCfg.sections||[]).filter(function(x){return x.id!==id;});
+    lsRenderEditor();
+  };
+
+  window.lsOpenAdd = function(){
+    document.getElementById('ls-add-name').value = '';
+    document.getElementById('ls-add-type').value = 'textarea';
+    document.getElementById('ls-addmodal').classList.add('open');
+  };
+  window.lsCloseAdd = function(){
+    document.getElementById('ls-addmodal').classList.remove('open');
+  };
+  window.lsConfirmAdd = function(){
+    var name = document.getElementById('ls-add-name').value.trim();
+    var type = document.getElementById('ls-add-type').value;
+    if(!name){ alert('セクション名を入力してください'); return; }
+    lsSyncFromDOM();
+    var id = 'custom_'+Date.now().toString(36);
+    var maxOrder = 0;
+    (_lsCfg.sections||[]).forEach(function(s){ if(s.column==='right' && (s.order||0)>maxOrder) maxOrder = s.order; });
+    _lsCfg.sections.push({ id:id, name:name, type:type, column:'right', order:maxOrder+1, required:false, isCustom:true, locked:false });
+    lsCloseAdd();
+    lsRenderEditor();
+  };
+
+  window.lsReset = function(){
+    if(!confirm('レイアウト設定をデフォルトに戻しますか？（カスタムセクションも削除されます）')) return;
+    _lsCfg = JSON.parse(JSON.stringify(LS_DEFAULT));
+    lsRenderEditor();
+  };
+
+  window.lsSave = function(){
+    lsSyncFromDOM();
+    lsPersist(_lsCfg);
+    alert('レイアウト設定を保存しました。プレビュー・PDF出力に反映されます。');
+    document.getElementById('mv-layout-overlay').style.display='none';
+  };
+
   /* ── Excel マスターDL ── */
   window.mvDownloadExcel = function(){
     var AN={R:'Reformer',C:'Cadillac',W:'Wunda Chair',B:'Barrel',SC:'Spine Corrector',JB:'Jump Board'};
     var AC={R:'RF',C:'CA',W:'CH',B:'BA',SC:'SC',JB:'JB'};
     var LF={P:'PRE',F:'FUNDAMENTAL',I:'INTERMEDIATE',A:'ADVANCE'};
     var UN={1:'WARM UP',2:'FOOT WORK',3:'ABDOMINAL',4:'HIP WORK',5:'SPINAL ART.',6:'FULL BODY',7:'ARM WORK',8:'LEG WORK',9:'LAT. FLEX',10:'BACK EXT.'};
-    var headers=['ID','機器','UNIT番号','UNIT名','レベル','指導形式','種目名（EN）','種目名（JP）','目的①','目的②','目的③','ターゲットマッスル','スプリング','レップ数','ポジション','ムーブメントシークエンス','キューイング①','キューイング②','キューイング③','重要ポイント①タイトル','重要ポイント①説明','重要ポイント②タイトル','重要ポイント②説明','重要ポイント③タイトル','重要ポイント③説明','禁忌・注意事項','写真①ラベル','写真②ラベル','写真③ラベル','写真④ラベル','写真⑤ラベル','入力担当者','入力ステータス','メモ'];
+    /* レイアウト設定に従ってカラムを動的生成 */
+    var cfg = (typeof lsLoad==='function') ? lsLoad() : null;
+    var sections = (cfg && cfg.sections) ? cfg.sections.slice() : [];
+    /* 非表示(hidden列)は除外、左→右・order順で並べる */
+    sections = sections.filter(function(s){return s.column!=='hidden';});
+    sections.sort(function(a,b){
+      var ca = a.column==='left'?0:1, cb = b.column==='left'?0:1;
+      if(ca!==cb) return ca-cb;
+      return (a.order||0)-(b.order||0);
+    });
+    /* セクション → カラム展開 */
+    function sectionCols(sec){
+      switch(sec.type){
+        case 'builtin-setup':   return ['スプリング','レップ数','ポジション'];
+        case 'builtin-cues':    return ['キューイング①','キューイング②','キューイング③'];
+        case 'builtin-purpose': return ['目的①','目的②','目的③'];
+        case 'builtin-muscles': return ['ターゲットマッスル'];
+        case 'builtin-seq':     return ['ムーブメントシークエンス'];
+        case 'builtin-points':  return ['重要ポイント①タイトル','重要ポイント①説明','重要ポイント②タイトル','重要ポイント②説明','重要ポイント③タイトル','重要ポイント③説明'];
+        default: return [sec.name || sec.id];
+      }
+    }
+    var baseHead = ['ID','機器','UNIT番号','UNIT名','レベル','指導形式','種目名（EN）','種目名（JP）'];
+    var tailHead = ['禁忌・注意事項','写真①ラベル','写真②ラベル','写真③ラベル','写真④ラベル','写真⑤ラベル','入力担当者','入力ステータス','メモ'];
+    var dynHead = [];
+    sections.forEach(function(s){ dynHead = dynHead.concat(sectionCols(s)); });
+    var headers = baseHead.concat(dynHead).concat(tailHead);
     var rows=[headers];
     var cnt={};
     EX.forEach(function(ex){
@@ -4800,7 +5413,16 @@ var EX = [
         var id=(AC[ex.app]||ex.app)+'-U'+String(ex.u).padStart(2,'0')+'-'+v.lv+'-'+String(cnt[k]).padStart(3,'0');
         var fmt='Reformer only';
         if(v.lv==='P'){var ho=ex.variations.some(function(v2){return v2.lv!=='P';});fmt=ho?'Reformer / Mat':'Mat only';}
-        rows.push([id,AN[ex.app]||ex.app,'U'+String(ex.u).padStart(2,'0'),UN[ex.u]||'',v.lv+' \u2014 '+LF[v.lv],fmt,ex.name,'','','','','','','','','','','','','','','','','','','','スタートポジション','','','','','','未入力','']);
+        var row = [id,AN[ex.app]||ex.app,'U'+String(ex.u).padStart(2,'0'),UN[ex.u]||'',v.lv+' \u2014 '+LF[v.lv],fmt,ex.name,''];
+        /* 動的セクション列は空で初期化（ポジションのみ「スタートポジション」デフォルト） */
+        sections.forEach(function(s){
+          sectionCols(s).forEach(function(col){
+            row.push(col==='ポジション'?'スタートポジション':'');
+          });
+        });
+        /* 末尾：禁忌、写真ラベル×5、担当者、ステータス、メモ */
+        row.push('','','','','','','','未入力','');
+        rows.push(row);
       });
     });
     function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
@@ -4949,6 +5571,12 @@ document.addEventListener('keydown', function(e){
     document.getElementById('kb-modal').classList.remove('open');
     document.getElementById('mv-modal') && document.getElementById('mv-modal').classList.remove('open');
     document.getElementById('mv-guide-overlay') && document.getElementById('mv-guide-overlay').classList.remove('open');
+    var pvOvl = document.getElementById('mv-preview-overlay');
+    if(pvOvl) pvOvl.style.display = 'none';
+    var lsOvl = document.getElementById('mv-layout-overlay');
+    if(lsOvl) lsOvl.style.display = 'none';
+    var lsAdd = document.getElementById('ls-addmodal');
+    if(lsAdd) lsAdd.classList.remove('open');
     closeJumpMenu();
   }
 });
