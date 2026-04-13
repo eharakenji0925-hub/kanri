@@ -1150,7 +1150,7 @@ body.slide21-active #ui-toolbar{display:none;}
   background:#fff;overflow:hidden;box-sizing:border-box;
 }
 .pp-hdr{display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:2mm;border-bottom:1.5px solid #C8102E;margin-bottom:2mm;flex-shrink:0;}
-.pp-photos{display:grid;grid-template-columns:repeat(5,1fr);gap:2mm;margin-bottom:2mm;flex-shrink:0;}
+.pp-photos{display:grid;grid-template-columns:repeat(4,1fr);gap:2mm;margin-bottom:2mm;flex-shrink:0;}
 .pp-photo{aspect-ratio:5/3;background:#f5f5f5;border:1px solid #ddd;border-radius:2px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-size:7px;color:#aaa;}
 .pp-photo .mv-photo-n{font:700 9px Montserrat;color:#C8102E;margin-bottom:1px;}
 .pp-info{display:grid;grid-template-columns:1fr 1fr;gap:2mm;margin-bottom:2mm;flex-shrink:0;}
@@ -1165,13 +1165,13 @@ body.slide21-active #ui-toolbar{display:none;}
 .pp-missing::after{content:'未入力';position:absolute;top:2px;right:4px;font:700 6px 'Noto Sans JP';color:#EF4444;letter-spacing:0.5px;}
 .pp-filled{border:1px solid #22C55E!important;background:rgba(34,197,94,.04)!important;}
 .ppage.pv-screen{height:auto;min-height:277mm;box-shadow:0 4px 24px rgba(0,0,0,.4);border-radius:4px;}
-/* 縦レイアウト: 写真5枚を2段（3+2） */
-.ppage.pp-portrait .pp-photos{grid-template-columns:repeat(3,1fr);}
+/* 縦レイアウト: 写真4枚を2段（2+2） */
+.ppage.pp-portrait .pp-photos{grid-template-columns:repeat(2,1fr);}
 .ppage.pp-portrait .pp-photos .pp-photo{aspect-ratio:4/3;}
 /* 横レイアウト: A4横、2カラム */
 .ppage.pp-landscape{width:277mm;height:190mm;}
 .ppage.pp-landscape.pv-screen{height:auto;min-height:190mm;}
-.ppage.pp-landscape .pp-photos{grid-template-columns:repeat(5,1fr);}
+.ppage.pp-landscape .pp-photos{grid-template-columns:repeat(4,1fr);}
 .ppage.pp-landscape .pp-body-cols{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:4mm;overflow:hidden;}
 .ppage.pp-landscape .pp-body-cols > div{display:flex;flex-direction:column;gap:1mm;overflow:hidden;}
 @media print{
@@ -1193,9 +1193,7 @@ body.slide21-active #ui-toolbar{display:none;}
 .ls-btn-reset{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2)}
 .ls-btn-close{background:#C8102E;color:#fff}
 .ls-btn-add{background:rgba(212,175,55,.2);color:#D4AF37;border:1px solid rgba(212,175,55,.4)}
-.ls-mode-toggle{display:flex;gap:0;background:rgba(255,255,255,.05);border-radius:6px;padding:3px;margin-bottom:16px;width:fit-content}
-.ls-mode-btn{padding:8px 20px;border:none;background:transparent;color:rgba(255,255,255,.5);font:700 10px Montserrat;letter-spacing:2px;cursor:pointer;border-radius:4px}
-.ls-mode-btn.active{background:rgba(200,16,46,.8);color:#fff}
+/* mode toggle removed — landscape固定 */
 .ls-toolbar{display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap}
 .ls-hint{font:300 10px 'Noto Sans JP';color:rgba(255,255,255,.5);margin-left:auto}
 .ls-columns{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
@@ -1203,18 +1201,32 @@ body.slide21-active #ui-toolbar{display:none;}
 .ls-col-title{font:700 10px Montserrat;letter-spacing:3px;color:rgba(255,255,255,.7);margin-bottom:10px;display:flex;align-items:center;gap:8px}
 .ls-col-badge{padding:2px 8px;background:rgba(200,16,46,.2);border:1px solid rgba(200,16,46,.4);border-radius:3px;color:#EF4444;font:600 8px Montserrat}
 .ls-list{min-height:200px;display:flex;flex-direction:column;gap:8px}
-.ls-item{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:10px 12px;cursor:move;display:flex;align-items:center;gap:10px;transition:all .15s}
+.ls-item{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:10px 12px;cursor:move;display:flex;flex-direction:column;gap:4px;transition:all .15s}
 .ls-item:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2)}
 .ls-item.sortable-ghost{opacity:0.3;background:rgba(200,16,46,.2)}
 .ls-item.sortable-chosen{background:rgba(200,16,46,.25);border-color:rgba(200,16,46,.5)}
+.ls-item-row{display:flex;align-items:center;gap:10px;width:100%}
 .ls-drag-handle{font-size:14px;color:rgba(255,255,255,.4);cursor:grab;user-select:none}
 .ls-item-name{flex:1;font:700 11px 'Noto Sans JP';color:#fff}
 .ls-item-type{font:400 9px Montserrat;color:rgba(255,255,255,.4);margin-left:6px}
-.ls-required{display:flex;align-items:center;gap:4px;font:600 9px 'Noto Sans JP';color:#F59E0B;cursor:pointer;user-select:none}
+.ls-sub-list{padding:2px 0 0 26px;display:flex;flex-direction:column;gap:2px}
+.ls-sub-row{display:flex;align-items:center;gap:6px;font:400 9px 'Noto Sans JP';color:rgba(255,255,255,.45);line-height:1.6}
+.ls-sub-row .ls-sub-num{color:#D4AF37;font-weight:700;font-size:10px;min-width:12px}
+.ls-sub-row .ls-sub-line{color:rgba(255,255,255,.2)}
+.ls-sub-row .ls-sub-fmt{color:rgba(255,255,255,.5);font-size:9px;flex:1}
+.ls-sub-fmt-toggle{cursor:pointer;border-bottom:1px dashed rgba(255,255,255,.2);transition:color .15s}
+.ls-sub-fmt-toggle:hover{color:#D4AF37;border-bottom-color:#D4AF37}
+.ls-sub-del{background:transparent;border:none;color:rgba(239,68,68,.5);cursor:pointer;font-size:10px;padding:0 4px;outline:none;opacity:0;transition:opacity .15s}
+.ls-sub-row:hover .ls-sub-del{opacity:1}
+.ls-sub-del:hover{color:#EF4444}
+.ls-sub-add-row{padding:2px 0 0 18px}
+.ls-sub-add{background:transparent;border:1px dashed rgba(255,255,255,.15);border-radius:4px;color:rgba(255,255,255,.35);cursor:pointer;font:400 9px 'Noto Sans JP';padding:2px 10px;outline:none;transition:all .15s}
+.ls-sub-add:hover{border-color:rgba(212,175,55,.5);color:#D4AF37;background:rgba(212,175,55,.05)}
+.ls-required{display:flex;align-items:center;gap:4px;font:600 9px 'Noto Sans JP';color:#F59E0B;cursor:pointer;user-select:none;flex-shrink:0}
 .ls-required input{accent-color:#F59E0B}
 .ls-delete{background:transparent;border:none;color:rgba(239,68,68,.7);cursor:pointer;font-size:14px;padding:2px 6px;outline:none}
 .ls-delete:hover{color:#EF4444}
-.ls-delete.locked{opacity:0.2;cursor:not-allowed}
+/* locked items: ✕ボタン非表示（HTMLで出力しない） */
 .ls-hidden-zone{background:rgba(0,0,0,.3);border:1px dashed rgba(255,255,255,.1);border-radius:8px;padding:12px;min-height:80px;margin-top:10px}
 .ls-hidden-title{font:700 10px Montserrat;letter-spacing:3px;color:rgba(255,255,255,.4);margin-bottom:8px}
 .ls-addmodal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:270;align-items:center;justify-content:center}
@@ -3138,7 +3150,7 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
         </div>
         <div>
           <div style="font:700 9px Montserrat;letter-spacing:3px;color:var(--gold);margin-bottom:6px">PHOTO SHOOT</div>
-          <div style="font:700 14px 'Noto Sans JP';color:var(--white);line-height:1.5">写真を撮影<br>（1種目5枚）</div>
+          <div style="font:700 14px 'Noto Sans JP';color:var(--white);line-height:1.5">写真を撮影<br>（1種目4枚）</div>
         </div>
         <div style="height:1px;background:var(--border)"></div>
         <div style="font:300 11px 'Noto Sans JP';color:var(--body);line-height:1.9;flex:1">
@@ -3283,7 +3295,7 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
   <div style="display:flex;flex-direction:column;height:100%;overflow:hidden">
 
     <!-- ヘッダーバー -->
-    <div style="display:flex;align-items:center;padding:10px 20px;border-bottom:1px solid var(--border);flex-shrink:0;gap:12px;background:var(--bg2)">
+    <div style="display:flex;align-items:center;padding:10px 20px;border-bottom:1px solid var(--border);flex-shrink:0;gap:12px;background:var(--bg2);position:relative;z-index:210">
       <div style="font:900 11px Montserrat;letter-spacing:4px;color:var(--red)">● EXERCISE MANUAL</div>
       <div style="font:700 15px Montserrat;color:var(--white);letter-spacing:1px">種目マニュアル</div>
       <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
@@ -3370,37 +3382,25 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
           <button class="mv-x" onclick="var m=document.getElementById('mv-modal');m.classList.remove('open');m.style.display='none'">×</button>
         </div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0">
-        <div style="padding:20px;border-right:1px solid var(--border)">
-          <div style="font:700 9px Montserrat;letter-spacing:3px;color:var(--muted);margin-bottom:8px">SETUP</div>
-          <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
-            <div style="flex:1;min-width:80px"><div style="font:600 10px Montserrat;color:var(--dim);margin-bottom:3px">SPRING</div><div id="mv-m-spring" style="font:400 12px Montserrat;color:var(--body)">—</div></div>
-            <div style="flex:1;min-width:80px"><div style="font:600 10px Montserrat;color:var(--dim);margin-bottom:3px">REPS</div><div id="mv-m-reps" style="font:400 12px Montserrat;color:var(--body)">—</div></div>
-          </div>
-          <div style="font:600 10px Montserrat;color:var(--dim);margin-bottom:3px">POSITION</div>
-          <div id="mv-m-pos" style="font:300 11px 'Noto Sans JP';color:var(--body);line-height:1.6;margin-bottom:14px">—</div>
-          <div style="font:700 9px Montserrat;letter-spacing:3px;color:var(--muted);margin-bottom:6px">PURPOSE &amp; MUSCLES</div>
-          <div id="mv-m-purpose" style="font:300 11px 'Noto Sans JP';color:var(--body);line-height:1.6;margin-bottom:8px"></div>
-          <div id="mv-m-muscles" style="font:300 10px 'Noto Sans JP';color:var(--muted);line-height:1.5"></div>
-        </div>
-        <div style="padding:20px">
-          <div style="font:700 9px Montserrat;letter-spacing:3px;color:var(--muted);margin-bottom:8px">MOVEMENT SEQUENCE</div>
-          <div id="mv-m-sequence" style="font:300 11px 'Noto Sans JP';color:var(--body);line-height:1.7;white-space:pre-wrap;margin-bottom:14px"></div>
-          <div style="font:700 9px Montserrat;letter-spacing:3px;color:var(--muted);margin-bottom:6px">CUEING</div>
-          <div id="mv-m-cues" style="font:300 11px 'Noto Sans JP';color:var(--body);line-height:1.6"></div>
-        </div>
-      </div>
-      <div style="padding:16px 20px;border-top:1px solid var(--border)">
+      <div style="padding:16px 20px;border-bottom:1px solid var(--border)">
         <div style="font:700 9px Montserrat;letter-spacing:3px;color:var(--muted);margin-bottom:10px">PHOTOS</div>
         <div id="mv-m-photos" style="display:flex;gap:8px;overflow-x:auto"></div>
       </div>
-      <div style="padding:16px 20px;border-top:1px solid var(--border)">
-        <div style="font:700 9px Montserrat;letter-spacing:3px;color:var(--muted);margin-bottom:8px">KEY POINTS</div>
-        <div id="mv-m-points" style="display:flex;flex-direction:column;gap:6px"></div>
-      </div>
-      <div style="padding:16px 20px;border-top:1px solid var(--border)">
-        <div style="font:700 9px Montserrat;letter-spacing:3px;color:var(--red);margin-bottom:6px">CONTRAINDICATIONS</div>
-        <div id="mv-m-contra" style="font:300 11px 'Noto Sans JP';color:var(--body);line-height:1.6"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0">
+        <div style="padding:20px;border-right:1px solid var(--border)">
+          <div style="font:700 9px Montserrat;letter-spacing:3px;color:var(--muted);margin-bottom:8px">SETUP</div>
+          <div id="mv-m-spring" style="font:300 12px 'Noto Sans JP';color:var(--body);line-height:1.7;margin-bottom:14px"></div>
+          <div style="font:700 9px Montserrat;letter-spacing:3px;color:var(--muted);margin-bottom:8px">MOVEMENT SEQUENCE</div>
+          <div id="mv-m-sequence" style="font:300 11px 'Noto Sans JP';color:var(--body);line-height:1.7"></div>
+        </div>
+        <div style="padding:20px">
+          <div style="font:700 9px Montserrat;letter-spacing:3px;color:var(--muted);margin-bottom:6px">PURPOSE</div>
+          <div id="mv-m-purpose" style="font:300 11px 'Noto Sans JP';color:var(--body);line-height:1.6;margin-bottom:14px"></div>
+          <div style="font:700 9px Montserrat;letter-spacing:3px;color:var(--muted);margin-bottom:6px">TARGET MUSCLES</div>
+          <div id="mv-m-muscles" style="font:300 11px 'Noto Sans JP';color:var(--body);line-height:1.5;margin-bottom:14px"></div>
+          <div style="font:700 9px Montserrat;letter-spacing:3px;color:var(--muted);margin-bottom:8px">KEY POINTS</div>
+          <div id="mv-m-points" style="display:flex;flex-direction:column;gap:6px"></div>
+        </div>
       </div>
       <div style="padding:14px 20px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end">
         <button id="mv-prev" onclick="mvNav(-1)" style="padding:7px 16px;background:var(--bg3);border:1px solid var(--border2);border-radius:4px;color:var(--muted);font:600 9px Montserrat;cursor:pointer">← PREV</button>
@@ -3476,10 +3476,7 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
         </div>
       </div>
 
-      <div class="ls-mode-toggle" id="ls-mode">
-        <button class="ls-mode-btn active" data-mode="portrait" onclick="lsSetMode('portrait')">縦 PORTRAIT</button>
-        <button class="ls-mode-btn" data-mode="landscape" onclick="lsSetMode('landscape')">横 LANDSCAPE</button>
-      </div>
+      <div style="padding:6px 12px;margin-bottom:16px;background:rgba(255,255,255,.05);border-radius:6px;width:fit-content;font:700 10px Montserrat;letter-spacing:2px;color:rgba(255,255,255,.6)">横 LANDSCAPE（固定）</div>
 
       <div class="ls-toolbar">
         <button class="ls-btn ls-btn-add" onclick="lsOpenAdd()">＋ セクション追加</button>
@@ -3488,11 +3485,11 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
 
       <div class="ls-columns">
         <div class="ls-col">
-          <div class="ls-col-title">左カラム <span style="font:300 9px 'Noto Sans JP';color:rgba(255,255,255,.4);margin-left:auto">（縦では上部）</span></div>
+          <div class="ls-col-title">左カラム</div>
           <div class="ls-list" id="ls-col-left"></div>
         </div>
         <div class="ls-col">
-          <div class="ls-col-title">右カラム <span style="font:300 9px 'Noto Sans JP';color:rgba(255,255,255,.4);margin-left:auto">（縦では下部）</span></div>
+          <div class="ls-col-title">右カラム</div>
           <div class="ls-list" id="ls-col-right"></div>
         </div>
       </div>
@@ -3512,10 +3509,15 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
       <input type="text" id="ls-add-name" placeholder="例：応用バリエーション">
       <label>入力形式</label>
       <select id="ls-add-type">
-        <option value="text">テキスト（単一行）</option>
-        <option value="textarea">長文テキスト（複数行）</option>
-        <option value="list">箇条書き</option>
-        <option value="titled-list">見出し付き項目（タイトル＋説明）</option>
+        <option value="text">テキスト</option>
+        <option value="titled-list">タイトル＋説明</option>
+      </select>
+      <label>小項目数</label>
+      <select id="ls-add-count">
+        <option value="1">1（①）</option>
+        <option value="2" selected>2（①②）</option>
+        <option value="3">3（①②③）</option>
+        <option value="4">4（①②③④）</option>
       </select>
       <div class="ls-addbtns">
         <button class="ls-btn ls-btn-reset" onclick="lsCloseAdd()">キャンセル</button>
@@ -4739,58 +4741,54 @@ var EX = [
     6:'FULL BODY',7:'ARM WORK',8:'LEG WORK',9:'LAT. FLEX',10:'BACK EXT.'};
   var MANUAL_DATA={
   'RF-U02-F-001':{
-    spring:'3本（重め）',
-    reps:'10回 × 2セット',
-    position:'仰臥位 / ショルダーレスト使用 / ニュートラル骨盤',
-    purpose:['下肢の押す力と引く力のコントロール','骨盤・腰椎のニュートラルポジション維持','足関節・膝関節・股関節の連動性向上'],
-    muscles:'大腿四頭筋、ハムストリングス、腓腹筋、前脛骨筋、腸腰筋',
-    sequence:'【スタートポジション】\n両踵をフットバーに揃えて置く。骨盤はニュートラル、腰椎は床から離さない。\n\n【動作】\n(1) 吸う息で準備。\n(2) 吐く息でフットバーを踵で押し、膝を伸展させてキャリッジを押し出す。\n(3) 完全伸展手前で止める（膝ロックしない）。\n(4) 吸う息でキャリッジをコントロールしながら戻す。\n(5) スタートポジションに戻り繰り返す。',
-    cues:['踵でバーを「押す」感覚で動かす','骨盤が動かないよう腹部を安定させる','膝はつま先の延長線上に保つ'],
+    setup1:'3本（重め） / 仰臥位 / ショルダーレスト使用',
+    setup2:'10回 × 2セット / ニュートラル骨盤',
+    purpose:['下肢の押す力と引く力のコントロール','骨盤・腰椎のニュートラルポジション維持'],
+    muscles:['大腿四頭筋、ハムストリングス','腓腹筋、前脛骨筋、腸腰筋'],
+    sequence:['両踵をフットバーに揃えて骨盤ニュートラルで準備','吐く息でフットバーを踵で押しキャリッジを押し出す','完全伸展手前で止める（膝ロックしない）','吸う息でコントロールしながら戻す'],
     points:[
-      {title:'骨盤の安定',desc:'動作中に骨盤が傾いたり回旋しないよう、腹横筋で骨盤底を安定させます。腰椎はニュートラルを維持します。'},
-      {title:'膝のアライメント',desc:'押し出す際に膝が内側に入らないよう注意します。足の中指の延長線上に膝がくるよう意識させます。'},
-      {title:'足首の位置',desc:'踵をフットバーに正確に置き、足関節はニュートラル（底屈も背屈もしない）を保ちます。'}
+      {title:'骨盤の安定',desc:'腹横筋で骨盤底を安定させ腰椎ニュートラル維持'},
+      {title:'膝のアライメント',desc:'膝が内側に入らないよう足の中指延長線上を維持'},
+      {title:'足首の位置',desc:'足関節ニュートラルを保つ'},
+      {title:'呼吸のタイミング',desc:'押す時に吐く、戻す時に吸う'}
     ],
-    contra:'膝痛（急性期）、足底筋膜炎（重症）、腰椎椎間板ヘルニア（急性期）',
-    photos:['スタートポジション','膝曲げ（始動）','押し出し中間','フル伸展直前','コントロール戻り']
+    photos:['スタートポジション','膝曲げ（始動）','押し出し中間','フル伸展直前']
   },
   'RF-U05-I-003':{
-    spring:'2本（中）',
-    reps:'5回',
-    position:'仰臥位 / ストラップ両足使用',
-    purpose:['脊柱の分節的屈曲・伸展運動','ハムストリングスと股関節屈筋のストレッチ','コアの深層筋による骨盤コントロール'],
-    muscles:'多裂筋、腸腰筋、ハムストリングス、腹直筋、内外腹斜筋',
-    sequence:'【スタートポジション】\n仰臥位でストラップに両足を通す。膝90°屈曲、骨盤ニュートラル。\n\n【動作】\n(1) 吸う息で脚をテーブルトップに引き寄せる。\n(2) 吐く息で骨盤を床から持ち上げ、背骨を分節的にカールさせる。\n(3) 吸う息でキープ。\n(4) 吐く息で背骨を分節的に床へ戻す。\n(5) 骨盤から順に着地し、スタートポジションへ。',
-    cues:['骨盤から順番に「背骨を1つずつ床から剥がす」イメージ','ショルダーレストに首・肩の重みを乗せない','下ろすときも勢いをつけずコントロールして'],
+    setup1:'2本（中） / 仰臥位 / ストラップ両足使用',
+    setup2:'5回',
+    purpose:['脊柱の分節的屈曲・伸展運動','コアの深層筋による骨盤コントロール'],
+    muscles:['多裂筋、腸腰筋、ハムストリングス','腹直筋、内外腹斜筋'],
+    sequence:['仰臥位でストラップに両足、膝90°屈曲','吐く息で骨盤を床から持ち上げ分節的にカール','吸う息でキープ、背骨を分節的に床へ戻す','骨盤から順に着地しスタートポジションへ'],
     points:[
-      {title:'頚椎の保護',desc:'骨盤が高く上がりすぎると頚椎に荷重がかかります。肩甲骨の高さを超えないよう指導し、頚椎に既往がある場合は除外してください。'},
-      {title:'分節的な動き',desc:'一気に骨盤を持ち上げるのではなく、仙骨→腰椎→胸椎の順に1椎骨ずつ丁寧に持ち上げることが目標です。'},
-      {title:'スプリングの選択',desc:'スプリングが重すぎると慣性で動いてしまいます。コントロールできる最小限の重さを選びましょう。'}
+      {title:'頚椎の保護',desc:'肩甲骨の高さを超えないよう指導'},
+      {title:'分節的な動き',desc:'仙骨→腰椎→胸椎の順に1椎骨ずつ'},
+      {title:'スプリングの選択',desc:'コントロールできる最小限の重さを選ぶ'},
+      {title:'呼吸の連動',desc:'持ち上げ時に吐く、戻す時に吸う'}
     ],
-    contra:'頚椎疾患（必ず確認）、骨粗鬆症（重度）、高血圧（非管理下）',
-    photos:['スタートポジション（膝90°）','骨盤リフト開始','ロールアップ途中','最高点（肩甲骨高さ）','ロールダウン（分節）']
+    photos:['スタートポジション（膝90°）','骨盤リフト開始','ロールアップ途中','最高点（肩甲骨高さ）']
   }
 };
 
   var MV_REQUIRED=new Set(['呼吸','コアの安定','脊柱の動き（屈曲・回旋）','ニュートラルポジション維持','骨盤の動き']);
   var MV_RECORDS=(function(){
-    var cnt={},out=[];
+    var cnt={},out=[],pNo=0;
     EX.forEach(function(ex){
       if(MV_REQUIRED.has(ex.name)) return; /* 必須種目を除外（P19と整合） */
       ex.variations.forEach(function(v){
+        pNo++;
         var k=ex.app+'-'+ex.u+'-'+v.lv;
         cnt[k]=(cnt[k]||0)+1;
         var id=(APP_CODE[ex.app]||ex.app)+'-U'+String(ex.u).padStart(2,'0')+'-'+v.lv+'-'+String(cnt[k]).padStart(3,'0');
         var d=MANUAL_DATA[id]||{};
-        out.push({id:id,app:ex.app,appName:APP_NAME[ex.app]||ex.app,unit:ex.u,
+        out.push({id:id,photoNo:String(pNo).padStart(3,'0'),app:ex.app,appName:APP_NAME[ex.app]||ex.app,unit:ex.u,
           unitName:UNIT_S[ex.u]||'',level:v.lv,name:ex.name,
-          spring:d.spring||'',reps:d.reps||'',position:d.position||'',
-          purpose:d.purpose||[],muscles:d.muscles||'',
-          sequence:d.sequence||'',
-          cues:d.cues||[],
+          setup1:d.setup1||d.spring||'',setup2:d.setup2||d.reps||'',
+          purpose:d.purpose||[],
+          muscles:d.muscles||[],
+          sequence:d.sequence||[],
           points:d.points||[],
-          contra:d.contra||'',
-          photos:d.photos||['スタートポジション','','','','']});
+          photos:d.photos||['スタートポジション','','','']});
       });
     });
     return out;
@@ -4822,11 +4820,13 @@ var EX = [
     g.innerHTML=mvF.map(function(r){
       var gi=MV_RECORDS.indexOf(r);
       var fc=favSet2.has(r.id)?' fav':'';
+      var thumbImg = 'photos/'+r.photoNo+'/1.jpg';
       return '<div class="mv-card'+fc+'" data-id="'+r.id+'" onclick="mvOpen('+gi+')">'
         +'<div class="mv-card-bar bar-'+r.app+'"></div>'
         +'<div class="mv-card-thumb"><div class="mv-card-lv lv-'+r.level+'">'+r.level+'</div>'
-        +'<span style="font:300 9px Noto Sans JP;color:var(--dim)">写真準備中</span></div>'
-        +'<div class="mv-card-body"><div class="mv-card-id">'+r.id+'</div>'
+        +'<img src="'+thumbImg+'" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'block\'" style="width:100%;height:100%;object-fit:cover">'
+        +'<span style="font:300 9px Noto Sans JP;color:var(--dim);display:none">No.'+r.photoNo+'</span></div>'
+        +'<div class="mv-card-body"><div class="mv-card-id"><span style="color:var(--gold)">'+r.photoNo+'</span> '+r.id+'</div>'
         +'<div class="mv-card-name">'+r.name+'</div>'
         +'<div class="mv-card-tags">'
           +'<span class="mv-tag tag-'+r.app+'">'+r.appName+'</span> '
@@ -4837,44 +4837,66 @@ var EX = [
   }
   window.mvOpen=function(idx){
     mvCur=idx;var r=MV_RECORDS[idx];
-    $i('mv-m-id').textContent=r.id;
+    $i('mv-m-id').textContent='No.'+r.photoNo+' — '+r.id;
     $i('mv-m-name').textContent=r.name;
     $i('mv-m-tags').innerHTML='<span class="mv-tag tag-'+r.app+'">'+r.appName+'</span> '
       +'<span class="mv-tag" style="background:rgba(255,255,255,.05);color:var(--muted);border:1px solid var(--border)">U'+String(r.unit).padStart(2,'0')+' — '+r.unitName+'</span> '
       +'<span class="mv-tag lv-'+r.level+'" style="border:1px solid var(--border2);background:rgba(255,255,255,.04)">'+r.level+' — '+LV_FULL[r.level]+'</span>';
-    // 写真
+    // 写真（photoNoベースで画像参照）
     $i('mv-m-photos').innerHTML=r.photos.map(function(l,i){
-      return '<div class="mv-photo"><div class="mv-photo-n">'+(i+1)+'</div><div class="mv-photo-lbl">'+(l||'—')+'</div></div>';
+      var imgPath = 'photos/'+r.photoNo+'/'+(i+1)+'.jpg';
+      return '<div class="mv-photo">'
+        +'<img src="'+imgPath+'" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'" style="width:100%;height:120px;object-fit:cover;border-radius:4px;display:block">'
+        +'<div style="display:none;width:100%;height:120px;align-items:center;justify-content:center;background:var(--bg3);border:1px dashed var(--border);border-radius:4px;flex-direction:column;gap:4px">'
+        +'<div class="mv-photo-n">'+(i+1)+'</div><div class="mv-photo-lbl">'+(l||'—')+'</div></div>'
+        +'</div>';
     }).join('');
+    // レイアウト設定を取得してsubs数に連動
+    var _mCfg = (typeof lsLoad==='function') ? lsLoad() : {sections:[]};
+    var _mSecs = _mCfg.sections || [];
+    function _mSubCnt(type){ var s=_mSecs.find(function(x){return x.type===type;}); return (s&&s.subs)?s.subs.length:2; }
+    var _nums = '①②③④⑤⑥⑦⑧';
+    var _empty = '<span class="mv-info-v empty">未入力</span>';
     // セットアップ
-    $i('mv-m-spring').innerHTML=r.spring||'<span class="mv-info-v empty">未入力</span>';
-    $i('mv-m-reps').innerHTML=r.reps||'<span class="mv-info-v empty">未入力</span>';
-    $i('mv-m-pos').innerHTML=r.position||'<span class="mv-info-v empty">未入力</span>';
+    var setupEl=$i('mv-m-spring');if(setupEl){
+      var setupCnt = _mSubCnt('builtin-setup');
+      var setupHtml = '';
+      for(var si=0;si<setupCnt;si++){
+        setupHtml += '<div style="margin-bottom:4px"><span style="color:var(--gold);font:700 9px Montserrat">'+_nums.charAt(si)+'</span> '+(r['setup'+(si+1)]||_empty)+'</div>';
+      }
+      setupEl.innerHTML = setupHtml;
+    }
     // 目的
-    $i('mv-m-purpose').innerHTML=(r.purpose&&r.purpose.length)
-      ?r.purpose.map(function(p){return '<div class="mv-cue" style="margin-bottom:3px"><div class="mv-cue-dot" style="background:var(--gold)"></div><span style="font:300 12px Noto Sans JP;color:var(--body);line-height:1.7">'+p+'</span></div>';}).join('')
-      :'<span class="mv-info-v empty">未入力</span>';
+    var purCnt = _mSubCnt('builtin-purpose');
+    var purArr = r.purpose || [];
+    $i('mv-m-purpose').innerHTML=purArr.length
+      ?purArr.slice(0,purCnt).map(function(p,i){return '<div class="mv-cue" style="margin-bottom:3px"><span style="color:var(--gold);font:700 9px Montserrat;margin-right:6px">'+_nums.charAt(i)+'</span><span style="font:300 12px Noto Sans JP;color:var(--body);line-height:1.7">'+p+'</span></div>';}).join('')
+      :_empty;
     // ターゲットマッスル
-    $i('mv-m-muscles').innerHTML=r.muscles||'<span class="mv-info-v empty">未入力</span>';
+    var musCnt = _mSubCnt('builtin-muscles');
+    var musclesArr = Array.isArray(r.muscles) ? r.muscles : (r.muscles ? [r.muscles] : []);
+    $i('mv-m-muscles').innerHTML=musclesArr.length
+      ?musclesArr.slice(0,musCnt).map(function(m,i){return '<div style="margin-bottom:3px"><span style="color:var(--gold);font:700 9px Montserrat;margin-right:6px">'+_nums.charAt(i)+'</span><span style="font:300 12px Noto Sans JP;color:var(--body)">'+m+'</span></div>';}).join('')
+      :_empty;
     // ムーブメントシークエンス
-    $i('mv-m-sequence').textContent=r.sequence||'未入力';
-    // キューイング
-    $i('mv-m-cues').innerHTML=(r.cues&&r.cues.length)
-      ?r.cues.map(function(c){return '<div class="mv-cue"><div class="mv-cue-dot"></div><span style="font:300 12px Noto Sans JP;color:var(--body);line-height:1.7">'+c+'</span></div>';}).join('')
-      :'<span class="mv-info-v empty">未入力</span>';
+    var seqCnt = _mSubCnt('builtin-seq');
+    var seqArr = Array.isArray(r.sequence) ? r.sequence : (r.sequence ? [r.sequence] : []);
+    $i('mv-m-sequence').innerHTML=seqArr.length
+      ?seqArr.slice(0,seqCnt).map(function(s,i){return '<div style="margin-bottom:4px"><span style="color:var(--red);font:700 9px Montserrat;margin-right:6px">'+_nums.charAt(i)+'</span><span style="font:300 12px Noto Sans JP;color:var(--body);line-height:1.6">'+s+'</span></div>';}).join('')
+      :'<span style="color:var(--dim)">未入力</span>';
     // 重要なポイント
-    var pts=r.points&&r.points.filter(function(p){return p&&p.title;});
+    var ptsCnt = _mSubCnt('builtin-points');
+    var pts=r.points&&r.points.filter(function(p){return p&&(p.title||p);});
     $i('mv-m-points').innerHTML=(pts&&pts.length)
-      ?pts.map(function(p){
+      ?pts.slice(0,ptsCnt).map(function(p,i){
+        var title = (typeof p==='object') ? p.title : p;
+        var desc = (typeof p==='object') ? p.desc : '';
         return '<div style="padding:12px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:5px">'
-          +'<div style="font:700 11px Noto Sans JP;color:var(--white);margin-bottom:6px">'+p.title+'</div>'
-          +'<div style="font:300 11px Noto Sans JP;color:var(--body);line-height:1.7">'+p.desc+'</div>'
+          +'<div style="font:700 11px Noto Sans JP;color:var(--white);margin-bottom:6px">'+_nums.charAt(i)+' '+title+'</div>'
+          +(desc?'<div style="font:300 11px Noto Sans JP;color:var(--body);line-height:1.7">'+desc+'</div>':'')
         +'</div>';
       }).join('')
-      :'<span class="mv-info-v empty">未入力</span>';
-    // 禁忌
-    $i('mv-m-contra').innerHTML=r.contra
-      ?'<span class="mv-contra">'+r.contra+'</span>':'<span class="mv-info-v empty">なし</span>';
+      :_empty;
     $i('mv-prev').disabled=idx===0;$i('mv-next').disabled=idx===MV_RECORDS.length-1;
     $i('mv-modal').classList.add('open');
   };
@@ -4892,60 +4914,59 @@ var EX = [
   function renderSectionPrint(section, r){
     var t = section.type;
     var title = section.name;
+    var subs = section.subs || [];
+    var subCnt = subs.length || 2;
+    var nums = '①②③④⑤⑥⑦⑧';
     function wrap(bodyHtml){ return '<div class="pp-section"><div class="pp-section-title">'+title+'</div>'+bodyHtml+'</div>'; }
+
+    /* テキスト系（setup, purpose, muscles, seq） */
+    function renderTextItems(dataArr){
+      var items = dataArr || [];
+      if(typeof items==='string') items = items ? [items] : [];
+      var has = items.some(function(v){return !!v;});
+      if(!has && !section.required) return { html:'', filled:false };
+      var body = '';
+      for(var i=0;i<subCnt;i++){
+        var v = items[i]||'';
+        if(!v && !section.required) continue;
+        body += '<div class="pp-row"><div class="pp-k">'+nums.charAt(i)+'</div><div class="pp-v">'+(v||'—')+'</div></div>';
+      }
+      return { html: wrap(body), filled:has };
+    }
+
     if(t==='builtin-setup'){
-      var rows = [['スプリング',r.spring],['レップ数',r.reps],['ポジション',r.position],['禁忌・注意',r.contra]];
-      var hasAny = rows.some(function(kv){return !!kv[1];});
-      var body = rows.map(function(kv){
-        if(!kv[1] && !section.required) return '';
-        return '<div class="pp-row"><div class="pp-k">'+kv[0]+'</div><div class="pp-v">'+(kv[1]||'—')+'</div></div>';
-      }).join('');
-      if(!hasAny && !section.required) return { html:'', filled:false };
-      return { html: wrap(body), filled:hasAny };
+      var items = [];
+      for(var i=0;i<subCnt;i++) items.push(r['setup'+(i+1)]||'');
+      return renderTextItems(items);
     }
-    if(t==='builtin-cues'){
-      var has = r.cues && r.cues.length;
-      if(!has && !section.required) return { html:'', filled:false };
-      var body = has
-        ? r.cues.map(function(c2){return '<div class="pp-v" style="border-left:1.5px solid #C8102E;padding-left:2mm;margin-bottom:1mm">'+c2+'</div>';}).join('')
-        : '<div class="pp-v">—</div>';
-      return { html: wrap(body), filled:has };
-    }
-    if(t==='builtin-purpose'){
-      var has = r.purpose && r.purpose.length;
-      if(!has && !section.required) return { html:'', filled:false };
-      var body = has ? r.purpose.map(function(p){return '<div class="pp-v">• '+p+'</div>';}).join('') : '<div class="pp-v">—</div>';
-      return { html: wrap(body), filled:has };
-    }
-    if(t==='builtin-muscles'){
-      var has = !!r.muscles;
-      if(!has && !section.required) return { html:'', filled:false };
-      var body = has ? '<div class="pp-v">'+r.muscles+'</div>' : '<div class="pp-v">—</div>';
-      return { html: wrap(body), filled:has };
-    }
-    if(t==='builtin-seq'){
-      var has = !!r.sequence;
-      if(!has && !section.required) return { html:'', filled:false };
-      var body = has ? '<div class="pp-v" style="white-space:pre-wrap;line-height:1.4">'+r.sequence+'</div>' : '<div class="pp-v">—</div>';
-      return { html: wrap(body), filled:has };
-    }
+    if(t==='builtin-purpose') return renderTextItems(r.purpose);
+    if(t==='builtin-muscles') return renderTextItems(r.muscles);
+    if(t==='builtin-seq')     return renderTextItems(r.sequence);
+
     if(t==='builtin-points'){
-      var pts = r.points && r.points.filter(function(p){return p && p.title;});
-      var has = pts && pts.length;
+      var items = r.points || [];
+      var has = items.some(function(p){return p && (p.title || p);});
       if(!has && !section.required) return { html:'', filled:false };
-      var body = has
-        ? pts.map(function(p){return '<div style="margin-bottom:1mm"><div style="font:700 8px Noto Sans JP;color:#333">'+p.title+'</div><div class="pp-v">'+p.desc+'</div></div>';}).join('')
-        : '<div class="pp-v">—</div>';
+      var body = '';
+      for(var i=0;i<subCnt;i++){
+        var p = items[i];
+        if(!p && !section.required) continue;
+        if(p && typeof p==='object'){
+          body += '<div style="margin-bottom:1mm"><div style="font:700 8px Noto Sans JP;color:#333">'+nums.charAt(i)+' '+(p.title||'')+'</div><div class="pp-v">'+(p.desc||'—')+'</div></div>';
+        } else {
+          body += '<div class="pp-row"><div class="pp-k">'+nums.charAt(i)+'</div><div class="pp-v">'+(p||'—')+'</div></div>';
+        }
+      }
       return { html: wrap(body), filled:has };
     }
     // カスタム
     var cData = r.custom && r.custom[section.id];
     var hasC = false, body = '<div class="pp-v">—</div>';
     if(cData){
-      if(section.type==='list' && Array.isArray(cData) && cData.length){
-        body = cData.map(function(x){return '<div class="pp-v">• '+x+'</div>';}).join(''); hasC = true;
-      } else if(section.type==='titled-list' && Array.isArray(cData) && cData.length){
+      if(section.type==='titled-list' && Array.isArray(cData) && cData.length){
         body = cData.map(function(x){return '<div style="margin-bottom:1mm"><div style="font:700 8px Noto Sans JP;color:#333">'+(x.title||'')+'</div><div class="pp-v">'+(x.desc||'')+'</div></div>';}).join(''); hasC = true;
+      } else if(Array.isArray(cData) && cData.length){
+        body = cData.map(function(x,i){return '<div class="pp-row"><div class="pp-k">'+nums.charAt(i)+'</div><div class="pp-v">'+(x||'—')+'</div></div>';}).join(''); hasC = true;
       } else if(typeof cData==='string' && cData.trim()){
         body = '<div class="pp-v" style="white-space:pre-wrap">'+cData+'</div>'; hasC = true;
       }
@@ -4957,8 +4978,8 @@ var EX = [
   function buildPP(list){
     var c=document.getElementById('mv-print-area');
     if(!c)return;
-    var cfg = (typeof lsLoad==='function') ? lsLoad() : {mode:'portrait', sections:[]};
-    var mode = cfg.mode || 'portrait';
+    var cfg = (typeof lsLoad==='function') ? lsLoad() : {mode:'landscape', sections:[]};
+    var mode = 'landscape';
     var modeCls = mode==='landscape' ? 'pp-landscape' : 'pp-portrait';
     // 印刷用の@pageサイズを切替
     var pgStyle = document.getElementById('dynamic-print-page');
@@ -5001,7 +5022,10 @@ var EX = [
         +'<div style="font-size:8px;color:#999">U'+String(r.unit).padStart(2,'0')+' — '+r.unitName+'</div>'
         +'<div style="font-weight:700;font-size:10px;margin-top:1mm">LEVEL '+r.level+'</div></div></div>'
         +'<div class="pp-photos">'+r.photos.map(function(l,i){
-          return '<div class="pp-photo"><span class="mv-photo-n">'+(i+1)+'</span><br><span>'+(l||'')+'</span></div>';
+          var imgPath = 'photos/'+r.photoNo+'/'+(i+1)+'.jpg';
+          return '<div class="pp-photo">'
+            +'<img src="'+imgPath+'" onerror="this.style.display=\'none\'" style="width:100%;height:auto;max-height:50mm;object-fit:cover;border-radius:2px">'
+            +'<div style="font-size:6px;color:#999;margin-top:1mm"><span class="mv-photo-n" style="font-size:7px">'+(i+1)+'</span> '+(l||'')+'</div></div>';
         }).join('')+'</div>'
         + bodyHtml
         +'<div class="pp-foot"><span>AXISCORE PILATES — EXERCISE MANUAL</span><span>'+r.id+'</span></div></div>';
@@ -5038,61 +5062,62 @@ var EX = [
   function renderSectionHTML(section, r, mode){
     var t = section.type;
     var title = section.name;
+    var subs = section.subs || [];
+    var subCnt = subs.length || 2;
+    var nums = '①②③④⑤⑥⑦⑧';
     function wrap(bodyHtml, isFilled){
       var cls = isFilled ? 'pp-filled' : 'pp-missing';
       return '<div class="pp-section '+cls+'"><div class="pp-section-title">'+title+'</div>'+bodyHtml+'</div>';
     }
     function missing(){ return '<div class="pp-v" style="color:#EF4444">未入力</div>'; }
+    var emptyMark = '<span style="color:#EF4444">未入力</span>';
+
+    /* テキスト系共通 */
+    function renderTextItems(dataArr){
+      var items = dataArr || [];
+      if(typeof items==='string') items = items ? [items] : [];
+      var has = items.some(function(v){return !!v;});
+      var body = '';
+      for(var i=0;i<subCnt;i++){
+        var v = items[i]||'';
+        var cls = pvFieldClass(v);
+        body += '<div class="pp-row '+cls+'"><div class="pp-k">'+nums.charAt(i)+'</div><div class="pp-v">'+(v||emptyMark)+'</div></div>';
+      }
+      return { html: wrap(body, has), filled:has };
+    }
 
     if(t==='builtin-setup'){
-      var rows = [['スプリング',r.spring],['レップ数',r.reps],['ポジション',r.position],['禁忌・注意',r.contra]];
-      var allEmpty = rows.every(function(kv){return !kv[1];});
-      var body = rows.map(function(kv){
-        var cls = pvFieldClass(kv[1]);
-        return '<div class="pp-row '+cls+'"><div class="pp-k">'+kv[0]+'</div><div class="pp-v">'+(kv[1]||'<span style="color:#EF4444">未入力</span>')+'</div></div>';
-      }).join('');
-      return { html:'<div class="pp-section '+(allEmpty?'pp-missing':'pp-filled')+'"><div class="pp-section-title">'+title+'</div>'+body+'</div>', filled:!allEmpty };
+      var items = [];
+      for(var i=0;i<subCnt;i++) items.push(r['setup'+(i+1)]||'');
+      return renderTextItems(items);
     }
-    if(t==='builtin-cues'){
-      var has = r.cues && r.cues.length;
-      var body = has
-        ? r.cues.map(function(c2){return '<div class="pp-v" style="border-left:1.5px solid #C8102E;padding-left:2mm;margin-bottom:1mm">'+c2+'</div>';}).join('')
-        : missing();
-      return { html: wrap(body, has), filled:has };
-    }
-    if(t==='builtin-purpose'){
-      var has = r.purpose && r.purpose.length;
-      var body = has
-        ? r.purpose.map(function(p){return '<div class="pp-v">• '+p+'</div>';}).join('')
-        : missing();
-      return { html: wrap(body, has), filled:has };
-    }
-    if(t==='builtin-muscles'){
-      var has = !!r.muscles;
-      var body = has ? '<div class="pp-v">'+r.muscles+'</div>' : missing();
-      return { html: wrap(body, has), filled:has };
-    }
-    if(t==='builtin-seq'){
-      var has = !!r.sequence;
-      var body = has ? '<div class="pp-v" style="white-space:pre-wrap;line-height:1.4">'+r.sequence+'</div>' : missing();
-      return { html: wrap(body, has), filled:has };
-    }
+    if(t==='builtin-purpose') return renderTextItems(r.purpose);
+    if(t==='builtin-muscles') return renderTextItems(r.muscles);
+    if(t==='builtin-seq')     return renderTextItems(r.sequence);
+
     if(t==='builtin-points'){
-      var pts = r.points && r.points.filter(function(p){return p && p.title;});
-      var has = pts && pts.length;
-      var body = has
-        ? pts.map(function(p){return '<div style="margin-bottom:1mm"><div style="font:700 8px Noto Sans JP;color:#333">'+p.title+'</div><div class="pp-v">'+p.desc+'</div></div>';}).join('')
-        : missing();
+      var items = r.points || [];
+      var has = items.some(function(p){return p && (p.title || p);});
+      var body = '';
+      for(var i=0;i<subCnt;i++){
+        var p = items[i];
+        var cls = pvFieldClass(p);
+        if(p && typeof p==='object'){
+          body += '<div class="'+cls+'" style="margin-bottom:1mm"><div style="font:700 8px Noto Sans JP;color:#333">'+nums.charAt(i)+' '+(p.title||'')+'</div><div class="pp-v">'+(p.desc||emptyMark)+'</div></div>';
+        } else {
+          body += '<div class="pp-row '+cls+'"><div class="pp-k">'+nums.charAt(i)+'</div><div class="pp-v">'+(p||emptyMark)+'</div></div>';
+        }
+      }
       return { html: wrap(body, has), filled:has };
     }
-    // カスタムセクション（Excel側の列で将来データ供給）
+    // カスタムセクション
     var customData = r.custom && r.custom[section.id];
     var has = false, body = missing();
     if(customData){
-      if(section.type==='list' && Array.isArray(customData) && customData.length){
-        body = customData.map(function(x){return '<div class="pp-v">• '+x+'</div>';}).join(''); has = true;
-      } else if(section.type==='titled-list' && Array.isArray(customData) && customData.length){
+      if(section.type==='titled-list' && Array.isArray(customData) && customData.length){
         body = customData.map(function(x){return '<div style="margin-bottom:1mm"><div style="font:700 8px Noto Sans JP;color:#333">'+(x.title||'')+'</div><div class="pp-v">'+(x.desc||'')+'</div></div>';}).join(''); has = true;
+      } else if(Array.isArray(customData) && customData.length){
+        body = customData.map(function(x,i){return '<div class="pp-row"><div class="pp-k">'+nums.charAt(i)+'</div><div class="pp-v">'+(x||emptyMark)+'</div></div>';}).join(''); has = true;
       } else if(typeof customData==='string' && customData.trim()){
         body = '<div class="pp-v" style="white-space:pre-wrap">'+customData+'</div>'; has = true;
       }
@@ -5102,21 +5127,23 @@ var EX = [
 
   function buildPreviewPage(r){
     var cfg = lsLoad();
-    var mode = cfg.mode || 'portrait';
+    var mode = 'landscape';
     var sections = (cfg.sections||[]).slice();
     // 非表示を除外し、column/order でソート
     var visible = sections.filter(function(s){return s.column!=='hidden';});
 
-    // 完成度算出（データを持つ項目 / 全ビルトイン項目）
-    var tally = [
-      !!r.spring || !!r.reps || !!r.position || !!r.contra,
-      !!(r.cues && r.cues.length),
-      !!(r.purpose && r.purpose.length),
-      !!r.muscles,
-      !!r.sequence,
-      !!(r.points && r.points.filter(function(p){return p&&p.title;}).length),
-      !!(r.photos && r.photos.some(function(p){return p && p.trim();}))
-    ];
+    // 完成度算出（visibleセクション＋写真から動的に）
+    function hasSectionData(s){
+      var t = s.type;
+      if(t==='builtin-setup') return !!(r.setup1 || r.setup2);
+      if(t==='builtin-purpose') return !!(r.purpose && r.purpose.some(function(v){return !!v;}));
+      if(t==='builtin-muscles'){var m=r.muscles; return !!(m && (Array.isArray(m)?m.some(function(v){return !!v;}):!!m));}
+      if(t==='builtin-seq'){var q=r.sequence; return !!(q && (Array.isArray(q)?q.some(function(v){return !!v;}):!!q));}
+      if(t==='builtin-points') return !!(r.points && r.points.some(function(p){return p&&(p.title||p);}));
+      var cd = r.custom && r.custom[s.id]; return !!(cd && (typeof cd==='string'?cd.trim():cd.length));
+    }
+    var tally = visible.map(function(s){ return hasSectionData(s); });
+    tally.push(!!(r.photos && r.photos.some(function(p){return p && p.trim();})));
     var pct = Math.round(tally.filter(Boolean).length / tally.length * 100);
 
     // 各セクションHTML生成。必須でない && 空 → スキップ
@@ -5129,11 +5156,14 @@ var EX = [
       }).join('');
     }
 
-    // 写真
+    // 写真（photoNoベースで画像参照）
     var hasAnyPhoto = r.photos && r.photos.some(function(p){return p && p.trim();});
     var photosHtml = r.photos.map(function(l,i){
       var cls = (l && l.trim()) ? 'pp-filled' : 'pp-missing';
-      return '<div class="pp-photo '+cls+'"><span class="mv-photo-n">'+(i+1)+'</span><br><span>'+(l||'')+'</span></div>';
+      var imgPath = 'photos/'+r.photoNo+'/'+(i+1)+'.jpg';
+      return '<div class="pp-photo '+cls+'">'
+        +'<img src="'+imgPath+'" onerror="this.style.display=\'none\'" style="width:100%;height:auto;max-height:80px;object-fit:cover;border-radius:2px;margin-bottom:2px">'
+        +'<span class="mv-photo-n">'+(i+1)+'</span> <span>'+(l||'')+'</span></div>';
     }).join('');
 
     // ヘッダー
@@ -5210,16 +5240,23 @@ var EX = [
   /* ═══════════════════════════════════════════════════════════
      LAYOUT CONFIG — ベースレイアウト設定
      ═══════════════════════════════════════════════════════════ */
-  var LS_KEY = 'axiscore_layout_config_v1';
+  var LS_KEY = 'axiscore_layout_config_v6';
+  /* LS_SUB_DEFAULTS: セクションタイプ別デフォルト中項目 */
+  var LS_SUB_DEFAULTS = {
+    'builtin-setup':   [{n:'①',fmt:'テキスト'},{n:'②',fmt:'テキスト'}],
+    'builtin-seq':     [{n:'①',fmt:'テキスト'},{n:'②',fmt:'テキスト'},{n:'③',fmt:'テキスト'},{n:'④',fmt:'テキスト'}],
+    'builtin-purpose': [{n:'①',fmt:'テキスト'},{n:'②',fmt:'テキスト'}],
+    'builtin-muscles': [{n:'①',fmt:'テキスト'},{n:'②',fmt:'テキスト'}],
+    'builtin-points':  [{n:'①',fmt:'タイトル＋説明'},{n:'②',fmt:'タイトル＋説明'},{n:'③',fmt:'タイトル＋説明'},{n:'④',fmt:'タイトル＋説明'}]
+  };
   var LS_DEFAULT = {
-    mode: 'portrait',
+    mode: 'landscape',
     sections: [
-      { id:'setup',    name:'SETUP',              type:'builtin-setup',  column:'left',  order:0, required:true,  isCustom:false, locked:true },
-      { id:'cueing',   name:'CUEING',             type:'builtin-cues',   column:'left',  order:1, required:true,  isCustom:false, locked:true },
-      { id:'purpose',  name:'PURPOSE',            type:'builtin-purpose',column:'right', order:0, required:false, isCustom:false, locked:false },
-      { id:'muscles',  name:'TARGET MUSCLES',     type:'builtin-muscles',column:'right', order:1, required:false, isCustom:false, locked:false },
-      { id:'sequence', name:'MOVEMENT SEQUENCE',  type:'builtin-seq',    column:'right', order:2, required:false, isCustom:false, locked:false },
-      { id:'points',   name:'KEY POINTS',         type:'builtin-points', column:'right', order:3, required:false, isCustom:false, locked:false }
+      { id:'setup',    name:'SETUP',              type:'builtin-setup',  column:'left',  order:0, required:true,  isCustom:false, locked:false, subs:[{n:'①',fmt:'テキスト'},{n:'②',fmt:'テキスト'}] },
+      { id:'sequence', name:'MOVEMENT SEQUENCE',  type:'builtin-seq',    column:'left',  order:1, required:false, isCustom:false, locked:false, subs:[{n:'①',fmt:'テキスト'},{n:'②',fmt:'テキスト'},{n:'③',fmt:'テキスト'},{n:'④',fmt:'テキスト'}] },
+      { id:'purpose',  name:'PURPOSE',            type:'builtin-purpose',column:'right', order:0, required:false, isCustom:false, locked:false, subs:[{n:'①',fmt:'テキスト'},{n:'②',fmt:'テキスト'}] },
+      { id:'muscles',  name:'TARGET MUSCLES',     type:'builtin-muscles',column:'right', order:1, required:false, isCustom:false, locked:false, subs:[{n:'①',fmt:'テキスト'},{n:'②',fmt:'テキスト'}] },
+      { id:'points',   name:'KEY POINTS',         type:'builtin-points', column:'right', order:2, required:false, isCustom:false, locked:false, subs:[{n:'①',fmt:'タイトル＋説明'},{n:'②',fmt:'タイトル＋説明'},{n:'③',fmt:'タイトル＋説明'},{n:'④',fmt:'タイトル＋説明'}] }
     ]
   };
   function lsLoad(){
@@ -5227,7 +5264,30 @@ var EX = [
       var raw = localStorage.getItem(LS_KEY);
       if(raw){
         var cfg = JSON.parse(raw);
-        if(cfg && cfg.sections && cfg.sections.length) return cfg;
+        if(cfg && cfg.sections && cfg.sections.length){
+          /* v5→v6 マイグレーション: subs未設定セクションにデフォルト付与 */
+          cfg.sections.forEach(function(s){
+            if(!s.subs){
+              s.subs = JSON.parse(JSON.stringify(LS_SUB_DEFAULTS[s.type] || [{n:'①',fmt:'テキスト'}]));
+            }
+          });
+          return cfg;
+        }
+      }
+    }catch(e){}
+    /* v5キーからのマイグレーションも試行 */
+    try{
+      var old = localStorage.getItem('axiscore_layout_config_v5');
+      if(old){
+        var cfg2 = JSON.parse(old);
+        if(cfg2 && cfg2.sections){
+          cfg2.sections.forEach(function(s){
+            if(!s.subs){
+              s.subs = JSON.parse(JSON.stringify(LS_SUB_DEFAULTS[s.type] || [{n:'①',fmt:'テキスト'}]));
+            }
+          });
+          return cfg2;
+        }
       }
     }catch(e){}
     return JSON.parse(JSON.stringify(LS_DEFAULT));
@@ -5254,13 +5314,41 @@ var EX = [
 
     function itemHtml(s){
       var reqId = 'lsreq-'+s.id;
-      var lockedCls = s.locked ? 'locked' : '';
       var typeLabel = (s.isCustom? '【カスタム】' : '');
+      var reqHtml = '<label class="ls-required"><input type="checkbox" id="'+reqId+'" '+(s.required?'checked':'')+' onchange="lsToggleRequired(\''+s.id+'\',this.checked)">必須</label>';
+      var delHtml = '<button class="ls-delete" onclick="lsDeleteSection(\''+s.id+'\')" title="セクション削除">✕</button>';
+      /* 中項目（階層行）生成 — s.subsから直接 */
+      var subs = s.subs || [];
+      var subHtml = '';
+      if(subs.length){
+        var rows = subs.map(function(sub, idx){
+          var branch = (idx < subs.length - 1) ? '├' : '└';
+          return '<div class="ls-sub-row">'
+            +'<span class="ls-sub-line">'+branch+'</span>'
+            +'<span class="ls-sub-num">'+sub.n+'</span>'
+            +'<span class="ls-sub-fmt ls-sub-fmt-toggle" onclick="lsToggleFmt(\''+s.id+'\','+idx+')" title="クリックで入力形式を切替">'+sub.fmt+'</span>'
+            +'<button class="ls-sub-del" onclick="lsDelSub(\''+s.id+'\','+idx+')" title="中項目削除">✕</button>'
+            +'</div>';
+        }).join('');
+        subHtml = '<div class="ls-sub-list">'+ rows
+          +'<div class="ls-sub-add-row">'
+          +'<button class="ls-sub-add" onclick="lsAddSub(\''+s.id+'\')">＋ 中項目を追加</button>'
+          +'</div>'
+          +'</div>';
+      } else {
+        subHtml = '<div class="ls-sub-list">'
+          +'<div class="ls-sub-add-row">'
+          +'<button class="ls-sub-add" onclick="lsAddSub(\''+s.id+'\')">＋ 中項目を追加</button>'
+          +'</div>'
+          +'</div>';
+      }
       return '<div class="ls-item" data-id="'+s.id+'">'
+        +'<div class="ls-item-row">'
         +'<span class="ls-drag-handle">⋮⋮</span>'
         +'<span class="ls-item-name">'+s.name+'<span class="ls-item-type">'+typeLabel+'</span></span>'
-        +'<label class="ls-required"><input type="checkbox" id="'+reqId+'" '+(s.required?'checked':'')+' onchange="lsToggleRequired(\''+s.id+'\',this.checked)">必須</label>'
-        +'<button class="ls-delete '+lockedCls+'" onclick="lsDeleteSection(\''+s.id+'\')" title="'+(s.locked?'このセクションは削除できません':'削除')+'">✕</button>'
+        + reqHtml + delHtml
+        +'</div>'
+        + subHtml
         +'</div>';
     }
     document.getElementById('ls-col-left').innerHTML   = cols.left.map(itemHtml).join('');
@@ -5288,10 +5376,6 @@ var EX = [
       _lsSortables.push(s);
     });
 
-    // mode toggle active state
-    document.querySelectorAll('#ls-mode .ls-mode-btn').forEach(function(b){
-      b.classList.toggle('active', b.dataset.mode===_lsCfg.mode);
-    });
   }
 
   function lsSyncFromDOM(){
@@ -5317,11 +5401,8 @@ var EX = [
     document.getElementById('mv-layout-overlay').style.display='block';
   };
 
-  window.lsSetMode = function(mode){
-    _lsCfg.mode = mode;
-    document.querySelectorAll('#ls-mode .ls-mode-btn').forEach(function(b){
-      b.classList.toggle('active', b.dataset.mode===mode);
-    });
+  window.lsSetMode = function(){
+    _lsCfg.mode = 'landscape'; /* 横固定 */
   };
 
   window.lsToggleRequired = function(id, val){
@@ -5332,18 +5413,47 @@ var EX = [
   window.lsDeleteSection = function(id){
     var s = (_lsCfg.sections||[]).find(function(x){return x.id===id;});
     if(!s) return;
-    if(s.locked){
-      alert('SETUPとCUEINGは削除できません（非表示ゾーンにドラッグすれば非表示にできます）');
-      return;
-    }
     if(!confirm('「'+s.name+'」を削除しますか？')) return;
     _lsCfg.sections = (_lsCfg.sections||[]).filter(function(x){return x.id!==id;});
     lsRenderEditor();
   };
 
+  /* 中項目の削除 */
+  window.lsDelSub = function(secId, idx){
+    var s = (_lsCfg.sections||[]).find(function(x){return x.id===secId;});
+    if(!s || !s.subs || s.subs.length<=1){ alert('中項目は最低1つ必要です'); return; }
+    s.subs.splice(idx, 1);
+    /* 番号振り直し */
+    var nums = ['①','②','③','④','⑤','⑥','⑦','⑧'];
+    s.subs.forEach(function(sub, i){ sub.n = nums[i] || ('('+(i+1)+')'); });
+    lsRenderEditor();
+  };
+
+  /* 中項目の追加 */
+  window.lsAddSub = function(secId){
+    var s = (_lsCfg.sections||[]).find(function(x){return x.id===secId;});
+    if(!s) return;
+    if(!s.subs) s.subs = [];
+    if(s.subs.length >= 6){ alert('中項目は最大6つまでです'); return; }
+    /* 既存項目のfmtを引き継ぐ */
+    var lastFmt = s.subs.length ? s.subs[s.subs.length-1].fmt : 'テキスト';
+    var nums = ['①','②','③','④','⑤','⑥','⑦','⑧'];
+    s.subs.push({ n: nums[s.subs.length] || ('('+(s.subs.length+1)+')'), fmt: lastFmt });
+    lsRenderEditor();
+  };
+
+  /* 中項目の入力形式トグル */
+  window.lsToggleFmt = function(secId, idx){
+    var s = (_lsCfg.sections||[]).find(function(x){return x.id===secId;});
+    if(!s || !s.subs || !s.subs[idx]) return;
+    s.subs[idx].fmt = (s.subs[idx].fmt === 'テキスト') ? 'タイトル＋説明' : 'テキスト';
+    lsRenderEditor();
+  };
+
   window.lsOpenAdd = function(){
     document.getElementById('ls-add-name').value = '';
-    document.getElementById('ls-add-type').value = 'textarea';
+    document.getElementById('ls-add-type').value = 'text';
+    document.getElementById('ls-add-count').value = '2';
     document.getElementById('ls-addmodal').classList.add('open');
   };
   window.lsCloseAdd = function(){
@@ -5352,12 +5462,17 @@ var EX = [
   window.lsConfirmAdd = function(){
     var name = document.getElementById('ls-add-name').value.trim();
     var type = document.getElementById('ls-add-type').value;
+    var count = parseInt(document.getElementById('ls-add-count').value,10) || 2;
     if(!name){ alert('セクション名を入力してください'); return; }
     lsSyncFromDOM();
     var id = 'custom_'+Date.now().toString(36);
+    var fmtLabel = (type==='titled-list') ? 'タイトル＋説明' : 'テキスト';
+    var nums = ['①','②','③','④','⑤','⑥'];
+    var subs = [];
+    for(var i=0; i<count; i++){ subs.push({n:nums[i], fmt:fmtLabel}); }
     var maxOrder = 0;
     (_lsCfg.sections||[]).forEach(function(s){ if(s.column==='right' && (s.order||0)>maxOrder) maxOrder = s.order; });
-    _lsCfg.sections.push({ id:id, name:name, type:type, column:'right', order:maxOrder+1, required:false, isCustom:true, locked:false });
+    _lsCfg.sections.push({ id:id, name:name, type:type, column:'right', order:maxOrder+1, required:false, isCustom:true, locked:false, subs:subs });
     lsCloseAdd();
     lsRenderEditor();
   };
@@ -5393,39 +5508,45 @@ var EX = [
     });
     /* セクション → カラム展開 */
     function sectionCols(sec){
+      /* subs配列から動的に列名を生成 */
+      if(sec.subs && sec.subs.length){
+        return sec.subs.map(function(sub){ return sec.name + sub.n; });
+      }
+      /* フォールバック（subs未設定の旧データ） */
       switch(sec.type){
-        case 'builtin-setup':   return ['スプリング','レップ数','ポジション'];
-        case 'builtin-cues':    return ['キューイング①','キューイング②','キューイング③'];
-        case 'builtin-purpose': return ['目的①','目的②','目的③'];
-        case 'builtin-muscles': return ['ターゲットマッスル'];
-        case 'builtin-seq':     return ['ムーブメントシークエンス'];
-        case 'builtin-points':  return ['重要ポイント①タイトル','重要ポイント①説明','重要ポイント②タイトル','重要ポイント②説明','重要ポイント③タイトル','重要ポイント③説明'];
+        case 'builtin-setup':   return ['SETUP①','SETUP②'];
+        case 'builtin-purpose': return ['PURPOSE①','PURPOSE②'];
+        case 'builtin-muscles': return ['TARGET MUSCLES①','TARGET MUSCLES②'];
+        case 'builtin-seq':     return ['MOVEMENT SEQ①','MOVEMENT SEQ②','MOVEMENT SEQ③','MOVEMENT SEQ④'];
+        case 'builtin-points':  return ['POINTS①','POINTS②','POINTS③','POINTS④'];
         default: return [sec.name || sec.id];
       }
     }
-    var baseHead = ['ID','機器','UNIT番号','UNIT名','レベル','指導形式','種目名（EN）','種目名（JP）'];
-    var tailHead = ['禁忌・注意事項','写真①ラベル','写真②ラベル','写真③ラベル','写真④ラベル','写真⑤ラベル','入力担当者','入力ステータス','メモ'];
+    var baseHead = ['写真No','ID','機器','UNIT番号','UNIT名','レベル','指導形式','種目名（EN）','種目名（JP）'];
+    var tailHead = ['禁忌・注意事項','写真①ラベル','写真②ラベル','写真③ラベル','写真④ラベル','入力担当者','入力ステータス','メモ'];
     var dynHead = [];
     sections.forEach(function(s){ dynHead = dynHead.concat(sectionCols(s)); });
     var headers = baseHead.concat(dynHead).concat(tailHead);
     var rows=[headers];
     var cnt={};
+    var photoNo = 0;
     EX.forEach(function(ex){
       ex.variations.forEach(function(v){
+        photoNo++;
         var k=ex.app+'-'+ex.u+'-'+v.lv;
         cnt[k]=(cnt[k]||0)+1;
         var id=(AC[ex.app]||ex.app)+'-U'+String(ex.u).padStart(2,'0')+'-'+v.lv+'-'+String(cnt[k]).padStart(3,'0');
         var fmt='Reformer only';
         if(v.lv==='P'){var ho=ex.variations.some(function(v2){return v2.lv!=='P';});fmt=ho?'Reformer / Mat':'Mat only';}
-        var row = [id,AN[ex.app]||ex.app,'U'+String(ex.u).padStart(2,'0'),UN[ex.u]||'',v.lv+' \u2014 '+LF[v.lv],fmt,ex.name,''];
-        /* 動的セクション列は空で初期化（ポジションのみ「スタートポジション」デフォルト） */
+        var row = [String(photoNo).padStart(3,'0'),id,AN[ex.app]||ex.app,'U'+String(ex.u).padStart(2,'0'),UN[ex.u]||'',v.lv+' \u2014 '+LF[v.lv],fmt,ex.name,''];
+        /* 動的セクション列は空で初期化 */
         sections.forEach(function(s){
           sectionCols(s).forEach(function(col){
-            row.push(col==='ポジション'?'スタートポジション':'');
+            row.push('');
           });
         });
-        /* 末尾：禁忌、写真ラベル×5、担当者、ステータス、メモ */
-        row.push('','','','','','','','未入力','');
+        /* 末尾：禁忌、写真ラベル×4、担当者、ステータス、メモ */
+        row.push('','','','','','','未入力','');
         rows.push(row);
       });
     });
