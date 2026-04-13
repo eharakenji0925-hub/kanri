@@ -113,12 +113,43 @@ body::before{
 .ndot{
   width:6px;height:6px;border-radius:50%;
   background:rgba(255,255,255,.15);
-  cursor:pointer;transition:all .2s;border:none;padding:0;flex-shrink:0;outline:none;appearance:none;-webkit-appearance:none;
+  cursor:pointer;transition:all .18s cubic-bezier(.2,.8,.2,1);border:none;padding:0;flex-shrink:0;outline:none;appearance:none;-webkit-appearance:none;
+  position:relative;
+  display:flex;align-items:center;justify-content:center;
+  font:700 0 Montserrat;color:transparent;line-height:1;
 }
 button{outline:none;}
-.ndot:hover{background:rgba(255,255,255,.4);transform:scale(1.3)}
+.ndot:hover{
+  background:var(--red);
+  transform:scale(3.2) translateY(-2px);
+  width:18px;height:18px;
+  font-size:9px;color:#fff;
+  box-shadow:0 2px 8px rgba(200,16,46,.5);
+  z-index:10;
+}
+.ndot::after{
+  content:attr(data-title);
+  position:absolute;
+  bottom:calc(100% + 10px);
+  left:50%;transform:translateX(-50%) translateY(4px);
+  background:rgba(20,20,20,.98);
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:4px;
+  padding:4px 10px;
+  font:600 11px 'Noto Sans JP';color:#fff;letter-spacing:.5px;
+  white-space:nowrap;
+  opacity:0;pointer-events:none;
+  transition:all .2s cubic-bezier(.2,.8,.2,1) .05s;
+  z-index:11;
+}
+.ndot:hover::after{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
 .ndot.nd-active{background:var(--red);box-shadow:0 0 6px rgba(200,16,46,.6);transform:scale(1.2)}
 .ndot.nd-group{border-radius:2px;width:8px}
+/* ホバー時のクリック領域を拡大するための余白 */
+#nav-dots{padding-top:20px!important;padding-bottom:8px!important}
 /* key caps */
 .nav-hint{
   position:fixed;bottom:20px;right:24px;
@@ -646,6 +677,10 @@ button{outline:none;}
 .action-btn:hover{transform:translateY(-1px)}
 .clear-btn{background:rgba(255,255,255,.05);color:var(--muted)}
 .clear-btn:hover{background:rgba(200,16,46,.18);color:var(--red)}
+.print-btn{background:rgba(212,175,55,.15);color:#D4AF37;border:1px solid rgba(212,175,55,.3)}
+.print-btn:hover:not(:disabled){background:rgba(212,175,55,.25);color:#F5CD4F;border-color:#D4AF37}
+.print-btn:disabled{opacity:.35;cursor:not-allowed;background:rgba(255,255,255,.03);color:var(--dim);border-color:var(--border2)}
+.print-btn .pb-hint{font-size:10px;font-weight:400;margin-left:6px;opacity:.7}
 /* Builder level colors */
 .bldr-pre .pbtn:hover,.bldr-pre .pbtn-num{color:var(--pre)}
 .bldr-pre .pbtn:hover{border-color:var(--pre)}
@@ -881,14 +916,25 @@ button{outline:none;}
 .exdb-hint{font:300 11px 'Noto Sans JP';color:var(--dim);text-align:center;padding:16px}
 
 /* ═══ 3-COLUMN BUILDER ═══ */
-.b3wrap{display:flex;gap:10px;margin:8px var(--pad) 0;height:calc(100vh - 120px)}
+.b3wrap{display:flex;gap:10px;margin:8px var(--pad) 0;height:calc(100vh - 180px);padding-bottom:0}
 .b3-nav{width:165px;flex-shrink:0;overflow-y:auto;display:flex;flex-direction:column;gap:3px}
 .b3-nav::-webkit-scrollbar{width:2px}
 .b3-nav::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
 .b3-pick{flex:1;overflow-y:auto;min-width:0;padding-right:4px}
 .b3-pick::-webkit-scrollbar{width:3px}
 .b3-pick::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
-.b3-prog{width:255px;flex-shrink:0;display:flex;flex-direction:column;gap:0}
+.b3-prog{width:clamp(520px, 50%, 1300px);flex-shrink:0;display:flex;flex-direction:column;gap:0}
+/* ★REQUIRED 1行チップ */
+.b3-req-slim{display:flex;align-items:center;gap:8px;padding:6px 10px;margin-bottom:8px;background:rgba(200,16,46,.06);border:1px solid rgba(200,16,46,.25);border-radius:5px;cursor:pointer;user-select:none;transition:background .15s}
+.b3-req-slim:hover{background:rgba(200,16,46,.1)}
+.b3-req-slim .r-label{font:700 9px Montserrat;letter-spacing:2px;color:var(--red);flex-shrink:0}
+.b3-req-slim .r-note{font:300 9px 'Noto Sans JP';color:var(--muted);flex-shrink:0}
+.b3-req-slim .r-chips{display:flex;gap:4px;flex-wrap:wrap;flex:1;min-width:0}
+.b3-req-slim .r-chip{background:rgba(200,16,46,.15);color:#F87171;padding:2px 7px;border-radius:10px;font:500 9px 'Noto Sans JP';letter-spacing:.5px;white-space:nowrap}
+.b3-req-slim .r-toggle{font-size:11px;color:var(--muted);margin-left:auto;flex-shrink:0;transition:transform .2s}
+.b3-req-slim.open .r-toggle{transform:rotate(180deg)}
+.b3-req-expand{display:none;margin-bottom:8px}
+.b3-req-expand.open{display:block}
 /* unit nav */
 .b3-unit-btn{width:100%;display:flex;align-items:center;gap:7px;padding:7px 9px;background:var(--card);border:1px solid var(--border);border-radius:5px;cursor:pointer;transition:all .15s;text-align:left;margin-bottom:3px}
 .b3-unit-btn:hover{background:var(--card2);transform:translateX(3px)}
@@ -987,6 +1033,16 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .b3-prog-unit{animation:b3SlotIn .18s ease both}
 
 .b3-prog-req{background:rgba(200,16,46,.04)!important;border-left:2px solid rgba(200,16,46,.3);}
+/* 必須グループ（まとめて時間調整） */
+.b3-prog-reqgroup{background:rgba(200,16,46,.04);border-left:2px solid rgba(200,16,46,.35);border-bottom:1px solid rgba(255,255,255,.03)}
+.b3-prog-reqgroup-head{display:flex;align-items:center;gap:8px;padding:6px 10px}
+.b3-prog-reqgroup-head .rg-label{font:700 10px Montserrat;letter-spacing:2px;color:var(--red)}
+.b3-prog-reqgroup-head .rg-sub{font:300 9px 'Noto Sans JP';color:var(--dim);margin-right:auto}
+.b3-prog-reqgroup-head .rg-time{margin-left:auto}
+.b3-prog-reqgroup-list{padding:0 10px 6px 14px;display:flex;flex-direction:column;gap:2px}
+.b3-prog-reqgroup-row{display:flex;align-items:center;gap:6px;font:300 10px 'Noto Sans JP';color:var(--body);line-height:1.6}
+.b3-prog-reqgroup-row .rg-branch{color:rgba(255,255,255,.25);font-size:10px;width:10px;flex-shrink:0}
+.b3-prog-reqgroup-row .rg-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
 /* ═══ Slide 23 ─ Apparatus Curriculum ══════════════════════ */
 .app23-tab{padding:6px 14px;border-radius:4px;border:1px solid var(--border2);background:var(--bg3);
@@ -1071,6 +1127,67 @@ body.slide21-active #ui-toolbar{display:none;}
   z-index:500;align-items:center;justify-content:center;
 }
 #kb-modal.open{display:flex;}
+
+/* ═══ PRINT PREVIEW MODAL ═══ */
+#print-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:600;overflow-y:auto;padding:20px 0}
+#print-modal.open{display:block}
+.pm-toolbar{position:sticky;top:0;z-index:10;background:#1a1a1a;border-bottom:1px solid rgba(255,255,255,.1);padding:10px 20px;display:flex;align-items:center;gap:10px;max-width:800px;margin:0 auto 12px}
+.pm-toolbar .pm-title{font:700 11px Montserrat;letter-spacing:3px;color:#D4AF37;margin-right:auto}
+.pm-btn{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:4px;color:#ccc;font:600 11px 'Noto Sans JP';padding:8px 16px;cursor:pointer;transition:all .15s}
+.pm-btn:hover{background:rgba(255,255,255,.12);color:#fff}
+.pm-btn.pm-primary{background:#D4AF37;color:#111;border-color:#D4AF37}
+.pm-btn.pm-primary:hover{background:#F5CD4F;color:#000}
+
+/* A4 printable sheet */
+.pm-sheet{
+  width:210mm;min-height:297mm;padding:15mm 18mm;margin:0 auto;
+  background:#fff;color:#111;
+  font-family:'Noto Sans JP','Hiragino Sans','Yu Gothic',sans-serif;
+  font-size:10.5pt;line-height:1.5;
+  box-shadow:0 4px 24px rgba(0,0,0,.4);
+  box-sizing:border-box;
+}
+.pm-sheet .p-head{border-bottom:2px solid #111;padding-bottom:8px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:flex-end}
+.pm-sheet .p-brand{font:700 14pt 'Bebas Neue',sans-serif;letter-spacing:3px;color:#111}
+.pm-sheet .p-brand .sub{display:block;font:400 9pt 'Noto Sans JP',sans-serif;letter-spacing:1px;color:#666;margin-top:2px}
+.pm-sheet .p-meta{text-align:right;font-size:9pt;color:#333;line-height:1.7}
+.pm-sheet .p-meta b{color:#111;font-weight:700}
+.pm-sheet .p-meta .p-lv{display:inline-block;padding:2px 10px;border-radius:3px;font-weight:700;letter-spacing:1px;background:#111;color:#fff;font-size:10pt;margin-left:4px}
+.pm-sheet .p-summary{display:flex;gap:20px;padding:8px 12px;background:#f5f5f0;border-radius:3px;margin-bottom:12px;font-size:10pt}
+.pm-sheet .p-summary b{color:#111}
+.pm-sheet .p-summary .val{color:#B8860B;font-weight:700;margin-left:4px}
+.pm-sheet .p-unit{margin-bottom:10px;break-inside:avoid;page-break-inside:avoid}
+.pm-sheet .p-unit-head{display:flex;align-items:baseline;gap:8px;padding:3px 0;border-bottom:1px solid #999;margin-bottom:3px}
+.pm-sheet .p-unit-num{font:700 11pt 'Bebas Neue',sans-serif;color:#111;letter-spacing:1px}
+.pm-sheet .p-unit-name{font:700 10pt 'Noto Sans JP',sans-serif;color:#222}
+.pm-sheet .p-unit-time{margin-left:auto;font-size:9pt;color:#666;font-weight:600}
+.pm-sheet .p-item{display:flex;padding:2px 8px;font-size:10pt}
+.pm-sheet .p-item .p-name{flex:1}
+.pm-sheet .p-item .p-time{color:#555;font-variant-numeric:tabular-nums;min-width:42px;text-align:right}
+.pm-sheet .p-item.p-req{color:#111}
+.pm-sheet .p-req-head{display:flex;align-items:baseline;padding:2px 0 2px 8px;font-weight:700;color:#B8860B}
+.pm-sheet .p-req-head .p-req-label{font-size:9.5pt;letter-spacing:1px}
+.pm-sheet .p-req-head .p-req-sub{margin-left:6px;font-weight:400;font-size:9pt;color:#666}
+.pm-sheet .p-req-head .p-req-time{margin-left:auto;font-size:9pt;color:#555;font-weight:600}
+.pm-sheet .p-req-list{padding-left:20px}
+.pm-sheet .p-req-list .p-req-row{font-size:10pt;padding:1px 0;color:#222}
+.pm-sheet .p-req-list .p-req-row::before{content:'├ ';color:#999}
+.pm-sheet .p-req-list .p-req-row:last-child::before{content:'└ ';color:#999}
+.pm-sheet .p-foot{margin-top:16px;padding-top:10px;border-top:1px solid #bbb;font-size:9pt;color:#555;line-height:1.8}
+.pm-sheet .p-foot .p-note{margin-bottom:8px}
+.pm-sheet .p-sign{display:flex;gap:24px;margin-top:12px;font-size:9.5pt}
+.pm-sheet .p-sign > div{flex:1;border-bottom:1px solid #111;padding:4px 0 2px;color:#555}
+.pm-sheet .p-sign b{color:#111;display:block;margin-bottom:20px}
+
+/* Print media: show only the sheet */
+@media print {
+  body * {visibility:hidden!important}
+  #print-modal, #print-modal *{visibility:visible!important}
+  #print-modal{position:absolute;inset:0;background:#fff;padding:0;overflow:visible}
+  .pm-toolbar{display:none!important}
+  .pm-sheet{box-shadow:none;margin:0;width:auto;min-height:auto}
+  @page{size:A4;margin:10mm}
+}
 .kb-box{
   background:var(--card);border:1px solid var(--border2);border-radius:8px;
   padding:24px 28px;min-width:320px;
@@ -2614,7 +2731,10 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
       <div class="b3-prog-head"><span class="b3-prog-label">PROGRAM</span><span class="b3-prog-count" id="cntP">0種目</span></div>
       <div class="b3-prog-scroll" id="slotsP"><div class="b3-prog-empty jp">ユニットを選択して<br>エクササイズを追加してください</div></div>
       <div class="builder-total" id="totalP" style="display:none;margin-top:6px"></div>
-      <div class="builder-actions" style="margin-top:6px"><button class="action-btn clear-btn" onclick="b3Clear('P')"><span class="jp">クリア</span></button></div>
+      <div class="builder-actions" style="margin-top:6px">
+        <button class="action-btn print-btn" id="printBtnP" onclick="b3OpenPrint('P')" disabled>🖨 <span class="jp">印刷</span><span class="pb-hint jp" id="printHintP">（未完成）</span></button>
+        <button class="action-btn clear-btn" onclick="b3Clear('P')"><span class="jp">クリア</span></button>
+      </div>
     </div>
   </div>
 </div>
@@ -2631,7 +2751,10 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
       <div class="b3-prog-head"><span class="b3-prog-label">PROGRAM</span><span class="b3-prog-count" id="cntF">0種目</span></div>
       <div class="b3-prog-scroll" id="slotsF"><div class="b3-prog-empty jp">ユニットを選択して<br>エクササイズを追加してください</div></div>
       <div class="builder-total" id="totalF" style="display:none;margin-top:6px"></div>
-      <div class="builder-actions" style="margin-top:6px"><button class="action-btn clear-btn" onclick="b3Clear('F')"><span class="jp">クリア</span></button></div>
+      <div class="builder-actions" style="margin-top:6px">
+        <button class="action-btn print-btn" id="printBtnF" onclick="b3OpenPrint('F')" disabled>🖨 <span class="jp">印刷</span><span class="pb-hint jp" id="printHintF">（未完成）</span></button>
+        <button class="action-btn clear-btn" onclick="b3Clear('F')"><span class="jp">クリア</span></button>
+      </div>
     </div>
   </div>
 </div>
@@ -2648,7 +2771,10 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
       <div class="b3-prog-head"><span class="b3-prog-label">PROGRAM</span><span class="b3-prog-count" id="cntI">0種目</span></div>
       <div class="b3-prog-scroll" id="slotsI"><div class="b3-prog-empty jp">ユニットを選択して<br>エクササイズを追加してください</div></div>
       <div class="builder-total" id="totalI" style="display:none;margin-top:6px"></div>
-      <div class="builder-actions" style="margin-top:6px"><button class="action-btn clear-btn" onclick="b3Clear('I')"><span class="jp">クリア</span></button></div>
+      <div class="builder-actions" style="margin-top:6px">
+        <button class="action-btn print-btn" id="printBtnI" onclick="b3OpenPrint('I')" disabled>🖨 <span class="jp">印刷</span><span class="pb-hint jp" id="printHintI">（未完成）</span></button>
+        <button class="action-btn clear-btn" onclick="b3Clear('I')"><span class="jp">クリア</span></button>
+      </div>
     </div>
   </div>
 </div>
@@ -2665,7 +2791,10 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
       <div class="b3-prog-head"><span class="b3-prog-label">PROGRAM</span><span class="b3-prog-count" id="cntA">0種目</span></div>
       <div class="b3-prog-scroll" id="slotsA"><div class="b3-prog-empty jp">ユニットを選択して<br>エクササイズを追加してください</div></div>
       <div class="builder-total" id="totalA" style="display:none;margin-top:6px"></div>
-      <div class="builder-actions" style="margin-top:6px"><button class="action-btn clear-btn" onclick="b3Clear('A')"><span class="jp">クリア</span></button></div>
+      <div class="builder-actions" style="margin-top:6px">
+        <button class="action-btn print-btn" id="printBtnA" onclick="b3OpenPrint('A')" disabled>🖨 <span class="jp">印刷</span><span class="pb-hint jp" id="printHintA">（未完成）</span></button>
+        <button class="action-btn clear-btn" onclick="b3Clear('A')"><span class="jp">クリア</span></button>
+      </div>
     </div>
   </div>
 </div>
@@ -3283,6 +3412,16 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
   </div>
 </div>
 
+<!-- ═══ PRINT PREVIEW MODAL ═══════════════════════════════════ -->
+<div id="print-modal" onclick="if(event.target===this)b3ClosePrint()">
+  <div class="pm-toolbar">
+    <span class="pm-title">PRINT PREVIEW</span>
+    <button class="pm-btn pm-primary" onclick="window.print()">🖨 印刷する</button>
+    <button class="pm-btn" onclick="b3ClosePrint()">閉じる</button>
+  </div>
+  <div class="pm-sheet" id="printSheet"></div>
+</div>
+
 <!-- ═══ JUMP MENU ═══════════════════════════════════════════════ -->
 <div id="jump-menu" id="jump-menu"></div>
 
@@ -3589,7 +3728,8 @@ function buildDots(){
   groups.forEach((g,gi)=>{
     if(gi>0)h+='<div style="width:4px;height:1px;background:rgba(255,255,255,.1);flex-shrink:0"></div>';
     g.forEach(n=>{
-      h+=`<button class="ndot${n===1?' nd-active':''}" data-n="${n}" onclick="show(${n})" title="${slideTitles[n]||n}"></button>`;
+      var _ttl = (slideTitles[n]||'Page '+n).replace(/"/g,'&quot;');
+      h+=`<button class="ndot${n===1?' nd-active':''}" data-n="${n}" data-title="${n}. ${_ttl}" onclick="show(${n})" title="${_ttl}">${n}</button>`;
     });
   });
   el.innerHTML=h;
@@ -3653,6 +3793,25 @@ const bState = {
   A:{unit:null,mode:'pick',prog:[]},
 };
 
+/* ★必須セクションの開閉状態（デフォルト: 折りたたみ） */
+const _b3ReqOpen = {P:false, F:false, I:false, A:false};
+function b3ToggleReq(lv){
+  _b3ReqOpen[lv] = !_b3ReqOpen[lv];
+  b3RenderPick(lv);
+}
+
+/* 必須種目を右PROGRAMに常に含める（idempotent） */
+function b3EnsureRequired(lv){
+  const s = bState[lv];
+  B3_REQUIRED.forEach(r => {
+    if (r.lvs !== null && !r.lvs.includes(lv)) return;
+    const already = s.prog.some(p => p.u === r.unit && p.name === r.name);
+    if (!already) {
+      s.prog.push({u:r.unit, app:r.app, name:r.name, varLv:'P', time:5, required:true});
+    }
+  });
+}
+
 const LEVEL_COLOR_CSS = {P:'var(--pre)',F:'var(--fundamental)',I:'var(--intermediate)',A:'var(--advance)'};
 
 function buildButtons(containerId, lv) {
@@ -3690,18 +3849,8 @@ function b3SelectUnit(lv, unitIdx) {
   const s = bState[lv];
   s.unit = (s.unit===unitIdx && s.mode==='pick') ? null : unitIdx;
   s.mode = 'pick';
-  // WARM UPが選択されたら必須種目を自動追加
-  if (unitIdx === 1) {
-    B3_REQUIRED.forEach(r => {
-      if (r.unit !== 1) return;
-      if (r.lvs !== null && !r.lvs.includes(lv)) return;
-      const alreadyIn = s.prog.some(p => p.u === 1 && p.name === r.name);
-      if (!alreadyIn) {
-        const ex = window['EX'] ? window['EX'].find(e => e.u === 1 && e.app === r.app && e.name === r.name) : null;
-        if (ex) s.prog.push({u:1, app:r.app, name:r.name, lv:lv, required:true});
-      }
-    });
-  }
+  // 必須種目を常に確保（ページ初期化・ユニット選択・クリア後いずれでも整合）
+  b3EnsureRequired(lv);
   b3RenderNav(lv);
   b3RenderPick(lv);
   b3RenderProg(lv);
@@ -3768,19 +3917,26 @@ function b3RenderPick(lv) {
     <span class="b3-pick-cnt">${availCount}種目 / 全${exercises.length}種目</span>
   </div>`;
 
-  // ── 必須セクション（WARM UP上部に固定）──
+  // ── 必須セクション（WARM UP上部に1行チップ・折りたたみ式）──
   let reqHtml = '';
   if (s.unit === 1) {
     const reqItems = B3_REQUIRED.filter(r =>
       r.unit === 1 && (r.lvs === null || r.lvs.includes(lv))
     );
     if (reqItems.length) {
-      reqHtml += `<div style="padding:8px 12px 6px;background:rgba(200,16,46,.06);border-bottom:2px solid rgba(200,16,46,.2);display:flex;align-items:center;gap:8px">
-        <span style="font:700 9px Montserrat;letter-spacing:3px;color:var(--red)">★ REQUIRED</span>
-        <span style="font:300 10px 'Noto Sans JP';color:var(--muted)">必ず実施 — 自動追加済み</span>
+      const openCls = (_b3ReqOpen[lv] ? ' open' : '');
+      const chipsHtml = reqItems.map(r =>
+        `<span class="r-chip">● ${r.name}</span>`
+      ).join('');
+      reqHtml += `<div class="b3-req-slim${openCls}" onclick="b3ToggleReq('${lv}')">
+        <span class="r-label">★ 必須</span>
+        <span class="r-note">(${reqItems.length}種目・自動追加済み)</span>
+        <span class="r-chips">${chipsHtml}</span>
+        <span class="r-toggle">▾</span>
       </div>`;
+      let cards = '';
       reqItems.forEach(r => {
-        reqHtml += `<div class="b3-ex-card b3-added" style="border-left:3px solid var(--red);opacity:.9">
+        cards += `<div class="b3-ex-card b3-added" style="border-left:3px solid var(--red);opacity:.9">
           <div class="b3-ex-head">
             <span class="b3-ex-app app-R">REFORMER</span>
             <span class="b3-ex-name">${r.name}</span>
@@ -3789,7 +3945,7 @@ function b3RenderPick(lv) {
           <div class="b3-var-row"><span class="b3-var-lv lv-P">PRE</span></div>
         </div>`;
       });
-      reqHtml += `<div style="height:1px;background:var(--border2);margin:4px 0 8px"></div>`;
+      reqHtml += `<div class="b3-req-expand${openCls}">${cards}</div>`;
     }
   }
 
@@ -3868,6 +4024,17 @@ function b3AdjTime(lv, idx, d) {
   b3RenderProg(lv);
 }
 
+/* 必須種目のまとめて時間調整（ユニット単位） */
+function b3AdjReqTime(lv, unit, d){
+  const reqItems = bState[lv].prog.filter(p => p.u===unit && b3IsRequired(lv, p.u, p.name));
+  if (!reqItems.length) return;
+  const cur = reqItems[0].time || 5;
+  const next = Math.max(1, Math.min(30, cur + d));
+  reqItems.forEach(p => { p.time = next; });
+  b3RenderProg(lv);
+  return;
+}
+
 function b3RemoveItem(lv, idx) {
   const p = bState[lv].prog[idx];
   if (p && b3IsRequired(lv, p.u, p.name)) return; // 必須種目は削除不可
@@ -3881,9 +4048,141 @@ function b3Clear(lv) {
   bState[lv].prog = [];
   bState[lv].unit = null;
   bState[lv].mode = 'pick';
+  b3EnsureRequired(lv); /* クリア後も必須種目は常に残す */
   b3RenderNav(lv);
   b3RenderPick(lv);
   b3RenderProg(lv);
+}
+
+/* ═══ プログラム完成判定（全10ユニットに1種目以上） ═══ */
+function b3IsComplete(lv){
+  const prog = bState[lv].prog;
+  for (let u = 1; u <= 10; u++) {
+    if (!prog.some(p => p.u === u)) return false;
+  }
+  return true;
+}
+
+/* 印刷ボタンの有効/無効を更新 */
+function b3UpdatePrintBtn(lv){
+  const btn  = document.getElementById('printBtn'+lv);
+  const hint = document.getElementById('printHint'+lv);
+  if (!btn) return;
+  const prog = bState[lv].prog;
+  const missingUnits = [];
+  for (let u = 1; u <= 10; u++) {
+    if (!prog.some(p => p.u === u)) missingUnits.push(u);
+  }
+  if (missingUnits.length === 0) {
+    btn.disabled = false;
+    if (hint) hint.textContent = '（プログラム完成）';
+  } else {
+    btn.disabled = true;
+    if (hint) hint.textContent = '（残り'+missingUnits.length+'ユニット）';
+  }
+}
+
+/* 印刷プレビューを開く */
+function b3OpenPrint(lv){
+  if (!b3IsComplete(lv)) return;
+  const html = b3BuildPrintSheet(lv);
+  document.getElementById('printSheet').innerHTML = html;
+  document.getElementById('print-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function b3ClosePrint(){
+  document.getElementById('print-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* A4シートのHTMLを組み立て */
+function b3BuildPrintSheet(lv){
+  const LVL_LABEL = {P:'PRE',F:'FUNDAMENTAL',I:'INTERMEDIATE',A:'ADVANCE'};
+  const LVL_DESC  = {
+    P:'リフォーマー中心の安全な導入 / 18種目',
+    F:'全レベルのベース / F種目のみ構成 / 18〜25種目',
+    I:'F種目ベース＋I種目3〜5追加 / 60分',
+    A:'F・I・A全種目から25種目構成 / 60分'
+  };
+  const prog = bState[lv].prog;
+  const byUnit = {};
+  prog.forEach(p => { (byUnit[p.u] = byUnit[p.u] || []).push(p); });
+
+  /* 合計時間（必須グループは1ブロックとしてカウント） */
+  const _seen = new Set();
+  const total = prog.reduce((s,p) => {
+    if (b3IsRequired(lv, p.u, p.name)) {
+      const key = 'req-'+p.u;
+      if (_seen.has(key)) return s;
+      _seen.add(key);
+    }
+    return s + (p.time || 0);
+  }, 0);
+
+  const now = new Date();
+  const dateStr = now.getFullYear()+'/'+String(now.getMonth()+1).padStart(2,'0')+'/'+String(now.getDate()).padStart(2,'0');
+
+  /* ヘッダー */
+  let h = `<div class="p-head">
+    <div class="p-brand">AXISCORE PILATES<span class="sub">60分 プログラム構成</span></div>
+    <div class="p-meta">
+      <div>Level: <span class="p-lv">${LVL_LABEL[lv]}</span></div>
+      <div>${LVL_DESC[lv]}</div>
+      <div>作成日: <b>${dateStr}</b></div>
+    </div>
+  </div>
+  <div class="p-summary">
+    <div>合計時間 <span class="val">${total} 分 / 60</span></div>
+    <div>種目数 <span class="val">${prog.length} 種目</span></div>
+    <div>ユニット <span class="val">10 / 10</span></div>
+  </div>`;
+
+  /* 各ユニット */
+  for (let u = 1; u <= 10; u++) {
+    const items = byUnit[u] || [];
+    const reqItems = items.filter(p => b3IsRequired(lv, p.u, p.name));
+    const regItems = items.filter(p => !b3IsRequired(lv, p.u, p.name));
+    const reqTime  = reqItems.length ? (reqItems[0].time || 0) : 0;
+    const unitTime = reqTime + regItems.reduce((s,p)=>s+(p.time||0),0);
+    const unitName = (typeof UNIT_NAME !== 'undefined' && UNIT_NAME[u]) || (typeof U !== 'undefined' && U[u] && U[u].name) || '';
+
+    h += `<div class="p-unit">
+      <div class="p-unit-head">
+        <span class="p-unit-num">${String(u).padStart(2,'0')}</span>
+        <span class="p-unit-name">${unitName}</span>
+        <span class="p-unit-time">計 ${unitTime} 分・${items.length} 種目</span>
+      </div>`;
+    if (reqItems.length) {
+      h += `<div class="p-req-head">
+        <span class="p-req-label">★ 必須 ${reqItems.length}種目</span>
+        <span class="p-req-sub">まとめて</span>
+        <span class="p-req-time">${reqTime} 分</span>
+      </div>
+      <div class="p-req-list">`;
+      reqItems.forEach(p => {
+        h += `<div class="p-req-row">${p.name}</div>`;
+      });
+      h += `</div>`;
+    }
+    regItems.forEach(p => {
+      h += `<div class="p-item">
+        <span class="p-name">${p.name}</span>
+        <span class="p-time">${p.time||0} 分</span>
+      </div>`;
+    });
+    h += `</div>`;
+  }
+
+  h += `<div class="p-foot">
+    <div class="p-note">★ 印は必須種目（各ユニット毎にまとめて時間配分されます）</div>
+    <div class="p-sign">
+      <div><b>Instructor</b></div>
+      <div><b>Client</b></div>
+      <div><b>Date</b></div>
+    </div>
+  </div>`;
+  return h;
 }
 // keep clearProg as alias
 function clearProg(lv){ b3Clear(lv); }
@@ -3915,24 +4214,51 @@ function b3RenderProg(lv) {
 
   let slots = '';
   Object.entries(byUnit).forEach(([un,items])=>{
+    const unitNum = parseInt(un,10);
+    const reqItems = items.filter(p => b3IsRequired(lv, p.u, p.name));
+    const regItems = items.filter(p => !b3IsRequired(lv, p.u, p.name));
+
     let itemRows = '';
-    items.forEach(p=>{
+
+    /* 必須グループ：まとめて1つの時間コントロール */
+    if (reqItems.length) {
+      const commonTime = reqItems[0].time || 5;
+      itemRows += `<div class="b3-prog-reqgroup">
+        <div class="b3-prog-reqgroup-head">
+          <span class="rg-label">★ 必須 ${reqItems.length}種目</span>
+          <span class="rg-sub">まとめて</span>
+          <div class="b3-prog-time rg-time">
+            <button onclick="b3AdjReqTime('${lv}',${unitNum},-1)">−</button>
+            <span class="tv">${commonTime}m</span>
+            <button onclick="b3AdjReqTime('${lv}',${unitNum},1)">+</button>
+          </div>
+        </div>
+        <div class="b3-prog-reqgroup-list">`;
+      reqItems.forEach((p, i) => {
+        const branch = (i < reqItems.length - 1) ? '├' : '└';
+        itemRows += `<div class="b3-prog-reqgroup-row">
+          <span class="rg-branch">${branch}</span>
+          <span class="rg-name jp">${p.name}</span>
+        </div>`;
+      });
+      itemRows += `</div></div>`;
+    }
+
+    /* 通常種目：従来通り個別時間コントロール */
+    regItems.forEach(p=>{
       const progIdx = prog.indexOf(p);
-      const isReq = b3IsRequired(lv, p.u, p.name);
-      itemRows += `<div class="b3-prog-item${isReq?' b3-prog-req':''}">
-        <span style="color:${isReq?'var(--red)':'transparent'};font-size:10px;flex-shrink:0;margin-right:2px">★</span>
+      itemRows += `<div class="b3-prog-item">
+        <span style="color:transparent;font-size:10px;flex-shrink:0;margin-right:2px">★</span>
         <span class="b3-prog-ex-name jp">${p.name}</span>
-        ${isReq
-          ? `<span style="font:600 10px Montserrat;letter-spacing:1px;color:var(--red);padding:0 8px;flex-shrink:0">必須</span>`
-          : `<div class="b3-prog-time">
-              <button onclick="b3AdjTime('${lv}',${progIdx},-1)">−</button>
-              <span class="tv">${p.time}m</span>
-              <button onclick="b3AdjTime('${lv}',${progIdx},1)">+</button>
-            </div>
-            <button class="b3-prog-del" onclick="b3RemoveItem('${lv}',${progIdx})">×</button>`
-        }
+        <div class="b3-prog-time">
+          <button onclick="b3AdjTime('${lv}',${progIdx},-1)">−</button>
+          <span class="tv">${p.time}m</span>
+          <button onclick="b3AdjTime('${lv}',${progIdx},1)">+</button>
+        </div>
+        <button class="b3-prog-del" onclick="b3RemoveItem('${lv}',${progIdx})">×</button>
       </div>`;
     });
+
     slots += `<div class="b3-prog-unit">
       <div class="b3-prog-unit-head">
         <span class="b3-prog-unit-num">${String(un).padStart(2,'0')}</span>
@@ -3943,7 +4269,16 @@ function b3RenderProg(lv) {
   });
   slotsEl.innerHTML = slots;
 
-  const total = prog.reduce((s,p)=>s+p.time,0);
+  /* 合計時間：必須種目はユニット毎に1ブロック分だけカウント（まとめて時間） */
+  const _seenReqUnit = new Set();
+  const total = prog.reduce((sum, p) => {
+    if (b3IsRequired(lv, p.u, p.name)) {
+      const key = 'req-'+p.u;
+      if (_seenReqUnit.has(key)) return sum;
+      _seenReqUnit.add(key);
+    }
+    return sum + (p.time || 0);
+  }, 0);
   const isOver = total > 60;
   const pct = Math.min(total/60*100,100);
   if (totalEl) {
@@ -3952,6 +4287,8 @@ function b3RenderProg(lv) {
       <div class="tbar"><div class="tbar-fill" style="width:${pct}%;background:${isOver?'#EF4444':LC[lv]}"></div></div>
       <span class="tnum mono ${isOver?'over':'ok'}">${total}min / 60</span>`;
   }
+  /* 印刷ボタン有効/無効を同期 */
+  if (typeof b3UpdatePrintBtn === 'function') b3UpdatePrintBtn(lv);
 }
 
 
@@ -4107,7 +4444,17 @@ function renderGuide(lv){
 }
 
 /* Init */
+['P','F','I','A'].forEach(b3EnsureRequired);  /* ページ読み込み時点で必須種目を右PROGRAMへプリロード */
 buildButtons('btnsP','P');buildButtons('btnsF','F');buildButtons('btnsI','I');buildButtons('btnsA','A');
+/* 印刷ボタン初期状態を同期 */
+setTimeout(function(){ ['P','F','I','A'].forEach(function(lv){ if(typeof b3UpdatePrintBtn==='function') b3UpdatePrintBtn(lv); }); }, 0);
+/* Esc で印刷プレビューを閉じる */
+document.addEventListener('keydown', function(e){
+  if(e.key==='Escape'){
+    var pm = document.getElementById('print-modal');
+    if(pm && pm.classList.contains('open')){ b3ClosePrint(); }
+  }
+});
 switchGuide('P');
 
 /* ══════════════════════════════════════════════════════
