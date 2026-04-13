@@ -1056,6 +1056,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
   position:fixed;top:12px;right:16px;z-index:200;
   display:flex;gap:4px;align-items:center;
 }
+/* P21 (エクササイズマニュアル) ではツールバーを非表示にしてヘッダーボタンとの重なりを回避 */
+body.slide21-active #ui-toolbar{display:none;}
 .tb-btn{
   background:rgba(255,255,255,.06);border:1px solid var(--border2);border-radius:4px;
   color:var(--muted);font:700 10px Montserrat;padding:5px 9px;cursor:pointer;
@@ -3545,6 +3547,8 @@ function show(n){
   // Activate target slide
   const target=document.querySelector('[data-slide="'+n+'"]');
   if(target) target.classList.add('active');
+  // P21ではui-toolbarを非表示（ヘッダーボタンとの重なり回避）
+  document.body.classList.toggle('slide21-active', n===21);
   // Update UI
   document.getElementById('cur').textContent=n;
   document.getElementById('navTitle').textContent=slideTitles[n]||'';
@@ -3558,7 +3562,7 @@ function show(n){
     if(n===6){renderRail&&renderRail();renderDetail&&renderDetail();}
     if(n===17 && typeof emlInit==='function') emlInit();
     if(n===18 && typeof s23Init==='function') s23Init();
-    if(n===20 && typeof mvInit==='function') mvInit();
+    if(n===21 && typeof mvInit==='function') mvInit();
   }, 50);
 }
 
