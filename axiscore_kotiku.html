@@ -5146,12 +5146,11 @@ var EX = [
     tally.push(!!(r.photos && r.photos.some(function(p){return p && p.trim();})));
     var pct = Math.round(tally.filter(Boolean).length / tally.length * 100);
 
-    // 各セクションHTML生成。必須でない && 空 → スキップ
+    // 各セクションHTML生成（プレビューは未入力も表示して入力状況を確認）
     function renderList(list){
       list.sort(function(a,b){return (a.order||0)-(b.order||0);});
       return list.map(function(s){
         var out = renderSectionHTML(s, r, mode);
-        if(!out.filled && !s.required) return '';  // 任意かつ空 → 非表示
         return out.html;
       }).join('');
     }
