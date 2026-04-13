@@ -1207,7 +1207,13 @@ body.slide21-active #ui-toolbar{display:none;}
 .ls-item.sortable-chosen{background:rgba(200,16,46,.25);border-color:rgba(200,16,46,.5)}
 .ls-item-row{display:flex;align-items:center;gap:10px;width:100%}
 .ls-drag-handle{font-size:14px;color:rgba(255,255,255,.4);cursor:grab;user-select:none}
-.ls-item-name{flex:1;font:700 11px 'Noto Sans JP';color:#fff}
+.ls-item-name{flex:1;font:700 11px 'Noto Sans JP';color:#fff;display:flex;align-items:center;gap:6px;min-width:0}
+.ls-item-name-text{cursor:text;padding:2px 4px;border-radius:3px;border:1px solid transparent;transition:all .15s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.ls-item-name-text:hover{background:rgba(212,175,55,.1);border-color:rgba(212,175,55,.3)}
+.ls-item-name-edit{background:rgba(0,0,0,.4);border:1px solid #D4AF37;border-radius:3px;color:#fff;font:700 11px 'Noto Sans JP';padding:2px 4px;outline:none;min-width:120px}
+.ls-item-rename{background:transparent;border:none;color:rgba(255,255,255,.35);cursor:pointer;font-size:11px;padding:0 2px;outline:none;opacity:0;transition:all .15s}
+.ls-item:hover .ls-item-rename{opacity:1}
+.ls-item-rename:hover{color:#D4AF37}
 .ls-item-type{font:400 9px Montserrat;color:rgba(255,255,255,.4);margin-left:6px}
 .ls-sub-list{padding:2px 0 0 26px;display:flex;flex-direction:column;gap:2px}
 .ls-sub-row{display:flex;align-items:center;gap:6px;font:400 9px 'Noto Sans JP';color:rgba(255,255,255,.45);line-height:1.6}
@@ -3398,7 +3404,7 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
           <div id="mv-m-purpose" style="font:300 11px 'Noto Sans JP';color:var(--body);line-height:1.6;margin-bottom:14px"></div>
           <div style="font:700 9px Montserrat;letter-spacing:3px;color:var(--muted);margin-bottom:6px">TARGET MUSCLES</div>
           <div id="mv-m-muscles" style="font:300 11px 'Noto Sans JP';color:var(--body);line-height:1.5;margin-bottom:14px"></div>
-          <div style="font:700 9px Montserrat;letter-spacing:3px;color:var(--muted);margin-bottom:8px">KEY POINTS</div>
+          <div style="font:700 9px Montserrat;letter-spacing:3px;color:var(--muted);margin-bottom:8px">POINTS</div>
           <div id="mv-m-points" style="display:flex;flex-direction:column;gap:6px"></div>
         </div>
       </div>
@@ -5255,7 +5261,7 @@ var EX = [
       { id:'sequence', name:'MOVEMENT SEQUENCE',  type:'builtin-seq',    column:'left',  order:1, required:false, isCustom:false, locked:false, subs:[{n:'①',fmt:'テキスト'},{n:'②',fmt:'テキスト'},{n:'③',fmt:'テキスト'},{n:'④',fmt:'テキスト'}] },
       { id:'purpose',  name:'PURPOSE',            type:'builtin-purpose',column:'right', order:0, required:false, isCustom:false, locked:false, subs:[{n:'①',fmt:'テキスト'},{n:'②',fmt:'テキスト'}] },
       { id:'muscles',  name:'TARGET MUSCLES',     type:'builtin-muscles',column:'right', order:1, required:false, isCustom:false, locked:false, subs:[{n:'①',fmt:'テキスト'},{n:'②',fmt:'テキスト'}] },
-      { id:'points',   name:'KEY POINTS',         type:'builtin-points', column:'right', order:2, required:false, isCustom:false, locked:false, subs:[{n:'①',fmt:'タイトル＋説明'},{n:'②',fmt:'タイトル＋説明'},{n:'③',fmt:'タイトル＋説明'},{n:'④',fmt:'タイトル＋説明'}] }
+      { id:'points',   name:'POINTS',         type:'builtin-points', column:'right', order:2, required:false, isCustom:false, locked:false, subs:[{n:'①',fmt:'タイトル＋説明'},{n:'②',fmt:'タイトル＋説明'},{n:'③',fmt:'タイトル＋説明'},{n:'④',fmt:'タイトル＋説明'}] }
     ]
   };
   function lsLoad(){
@@ -5269,6 +5275,8 @@ var EX = [
             if(!s.subs){
               s.subs = JSON.parse(JSON.stringify(LS_SUB_DEFAULTS[s.type] || [{n:'①',fmt:'テキスト'}]));
             }
+            /* KEY POINTS → POINTS 名称マイグレーション */
+            if(s.type==='builtin-points' && s.name==='KEY POINTS'){ s.name = 'POINTS'; }
           });
           return cfg;
         }
@@ -5284,6 +5292,7 @@ var EX = [
             if(!s.subs){
               s.subs = JSON.parse(JSON.stringify(LS_SUB_DEFAULTS[s.type] || [{n:'①',fmt:'テキスト'}]));
             }
+            if(s.type==='builtin-points' && s.name==='KEY POINTS'){ s.name = 'POINTS'; }
           });
           return cfg2;
         }
@@ -5344,7 +5353,11 @@ var EX = [
       return '<div class="ls-item" data-id="'+s.id+'">'
         +'<div class="ls-item-row">'
         +'<span class="ls-drag-handle">⋮⋮</span>'
-        +'<span class="ls-item-name">'+s.name+'<span class="ls-item-type">'+typeLabel+'</span></span>'
+        +'<span class="ls-item-name">'
+          +'<span class="ls-item-name-text" ondblclick="lsStartRename(\''+s.id+'\')" title="ダブルクリックで名前変更">'+s.name+'</span>'
+          +'<button class="ls-item-rename" onclick="lsStartRename(\''+s.id+'\')" title="名前変更">✎</button>'
+          +'<span class="ls-item-type">'+typeLabel+'</span>'
+          +'</span>'
         + reqHtml + delHtml
         +'</div>'
         + subHtml
@@ -5447,6 +5460,42 @@ var EX = [
     if(!s || !s.subs || !s.subs[idx]) return;
     s.subs[idx].fmt = (s.subs[idx].fmt === 'テキスト') ? 'タイトル＋説明' : 'テキスト';
     lsRenderEditor();
+  };
+
+  /* 大項目名のインライン編集開始 */
+  window.lsStartRename = function(secId){
+    var s = (_lsCfg.sections||[]).find(function(x){return x.id===secId;});
+    if(!s) return;
+    var item = document.querySelector('.ls-item[data-id="'+secId+'"]');
+    if(!item) return;
+    var nameWrap = item.querySelector('.ls-item-name');
+    var nameText = item.querySelector('.ls-item-name-text');
+    if(!nameWrap || !nameText) return;
+    if(nameWrap.querySelector('.ls-item-name-edit')) return; /* 既に編集中 */
+    var input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'ls-item-name-edit';
+    input.value = s.name;
+    input.maxLength = 40;
+    var commit = function(save){
+      if(!input.parentNode) return;
+      if(save){
+        var v = (input.value||'').trim();
+        if(v) s.name = v;
+      }
+      lsRenderEditor();
+    };
+    input.addEventListener('keydown', function(e){
+      if(e.key==='Enter'){ e.preventDefault(); commit(true); }
+      else if(e.key==='Escape'){ e.preventDefault(); commit(false); }
+    });
+    input.addEventListener('blur', function(){ commit(true); });
+    nameText.style.display = 'none';
+    var renameBtn = nameWrap.querySelector('.ls-item-rename');
+    if(renameBtn) renameBtn.style.display = 'none';
+    nameWrap.insertBefore(input, nameText);
+    input.focus();
+    input.select();
   };
 
   window.lsOpenAdd = function(){
