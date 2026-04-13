@@ -1137,7 +1137,34 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .tag-SC{background:rgba(34,197,94,.15)!important;color:#22C55E!important;}
 .tag-JB{background:rgba(6,182,212,.15)!important;color:#06B6D4!important;}
 .tag-MAT{background:rgba(232,121,249,.15)!important;color:#E879F9!important;}
-.pp-foot{margin-top:auto;padding-top:4mm;border-top:0.5px solid #ddd;display:flex;justify-content:space-between;font-size:10px;color:#999;}
+/* ── Print Pages ── */
+.pp-foot{padding-top:1.5mm;border-top:0.5px solid #ddd;display:flex;justify-content:space-between;font-size:7px;color:#999;margin-top:auto;}
+#mv-print-area{display:none;}
+.ppage{
+  width:190mm;height:277mm;padding:6mm 8mm;margin:0 auto;
+  font-family:'Noto Sans JP','Montserrat',sans-serif;color:#111;
+  display:flex;flex-direction:column;page-break-after:always;page-break-inside:avoid;
+  background:#fff;overflow:hidden;box-sizing:border-box;
+}
+.pp-hdr{display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:2mm;border-bottom:1.5px solid #C8102E;margin-bottom:2mm;flex-shrink:0;}
+.pp-photos{display:grid;grid-template-columns:repeat(5,1fr);gap:2mm;margin-bottom:2mm;flex-shrink:0;}
+.pp-photo{aspect-ratio:5/3;background:#f5f5f5;border:1px solid #ddd;border-radius:2px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-size:7px;color:#aaa;}
+.pp-photo .mv-photo-n{font:700 9px Montserrat;color:#C8102E;margin-bottom:1px;}
+.pp-info{display:grid;grid-template-columns:1fr 1fr;gap:2mm;margin-bottom:2mm;flex-shrink:0;}
+.pp-row{margin-bottom:1mm;}
+.pp-k{font:700 8px 'Noto Sans JP';color:#333;margin-bottom:0.5mm;border-left:2px solid #C8102E;padding-left:1.5mm;}
+.pp-v{font:400 8px 'Noto Sans JP';color:#555;line-height:1.5;padding-left:1.5mm;}
+.pp-section{margin-bottom:1.5mm;flex-shrink:1;overflow:hidden;}
+.pp-section-title{font:700 8px Montserrat;letter-spacing:1.5px;color:#C8102E;margin-bottom:1mm;padding-bottom:0.5mm;border-bottom:0.5px solid #eee;}
+.pp-body{flex:1;overflow:hidden;display:flex;flex-direction:column;gap:1mm;}
+
+@media print{
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
+  body>*:not(#mv-print-area){display:none!important;}
+  #mv-print-area{display:block!important;position:static!important;}
+  .ppage{box-shadow:none!important;margin:0!important;padding:6mm 8mm!important;height:277mm!important;overflow:hidden!important;}
+  @page{size:A4 portrait;margin:5mm;}
+}
 .lv-P{background:rgba(232,121,249,.2)!important;color:#E879F9!important;border:1px solid rgba(232,121,249,.3)!important;}
 .lv-F{background:rgba(34,197,94,.2)!important;color:#22C55E!important;border:1px solid rgba(34,197,94,.3)!important;}
 .lv-I{background:rgba(59,130,246,.2)!important;color:#3B82F6!important;border:1px solid rgba(59,130,246,.3)!important;}
@@ -3296,7 +3323,7 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
       </div>
       <div style="padding:14px 20px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end">
         <button id="mv-prev" onclick="mvNav(-1)" style="padding:7px 16px;background:var(--bg3);border:1px solid var(--border2);border-radius:4px;color:var(--muted);font:600 9px Montserrat;cursor:pointer">← PREV</button>
-        <button id="mv-print" onclick="mvPrintSingle()" style="padding:7px 16px;background:rgba(200,16,46,.15);border:1px solid rgba(200,16,46,.3);border-radius:4px;color:var(--red);font:600 9px Montserrat;cursor:pointer">PDF出力</button>
+        <button id="mv-print-btn" onclick="mvPrintSingle()" style="padding:7px 16px;background:rgba(200,16,46,.15);border:1px solid rgba(200,16,46,.3);border-radius:4px;color:var(--red);font:600 9px Montserrat;cursor:pointer">PDF出力</button>
         <button id="mv-next" onclick="mvNav(1)" style="padding:7px 16px;background:var(--bg3);border:1px solid var(--border2);border-radius:4px;color:var(--muted);font:600 9px Montserrat;cursor:pointer">NEXT →</button>
         <button onclick="document.getElementById('mv-modal').style.display='none'" style="padding:7px 16px;background:var(--red);border:none;border-radius:4px;color:#fff;font:700 9px Montserrat;cursor:pointer">閉じる</button>
       </div>
@@ -4696,32 +4723,66 @@ var EX = [
     });if(idx>=0)setTimeout(function(){window.mvOpen(idx);},150);}
   };
   function buildPP(list){
-    var c=$i('mv-print');
+    var c=document.getElementById('mv-print-area');
+    if(!c)return;
     c.innerHTML=list.map(function(r){
-      return '<div class="ppage"><div class="pp-hdr"><div>'
-        +'<div style="font-size:8px;letter-spacing:3px;color:#C8102E;margin-bottom:2mm">AXISCORE PILATES — EXERCISE MANUAL</div>'
-        +'<div style="font-size:17px;font-weight:900">'+r.name+'</div>'
-        +'<div style="font-size:9px;color:#666;margin-top:1mm">'+r.id+'</div>'
-        +'</div><div style="text-align:right"><div style="font-size:9px;color:#999">'+r.appName+'</div>'
-        +'<div style="font-size:9px;color:#999">U'+String(r.unit).padStart(2,'0')+' — '+r.unitName+'</div>'
-        +'<div style="font-weight:700;margin-top:2mm">LEVEL '+r.level+'</div></div></div>'
+      // purpose section
+      var purposeHtml='';
+      if(r.purpose&&r.purpose.length){
+        purposeHtml='<div class="pp-section"><div class="pp-section-title">PURPOSE</div>'
+          +r.purpose.map(function(p){return '<div class="pp-v">• '+p+'</div>';}).join('')+'</div>';
+      }
+      // muscles
+      var muscleHtml=r.muscles?'<div class="pp-section"><div class="pp-section-title">TARGET MUSCLES</div><div class="pp-v">'+r.muscles+'</div></div>':'';
+      // sequence
+      var seqHtml=r.sequence?'<div class="pp-section"><div class="pp-section-title">MOVEMENT SEQUENCE</div><div class="pp-v" style="white-space:pre-wrap;line-height:1.4">'+r.sequence+'</div></div>':'';
+      // points
+      var ptsHtml='';
+      var pts=r.points&&r.points.filter(function(p){return p&&p.title;});
+      if(pts&&pts.length){
+        ptsHtml='<div class="pp-section"><div class="pp-section-title">KEY POINTS</div>'
+          +pts.map(function(p){return '<div style="margin-bottom:1mm"><div style="font:700 8px Noto Sans JP;color:#333">'+p.title+'</div><div class="pp-v">'+p.desc+'</div></div>';}).join('')+'</div>';
+      }
+      return '<div class="ppage">'
+        +'<div class="pp-hdr"><div>'
+        +'<div style="font-size:7px;letter-spacing:3px;color:#C8102E;margin-bottom:1mm">AXISCORE PILATES — EXERCISE MANUAL</div>'
+        +'<div style="font-size:14px;font-weight:900">'+r.name+'</div>'
+        +'<div style="font-size:8px;color:#666;margin-top:0.5mm">'+r.id+'</div>'
+        +'</div><div style="text-align:right"><div style="font-size:8px;color:#999">'+r.appName+'</div>'
+        +'<div style="font-size:8px;color:#999">U'+String(r.unit).padStart(2,'0')+' — '+r.unitName+'</div>'
+        +'<div style="font-weight:700;font-size:10px;margin-top:1mm">LEVEL '+r.level+'</div></div></div>'
         +'<div class="pp-photos">'+r.photos.map(function(l,i){
-          return '<div class="pp-photo"><span>'+(i+1)+'<br>'+(l||'')+'</span></div>';
+          return '<div class="pp-photo"><span class="mv-photo-n">'+(i+1)+'</span><br><span>'+(l||'')+'</span></div>';
         }).join('')+'</div>'
+        +'<div class="pp-body">'
         +'<div class="pp-info"><div>'
           +[['スプリング',r.spring],['レップ数',r.reps],['ポジション',r.position],['禁忌・注意',r.contra||'なし']].map(function(kv){
             return '<div class="pp-row"><div class="pp-k">'+kv[0]+'</div><div class="pp-v">'+(kv[1]||'未入力')+'</div></div>';
           }).join('')
         +'</div><div><div class="pp-k">キューイング</div>'
-          +(r.cues.length?r.cues.map(function(c){
-            return '<div class="pp-v" style="border-left:2px solid #C8102E;padding-left:3mm;margin-bottom:2mm">'+c+'</div>';
+          +(r.cues&&r.cues.length?r.cues.map(function(c2){
+            return '<div class="pp-v" style="border-left:1.5px solid #C8102E;padding-left:2mm;margin-bottom:1mm">'+c2+'</div>';
           }).join(''):'<div class="pp-v">未入力</div>')
         +'</div></div>'
-        +'<div class="pp-foot"><span>AXISCORE PILATES — DRAFT</span><span>'+r.id+'</span></div></div>';
+        +purposeHtml+muscleHtml+seqHtml+ptsHtml
+        +'</div>'
+        +'<div class="pp-foot"><span>AXISCORE PILATES — EXERCISE MANUAL</span><span>'+r.id+'</span></div></div>';
     }).join('');
   }
-  window.mvPrintSingle=function(){buildPP([MV_RECORDS[mvCur]]);setTimeout(window.print,100);};
-  window.mvPrintFiltered=function(){buildPP(mvF);setTimeout(window.print,100);};
+  window.mvPrintSingle=function(){
+    buildPP([MV_RECORDS[mvCur]]);
+    setTimeout(function(){
+      window.print();
+      setTimeout(function(){var c=document.getElementById('mv-print-area');if(c)c.innerHTML='';},1000);
+    },200);
+  };
+  window.mvPrintFiltered=function(){
+    buildPP(mvF);
+    setTimeout(function(){
+      window.print();
+      setTimeout(function(){var c=document.getElementById('mv-print-area');if(c)c.innerHTML='';},1000);
+    },200);
+  };
 
   /* ── Excel マスターDL ── */
   window.mvDownloadExcel = function(){
@@ -4779,14 +4840,17 @@ var EX = [
     }
   };
 
-  /* ── PDF一括出力（簡易版） ── */
+  /* ── PDF一括出力（フィルタ済み） ── */
   window.mvExportPDF = function(){
-    window.print();
-  };
-
-  /* ── 単体PDF出力 ── */
-  window.mvPrintSingle = function(){
-    window.print();
+    if(!mvF.length){alert('出力する種目がありません。フィルタを確認してください。');return;}
+    buildPP(mvF);
+    setTimeout(function(){
+      window.print();
+      setTimeout(function(){
+        var c=document.getElementById('mv-print-area');
+        if(c)c.innerHTML='';
+      },1000);
+    },200);
   };
 
 })();
@@ -5288,5 +5352,7 @@ document.addEventListener('DOMContentLoaded', function(){
     <button onclick="closeModeScreen()" style="background:none;border:none;color:var(--dim);font:400 11px Montserrat;letter-spacing:1px;cursor:pointer;padding:4px 8px">すべてのスライドを表示 →</button>
   </div>
 </div>
+<!-- Print area for PDF export -->
+<div id="mv-print-area"></div>
 </body>
 </html>
