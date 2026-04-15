@@ -2732,7 +2732,7 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
       <div class="b3-prog-scroll" id="slotsP"><div class="b3-prog-empty jp">ユニットを選択して<br>エクササイズを追加してください</div></div>
       <div class="builder-total" id="totalP" style="display:none;margin-top:6px"></div>
       <div class="builder-actions" style="margin-top:6px">
-        <button class="action-btn print-btn" id="printBtnP" onclick="b3OpenPrint('P')" disabled>🖨 <span class="jp">印刷</span><span class="pb-hint jp" id="printHintP">（未完成）</span></button>
+        <button class="action-btn print-btn" id="printBtnP" onclick="b3OpenPrint('P')">🖨 <span class="jp">印刷</span><span class="pb-hint jp" id="printHintP">（1/10ユニット）</span></button>
         <button class="action-btn clear-btn" onclick="b3Clear('P')"><span class="jp">クリア</span></button>
       </div>
     </div>
@@ -2752,7 +2752,7 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
       <div class="b3-prog-scroll" id="slotsF"><div class="b3-prog-empty jp">ユニットを選択して<br>エクササイズを追加してください</div></div>
       <div class="builder-total" id="totalF" style="display:none;margin-top:6px"></div>
       <div class="builder-actions" style="margin-top:6px">
-        <button class="action-btn print-btn" id="printBtnF" onclick="b3OpenPrint('F')" disabled>🖨 <span class="jp">印刷</span><span class="pb-hint jp" id="printHintF">（未完成）</span></button>
+        <button class="action-btn print-btn" id="printBtnF" onclick="b3OpenPrint('F')">🖨 <span class="jp">印刷</span><span class="pb-hint jp" id="printHintF">（1/10ユニット）</span></button>
         <button class="action-btn clear-btn" onclick="b3Clear('F')"><span class="jp">クリア</span></button>
       </div>
     </div>
@@ -2772,7 +2772,7 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
       <div class="b3-prog-scroll" id="slotsI"><div class="b3-prog-empty jp">ユニットを選択して<br>エクササイズを追加してください</div></div>
       <div class="builder-total" id="totalI" style="display:none;margin-top:6px"></div>
       <div class="builder-actions" style="margin-top:6px">
-        <button class="action-btn print-btn" id="printBtnI" onclick="b3OpenPrint('I')" disabled>🖨 <span class="jp">印刷</span><span class="pb-hint jp" id="printHintI">（未完成）</span></button>
+        <button class="action-btn print-btn" id="printBtnI" onclick="b3OpenPrint('I')">🖨 <span class="jp">印刷</span><span class="pb-hint jp" id="printHintI">（1/10ユニット）</span></button>
         <button class="action-btn clear-btn" onclick="b3Clear('I')"><span class="jp">クリア</span></button>
       </div>
     </div>
@@ -2792,7 +2792,7 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
       <div class="b3-prog-scroll" id="slotsA"><div class="b3-prog-empty jp">ユニットを選択して<br>エクササイズを追加してください</div></div>
       <div class="builder-total" id="totalA" style="display:none;margin-top:6px"></div>
       <div class="builder-actions" style="margin-top:6px">
-        <button class="action-btn print-btn" id="printBtnA" onclick="b3OpenPrint('A')" disabled>🖨 <span class="jp">印刷</span><span class="pb-hint jp" id="printHintA">（未完成）</span></button>
+        <button class="action-btn print-btn" id="printBtnA" onclick="b3OpenPrint('A')">🖨 <span class="jp">印刷</span><span class="pb-hint jp" id="printHintA">（1/10ユニット）</span></button>
         <button class="action-btn clear-btn" onclick="b3Clear('A')"><span class="jp">クリア</span></button>
       </div>
     </div>
@@ -4054,37 +4054,22 @@ function b3Clear(lv) {
   b3RenderProg(lv);
 }
 
-/* ═══ プログラム完成判定（全10ユニットに1種目以上） ═══ */
-function b3IsComplete(lv){
-  const prog = bState[lv].prog;
-  for (let u = 1; u <= 10; u++) {
-    if (!prog.some(p => p.u === u)) return false;
-  }
-  return true;
-}
+/* ═══ プログラム完成判定（制限なし・常に印刷可能） ═══ */
+function b3IsComplete(lv){ return true; }
 
-/* 印刷ボタンの有効/無効を更新 */
+/* 印刷ボタンの有効/無効を更新（常に有効） */
 function b3UpdatePrintBtn(lv){
   const btn  = document.getElementById('printBtn'+lv);
   const hint = document.getElementById('printHint'+lv);
   if (!btn) return;
   const prog = bState[lv].prog;
-  const missingUnits = [];
-  for (let u = 1; u <= 10; u++) {
-    if (!prog.some(p => p.u === u)) missingUnits.push(u);
-  }
-  if (missingUnits.length === 0) {
-    btn.disabled = false;
-    if (hint) hint.textContent = '（プログラム完成）';
-  } else {
-    btn.disabled = true;
-    if (hint) hint.textContent = '（残り'+missingUnits.length+'ユニット）';
-  }
+  const usedUnits = new Set(prog.map(p => p.u));
+  btn.disabled = false;
+  if (hint) hint.textContent = '（' + usedUnits.size + '/10ユニット）';
 }
 
 /* 印刷プレビューを開く */
 function b3OpenPrint(lv){
-  if (!b3IsComplete(lv)) return;
   const html = b3BuildPrintSheet(lv);
   document.getElementById('printSheet').innerHTML = html;
   document.getElementById('print-modal').classList.add('open');
@@ -4135,12 +4120,13 @@ function b3BuildPrintSheet(lv){
   <div class="p-summary">
     <div>合計時間 <span class="val">${total} 分 / 60</span></div>
     <div>種目数 <span class="val">${prog.length} 種目</span></div>
-    <div>ユニット <span class="val">10 / 10</span></div>
+    <div>ユニット <span class="val">${Object.keys(byUnit).length} / 10</span></div>
   </div>`;
 
-  /* 各ユニット */
+  /* 各ユニット（種目があるユニットのみ表示） */
   for (let u = 1; u <= 10; u++) {
     const items = byUnit[u] || [];
+    if (!items.length) continue;  /* 空ユニットは省略 */
     const reqItems = items.filter(p => b3IsRequired(lv, p.u, p.name));
     const regItems = items.filter(p => !b3IsRequired(lv, p.u, p.name));
     const reqTime  = reqItems.length ? (reqItems[0].time || 0) : 0;
