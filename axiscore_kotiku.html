@@ -891,6 +891,10 @@ button{outline:none;}
 .app-C{background:rgba(45,168,120,.15);color:#2da878}
 .app-W{background:rgba(212,144,58,.15);color:#d4903a}
 .app-B{background:rgba(196,88,128,.15);color:#c45880}
+.app-SC{background:rgba(168,132,196,.15);color:#a884c4}
+.app-MAT{background:rgba(160,160,160,.15);color:#999}
+/* 右PROGRAMカラム用ミニ器具バッジ */
+.b3-prog-app{font:700 7px Montserrat;letter-spacing:1px;padding:1px 4px;border-radius:2px;flex-shrink:0;line-height:1.4}
 .exdb-cat-name{font:500 11px 'Noto Sans JP';color:var(--body)}
 .exdb-cat-cnt{font:600 10px Montserrat;color:var(--dim);margin-left:auto}
 .exdb-ex-list{display:flex;flex-direction:column}
@@ -1161,10 +1165,19 @@ body.slide21-active #ui-toolbar{display:none;}
 .pm-sheet .p-unit-num{font:700 11pt 'Bebas Neue',sans-serif;color:#111;letter-spacing:1px}
 .pm-sheet .p-unit-name{font:700 10pt 'Noto Sans JP',sans-serif;color:#222}
 .pm-sheet .p-unit-time{margin-left:auto;font-size:9pt;color:#666;font-weight:600}
-.pm-sheet .p-item{display:flex;padding:2px 8px;font-size:10pt}
+.pm-sheet .p-item{display:flex;align-items:baseline;padding:2px 8px;font-size:10pt;gap:6px}
 .pm-sheet .p-item .p-name{flex:1}
 .pm-sheet .p-item .p-time{color:#555;font-variant-numeric:tabular-nums;min-width:42px;text-align:right}
 .pm-sheet .p-item.p-req{color:#111}
+/* 印刷用カラー器具バッジ */
+.pm-sheet .p-app{font:700 7pt Montserrat,sans-serif;letter-spacing:.5px;padding:1px 5px;border-radius:2px;flex-shrink:0}
+.pm-sheet .p-app-R{background:rgba(74,143,212,.2);color:#2a6cb5}
+.pm-sheet .p-app-C{background:rgba(45,168,120,.2);color:#1d8a5e}
+.pm-sheet .p-app-W{background:rgba(212,144,58,.2);color:#b87a2a}
+.pm-sheet .p-app-B{background:rgba(196,88,128,.2);color:#a8446a}
+.pm-sheet .p-app-SC{background:rgba(168,132,196,.2);color:#7a5a9a}
+.pm-sheet .p-app-MAT{background:rgba(120,120,120,.15);color:#666}
+.pm-sheet .p-app-M{background:rgba(120,120,120,.15);color:#666}
 .pm-sheet .p-req-head{display:flex;align-items:baseline;padding:2px 0 2px 8px;font-weight:700;color:#B8860B}
 .pm-sheet .p-req-head .p-req-label{font-size:9.5pt;letter-spacing:1px}
 .pm-sheet .p-req-head .p-req-sub{margin-left:6px;font-weight:400;font-size:9pt;color:#666}
@@ -1187,6 +1200,7 @@ body.slide21-active #ui-toolbar{display:none;}
   .pm-toolbar{display:none!important}
   .pm-sheet{box-shadow:none;margin:0;width:auto;min-height:auto}
   @page{size:A4;margin:10mm}
+  .pm-sheet{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;color-adjust:exact!important}
 }
 .kb-box{
   background:var(--card);border:1px solid var(--border2);border-radius:8px;
@@ -3762,6 +3776,7 @@ const progs={F:[],I:[],A:[]};
 const LEVEL_ORDER = {P:-1,F:0,I:1,A:2};
 const LEVEL_LABEL = {P:'PRE',F:'FUND.',I:'INTER.',A:'ADV.'};
 const APP_LABEL = {R:'REFORMER',C:'CADILLAC',W:'CHAIR',B:'BARREL',SC:'SPINE CORRECTOR',MAT:'MAT'};
+const APP_SHORT = {R:'R',C:'C',W:'W',B:'B',SC:'SC',MAT:'M'};
 const UNIT_NAME = {1:'Warm Up',2:'Foot Work',3:'Abdominal',4:'Hip Work',5:'Spinal Art.',6:'Full Body',7:'Arm Work',8:'Leg Work',9:'Lat. Flex',10:'Back Ext.'};
 
 /* ══ 必須種目定義 ══
@@ -4142,6 +4157,7 @@ function b3BuildPrintSheet(lv){
     if (reqItems.length) {
       h += `<div class="p-req-head">
         <span class="p-req-label">★ 必須 ${reqItems.length}種目</span>
+        <span class="p-app p-app-R">R</span>
         <span class="p-req-sub">まとめて</span>
         <span class="p-req-time">${reqTime} 分</span>
       </div>
@@ -4152,7 +4168,10 @@ function b3BuildPrintSheet(lv){
       h += `</div>`;
     }
     regItems.forEach(p => {
+      const pAppCls = 'p-app-'+(p.app||'R');
+      const pAppTxt = APP_SHORT[p.app] || p.app || '?';
       h += `<div class="p-item">
+        <span class="p-app ${pAppCls}">${pAppTxt}</span>
         <span class="p-name">${p.name}</span>
         <span class="p-time">${p.time||0} 分</span>
       </div>`;
@@ -4212,6 +4231,7 @@ function b3RenderProg(lv) {
       itemRows += `<div class="b3-prog-reqgroup">
         <div class="b3-prog-reqgroup-head">
           <span class="rg-label">★ 必須 ${reqItems.length}種目</span>
+          <span class="b3-prog-app app-R" style="font-size:7px">R</span>
           <span class="rg-sub">まとめて</span>
           <div class="b3-prog-time rg-time">
             <button onclick="b3AdjReqTime('${lv}',${unitNum},-1)">−</button>
@@ -4230,11 +4250,13 @@ function b3RenderProg(lv) {
       itemRows += `</div></div>`;
     }
 
-    /* 通常種目：従来通り個別時間コントロール */
+    /* 通常種目：従来通り個別時間コントロール＋器具バッジ */
     regItems.forEach(p=>{
       const progIdx = prog.indexOf(p);
+      const appCls = 'app-'+(p.app||'R');
+      const appTxt = APP_SHORT[p.app] || p.app || '?';
       itemRows += `<div class="b3-prog-item">
-        <span style="color:transparent;font-size:10px;flex-shrink:0;margin-right:2px">★</span>
+        <span class="b3-prog-app ${appCls}">${appTxt}</span>
         <span class="b3-prog-ex-name jp">${p.name}</span>
         <div class="b3-prog-time">
           <button onclick="b3AdjTime('${lv}',${progIdx},-1)">−</button>
