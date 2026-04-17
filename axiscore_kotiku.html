@@ -1427,6 +1427,11 @@ body.light-mode {
 
 <!-- NAVIGATION -->
 <div class="nav">
+  <button class="nav-btn" onclick="goHome()" id="btn-home" title="トップへ戻る" style="gap:4px;color:#C8102E;opacity:.7;transition:opacity .2s" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='.7'">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-9 9 9"/><path d="M5 10v10a1 1 0 001 1h3v-6h6v6h3a1 1 0 001-1V10"/></svg>
+    TOP
+  </button>
+  <div class="nav-divider"></div>
   <button class="nav-btn" onclick="go(-1)" id="btn-prev">
     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
     PREV
@@ -7444,6 +7449,16 @@ var EX = [
     } else {
       err.textContent='管理者パスワードが違います';
     }
+  };
+
+  /* ── Go Home (back to P1) ── */
+  window.goHome = function(){
+    try{
+      sessionStorage.removeItem(SS_ILS);
+      sessionStorage.removeItem(SS_MAN);
+      sessionStorage.removeItem(SS_PUS);
+    }catch(e){}
+    if(typeof show==='function') show(1);
   };
 
   /* ── Corp CRUD (localStorage) ── */
