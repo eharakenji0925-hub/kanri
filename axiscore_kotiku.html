@@ -1485,57 +1485,64 @@ body.light-mode {
     </div>
 
     <!-- INSTRUCTOR-LICENSE-SYSTEM 5 -->
-    <div onclick="show(2)" style="cursor:pointer;width:100%;max-width:900px;background:rgba(6,182,212,.04);border:1px solid rgba(6,182,212,.25);border-radius:12px;padding:24px 32px;display:flex;align-items:center;gap:28px;transition:all .25s;position:relative;overflow:hidden" onmouseover="this.style.borderColor='rgba(6,182,212,.5)';this.style.background='rgba(6,182,212,.08)'" onmouseout="this.style.borderColor='rgba(6,182,212,.25)';this.style.background='rgba(6,182,212,.04)'">
+    <div onclick="show(2)" style="cursor:pointer;width:100%;max-width:960px;background:rgba(6,182,212,.04);border:1px solid rgba(6,182,212,.25);border-radius:12px;padding:28px 36px 24px;display:flex;flex-direction:column;gap:14px;transition:all .25s;position:relative;overflow:hidden" onmouseover="this.style.borderColor='rgba(6,182,212,.5)';this.style.background='rgba(6,182,212,.08)'" onmouseout="this.style.borderColor='rgba(6,182,212,.25)';this.style.background='rgba(6,182,212,.04)'">
       <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#06B6D4,#22D3EE)"></div>
-      <div style="display:flex;flex-direction:column;gap:4px">
-        <div style="font:700 9px Montserrat;letter-spacing:4px;color:#06B6D4">INSTRUCTOR LICENSE</div>
-        <div style="font:900 26px 'Bebas Neue';letter-spacing:3px;color:#fff;line-height:1.1">INSTRUCTOR-LICENSE-SYSTEM <span style="color:#06B6D4">5</span></div>
+      <!-- row 1: label + title -->
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <div style="font:700 9px Montserrat;letter-spacing:4px;color:#06B6D4;margin-bottom:6px">INSTRUCTOR LICENSE</div>
+          <div style="font:900 26px 'Bebas Neue';letter-spacing:3px;color:#fff;line-height:1;white-space:nowrap">INSTRUCTOR-LICENSE-SYSTEM <span style="color:#06B6D4">5</span></div>
+        </div>
+        <div style="font:600 9px Montserrat;letter-spacing:2px;color:rgba(6,182,212,.6);flex-shrink:0">ENTER →</div>
       </div>
-      <div style="width:1px;height:40px;background:rgba(6,182,212,.2);flex-shrink:0"></div>
-      <div style="font:400 12px 'Noto Sans JP';color:#888;line-height:1.9;flex:1">
-        5ステップ・<span style="color:#fff;font-weight:700">575時間</span>の包括的インストラクター養成プログラム<br>MAT → REFORMER → 全器具 → ADVANCE → 認定
+      <!-- row 2: separator -->
+      <div style="height:1px;background:rgba(6,182,212,.15)"></div>
+      <!-- row 3: description + badges -->
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:24px">
+        <div style="font:400 11px 'Noto Sans JP';color:#888;line-height:1.7">
+          5ステップ・<span style="color:#fff;font-weight:700">575時間</span>の包括的インストラクター養成プログラム &nbsp;｜&nbsp; MAT → REFORMER → 全器具 → ADVANCE → 認定
+        </div>
+        <div style="display:flex;gap:8px;flex-shrink:0">
+          <span style="font:600 9px Montserrat;padding:4px 10px;background:rgba(6,182,212,.1);color:#06B6D4;border-radius:3px;border:1px solid rgba(6,182,212,.2)">5 STEPS</span>
+          <span style="font:600 9px Montserrat;padding:4px 10px;background:rgba(6,182,212,.1);color:#06B6D4;border-radius:3px;border:1px solid rgba(6,182,212,.2)">575 HOURS</span>
+          <span style="font:600 9px Montserrat;padding:4px 10px;background:rgba(6,182,212,.1);color:#06B6D4;border-radius:3px;border:1px solid rgba(6,182,212,.2)">372 EXERCISES</span>
+        </div>
       </div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;flex-shrink:0">
-        <span style="font:600 9px Montserrat;padding:4px 10px;background:rgba(6,182,212,.1);color:#06B6D4;border-radius:3px;border:1px solid rgba(6,182,212,.2)">5 STEPS</span>
-        <span style="font:600 9px Montserrat;padding:4px 10px;background:rgba(6,182,212,.1);color:#06B6D4;border-radius:3px;border:1px solid rgba(6,182,212,.2)">575 HOURS</span>
-        <span style="font:600 9px Montserrat;padding:4px 10px;background:rgba(6,182,212,.1);color:#06B6D4;border-radius:3px;border:1px solid rgba(6,182,212,.2)">372 EXERCISES</span>
-      </div>
-      <div style="font:600 9px Montserrat;letter-spacing:2px;color:rgba(6,182,212,.6);flex-shrink:0">ENTER →</div>
     </div>
 
     <!-- 2 products -->
-    <div style="display:flex;gap:32px;width:100%;max-width:900px">
+    <div style="display:flex;gap:28px;width:100%;max-width:960px">
 
       <!-- Product 2: MANUAL-BUILD-SYSTEM ♾️ -->
-      <div onclick="show(9)" style="flex:1;cursor:pointer;background:rgba(201,168,76,.04);border:1px solid rgba(201,168,76,.25);border-radius:12px;padding:36px 32px;display:flex;flex-direction:column;gap:16px;transition:all .25s;position:relative;overflow:hidden" onmouseover="this.style.borderColor='rgba(201,168,76,.5)';this.style.background='rgba(201,168,76,.08)'" onmouseout="this.style.borderColor='rgba(201,168,76,.25)';this.style.background='rgba(201,168,76,.04)'">
+      <div onclick="show(9)" style="flex:1;cursor:pointer;background:rgba(201,168,76,.04);border:1px solid rgba(201,168,76,.25);border-radius:12px;padding:28px 28px 24px;display:flex;flex-direction:column;gap:14px;transition:all .25s;position:relative;overflow:hidden" onmouseover="this.style.borderColor='rgba(201,168,76,.5)';this.style.background='rgba(201,168,76,.08)'" onmouseout="this.style.borderColor='rgba(201,168,76,.25)';this.style.background='rgba(201,168,76,.04)'">
         <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#C9A84C,#E8C96A)"></div>
-        <div style="font:700 9px Montserrat;letter-spacing:4px;color:#C9A84C">PRODUCT 02</div>
-        <div style="font:900 28px 'Bebas Neue';letter-spacing:3px;color:#fff;line-height:1.1">MANUAL-BUILD-<br>SYSTEM <span style="color:#C9A84C">∞</span></div>
-        <div style="height:1px;background:rgba(201,168,76,.2)"></div>
-        <div style="font:400 12px 'Noto Sans JP';color:#888;line-height:1.9">
+        <div style="font:700 9px Montserrat;letter-spacing:4px;color:#C9A84C">MANUAL BUILD</div>
+        <div style="font:900 22px 'Bebas Neue';letter-spacing:2px;color:#fff;line-height:1;white-space:nowrap">MANUAL-BUILD-SYSTEM <span style="color:#C9A84C">∞</span></div>
+        <div style="height:1px;background:rgba(201,168,76,.15)"></div>
+        <div style="font:400 11px 'Noto Sans JP';color:#888;line-height:1.8">
           各マシンの種目データを入力し<br><span style="color:#fff;font-weight:700">マニュアルを自動構築</span>する仕組み
         </div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:auto">
-          <span style="font:600 9px Montserrat;padding:4px 10px;background:rgba(201,168,76,.1);color:#C9A84C;border-radius:3px;border:1px solid rgba(201,168,76,.2)">6 APPARATUS</span>
-          <span style="font:600 9px Montserrat;padding:4px 10px;background:rgba(201,168,76,.1);color:#C9A84C;border-radius:3px;border:1px solid rgba(201,168,76,.2)">EXCEL → JSON</span>
-          <span style="font:600 9px Montserrat;padding:4px 10px;background:rgba(201,168,76,.1);color:#C9A84C;border-radius:3px;border:1px solid rgba(201,168,76,.2)">AUTO BUILD</span>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:auto">
+          <span style="font:600 8px Montserrat;padding:3px 8px;background:rgba(201,168,76,.1);color:#C9A84C;border-radius:3px;border:1px solid rgba(201,168,76,.2)">6 APPARATUS</span>
+          <span style="font:600 8px Montserrat;padding:3px 8px;background:rgba(201,168,76,.1);color:#C9A84C;border-radius:3px;border:1px solid rgba(201,168,76,.2)">EXCEL → JSON</span>
+          <span style="font:600 8px Montserrat;padding:3px 8px;background:rgba(201,168,76,.1);color:#C9A84C;border-radius:3px;border:1px solid rgba(201,168,76,.2)">AUTO BUILD</span>
         </div>
         <div style="font:600 9px Montserrat;letter-spacing:2px;color:rgba(201,168,76,.6);text-align:right">ENTER →</div>
       </div>
 
       <!-- Product 1: PROGRAM-UNIT-SYSTEM -->
-      <div onclick="show(12)" style="flex:1;cursor:pointer;background:rgba(200,16,46,.04);border:1px solid rgba(200,16,46,.25);border-radius:12px;padding:36px 32px;display:flex;flex-direction:column;gap:16px;transition:all .25s;position:relative;overflow:hidden" onmouseover="this.style.borderColor='rgba(200,16,46,.5)';this.style.background='rgba(200,16,46,.08)'" onmouseout="this.style.borderColor='rgba(200,16,46,.25)';this.style.background='rgba(200,16,46,.04)'">
+      <div onclick="show(12)" style="flex:1;cursor:pointer;background:rgba(200,16,46,.04);border:1px solid rgba(200,16,46,.25);border-radius:12px;padding:28px 28px 24px;display:flex;flex-direction:column;gap:14px;transition:all .25s;position:relative;overflow:hidden" onmouseover="this.style.borderColor='rgba(200,16,46,.5)';this.style.background='rgba(200,16,46,.08)'" onmouseout="this.style.borderColor='rgba(200,16,46,.25)';this.style.background='rgba(200,16,46,.04)'">
         <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#C8102E,#FF2244)"></div>
-        <div style="font:700 9px Montserrat;letter-spacing:4px;color:#C8102E">PRODUCT 01</div>
-        <div style="font:900 28px 'Bebas Neue';letter-spacing:3px;color:#fff;line-height:1.1">PROGRAM-UNIT-SYSTEM<br><span style="color:#C8102E">10×4</span></div>
-        <div style="height:1px;background:rgba(200,16,46,.2)"></div>
-        <div style="font:400 12px 'Noto Sans JP';color:#888;line-height:1.9">
-          10ユニット×4レベルのフレームワークで<br>インストラクターがクラスを<span style="color:#fff;font-weight:700">自由に設計</span>するシステム
+        <div style="font:700 9px Montserrat;letter-spacing:4px;color:#C8102E">PROGRAM UNIT</div>
+        <div style="font:900 22px 'Bebas Neue';letter-spacing:2px;color:#fff;line-height:1;white-space:nowrap">PROGRAM-UNIT-SYSTEM <span style="color:#C8102E">10×4</span></div>
+        <div style="height:1px;background:rgba(200,16,46,.15)"></div>
+        <div style="font:400 11px 'Noto Sans JP';color:#888;line-height:1.8">
+          10ユニット×4レベルのフレームワークで<br>クラスを<span style="color:#fff;font-weight:700">自由に設計</span>するシステム
         </div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:auto">
-          <span style="font:600 9px Montserrat;padding:4px 10px;background:rgba(200,16,46,.1);color:#C8102E;border-radius:3px;border:1px solid rgba(200,16,46,.2)">10 UNITS</span>
-          <span style="font:600 9px Montserrat;padding:4px 10px;background:rgba(200,16,46,.1);color:#C8102E;border-radius:3px;border:1px solid rgba(200,16,46,.2)">4 LEVELS</span>
-          <span style="font:600 9px Montserrat;padding:4px 10px;background:rgba(200,16,46,.1);color:#C8102E;border-radius:3px;border:1px solid rgba(200,16,46,.2)">372 EXERCISES</span>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:auto">
+          <span style="font:600 8px Montserrat;padding:3px 8px;background:rgba(200,16,46,.1);color:#C8102E;border-radius:3px;border:1px solid rgba(200,16,46,.2)">10 UNITS</span>
+          <span style="font:600 8px Montserrat;padding:3px 8px;background:rgba(200,16,46,.1);color:#C8102E;border-radius:3px;border:1px solid rgba(200,16,46,.2)">4 LEVELS</span>
+          <span style="font:600 8px Montserrat;padding:3px 8px;background:rgba(200,16,46,.1);color:#C8102E;border-radius:3px;border:1px solid rgba(200,16,46,.2)">372 EXERCISES</span>
         </div>
         <div style="font:600 9px Montserrat;letter-spacing:2px;color:rgba(200,16,46,.6);text-align:right">ENTER →</div>
       </div>
@@ -2554,6 +2561,7 @@ body.light-mode {
     <div style="display:flex;align-items:center;gap:40px;margin-top:-10px">
       <span style="font:700 11px Montserrat;letter-spacing:5px;color:var(--muted)">UNLIMITED</span>
       <span style="font:700 11px Montserrat;letter-spacing:5px;color:var(--muted)">MANUALS</span>
+      <span style="font:700 11px Montserrat;letter-spacing:5px;color:var(--muted)">6 APPARATUS</span>
     </div>
 
     <!-- tagline -->
@@ -2574,11 +2582,49 @@ body.light-mode {
       </div>
     </div>
 
+    <!-- 6 apparatus strip -->
+    <div style="margin-top:8px;display:flex;align-items:stretch;gap:6px;animation:aFU .5s .65s both">
+      <div style="display:flex;align-items:center;padding:8px 14px;background:rgba(201,168,76,.06);border:1px solid var(--border2);border-radius:4px;flex-shrink:0">
+        <div style="font:700 10px Montserrat;letter-spacing:2px;color:#C9A84C">6 APPARATUS</div>
+      </div>
+      <div style="display:flex;align-items:stretch;gap:6px;flex:1">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 10px;background:rgba(200,16,46,.06);border:1px solid rgba(200,16,46,.18);border-radius:4px">
+          <div style="font:900 12px Montserrat;letter-spacing:1px;color:var(--red)">R</div>
+          <div style="font:300 8px Montserrat;color:var(--muted);letter-spacing:1px">REFORMER</div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 10px;background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.18);border-radius:4px">
+          <div style="font:900 12px Montserrat;letter-spacing:1px;color:#C9A84C">C</div>
+          <div style="font:300 8px Montserrat;color:var(--muted);letter-spacing:1px">CADILLAC</div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 10px;background:rgba(59,130,246,.06);border:1px solid rgba(59,130,246,.18);border-radius:4px">
+          <div style="font:900 12px Montserrat;letter-spacing:1px;color:var(--intermediate)">W</div>
+          <div style="font:300 8px Montserrat;color:var(--muted);letter-spacing:1px">CHAIR</div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 10px;background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.18);border-radius:4px">
+          <div style="font:900 12px Montserrat;letter-spacing:1px;color:var(--advance)">B</div>
+          <div style="font:300 8px Montserrat;color:var(--muted);letter-spacing:1px">BARREL</div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 10px;background:rgba(232,121,249,.06);border:1px solid rgba(232,121,249,.18);border-radius:4px">
+          <div style="font:900 12px Montserrat;letter-spacing:1px;color:var(--pre)">SC</div>
+          <div style="font:300 8px Montserrat;color:var(--muted);letter-spacing:1px">SPINE COR.</div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 10px;background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:4px">
+          <div style="font:900 12px Montserrat;letter-spacing:1px;color:var(--white)">MAT</div>
+          <div style="font:300 8px Montserrat;color:var(--muted);letter-spacing:1px">MAT WORK</div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <!-- bottom -->
-  <div style="position:relative;z-index:1;display:flex;align-items:center;justify-content:center;padding:0 60px 28px">
-    <div style="font:400 10px Montserrat;letter-spacing:3px;color:#606060">Data in, <span style="color:#C9A84C">manuals</span> out. &nbsp;&mdash;&nbsp; infinite scalability</div>
+  <div style="position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;padding:0 60px 28px;animation:aFU .5s .8s both">
+    <div>
+      <div style="font:300 12px 'Noto Sans JP';color:var(--muted);letter-spacing:2px">Data in, <span style="color:#C9A84C;font-weight:600">manuals</span> out. &nbsp;&mdash;&nbsp; infinite scalability</div>
+      <div style="font:400 9px Montserrat;letter-spacing:3px;color:var(--dim);margin-top:4px">AXISCORE PILATES &mdash; MANUAL BUILD SYSTEM</div>
+    </div>
+    <div style="flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--border2),transparent);margin:0 36px"></div>
+    <div style="font:300 10px Montserrat;letter-spacing:2px;color:#606060;text-align:right;line-height:1.8">株式会社大丸プランニング<br>AXISCORE PILATES</div>
   </div>
 
 </div>
