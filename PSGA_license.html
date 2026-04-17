@@ -1,0 +1,1458 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PSGA資格更新管理 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Noto+Sans+JP:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
+<style>
+:root{
+  --bg:#0a1220;
+  --panel:#0f1a2e;
+  --panel-2:#152542;
+  --line:#1e3252;
+  --line-soft:#162339;
+  --ink:#e7ecf3;
+  --ink-mute:#8fa3c0;
+  --ink-dim:#5e7492;
+  --accent:#4dd0e1;
+  --accent-soft:rgba(77,208,225,.12);
+  --gold:#d4a574;
+  --ok:#4ade80;
+  --warn:#fbbf24;
+  --danger:#f87171;
+  --paid-bg:rgba(74,222,128,.08);
+  --expired-bg:rgba(248,113,113,.07);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:"Noto Sans JP",system-ui,sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  font-size:14px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(ellipse 1200px 600px at 20% 0%,rgba(77,208,225,.06),transparent 60%),
+    radial-gradient(ellipse 800px 500px at 100% 100%,rgba(212,165,116,.04),transparent 60%);
+}
+
+/* ========= LOGIN ========= */
+#login{
+  position:fixed;inset:0;z-index:100;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--bg);
+}
+.login-card{
+  width:min(92vw,420px);
+  padding:48px 40px;
+  background:linear-gradient(180deg,var(--panel),var(--bg));
+  border:1px solid var(--line);
+  border-radius:2px;
+  text-align:center;
+  position:relative;
+}
+.login-card::before{
+  content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:40px;height:1px;background:var(--accent);
+}
+.login-brand{
+  font-family:"Cormorant Garamond",serif;
+  font-size:12px;letter-spacing:.4em;color:var(--accent);
+  text-transform:uppercase;margin-bottom:8px;
+}
+.login-title{
+  font-family:"Cormorant Garamond",serif;
+  font-size:28px;font-weight:500;letter-spacing:.02em;
+  margin-bottom:4px;
+}
+.login-sub{
+  font-size:11px;color:var(--ink-mute);letter-spacing:.2em;margin-bottom:36px;
+}
+.login-card input{
+  width:100%;padding:14px 16px;
+  background:transparent;border:1px solid var(--line);border-radius:0;
+  color:var(--ink);font-family:inherit;font-size:14px;
+  text-align:center;letter-spacing:.1em;
+  outline:none;transition:border .2s;
+}
+.login-card input:focus{border-color:var(--accent)}
+.login-card button{
+  width:100%;margin-top:16px;padding:14px;
+  background:var(--accent);color:#0a1220;
+  border:none;border-radius:0;cursor:pointer;
+  font-family:inherit;font-size:12px;font-weight:600;
+  letter-spacing:.3em;text-transform:uppercase;
+  transition:background .2s;
+}
+.login-card button:hover{background:#66d9e8}
+.login-err{color:var(--danger);font-size:11px;margin-top:12px;min-height:14px;letter-spacing:.05em}
+
+/* ========= APP ========= */
+#app{display:none;position:relative;z-index:1}
+.header{
+  padding:28px 32px 20px;
+  border-bottom:1px solid var(--line-soft);
+  display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;
+}
+.brand-line{display:flex;align-items:baseline;gap:16px}
+.brand-mark{
+  font-family:"Cormorant Garamond",serif;
+  font-size:11px;letter-spacing:.4em;color:var(--accent);
+  text-transform:uppercase;
+}
+.brand-title{
+  font-family:"Cormorant Garamond",serif;
+  font-size:26px;font-weight:500;letter-spacing:.01em;
+}
+.brand-sub{font-size:11px;color:var(--ink-mute);letter-spacing:.25em;margin-top:6px}
+.header-right{display:flex;gap:8px;align-items:center}
+.logout-btn{
+  padding:8px 14px;background:transparent;border:1px solid var(--line);
+  color:var(--ink-mute);font-family:inherit;font-size:11px;letter-spacing:.15em;
+  cursor:pointer;border-radius:0;transition:all .2s;
+}
+.logout-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ========= ISSUES ========= */
+.issues-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:8px 12px;background:rgba(251,191,36,.08);
+  border:1px solid rgba(251,191,36,.35);
+  color:var(--warn);font-family:inherit;font-size:11px;letter-spacing:.1em;
+  cursor:pointer;border-radius:0;transition:all .2s;
+}
+.issues-btn:hover{background:rgba(251,191,36,.15);border-color:var(--warn)}
+.issues-btn svg{width:13px;height:13px}
+.issues-btn span:not(.issues-count){letter-spacing:.1em}
+.issues-count{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:18px;height:18px;padding:0 5px;
+  background:var(--warn);color:#0a1220;
+  font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:700;
+  letter-spacing:0;border-radius:0;
+}
+.issues-btn.dismissed{opacity:.55}
+
+.issues-panel{
+  display:none;
+  border-bottom:1px solid var(--line-soft);
+  background:linear-gradient(180deg,rgba(251,191,36,.04),transparent);
+}
+.issues-panel.open{display:block;animation:slideDown .25s ease-out}
+@keyframes slideDown{
+  from{opacity:0;transform:translateY(-6px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.issues-head{
+  padding:14px 32px 10px;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.issues-title{
+  display:flex;align-items:center;gap:12px;
+  font-size:13px;font-weight:600;color:var(--warn);
+  letter-spacing:.08em;
+}
+.issues-accent{
+  width:4px;height:14px;background:var(--warn);display:inline-block;
+}
+.issues-sub{
+  font-size:10px;color:var(--ink-dim);font-weight:400;letter-spacing:.15em;
+  margin-left:4px;
+}
+.issues-close{
+  width:28px;height:28px;background:transparent;border:1px solid var(--line);
+  color:var(--ink-mute);font-size:16px;line-height:1;cursor:pointer;
+  border-radius:0;transition:all .2s;
+}
+.issues-close:hover{border-color:var(--warn);color:var(--warn)}
+.issues-body{
+  padding:4px 32px 18px;
+  display:grid;gap:8px;
+}
+.issue-item{
+  display:grid;grid-template-columns:140px 1fr auto;gap:16px;align-items:center;
+  padding:10px 14px;background:var(--panel);border:1px solid var(--line-soft);
+  font-size:12px;
+}
+.issue-tag{
+  font-size:10px;letter-spacing:.1em;color:var(--warn);
+  padding:3px 8px;border:1px solid rgba(251,191,36,.35);
+  text-align:center;
+}
+.issue-tag.info{color:var(--accent);border-color:rgba(77,208,225,.35)}
+.issue-text{color:var(--ink-mute);line-height:1.6}
+.issue-text strong{color:var(--ink);font-weight:500}
+.issue-text code{
+  font-family:"JetBrains Mono",monospace;font-size:11px;
+  padding:1px 5px;background:var(--bg);border:1px solid var(--line-soft);
+  color:var(--accent);
+}
+.issue-action{
+  padding:6px 10px;background:transparent;border:1px solid var(--line);
+  color:var(--ink-mute);font-family:inherit;font-size:11px;letter-spacing:.1em;
+  cursor:pointer;border-radius:0;transition:all .2s;white-space:nowrap;
+}
+.issue-action:hover{border-color:var(--accent);color:var(--accent)}
+@media(max-width:780px){
+  .issues-head{padding:12px 16px 8px}
+  .issues-body{padding:4px 16px 14px}
+  .issue-item{grid-template-columns:1fr;gap:8px}
+  .issue-action{justify-self:start}
+}
+
+/* ========= STATS ========= */
+.stats{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:1px;background:var(--line-soft);
+  border-bottom:1px solid var(--line-soft);
+}
+.stat{
+  padding:20px 24px;background:var(--bg);
+  display:flex;flex-direction:column;gap:4px;
+  cursor:pointer;transition:background .2s;
+  position:relative;
+}
+.stat:hover{background:var(--panel)}
+.stat.active{background:var(--panel)}
+.stat.active::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent);
+}
+.stat-label{font-size:10px;color:var(--ink-mute);letter-spacing:.2em;text-transform:uppercase}
+.stat-value{
+  font-family:"Cormorant Garamond",serif;
+  font-size:30px;font-weight:500;color:var(--ink);line-height:1;
+}
+.stat-value .unit{font-size:13px;color:var(--ink-mute);margin-left:4px;font-family:"Noto Sans JP",sans-serif}
+
+/* ========= CONTROLS ========= */
+.controls{
+  padding:16px 32px;
+  display:flex;gap:12px;align-items:center;flex-wrap:wrap;
+  border-bottom:1px solid var(--line-soft);
+  background:var(--panel);
+}
+.search-wrap{position:relative;flex:1;min-width:240px;max-width:420px}
+.search-wrap svg{
+  position:absolute;left:12px;top:50%;transform:translateY(-50%);
+  width:14px;height:14px;color:var(--ink-dim);pointer-events:none;
+}
+.search-wrap input{
+  width:100%;padding:9px 12px 9px 34px;
+  background:var(--bg);border:1px solid var(--line);border-radius:0;
+  color:var(--ink);font-family:inherit;font-size:13px;
+  outline:none;transition:border .2s;
+}
+.search-wrap input:focus{border-color:var(--accent)}
+.kana-bar{
+  display:flex;gap:1px;background:var(--line-soft);
+  border:1px solid var(--line);
+}
+.kana-bar button{
+  min-width:28px;padding:6px 8px;
+  background:var(--bg);border:none;
+  color:var(--ink-mute);cursor:pointer;
+  font-family:inherit;font-size:12px;
+  transition:all .15s;
+}
+.kana-bar button:hover{background:var(--panel-2);color:var(--ink)}
+.kana-bar button.active{background:var(--accent);color:#0a1220;font-weight:600}
+select.filter-select{
+  padding:9px 28px 9px 12px;background:var(--bg);border:1px solid var(--line);
+  color:var(--ink);font-family:inherit;font-size:12px;border-radius:0;
+  cursor:pointer;outline:none;
+  appearance:none;-webkit-appearance:none;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' stroke='%238fa3c0' stroke-width='1.5' fill='none' stroke-linecap='round'/></svg>");
+  background-repeat:no-repeat;background-position:right 10px center;
+}
+.btn{
+  padding:9px 14px;background:transparent;border:1px solid var(--line);
+  color:var(--ink);font-family:inherit;font-size:12px;letter-spacing:.1em;
+  cursor:pointer;border-radius:0;transition:all .2s;
+  display:inline-flex;align-items:center;gap:6px;
+}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn.primary{background:var(--accent);color:#0a1220;border-color:var(--accent);font-weight:600}
+.btn.primary:hover{background:#66d9e8;color:#0a1220}
+.btn.accent{background:rgba(212,165,116,.08);border-color:rgba(212,165,116,.5);color:var(--gold)}
+.btn.accent:hover{background:rgba(212,165,116,.18);border-color:var(--gold);color:var(--gold)}
+.btn svg{width:13px;height:13px}
+
+/* ========= MODAL ========= */
+.modal-overlay{
+  display:none;position:fixed;inset:0;z-index:150;
+  background:rgba(10,18,32,.82);backdrop-filter:blur(6px);
+  align-items:flex-start;justify-content:center;padding:40px 20px;
+  overflow-y:auto;
+}
+.modal-overlay.open{display:flex}
+.modal-card{
+  width:min(92vw,680px);
+  background:linear-gradient(180deg,var(--panel),var(--bg));
+  border:1px solid var(--line);border-radius:2px;
+  position:relative;animation:modalIn .25s ease-out;
+}
+.modal-card::before{
+  content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:60px;height:1px;background:var(--gold);
+}
+@keyframes modalIn{
+  from{opacity:0;transform:translateY(-12px) scale(.98)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+.modal-head{
+  padding:20px 28px 16px;
+  display:flex;justify-content:space-between;align-items:center;
+  border-bottom:1px solid var(--line-soft);
+}
+.modal-title{
+  display:flex;align-items:center;gap:12px;
+  font-family:"Cormorant Garamond",serif;
+  font-size:20px;font-weight:500;letter-spacing:.02em;color:var(--ink);
+}
+.modal-accent{width:4px;height:18px;background:var(--gold);display:inline-block}
+.modal-sub{
+  font-family:"Noto Sans JP",sans-serif;
+  font-size:10px;color:var(--ink-dim);letter-spacing:.2em;
+  font-weight:400;margin-left:4px;
+}
+.modal-close{
+  width:32px;height:32px;background:transparent;border:1px solid var(--line);
+  color:var(--ink-mute);font-size:18px;line-height:1;cursor:pointer;
+  border-radius:0;transition:all .2s;
+}
+.modal-close:hover{border-color:var(--danger);color:var(--danger)}
+.modal-body{padding:24px 28px}
+.form-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:14px 18px;
+}
+.form-field{display:flex;flex-direction:column;gap:6px}
+.form-field.form-wide{grid-column:1 / -1}
+.form-label{
+  font-size:11px;color:var(--ink-mute);letter-spacing:.1em;
+  display:flex;align-items:center;gap:8px;
+}
+.form-req{
+  font-size:9px;padding:1px 6px;letter-spacing:.08em;
+  background:rgba(212,165,116,.12);color:var(--gold);
+  border:1px solid rgba(212,165,116,.3);
+}
+.form-hint{
+  font-size:10px;color:var(--ink-dim);letter-spacing:.05em;
+  margin-left:auto;font-weight:400;
+}
+.form-input{
+  padding:10px 12px;background:var(--bg);border:1px solid var(--line);
+  color:var(--ink);font-family:inherit;font-size:13px;
+  border-radius:0;outline:none;transition:border .2s;
+}
+.form-input:focus{border-color:var(--gold)}
+.form-readonly{color:var(--ink-dim);font-family:"JetBrains Mono",monospace;background:var(--panel-2)}
+.form-select{
+  appearance:none;-webkit-appearance:none;padding-right:32px;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' stroke='%238fa3c0' stroke-width='1.5' fill='none' stroke-linecap='round'/></svg>");
+  background-repeat:no-repeat;background-position:right 12px center;
+  cursor:pointer;
+}
+.form-actions{
+  display:flex;justify-content:flex-end;gap:10px;
+  margin-top:20px;padding-top:18px;border-top:1px solid var(--line-soft);
+}
+@media(max-width:780px){
+  .form-grid{grid-template-columns:1fr}
+  .form-field.form-wide{grid-column:auto}
+  .modal-body{padding:18px 20px}
+  .modal-head{padding:16px 20px 12px}
+}
+
+/* New-record marker & row actions */
+.new-mark{
+  display:inline-block;padding:1px 5px;margin-left:6px;
+  font-size:9px;letter-spacing:.08em;font-weight:600;
+  background:var(--gold);color:#0a1220;
+  font-family:"JetBrains Mono",monospace;
+}
+.edited-mark{
+  display:inline-block;width:6px;height:6px;margin-left:6px;
+  border-radius:50%;background:var(--accent);
+  vertical-align:middle;
+}
+.row-actions{
+  display:inline-flex;gap:4px;margin-left:8px;
+  opacity:0;transition:opacity .15s;
+  vertical-align:middle;
+}
+tr:hover .row-actions{opacity:1}
+.row-btn{
+  width:22px;height:22px;padding:0;
+  background:transparent;border:1px solid var(--line);
+  color:var(--ink-mute);cursor:pointer;border-radius:0;
+  transition:all .15s;line-height:1;
+  display:inline-flex;align-items:center;justify-content:center;
+}
+.row-btn svg{width:11px;height:11px}
+.row-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(77,208,225,.08)}
+.row-btn.danger:hover{border-color:var(--danger);color:var(--danger);background:rgba(248,113,113,.08)}
+
+/* ========= TABLE ========= */
+.table-wrap{
+  overflow-x:auto;
+  background:var(--bg);
+}
+table{
+  width:100%;border-collapse:collapse;
+  font-size:13px;
+  min-width:1280px;
+}
+thead{
+  position:sticky;top:0;z-index:10;
+  background:var(--panel-2);
+}
+th{
+  padding:12px 10px;text-align:left;
+  font-size:10px;font-weight:600;letter-spacing:.15em;
+  color:var(--ink-mute);text-transform:uppercase;
+  border-bottom:1px solid var(--line);
+  white-space:nowrap;
+  cursor:pointer;user-select:none;
+  transition:color .2s;
+}
+th:hover{color:var(--accent)}
+th .sort-ind{margin-left:4px;color:var(--ink-dim);font-size:9px}
+th.sorted .sort-ind{color:var(--accent)}
+td{
+  padding:10px;border-bottom:1px solid var(--line-soft);
+  vertical-align:middle;
+}
+tr{transition:background .15s}
+tr:hover td{background:var(--panel)}
+tr.paid td{background:var(--paid-bg)}
+tr.paid:hover td{background:rgba(74,222,128,.14)}
+tr.expired td{background:var(--expired-bg)}
+tr.expired:hover td{background:rgba(248,113,113,.12)}
+
+.id-cell{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-dim)}
+.name-cell{font-weight:500;color:var(--ink)}
+.kana-cell{color:var(--ink-mute);font-size:12px}
+.email-cell{
+  font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-mute);
+  max-width:240px;
+}
+.email-input{
+  width:100%;min-width:180px;padding:5px 8px;
+  background:transparent;border:1px solid transparent;
+  color:var(--ink-mute);font-family:"JetBrains Mono",monospace;font-size:11px;
+  border-radius:0;outline:none;
+  transition:all .2s;
+  text-overflow:ellipsis;
+}
+.email-input:hover{border-color:var(--line-soft)}
+.email-input:focus{border-color:var(--accent);background:var(--bg);color:var(--ink)}
+.fee-cell{font-family:"JetBrains Mono",monospace;text-align:right;color:var(--ink-mute)}
+.date-cell{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-mute);white-space:nowrap}
+
+.badge{
+  display:inline-block;padding:2px 8px;
+  font-size:10px;letter-spacing:.05em;
+  border:1px solid;border-radius:0;white-space:nowrap;
+}
+.badge.ok{color:var(--ok);border-color:rgba(74,222,128,.4);background:rgba(74,222,128,.05)}
+.badge.warn{color:var(--warn);border-color:rgba(251,191,36,.4);background:rgba(251,191,36,.05)}
+.badge.danger{color:var(--danger);border-color:rgba(248,113,113,.4);background:rgba(248,113,113,.05)}
+.badge.neutral{color:var(--ink-dim);border-color:var(--line)}
+.badge.status{font-weight:500;padding:3px 10px;font-size:11px;letter-spacing:.08em}
+
+/* Reset button */
+.reset-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:8px 12px;background:transparent;
+  border:1px solid var(--line);
+  color:var(--ink-mute);font-family:inherit;font-size:11px;letter-spacing:.15em;
+  cursor:pointer;border-radius:0;transition:all .2s;
+}
+.reset-btn:hover{border-color:var(--danger);color:var(--danger);background:rgba(248,113,113,.04)}
+.reset-btn svg{width:12px;height:12px}
+
+.paid-input{
+  width:120px;padding:5px 8px;
+  background:var(--bg);border:1px solid var(--line);
+  color:var(--ink);font-family:"JetBrains Mono",monospace;font-size:11px;
+  border-radius:0;outline:none;
+}
+.paid-input:focus{border-color:var(--accent)}
+tr.paid .paid-input{background:rgba(74,222,128,.05);border-color:rgba(74,222,128,.3);color:var(--ok)}
+
+.memo-input{
+  width:100%;min-width:140px;padding:5px 8px;
+  background:transparent;border:1px solid transparent;
+  color:var(--ink-mute);font-family:inherit;font-size:12px;
+  border-radius:0;outline:none;
+  transition:all .2s;
+}
+.memo-input:hover{border-color:var(--line-soft)}
+.memo-input:focus{border-color:var(--accent);background:var(--bg);color:var(--ink)}
+
+.empty{text-align:center;padding:60px 20px;color:var(--ink-dim);font-size:13px}
+
+.footer{
+  padding:16px 32px;border-top:1px solid var(--line-soft);
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:11px;color:var(--ink-dim);letter-spacing:.1em;
+  background:var(--panel);
+}
+.footer-left{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.legend{display:inline-flex;gap:14px;color:var(--ink-dim);letter-spacing:.08em}
+.legend-item{display:inline-flex;align-items:center;gap:6px;font-size:10px}
+.save-status{color:var(--ok);opacity:0;transition:opacity .3s}
+.save-status.show{opacity:1}
+
+/* Toast */
+.toast{
+  position:fixed;bottom:24px;right:24px;z-index:200;
+  padding:12px 20px;background:var(--panel-2);border:1px solid var(--accent);
+  color:var(--ink);font-size:12px;letter-spacing:.05em;
+  transform:translateY(100px);opacity:0;transition:all .3s;
+  box-shadow:0 8px 24px rgba(0,0,0,.4);
+}
+.toast.show{transform:translateY(0);opacity:1}
+
+/* Responsive */
+@media(max-width:780px){
+  .header{padding:20px 16px}
+  .brand-title{font-size:22px}
+  .controls{padding:12px 16px;gap:8px}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .stat{padding:14px 16px}
+  .stat-value{font-size:24px}
+  .footer{padding:12px 16px;flex-direction:column;gap:6px;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login">
+  <form class="login-card" onsubmit="doLogin(event)">
+    <div class="login-brand">PSGA JAPAN</div>
+    <div class="login-title">Renewal Ledger</div>
+    <div class="login-sub">2026</div>
+    <input id="pwInput" type="password" placeholder="パスワード" autocomplete="current-password">
+    <button type="submit">Enter</button>
+    <div class="login-err" id="loginErr"></div>
+  </form>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="header">
+    <div>
+      <div class="brand-line">
+        <span class="brand-mark">PSGA JAPAN</span>
+        <h1 class="brand-title">Renewal Ledger</h1>
+      </div>
+      <div class="brand-sub">資格更新管理台帳　2026</div>
+    </div>
+    <div class="header-right">
+      <span class="save-status" id="saveStatus">✓ 保存済み</span>
+      <button class="issues-btn" onclick="toggleIssues()" id="issuesBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <span>確認事項</span>
+        <span class="issues-count" id="issuesCount">3</span>
+      </button>
+      <button class="reset-btn" onclick="openResetModal()" title="毎年4月の年度切替に使用">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+        年度リセット
+      </button>
+      <button class="logout-btn" onclick="logout()">ログアウト</button>
+    </div>
+  </div>
+
+  <div class="stats" id="stats"></div>
+
+  <!-- Data issues panel -->
+  <div class="issues-panel" id="issuesPanel">
+    <div class="issues-head">
+      <div class="issues-title">
+        <span class="issues-accent"></span>
+        データ確認事項
+        <span class="issues-sub">原本Excelから検出・要ご判断</span>
+      </div>
+      <button class="issues-close" onclick="toggleIssues()" aria-label="閉じる">×</button>
+    </div>
+    <div class="issues-body" id="issuesBody"></div>
+  </div>
+
+  <div class="controls">
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="search" type="text" placeholder="氏名・カナ・メール・ID で検索">
+    </div>
+    <select class="filter-select" id="statusFilter">
+      <option value="">すべての状態</option>
+      <option value="unchecked">未確認のみ</option>
+      <option value="continuing">継続予定のみ</option>
+      <option value="completed">更新完了のみ</option>
+      <option value="declined">辞退のみ</option>
+      <option value="not_renewed">今年度 未更新（要対応）</option>
+    </select>
+    <div class="kana-bar" id="kanaBar"></div>
+    <div style="flex:1"></div>
+    <button class="btn accent" onclick="openAddModal()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      新規追加
+    </button>
+    <button class="btn" onclick="exportCSV()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      CSV
+    </button>
+    <button class="btn primary" onclick="exportExcel()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      Excel
+    </button>
+  </div>
+
+  <div class="table-wrap">
+    <table id="tbl">
+      <thead>
+        <tr>
+          <th data-sort="id">ID<span class="sort-ind">▾</span></th>
+          <th data-sort="kana" class="sorted">カナ氏名<span class="sort-ind">▲</span></th>
+          <th data-sort="name">氏名<span class="sort-ind">▾</span></th>
+          <th data-sort="acq">取得年月日<span class="sort-ind">▾</span></th>
+          <th>状況</th>
+          <th data-sort="email">メールアドレス<span class="sort-ind">▾</span></th>
+          <th data-sort="fee" style="text-align:right">更新料<span class="sort-ind">▾</span></th>
+          <th data-sort="paid">入金日<span class="sort-ind">▾</span></th>
+          <th>特記事項 / 備考</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+  <div class="footer">
+    <div class="footer-left">
+      <span>PSGA JAPAN ® &nbsp;/&nbsp; 大丸プランニング</span>
+      <span class="legend">
+        <span class="legend-item"><span class="new-mark" style="margin-left:0">NEW</span>新規追加</span>
+        <span class="legend-item"><span class="edited-mark" style="margin-left:0"></span>編集済み</span>
+      </span>
+    </div>
+    <div id="countInfo">0 / 0 名</div>
+  </div>
+</div>
+
+<!-- Add Modal -->
+<div class="modal-overlay" id="addModal">
+  <div class="modal-card">
+    <div class="modal-head">
+      <div class="modal-title">
+        <span class="modal-accent"></span>
+        <span id="modalTitleText">新規登録</span>
+        <span class="modal-sub" id="modalSubText">新しい資格取得者を追加</span>
+      </div>
+      <button class="modal-close" onclick="closeAddModal()" aria-label="閉じる">×</button>
+    </div>
+    <form class="modal-body" id="addForm" onsubmit="submitAddForm(event)">
+      <div class="form-grid">
+        <label class="form-field">
+          <span class="form-label">ID <span class="form-req">自動</span></span>
+          <input type="text" id="f_id" readonly class="form-input form-readonly">
+        </label>
+        <label class="form-field">
+          <span class="form-label">取得年月日 <span class="form-req">必須</span></span>
+          <input type="text" id="f_acq" required class="form-input" placeholder="例：2026.04 または 2026.04.17">
+        </label>
+        <label class="form-field form-wide">
+          <span class="form-label">更新ステータス <span class="form-hint">※今年度の継続確認状態</span></span>
+          <select id="f_status" class="form-input form-select">
+            <option value="unchecked">未確認</option>
+            <option value="continuing">継続予定（入金待ち）</option>
+            <option value="completed">更新完了（入金確認済み）</option>
+            <option value="declined">辞退</option>
+          </select>
+        </label>
+        <label class="form-field form-wide">
+          <span class="form-label">氏名 <span class="form-req">必須</span></span>
+          <input type="text" id="f_name" required class="form-input" placeholder="例：山田　太郎">
+        </label>
+        <label class="form-field form-wide">
+          <span class="form-label">カナ氏名 <span class="form-req">必須</span><span class="form-hint">※ひらがな入力OK（自動でカタカナ変換）</span></span>
+          <input type="text" id="f_kana" required class="form-input" placeholder="例：やまだ　たろう">
+        </label>
+        <label class="form-field form-wide">
+          <span class="form-label">メールアドレス</span>
+          <input type="email" id="f_email" class="form-input" placeholder="example@mail.com">
+        </label>
+        <label class="form-field">
+          <span class="form-label">更新料</span>
+          <input type="number" id="f_fee" class="form-input" value="5500">
+        </label>
+        <label class="form-field">
+          <span class="form-label">入金日</span>
+          <input type="date" id="f_paid" class="form-input">
+        </label>
+        <label class="form-field form-wide">
+          <span class="form-label">特記事項 / 備考</span>
+          <input type="text" id="f_note" class="form-input" placeholder="例：継続希望・WS2回受講必須">
+        </label>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn" onclick="closeAddModal()">キャンセル</button>
+        <button type="submit" class="btn primary">登録する</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ======= DATA ======= */
+const INITIAL_DATA = [{"id":"0300094","name":"相澤　さおり","kana":"アイザワ　サオリ","acq":"2021.10.02","status":"","ws":"","clear":"","email":"okakopa21.saori@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"2024年末失効","historyStr":""},{"id":"0300032","name":"青島　美帆","kana":"アオシマ　ミホ","acq":"","status":"ー","ws":"","clear":"","email":"ayu.kira.loveme@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300109","name":"東　純子","kana":"アズマ　ジュンコ","acq":"2022.08.02","status":"","ws":"","clear":"","email":"curiousgonabananaboat@yahoo.co.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"2024年末失効","historyStr":""},{"id":"0300055","name":"有田　英智","kana":"アリタ　ヒデトモ","acq":"2020.08.05","status":"2021.5","ws":"2021.12OL","clear":"○","email":"h.arita@shimz.co.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"継続希望・WS2回受講必須","historyStr":""},{"id":"0300127","name":"安藤 いずみ","kana":"アンドウ　イズミ","acq":"2023.10","status":"","ws":"","clear":"","email":"idumi.0809@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300086","name":"池澤　由紀子","kana":"イケザワ　ユキコ","acq":"2021.08","status":"","ws":"","clear":"","email":"yukiko.ikezawa1@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"2024年末失効","historyStr":""},{"id":"0300051","name":"池田　正己","kana":"イケダ　マサキ","acq":"2020.08","status":"2021.5","ws":"2021.12OL","clear":"○","email":"yan23_lego@yahoo.co.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":"2023.08"},{"id":"0300080","name":"石川　惠子","kana":"イシカワ　ケイコ","acq":"2021.05.03","status":"","ws":"","clear":"","email":"bianka.kei.11.19@docomo.ne.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"継続希望・WS2回受講必須","historyStr":"2021.09; 2022.07; 2023.02"},{"id":"0300061","name":"鈴木（石川） 里英子","kana":"イシカワ　リエコ","acq":"2020.09.05","status":"2021.4","ws":"2021.6OL","clear":"○","email":"wsiccc@yahoo.co.jp","fee":5500,"paid":"2026-04-14","memo":"","ws1":"","ws2":"","note":"継続希望・WS2回受講必須","historyStr":""},{"id":"0300105","name":"石黒　奈美","kana":"イシグロ　ナミ","acq":"2022.07","status":"","ws":"","clear":"","email":"mi-na.azuki910_siba@docomo.ne.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300129","name":"石塚　瑞生","kana":"イシヅカ　ミズキ","acq":"2023.11","status":"","ws":"","clear":"","email":"papurica39@icloud.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300010","name":"磯川(田中)梨沙","kana":"イソカワ　リサ","acq":"2018.12","status":"2020.5","ws":"","clear":"","email":"peargap@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300083","name":"市川　あづさ","kana":"イチカワ　アズサ","acq":"2021.08","status":"","ws":"","clear":"","email":"azutana@yahoo.co.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"継続希望・WS2回受講必須","historyStr":""},{"id":"0300090","name":"井手上　有希恵","kana":"イデウエ　ユキエ","acq":"2021.09","status":"","ws":"","clear":"","email":"yukie.0702.pmw.48@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"継続希望・WS2回受講必須","historyStr":"2024.02; 2024.04; 2025.07"},{"id":"0300070","name":"伊藤　エミ","kana":"イトウ　エミ","acq":"2020.10","status":"2021.5","ws":"2021.6OL/2022.03（静岡）","clear":"○","email":"emitarumi@icloud.com","fee":5500,"paid":"2026-04-14","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300041","name":"岩田  安季子","kana":"イワタ　アキコ","acq":"","status":"ー","ws":"","clear":"","email":"sa71@ezweb.ne.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300088","name":"薄井　亜由美","kana":"ウスイ　アユミ","acq":"2021.08.03","status":"","ws":"","clear":"","email":"zyousyoukiryuu0326@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"2024年末失効","historyStr":""},{"id":"0300122","name":"臼井　利江","kana":"ウスイ　トシエ","acq":"2023.08","status":"","ws":"","clear":"","email":"mi.hn.tk.rn-2011@ezweb.ne.jp","fee":5500,"paid":"2026-04-12","memo":"","ws1":"","ws2":"","note":"継続希望・WS2回受講必須","historyStr":""},{"id":"0300095","name":"内山　恵介","kana":"ウチヤマ　ケイスケ","acq":"2021.11","status":"","ws":"","clear":"","email":"uchii.k.s.e.96@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300102","name":"内海　陽子","kana":"ウツミ　ヨウコ","acq":"2022.05","status":"","ws":"","clear":"","email":"komeumi0622@yahoo.co.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300134","name":"梅澤　雪代","kana":"ウメザワ　ユキヨ","acq":"2024.02","status":"","ws":"","clear":"","email":"yuki200x@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300029","name":"荏原　実千代","kana":"エハラ　ミチヨ","acq":"2019.3","status":"2021.4","ws":"2021.12OL","clear":"○","email":"michiyo.ehara1831@ezweb.ne.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"2024年末失効","historyStr":""},{"id":"0300004","name":"遠藤　聡","kana":"エンドウ　サトシ","acq":"2018.3","status":"2021.4","ws":"","clear":"","email":"nutella1226@hotmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300027","name":"大城　樹理","kana":"オオシロ　ジュリ","acq":"2019.1","status":"2021.4","ws":"2021.3OL","clear":"○","email":"tkm.gng_oty.ju810@ezweb.ne.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":"2022.11"},{"id":"0300111","name":"大杉　愛満","kana":"オオスギ　アミ","acq":"2022.10","status":"","ws":"","clear":"","email":"shuffleami222@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"継続希望・WS2回受講必須","historyStr":""},{"id":"0300087","name":"大塚　茉姫","kana":"オオツカ　マキ","acq":"2021.08.02","status":"","ws":"","clear":"","email":"msdmk0712@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300066","name":"大友　美咲恵","kana":"オオトモ　ミサエ","acq":"2020.09.10","status":"2021.4","ws":"","clear":"","email":"misae.s2@i.softbank.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300150","name":"大貫　晴子","kana":"オオヌキ　ハルコ","acq":"2025.10.02","status":"","ws":"","clear":"","email":"koasunhappy@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":"2025.11"},{"id":"0300142","name":"大見　まりえ","kana":"オオミ　マリエ","acq":"2025.01.02","status":"","ws":"","clear":"","email":"marie.comcom@icloud.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300139","name":"大森　美幸","kana":"オオモリ　ミユキ","acq":"2024.07.03","status":"","ws":"","clear":"","email":"lotusgolf828@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"継続希望・WS2回受講必須","historyStr":""},{"id":"0300104","name":"小澤　里佳子","kana":"オザワ　リカコ","acq":"2022.01","status":"","ws":"","clear":"","email":"kozarika@icloud.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"2024年末失効","historyStr":""},{"id":"0300132","name":"小野　裕美","kana":"オノ　ヒロミ","acq":"2024.01","status":"","ws":"","clear":"","email":"piropirori.mmm@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300148","name":"小野　裕美","kana":"オノ　ヒロミ","acq":"2025.10","status":"","ws":"","clear":"","email":"piropirori.mmm@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300024","name":"風間　直子","kana":"カザマ　ナオコ","acq":"2019.3","status":"2021.5","ws":"","clear":"","email":"n_a_o_k_o_5_1_1_5@yahoo.co.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300043","name":"春日井 亜里紗","kana":"カスガイ　アリサ","acq":"2019.12","status":"2021.5","ws":"2021.12OL","clear":"○","email":"arisar@mac.com","fee":5500,"paid":"2026-04-14","memo":"","ws1":"","ws2":"","note":"","historyStr":"2021.07"},{"id":"0300012","name":"嘉手苅　紗世子","kana":"カデカル　サヨコ","acq":"2018.12","status":"2021.4","ws":"2021.12OL","clear":"○","email":"saynothing43@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"継続希望・WS2回受講必須","historyStr":""},{"id":"0300128","name":"加藤　香織","kana":"カトウ　カオリ","acq":"2023.10.02","status":"","ws":"","clear":"","email":"minna-k2019@au.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"2024年末失効","historyStr":""},{"id":"0300098","name":"加藤　満枝","kana":"カトウ　ミツエ","acq":"2021.11.03","status":"","ws":"","clear":"","email":"moloao333333@yahoo.co.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300009","name":"加藤　美和","kana":"カトウ　ミワ","acq":"2019.3","status":"2021.5","ws":"2021.12OL","clear":"○","email":"wami_wk9@icloud.com","fee":5500,"paid":"2026-04-10","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300137","name":"釜井　優衣","kana":"カマイ　ユイ","acq":"2024.07","status":"","ws":"","clear":"","email":"kmi.style00@gmail.com","fee":5500,"paid":"2026-04-14","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300014","name":"釜田　薫子","kana":"カマダ　カオル","acq":"2018.12","status":"2021.5","ws":"2021.12OL","clear":"○","email":"kaosoa@icloud.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"2024年末失効","historyStr":""},{"id":"0300058","name":"川島　由美","kana":"カワシマ　ユミ","acq":"2020.09.02","status":"2021.5","ws":"","clear":"","email":"yumi912@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":"2021.07"},{"id":"0300040","name":"川田　恵子","kana":"カワダ　ケイコ","acq":"2019.09","status":"2021.5","ws":"2022.03OL","clear":"○","email":"keichin0525@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"2024年末失効","historyStr":""},{"id":"0300023","name":"河畑　福太郎","kana":"カワバタ　フクタロウ","acq":"2019.3","status":"","ws":"","clear":"","email":"sw1ro17@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300140","name":"河又　美智","kana":"カワマタ　ミサト","acq":"2024.10","status":"","ws":"","clear":"","email":"kiyoca2005@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"継続希望・WS2回受講必須","historyStr":""},{"id":"0300063","name":"貫名 友理","kana":"カンメイ　ユリ","acq":"2020.09.07","status":"2021.4","ws":"2021.3OL","clear":"○","email":"yuri.kammei@gmail.com","fee":5500,"paid":"2026-04-10","memo":"","ws1":"","ws2":"","note":"継続希望・WS2回受講必須","historyStr":""},{"id":"0300071","name":"菊池　友美","kana":"キクチ　トモミ","acq":"2020.10.02","status":"2021.4","ws":"2021.3OL","clear":"○","email":"tomk3538@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300003","name":"岸本　真由美","kana":"キシモト　マユミ","acq":"2018.3","status":"2021.5","ws":"2021.12OL","clear":"○","email":"piapiapiano7183@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300052","name":"喜多川　奈美","kana":"キタガワ　ナミ","acq":"2020.08.02","status":"2021.4","ws":"2021.3OL","clear":"○","email":"kn1016@icloud.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"2024年末失効","historyStr":""},{"id":"0300050","name":"北澤　舞","kana":"キタザワマイ","acq":"2020.03","status":"2021.5","ws":"2021.6OL","clear":"○","email":"mai.kitazawa113@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300049","name":"貴田 佳世","kana":"キダカヨ","acq":"2020.03","status":"","ws":"","clear":"","email":"kayosan.kidasan.otsukaresan@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300146","name":"木村　佳代","kana":"キムラ　カヨ","acq":"2025.05.02","status":"","ws":"","clear":"","email":"breathe.o97nw622.td@gmail.com","fee":5500,"paid":"2026-04-16","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300107","name":"草野 友梨香","kana":"クサノ　ユリカ","acq":"2022.08.02","status":"","ws":"","clear":"","email":"yurimaro.26@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"2024年末失効","historyStr":""},{"id":"0300077","name":"久代 愛","kana":"クシロ　アイ","acq":"2021.04","status":"","ws":"","clear":"","email":"codeai3141loveandsmile@docomo.ne.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300064","name":"熊切　千晶","kana":"クマキリ　チアキ","acq":"2020.09.08","status":"","ws":"","clear":"","email":"cozystyle.chiaki@icloud.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300015","name":"小関　久美子","kana":"コセキ　クミコ","acq":"2018.12","status":"2021.4","ws":"2021.06OL","clear":"○","email":"miraclekumi-september@docomo.ne.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"2024年末失効","historyStr":""},{"id":"0300138","name":"小林　綾香","kana":"コバヤシ　アヤカ","acq":"2024.07.02","status":"","ws":"","clear":"","email":"a.volleyball108@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"継続希望・WS2回受講必須","historyStr":""},{"id":"0300079","name":"小柳　拓也","kana":"コヤナギ　タクヤ","acq":"2021.05.02","status":"","ws":"","clear":"","email":"tako19870424@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300091","name":"近藤　利佳","kana":"コンドウ　リカ","acq":"2021.10","status":"","ws":"","clear":"","email":"r.h.valentina@docomo.ne.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"2024年末失効","historyStr":""},{"id":"0300123","name":"齋藤　雅子","kana":"サイトウ　マサコ","acq":"2023.08.02","status":"","ws":"","clear":"","email":"sibakawara.saito@ebony.plala.or.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"2024年末失効","historyStr":""},{"id":"0300016","name":"斉藤　真理子","kana":"サイトウ　マリコ","acq":"2018.11","status":"2019.4","ws":"","clear":"","email":"shimoyan1023@yahoo.co.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300006","name":"斉藤　友里奈","kana":"サイトウ　ユリナ","acq":"2018.3","status":"2020.5","ws":"","clear":"","email":"yurina12051205@icloud.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300075","name":"相柄　萌々子","kana":"サガラ　モモコ","acq":"2021.02","status":"","ws":"","clear":"","email":"mokosueyoshi@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300101","name":"櫻内　愛","kana":"サクラウチ　アイ","acq":"2022.05","status":"","ws":"","clear":"","email":"aicchi5158@gmail.com","fee":5500,"paid":"2026-04-13","memo":"","ws1":"","ws2":"","note":"","historyStr":"2024.04; 2024.06; 2025.06"},{"id":"0300069","name":"佐々木　美貴","kana":"ササキ　ミキ","acq":"2020.09.13","status":"ー","ws":"ー","clear":"ー","email":"m.sasaki@ace-axiscore.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300085","name":"捧　亜矢子","kana":"ササゲ　アヤコ","acq":"2021.08.03","status":"","ws":"","clear":"","email":"xjafff6r6@i.softbank.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300106","name":"佐藤　勝久","kana":"サトウ　カツヒサ","acq":"2022.08","status":"","ws":"","clear":"","email":"katsukun0218@icloud.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300067","name":"柴田　香織","kana":"シバタ　カオリ","acq":"2020.09.11","status":"ー","ws":"ー","clear":"ー","email":"k.shibata@ace-axiscore.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300125","name":"白土　佳央梨","kana":"シラト　カオリ","acq":"2023.09","status":"","ws":"","clear":"","email":"kor.a_a48-loove@ezweb.ne.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"2024年末失効","historyStr":""},{"id":"0300131","name":"白鳥　智博","kana":"シラトリ　トモヒロ","acq":"2023.12","status":"","ws":"","clear":"","email":"torich.jan@ezweb.ne.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"2024年末失効","historyStr":""},{"id":"0300030","name":"杉山　彰","kana":"スギヤマ　アキラ","acq":"2019.4","status":"2021.5","ws":"2022.3（静岡）","clear":"○","email":"sugiyama.fieldone@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300037","name":"鈴木 亜矢","kana":"スズキ　アヤ","acq":"2019.11","status":"2021.5","ws":"2021.12OL","clear":"○","email":"tomchi.aken.2525@docomo.ne.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"2024年末失効","historyStr":""},{"id":"0300100","name":"鈴木　淳子","kana":"スズキ　ジュンコ","acq":"2022.04","status":"","ws":"","clear":"","email":"chibiko-j@ezweb.ne.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300056","name":"鈴木　萌実","kana":"スズキ　メグミ","acq":"2020.08.06","status":"2021.5","ws":"2021.6OL","clear":"○","email":"h_m.md25@icloud.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":"2024.08"},{"id":"0300026","name":"鈴木 伶菜","kana":"スズキ　レイナ","acq":"2019.3","status":"","ws":"","clear":"","email":"sr.mty27@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300033","name":"北山（鈴木） 伶菜","kana":"スズキ　レイナ","acq":"2019.3","status":"2021.4","ws":"2021.12OL","clear":"○","email":"sr.mty27@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300057","name":"瀬川　匡代","kana":"セガワ　マサヨ","acq":"2020.09","status":"2021.4","ws":"","clear":"","email":"masayo.927@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300008","name":"千間　弘勝","kana":"センマ　ヒロカツ","acq":"2018.3","status":"2021.4","ws":"2021.12OL","clear":"○","email":"hirokatsusenma@gmail.com","fee":5500,"paid":"2026-04-13","memo":"","ws1":"","ws2":"","note":"継続希望・WS2回受講必須","historyStr":""},{"id":"0300089","name":"宋　亜弓","kana":"ソン　アユミ","acq":"2021.08","status":"","ws":"","clear":"","email":"agung730@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"継続希望・WS2回受講必須","historyStr":""},{"id":"0300011","name":"髙木　清香","kana":"タカキ　サヤカ","acq":"2018.12","status":"2020.5","ws":"","clear":"","email":"h27d87dbadyrxs4@i.softbank.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300019","name":"高崎　幸","kana":"タカサキ　サチ","acq":"2019.3","status":"ー","ws":"","clear":"×","email":"sachicanada@hotmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300099","name":"髙田　紗希","kana":"タカダ　サキ","acq":"2021.12","status":"","ws":"","clear":"","email":"gluck.s.sakura@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300002","name":"高野　吉弘","kana":"タカノ　ヨシヒロ","acq":"","status":"ー","ws":"","clear":"×","email":"y.takano55@fullworks.co.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300068","name":"髙橋　亜子","kana":"タカハシ　アコ","acq":"2020.09.12","status":"ー","ws":"ー","clear":"ー","email":"a.takahashi@ace-axiscore.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300013","name":"髙橋　薫","kana":"タカハシ　カオル","acq":"2018.12","status":"2021.4","ws":"2021.06OL","clear":"○","email":"kao_tak@icloud.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"2024年末失効","historyStr":""},{"id":"0300118","name":"高原　圭子","kana":"タカハラ　ケイコ","acq":"2023.06","status":"","ws":"","clear":"","email":"kei.y18.e29.niko@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"2024年末失効","historyStr":""},{"id":"0300021","name":"瀧下　雅弘","kana":"タキシタ　マサヒロ","acq":"2019.3","status":"2021.4","ws":"2021.12OL","clear":"○","email":"tucky1974@gmail.com","fee":5500,"paid":"2026-04-10","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300108","name":"田島　麻美","kana":"タジマ　アサミ","acq":"2022.08","status":"","ws":"","clear":"","email":"asami.j.n.k@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300082","name":"田中　克弥","kana":"タナカ　カツヤ","acq":"2021.07","status":"","ws":"","clear":"","email":"kemitianzhong11@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":"2021.08; 2022.03; 2022.07"},{"id":"0300047","name":"田中　千景","kana":"タナカ　チカゲ","acq":"2020.03","status":"2021.4","ws":"2021.6OL","clear":"○","email":"tnk.tnk.3329@gmail.com","fee":5500,"paid":"2026-04-14","memo":"","ws1":"","ws2":"","note":"継続希望・WS2回受講必須","historyStr":"2021.09"},{"id":"0300065","name":"田中　裕一","kana":"タナカ　ユウイチ","acq":"2020.09.09","status":"2021.05","ws":"2022.03（静岡）","clear":"","email":"p3.tanaka@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300045","name":"田畑　英理子","kana":"タバタ　エリコ","acq":"2019.10","status":"2021.4","ws":"2021.12OL","clear":"○","email":"a.s.hp10.elie@gmail.com","fee":5500,"paid":"2026-04-11","memo":"","ws1":"","ws2":"","note":"","historyStr":"2021.07; 2024.06; 2025.02"},{"id":"0300042","name":"玉川　有子","kana":"タマガワ　ユウコ","acq":"2019.12","status":"2021.5","ws":"2021.12OL","clear":"○","email":"tamapila9360@gmail.com","fee":5500,"paid":"2026-04-11","memo":"","ws1":"","ws2":"","note":"継続希望・WS2回受講必須","historyStr":"2024.07"},{"id":"0300035","name":"角田　朋見","kana":"ツノダ　トモミ","acq":"2019.6","status":"2020.5","ws":"","clear":"","email":"momi1110@i.softbank.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300113","name":"津波　さやか","kana":"ツハ　サヤカ","acq":"2023.01.02","status":"","ws":"","clear":"","email":"takesaya0703@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"継続希望・WS2回受講必須","historyStr":""},{"id":"0300053","name":"手塚　好花","kana":"テヅカ　コノカ","acq":"2020.08.03","status":"2021.5","ws":"2021.3OL","clear":"○","email":"t.kono715@icloud.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"2024年末失効","historyStr":""},{"id":"0300022","name":"寺口 真史","kana":"テラグチ　シンジ","acq":"","status":"ー","ws":"","clear":"×","email":"shinji.teraguchi@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300114","name":"朝長　綾音","kana":"トモナガ　アヤネ","acq":"2023.01.03","status":"","ws":"","clear":"","email":"happypurple_shining@hotmail.co.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"2024年末失効","historyStr":""},{"id":"0300078","name":"中島　美由紀","kana":"ナカジマ　ミユキ","acq":"2021.05","status":"","ws":"2021.12OL","clear":"○","email":"miyumin555@gmail.com","fee":5500,"paid":"2026-04-10","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300151","name":"中谷 沙季","kana":"ナカタニ　サキ","acq":"2025.11.02","status":"","ws":"","clear":"","email":"saki_0718@outlook.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300145","name":"中村　瑠実","kana":"ナカムラ　ルミ","acq":"2025.05","status":"","ws":"","clear":"","email":"rumi.nakamura12@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300054","name":"中山　なつみ","kana":"ナカヤマ　ナツミ","acq":"2020.08.04","status":"2021.4","ws":"2021.3OL","clear":"○","email":"ren.yu.natsu910421@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"2024年末失効","historyStr":""},{"id":"0300115","name":"中山　恵美","kana":"ナカヤマ　メグミ","acq":"2023.04","status":"","ws":"","clear":"","email":"me1215.ka0415@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300124","name":"南城　加奈子","kana":"ナンジョウ　カナコ","acq":"2023.08","status":"","ws":"","clear":"","email":"n.hikaru7reon14futo4@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300046","name":"新田　菜々子","kana":"ニッタ　ナナコ","acq":"2020.03","status":"2021.4","ws":"2021.6OL","clear":"○","email":"smily-seven@softbank.ne.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"継続希望・WS2回受講必須","historyStr":""},{"id":"0300103","name":"二宮　紀子","kana":"ニノミヤ　ノリコ","acq":"2022.06","status":"","ws":"","clear":"","email":"norikoninomiya@outlook.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300000","name":"仁平　咲貴","kana":"ニヘイ　サキ","acq":"2018.1","status":"2021.4","ws":"2021.5OL","clear":"○","email":"kumasaki.62@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300028","name":"萩尾　智弘","kana":"ハギオ　トモヒロ","acq":"2019.3","status":"2021.4","ws":"2021.6OL","clear":"○","email":"fo55cus.climb@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":"2019.10; 2021.07"},{"id":"0300149","name":"畑田　奈津美","kana":"ハタダ　ナツミ","acq":"2025.10","status":"","ws":"","clear":"","email":"uin.uju.niu@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":"2025.11"},{"id":"0300133","name":"濱島　裕美","kana":"ハマシマ　ヒロミ","acq":"2024.01.02","status":"","ws":"","clear":"","email":"j.lo2630404@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"2024年末失効","historyStr":""},{"id":"0300092","name":"馬場　三奈","kana":"ババ　ミナ","acq":"2021.10.02","status":"","ws":"","clear":"","email":"anim.bb@docomo.ne.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"2024年末失効","historyStr":""},{"id":"0300017","name":"柊 　結子","kana":"ヒイラギ　ユウコ","acq":"2018.11","status":"2020.5","ws":"","clear":"","email":"un717@hotmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300025","name":"東 佳子","kana":"ヒガシ　ヨシコ","acq":"2019.3","status":"","ws":"","clear":"","email":"bushclover1024@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300136","name":"菱木　朋美","kana":"ヒシキ　トモミ","acq":"2024.04","status":"","ws":"","clear":"","email":"tomowork25@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"2024年末失効","historyStr":""},{"id":"0300048","name":"日比志保","kana":"ヒビシホ","acq":"2020.03","status":"2021.4","ws":"2021.6OL","clear":"○","email":"hoshimitohi-sh@docomo.ne.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"2024年末失効","historyStr":"2021.09"},{"id":"0300084","name":"氷室　果鈴","kana":"ヒムロ　カリン","acq":"2021.08.02","status":"","ws":"","clear":"","email":"karin0222.ppp@softbank.ne.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"継続希望・WS2回受講必須","historyStr":""},{"id":"0300072","name":"福田　葉月","kana":"フクダ　ハヅキ","acq":"2020.11","status":"ー","ws":"ー","clear":"","email":"h.fukuda@ace-axiscore.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300130","name":"福原　舞華","kana":"フクハラ　マイカ","acq":"2023.11","status":"","ws":"","clear":"","email":"maika0331@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":"2025.10"},{"id":"0300110","name":"古川　ちさと","kana":"フルカワ　チサト","acq":"2022.10","status":"","ws":"","clear":"","email":"chisatofull@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"継続希望・WS2回受講必須","historyStr":"2022.11"},{"id":"0300060","name":"古林 歩","kana":"フルバヤシ　アユミ","acq":"2020.09.04","status":"2021.4","ws":"2021.12OL","clear":"○","email":"ayu.furubayashi@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"継続希望・WS2回受講必須","historyStr":""},{"id":"0300031","name":"古屋 　光恵","kana":"フルヤ　ミツエ","acq":"2019.4","status":"2021.4","ws":"2021.8（静岡）","clear":"○","email":"mitumama0731@i.softbank.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300093","name":"本間　樹理","kana":"ホンマ　ジュリ","acq":"2021.10","status":"","ws":"","clear":"","email":"hazuki1300@icloud.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"2024年末失効","historyStr":""},{"id":"0300034","name":"毎熊　真理子","kana":"マイクマ　マリコ","acq":"2019.5","status":"2021.5","ws":"2021.3OL","clear":"○","email":"marikom23jul@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"2024年末失効","historyStr":"2021.07"},{"id":"0300076","name":"前田　悠佑","kana":"マエダ　ユウスケ","acq":"2021.03","status":"","ws":"","clear":"","email":"maechanmf10@yahoo.co.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"継続希望・WS2回受講必須","historyStr":""},{"id":"0300081","name":"牧田　莉奈","kana":"マキタ　リナ","acq":"2021.05.04","status":"","ws":"","clear":"","email":"rinney.oga34@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"2024年末失効","historyStr":""},{"id":"0300073","name":"松尾　亜美","kana":"マツオ　アミ","acq":"2020.11.02","status":"ー","ws":"ー","clear":"","email":"a.matsuo@ace-axiscore.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300143","name":"松岡　真理","kana":"マツオカ　マリ","acq":"2025.03","status":"","ws":"","clear":"","email":"bailar.bonita@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300062","name":"松﨑 美加","kana":"マツザキ　ミカ","acq":"2020.09.06","status":"2021.5","ws":"","clear":"","email":"mimumimu1223@icloud.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300096","name":"松田　はるな","kana":"マツダ　ハルナ","acq":"2021.11","status":"","ws":"","clear":"","email":"pib8nlu8ke8@i.softbank.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300018","name":"松原 朱子","kana":"マツバラ　アカネ","acq":"2019.12","status":"2020.5","ws":"","clear":"","email":"akane_99@icloud.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300039","name":"水谷　祐美子","kana":"ミズタニ　ユミコ","acq":"2019.09","status":"2021.5","ws":"2021.12OL","clear":"○","email":"o9088669957@icloud.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300074","name":"美山（姜）　羽衣","kana":"ミヤマ（カン）　ウイ","acq":"2021.01","status":"","ws":"","clear":"","email":"wooeuidayo730@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":"2021.08; 2021.06"},{"id":"0300144","name":"村上　桃子","kana":"ムラカミ　モモコ","acq":"2025.03.02","status":"","ws":"","clear":"","email":"momoko.mochizuki10@gmail.com","fee":5500,"paid":"2026-04-12","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300112","name":"村上　友紀","kana":"ムラカミ　ユキ","acq":"2023.01","status":"","ws":"","clear":"","email":"merya0326@yahoo.co.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"2024年末失効","historyStr":""},{"id":"0300126","name":"森 恵子","kana":"モリ　ケイコ","acq":"2023.10","status":"","ws":"","clear":"","email":"megumi_kroom@yahoo.co.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":"2024.01; 2024.04"},{"id":"0300135","name":"森山　香織","kana":"モリヤマ　カオリ","acq":"2034.03","status":"","ws":"","clear":"","email":"kskk12345@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"継続希望・WS2回受講必須","historyStr":""},{"id":"0300097","name":"八百井　菜穂","kana":"ヤオイ　ナホ","acq":"2021.11.02","status":"","ws":"","clear":"","email":"cantabile.n_n.1116-na4@docomo.ne.jp","fee":5500,"paid":"2026-04-13","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300147","name":"矢島　梓","kana":"ヤジマ　アズサ","acq":"2025.06","status":"","ws":"","clear":"","email":"kazbyazu1230@gmail.com","fee":5500,"paid":"2026-04-15","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300038","name":"山田　智恵","kana":"ヤマダ　チエ","acq":"2019.11","status":"2021.5","ws":"2021.6OL","clear":"○","email":"ckloveco@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"継続希望・WS2回受講必須","historyStr":""},{"id":"0300120","name":"山田　真理絵","kana":"ヤマダ　マリエ","acq":"2023.07","status":"","ws":"","clear":"","email":"love.t.jyj@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"2024年末失効","historyStr":"2024.02"},{"id":"0300141","name":"山田裕子","kana":"ヤマダ　ユウコ","acq":"2025.01","status":"","ws":"","clear":"","email":"lepop2.yy@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300007","name":"山本　知草","kana":"ヤマモト　チグサ","acq":"2018.3","status":"2020.5","ws":"","clear":"","email":"chigusa00030003@yahoo.co.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300001","name":"横沢　祥子","kana":"ヨコザワ　ショウコ","acq":"2018.3","status":"","ws":"","clear":"","email":"shokoyoko@i.softbank.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300117","name":"吉川　ひとみ","kana":"ヨシカワ　ヒトミ","acq":"2023.05","status":"","ws":"","clear":"","email":"khy.y1973@gmail.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"継続希望・WS2回受講必須","historyStr":""},{"id":"0300005","name":"吉安　牧紀","kana":"ヨシヤス　マキ","acq":"2018.3","status":"2021.4","ws":"2021.12OL","clear":"○","email":"maki-yosiyasu@qreazy.com","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"継続希望・WS2回受講必須","historyStr":""},{"id":"0300119","name":"米山　寛子","kana":"ヨネヤマ　ヒロコ","acq":"2023.06.02","status":"","ws":"","clear":"","email":"tacosuha-korirahi78@docomo.ne.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"2024年末失効","historyStr":""},{"id":"0300121","name":"李　瑞穂","kana":"リ　ミズホ","acq":"2023.07.02","status":"","ws":"","clear":"","email":"m.chisun-75@docomo.ne.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"2024年末失効","historyStr":""},{"id":"0300020","name":"ロ リファ","kana":"ロ　リファ","acq":"2019.6","status":"2020.5","ws":"","clear":"","email":"aloha.manao-rf@docomo.ne.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300059","name":"渡邊 翔太","kana":"ワタナベ　ショウタ","acq":"2020.09.03","status":"2021.5","ws":"2022.03","clear":"○","email":"luce-della-verita@docomo.ne.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300036","name":"渡辺　知佳","kana":"ワタナベ　チカ","acq":"2019.7","status":"2021.4","ws":"2021.6OL","clear":"○","email":"chika090306@yahoo.co.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"2024年末失効","historyStr":""},{"id":"0300116","name":"渡邊　希望","kana":"ワタナベ　ノゾミ","acq":"2023.05","status":"","ws":"","clear":"","email":"ny19850602@yahoo.co.jp","fee":5500,"paid":"","memo":"","ws1":"","ws2":"","note":"","historyStr":""},{"id":"0300044","name":"和田　彩華","kana":"ワダ　ツヤカ","acq":"2019.10","status":"ー","ws":"ー","clear":"ー","email":"Parafuse.0104577@gmail.com","fee":5500,"paid":"2026-04-10","memo":"","ws1":"","ws2":"","note":"継続希望・WS2回受講必須","historyStr":""}];
+const PASSWORD = "psga";
+const STORAGE_KEY = "psga_ledger_2026_v1";
+const NEW_KEY = "psga_ledger_2026_new_v1";
+
+let records = [];
+let sortKey = "kana";
+let sortDir = 1;
+let filters = { kana: "", status: "", q: "" };
+
+/* ======= LOGIN ======= */
+function doLogin(ev){
+  ev.preventDefault();
+  const pw = document.getElementById("pwInput").value;
+  if(pw === PASSWORD){
+    sessionStorage.setItem("psga_auth", "1");
+    showApp();
+  } else {
+    document.getElementById("loginErr").textContent = "パスワードが違います";
+  }
+}
+function logout(){
+  sessionStorage.removeItem("psga_auth");
+  location.reload();
+}
+function showApp(){
+  document.getElementById("login").style.display = "none";
+  document.getElementById("app").style.display = "block";
+  init();
+}
+
+/* ======= HIRA→KATA ======= */
+function hiraToKata(s){
+  if(!s) return "";
+  let out = "";
+  for(const ch of String(s)){
+    const code = ch.charCodeAt(0);
+    if(code >= 0x3041 && code <= 0x3096) out += String.fromCharCode(code + 0x60);
+    else out += ch;
+  }
+  return out.replace(/[　\s]+/g, "　").replace(/^[　\s]+|[　\s]+$/g, "");
+}
+
+/* ======= STATE ======= */
+const MUTABLE_FIELDS = ["name","kana","acq","email","fee","paid","memo","note","renewStatus"];
+
+const STATUS_META = {
+  "unchecked":  { label: "未確認",   badge: "neutral", rowCls: "" },
+  "continuing": { label: "継続予定", badge: "warn",    rowCls: "" },
+  "completed":  { label: "更新完了", badge: "ok",      rowCls: "paid" },
+  "declined":   { label: "辞退",     badge: "danger",  rowCls: "expired" }
+};
+
+// Infer initial status for records lacking an explicit renewStatus field
+function inferStatus(r){
+  if(r.renewStatus) return r.renewStatus;
+  if(r.paid) return "completed";
+  if(r.note && r.note.includes("継続希望")) return "continuing";
+  return "unchecked";
+}
+
+function isEdited(rec, init){
+  if(!init) return false;
+  const initStatus = inferStatus(init);
+  return MUTABLE_FIELDS.some(k => {
+    if(k === "renewStatus") return (rec.renewStatus ?? "unchecked") !== initStatus;
+    return (rec[k] ?? "") !== (init[k] ?? "");
+  });
+}
+
+function loadState(){
+  // Base: initial + mutations on initial (full field overwrite)
+  const saved = localStorage.getItem(STORAGE_KEY);
+  const initMap = {};
+  INITIAL_DATA.forEach(r => initMap[r.id] = r);
+
+  let base;
+  if(saved){
+    try{
+      const parsed = JSON.parse(saved);
+      if(Array.isArray(parsed)){
+        const savedMap = {};
+        parsed.forEach(r => savedMap[r.id] = r);
+        base = INITIAL_DATA.map(r => {
+          const s = savedMap[r.id];
+          if(s){
+            const merged = { ...r, ...s };
+            merged.renewStatus = merged.renewStatus || inferStatus(merged);
+            merged._edited = isEdited(merged, r);
+            return merged;
+          }
+          const fresh = { ...r };
+          fresh.renewStatus = inferStatus(fresh);
+          return fresh;
+        });
+      }
+    }catch(e){ console.warn("Load failed:", e); }
+  }
+  if(!base){
+    base = INITIAL_DATA.map(r => {
+      const fresh = { ...r };
+      fresh.renewStatus = inferStatus(fresh);
+      return fresh;
+    });
+  }
+
+  // Append newly-added records
+  const newSaved = localStorage.getItem(NEW_KEY);
+  if(newSaved){
+    try{
+      const arr = JSON.parse(newSaved);
+      if(Array.isArray(arr)){
+        arr.forEach(r => {
+          const n = { ...r, isNew: true };
+          n.renewStatus = n.renewStatus || "unchecked";
+          base.push(n);
+        });
+      }
+    }catch(e){ console.warn("Load new failed:", e); }
+  }
+  records = base;
+}
+
+function saveState(){
+  const initMap = {};
+  INITIAL_DATA.forEach(r => initMap[r.id] = r);
+  // Save only original records that differ from INITIAL
+  const modified = [];
+  records.filter(r => !r.isNew).forEach(r => {
+    const init = initMap[r.id];
+    if(!init) return;
+    if(isEdited(r, init)){
+      const out = { id: r.id };
+      MUTABLE_FIELDS.forEach(k => { out[k] = r[k]; });
+      modified.push(out);
+      r._edited = true;
+    } else {
+      r._edited = false;
+    }
+  });
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(modified));
+
+  // Save new records (full)
+  const newOnes = records.filter(r => r.isNew).map(r => {
+    const { isNew, _edited, ...rest } = r;
+    return rest;
+  });
+  localStorage.setItem(NEW_KEY, JSON.stringify(newOnes));
+
+  const el = document.getElementById("saveStatus");
+  el.classList.add("show");
+  clearTimeout(saveState._t);
+  saveState._t = setTimeout(() => el.classList.remove("show"), 1400);
+}
+function toast(msg){
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => t.classList.remove("show"), 2200);
+}
+
+/* ======= RENDER ======= */
+const KANA_HEADS = ["全", "ア","カ","サ","タ","ナ","ハ","マ","ヤ","ラ","ワ"];
+const KANA_GROUPS = {
+  "ア":["ア","イ","ウ","エ","オ"],
+  "カ":["カ","キ","ク","ケ","コ","ガ","ギ","グ","ゲ","ゴ"],
+  "サ":["サ","シ","ス","セ","ソ","ザ","ジ","ズ","ゼ","ゾ"],
+  "タ":["タ","チ","ツ","テ","ト","ダ","ヂ","ヅ","デ","ド"],
+  "ナ":["ナ","ニ","ヌ","ネ","ノ"],
+  "ハ":["ハ","ヒ","フ","ヘ","ホ","バ","ビ","ブ","ベ","ボ","パ","ピ","プ","ペ","ポ"],
+  "マ":["マ","ミ","ム","メ","モ"],
+  "ヤ":["ヤ","ユ","ヨ"],
+  "ラ":["ラ","リ","ル","レ","ロ"],
+  "ワ":["ワ","ヲ","ン"]
+};
+
+function renderKanaBar(){
+  const bar = document.getElementById("kanaBar");
+  bar.innerHTML = "";
+  KANA_HEADS.forEach(k => {
+    const b = document.createElement("button");
+    b.textContent = k;
+    const key = (k === "全") ? "" : k;
+    if(filters.kana === key) b.classList.add("active");
+    b.onclick = () => { filters.kana = key; render(); };
+    bar.appendChild(b);
+  });
+}
+
+function renderStats(){
+  const total = records.length;
+  const unchecked = records.filter(r => (r.renewStatus || "unchecked") === "unchecked").length;
+  const continuing = records.filter(r => r.renewStatus === "continuing").length;
+  const completed = records.filter(r => r.renewStatus === "completed").length;
+  const declined = records.filter(r => r.renewStatus === "declined").length;
+  const paidYen = records.filter(r => r.paid).reduce((sum, r) => sum + (r.fee || 0), 0);
+
+  const stats = [
+    { label: "登録者数", value: total, unit: "名", filter: null },
+    { label: "未確認", value: unchecked, unit: "名", filter: "unchecked" },
+    { label: "継続予定", value: continuing, unit: "名", filter: "continuing" },
+    { label: "更新完了", value: completed, unit: "名", filter: "completed" },
+    { label: "辞退", value: declined, unit: "名", filter: "declined" },
+    { label: "入金合計", value: "¥" + paidYen.toLocaleString(), unit: "", filter: null },
+  ];
+  const wrap = document.getElementById("stats");
+  wrap.innerHTML = "";
+  stats.forEach(s => {
+    const d = document.createElement("div");
+    d.className = "stat" + (s.filter && filters.status === s.filter ? " active" : "");
+    if(s.filter){
+      d.onclick = () => {
+        filters.status = (filters.status === s.filter) ? "" : s.filter;
+        document.getElementById("statusFilter").value = filters.status;
+        render();
+      };
+    }
+    d.innerHTML = `<div class="stat-label">${s.label}</div>
+      <div class="stat-value">${s.value}${s.unit ? '<span class="unit">'+s.unit+'</span>' : ''}</div>`;
+    wrap.appendChild(d);
+  });
+}
+
+function matchesFilter(r){
+  if(filters.q){
+    const q = filters.q.toLowerCase();
+    const hay = (r.name + " " + r.kana + " " + r.email + " " + r.id).toLowerCase();
+    if(!hay.includes(q)) return false;
+  }
+  if(filters.kana){
+    const group = KANA_GROUPS[filters.kana] || [];
+    const first = (r.kana || "").charAt(0);
+    if(!group.includes(first)) return false;
+  }
+  if(filters.status){
+    const s = r.renewStatus || "unchecked";
+    if(filters.status === "not_renewed"){
+      if(s !== "unchecked" && s !== "continuing") return false;
+    } else if(filters.status !== s){
+      return false;
+    }
+  }
+  return true;
+}
+
+function sortRecords(arr){
+  const k = sortKey, d = sortDir;
+  return [...arr].sort((a,b) => {
+    const va = (a[k] || "").toString();
+    const vb = (b[k] || "").toString();
+    if(k === "fee") return (a.fee - b.fee) * d;
+    return va.localeCompare(vb, "ja") * d;
+  });
+}
+
+function renderTable(){
+  const tbody = document.getElementById("tbody");
+  const filtered = sortRecords(records.filter(matchesFilter));
+
+  document.getElementById("countInfo").textContent = `${filtered.length} / ${records.length} 名`;
+
+  if(filtered.length === 0){
+    tbody.innerHTML = `<tr><td colspan="9" class="empty">該当するレコードがありません</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = filtered.map(r => {
+    const status = r.renewStatus || "unchecked";
+    const meta = STATUS_META[status] || STATUS_META.unchecked;
+    const cls = meta.rowCls;
+
+    const statusBadge = `<span class="badge status ${meta.badge}">${meta.label}</span>`;
+    let extraBadge = "";
+    if(r.paid && status !== "completed") extraBadge += ' <span class="badge ok">入金</span>';
+
+    const noteEsc = escapeHtml(r.note || "");
+
+    return `<tr class="${cls}" data-id="${r.id}">
+      <td class="id-cell">${r.id}${r.isNew ? '<span class="new-mark">NEW</span>' : ''}${r._edited ? '<span class="edited-mark" title="編集済み"></span>' : ''}</td>
+      <td class="kana-cell">${escapeHtml(r.kana)}</td>
+      <td class="name-cell">${escapeHtml(r.name)}<span class="row-actions">
+        <button class="row-btn" onclick="openEditModal('${r.id}')" title="詳細確認 / 編集"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+        ${r.isNew ? `<button class="row-btn danger" onclick="deleteRecord('${r.id}')" title="削除"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg></button>` : ''}
+      </span></td>
+      <td class="date-cell">${escapeHtml(r.acq)}</td>
+      <td>${statusBadge}${extraBadge}</td>
+      <td class="email-cell"><input type="email" class="email-input" value="${escapeHtml(r.email)}" title="${escapeHtml(r.email)}" onchange="updateEmail('${r.id}', this.value)"></td>
+      <td class="fee-cell">¥${r.fee.toLocaleString()}</td>
+      <td><input type="date" class="paid-input" value="${r.paid || ''}" onchange="updatePaid('${r.id}', this.value)"></td>
+      <td><input type="text" class="memo-input" value="${noteEsc}" placeholder="メモ" onchange="updateNote('${r.id}', this.value)"></td>
+    </tr>`;
+  }).join("");
+}
+
+function escapeHtml(s){
+  if(!s) return "";
+  return String(s)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function render(){
+  renderKanaBar();
+  renderStats();
+  renderTable();
+}
+
+/* ======= ACTIONS ======= */
+function syncEditMark(tr, r){
+  if(!tr || r.isNew) return;
+  const idCell = tr.children[0];
+  const existingMark = idCell.querySelector(".edited-mark");
+  if(r._edited && !existingMark){
+    const s = document.createElement("span");
+    s.className = "edited-mark";
+    s.title = "編集済み";
+    idCell.appendChild(s);
+  } else if(!r._edited && existingMark){
+    existingMark.remove();
+  }
+}
+
+function updatePaid(id, val){
+  const r = records.find(x => x.id === id);
+  if(!r) return;
+  r.paid = val;
+  // Auto-advance status: entering a paid date implies 更新完了 (unless explicitly declined)
+  if(val && r.renewStatus !== "declined"){
+    r.renewStatus = "completed";
+  } else if(!val && r.renewStatus === "completed"){
+    // Clearing paid reverts completed → continuing (requires re-confirmation)
+    r.renewStatus = "continuing";
+  }
+  saveState();
+  renderStats();
+  // Full row re-render for this row (status/class changes)
+  const tr = document.querySelector(`tr[data-id="${id}"]`);
+  if(tr){
+    const meta = STATUS_META[r.renewStatus] || STATUS_META.unchecked;
+    tr.className = meta.rowCls + (r.isNew ? "" : "");
+    const badgeCell = tr.children[4];
+    let html = `<span class="badge status ${meta.badge}">${meta.label}</span>`;
+    if(val && r.renewStatus !== "completed") html += ' <span class="badge ok">入金</span>';
+    badgeCell.innerHTML = html;
+    syncEditMark(tr, r);
+  }
+}
+function updateNote(id, val){
+  const r = records.find(x => x.id === id);
+  if(!r) return;
+  r.note = val;
+  saveState();
+  const tr = document.querySelector(`tr[data-id="${id}"]`);
+  if(tr) syncEditMark(tr, r);
+}
+function updateEmail(id, val){
+  const r = records.find(x => x.id === id);
+  if(!r) return;
+  r.email = val.trim();
+  saveState();
+  const tr = document.querySelector(`tr[data-id="${id}"]`);
+  if(tr){
+    // Update the title tooltip on the cell
+    const td = tr.children[5];
+    if(td) td.title = r.email;
+    syncEditMark(tr, r);
+  }
+}
+
+/* ======= SORT ======= */
+document.addEventListener("click", e => {
+  const th = e.target.closest("th[data-sort]");
+  if(!th) return;
+  const key = th.dataset.sort;
+  if(sortKey === key) sortDir = -sortDir;
+  else { sortKey = key; sortDir = 1; }
+  document.querySelectorAll("th[data-sort]").forEach(h => {
+    h.classList.toggle("sorted", h.dataset.sort === sortKey);
+    const ind = h.querySelector(".sort-ind");
+    if(ind) ind.textContent = (h.dataset.sort === sortKey) ? (sortDir === 1 ? "▲" : "▼") : "▾";
+  });
+  renderTable();
+});
+
+/* ======= EXPORT ======= */
+function filteredRecords(){
+  return sortRecords(records.filter(matchesFilter));
+}
+function exportCSV(){
+  const headers = ["ID","カナ氏名","氏名","取得年月日","更新ステータス","メール","更新料","入金日","特記事項/備考","更新履歴"];
+  const rows = filteredRecords().map(r => {
+    const statusLabel = (STATUS_META[r.renewStatus || "unchecked"] || STATUS_META.unchecked).label;
+    return [r.id, r.kana, r.name, r.acq, statusLabel, r.email, r.fee, r.paid, r.note, r.historyStr];
+  });
+  const csv = [headers, ...rows].map(row => row.map(v => {
+    const s = (v == null ? "" : String(v));
+    return /[",\n]/.test(s) ? `"${s.replace(/"/g,'""')}"` : s;
+  }).join(",")).join("\n");
+  const blob = new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `PSGA資格更新_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  toast("CSV をダウンロードしました");
+}
+
+async function exportExcel(){
+  const wb = new ExcelJS.Workbook();
+  const ws = wb.addWorksheet("PSGA管理台帳");
+
+  ws.columns = [
+    { header: "ID", key: "id", width: 10 },
+    { header: "カナ氏名", key: "kana", width: 22 },
+    { header: "氏名", key: "name", width: 18 },
+    { header: "取得年月日", key: "acq", width: 14 },
+    { header: "更新ステータス", key: "statusLabel", width: 14 },
+    { header: "メールアドレス", key: "email", width: 32 },
+    { header: "更新料", key: "fee", width: 10 },
+    { header: "入金日", key: "paid", width: 14 },
+    { header: "特記事項/備考", key: "note", width: 22 },
+    { header: "更新履歴", key: "historyStr", width: 26 },
+  ];
+
+  ws.getRow(1).font = { bold: true, color: { argb: "FFFFFFFF" }, name: "Yu Gothic" };
+  ws.getRow(1).fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF1F4E78" } };
+  ws.getRow(1).alignment = { horizontal: "center", vertical: "middle" };
+  ws.getRow(1).height = 24;
+
+  const FILL_BY_STATUS = {
+    "completed": "FFE2F0D9",  // green tint
+    "continuing": "FFFFF2CC", // yellow tint
+    "declined": "FFFCE4D6",   // red tint
+    "unchecked": null
+  };
+
+  filteredRecords().forEach(r => {
+    const status = r.renewStatus || "unchecked";
+    const statusLabel = (STATUS_META[status] || STATUS_META.unchecked).label;
+    const row = ws.addRow({ ...r, statusLabel });
+    row.font = { name: "Yu Gothic", size: 10 };
+    const fillColor = FILL_BY_STATUS[status];
+    if(fillColor){
+      row.fill = { type: "pattern", pattern: "solid", fgColor: { argb: fillColor } };
+    }
+    row.getCell("fee").numFmt = "¥#,##0";
+  });
+
+  ws.autoFilter = { from: "A1", to: "J1" };
+  ws.views = [{ state: "frozen", ySplit: 1 }];
+
+  const buf = await wb.xlsx.writeBuffer();
+  const blob = new Blob([buf], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `PSGA資格更新_${new Date().toISOString().slice(0,10)}.xlsx`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  toast("Excel をダウンロードしました");
+}
+
+/* ======= ISSUES ======= */
+const DATA_ISSUES = [
+  {
+    tag: "重複の疑い",
+    tagType: "warn",
+    html: '<strong>0300132 小野　裕美</strong> と <strong>0300148 小野　裕美</strong>：同一氏名・同一メール <code>piropirori.mmm@gmail.com</code>。重複登録の可能性。',
+    jumpIds: ["0300132", "0300148"],
+    searchTerm: "小野"
+  },
+  {
+    tag: "改姓の可能性",
+    tagType: "info",
+    html: '<strong>0300026 鈴木 伶菜</strong> と <strong>0300033 北山（鈴木）伶菜</strong>：同一メール <code>sr.mty27@gmail.com</code>。改姓による重複登録の可能性。',
+    jumpIds: ["0300026", "0300033"],
+    searchTerm: "sr.mty27"
+  },
+  {
+    tag: "日付の疑義",
+    tagType: "warn",
+    html: '<strong>0300135 森山　香織</strong>：取得年月日が <code>2034.03.01</code> となっています（2024年の誤入力の可能性）。',
+    jumpIds: ["0300135"],
+    searchTerm: "森山"
+  }
+];
+
+function renderIssues(){
+  const body = document.getElementById("issuesBody");
+  body.innerHTML = DATA_ISSUES.map((issue, idx) => `
+    <div class="issue-item">
+      <div class="issue-tag ${issue.tagType === 'info' ? 'info' : ''}">${issue.tag}</div>
+      <div class="issue-text">${issue.html}</div>
+      <button class="issue-action" onclick="jumpToIssue(${idx})">該当者を表示 →</button>
+    </div>
+  `).join("");
+  document.getElementById("issuesCount").textContent = DATA_ISSUES.length;
+}
+
+function toggleIssues(){
+  const panel = document.getElementById("issuesPanel");
+  const btn = document.getElementById("issuesBtn");
+  const isOpen = panel.classList.toggle("open");
+  btn.classList.toggle("dismissed", !isOpen);
+  if(isOpen) sessionStorage.setItem("psga_issues_seen", "1");
+}
+
+function jumpToIssue(idx){
+  const issue = DATA_ISSUES[idx];
+  // Clear filters, set search to matching term
+  filters.kana = "";
+  filters.status = "";
+  filters.q = issue.searchTerm;
+  document.getElementById("search").value = issue.searchTerm;
+  document.getElementById("statusFilter").value = "";
+  render();
+  // Scroll to table
+  document.querySelector(".table-wrap").scrollIntoView({ behavior: "smooth", block: "start" });
+  // Briefly flash the matching rows
+  setTimeout(() => {
+    issue.jumpIds.forEach(id => {
+      const tr = document.querySelector(`tr[data-id="${id}"]`);
+      if(tr){
+        tr.style.transition = "background .3s";
+        tr.style.background = "rgba(77,208,225,.18)";
+        setTimeout(() => { tr.style.background = ""; }, 1800);
+      }
+    });
+  }, 250);
+}
+
+/* ======= ADD / EDIT RECORD ======= */
+let currentEditId = null;  // null = add mode, id string = edit mode
+
+function nextId(){
+  let maxN = 0;
+  records.forEach(r => {
+    const m = String(r.id || "").match(/^0?3?0?0?(\d+)$/);
+    if(m){
+      const n = parseInt(m[1], 10);
+      if(n > maxN) maxN = n;
+    }
+  });
+  const next = maxN + 1;
+  return "03" + String(next).padStart(5, "0");
+}
+
+function setModalMode(mode, rec){
+  const titleText = document.getElementById("modalTitleText");
+  const subText = document.getElementById("modalSubText");
+  const submitBtn = document.querySelector("#addForm button[type=submit]");
+  if(mode === "edit"){
+    titleText.textContent = "登録情報の修正";
+    subText.textContent = rec && rec.isNew ? "新規追加した登録者の編集" : "既存登録者の編集";
+    submitBtn.textContent = "保存する";
+  } else {
+    titleText.textContent = "新規登録";
+    subText.textContent = "新しい資格取得者を追加";
+    submitBtn.textContent = "登録する";
+  }
+}
+
+function openAddModal(){
+  currentEditId = null;
+  document.getElementById("f_id").value = nextId();
+  document.getElementById("f_acq").value = "";
+  document.getElementById("f_name").value = "";
+  document.getElementById("f_kana").value = "";
+  document.getElementById("f_email").value = "";
+  document.getElementById("f_fee").value = "5500";
+  document.getElementById("f_paid").value = "";
+  document.getElementById("f_note").value = "";
+  document.getElementById("f_status").value = "unchecked";
+  setModalMode("add");
+  document.getElementById("addModal").classList.add("open");
+  setTimeout(() => document.getElementById("f_name").focus(), 100);
+}
+
+function openEditModal(id){
+  const r = records.find(x => x.id === id);
+  if(!r) return;
+  currentEditId = id;
+  document.getElementById("f_id").value = r.id;
+  document.getElementById("f_acq").value = r.acq || "";
+  document.getElementById("f_name").value = r.name || "";
+  document.getElementById("f_kana").value = r.kana || "";
+  document.getElementById("f_email").value = r.email || "";
+  document.getElementById("f_fee").value = r.fee || 5500;
+  document.getElementById("f_paid").value = r.paid || "";
+  document.getElementById("f_note").value = r.note || "";
+  document.getElementById("f_status").value = r.renewStatus || "unchecked";
+  setModalMode("edit", r);
+  document.getElementById("addModal").classList.add("open");
+  setTimeout(() => document.getElementById("f_name").focus(), 100);
+}
+
+function closeAddModal(){
+  document.getElementById("addModal").classList.remove("open");
+  currentEditId = null;
+}
+document.addEventListener("click", e => {
+  if(e.target.id === "addModal") closeAddModal();
+});
+document.addEventListener("keydown", e => {
+  if(e.key === "Escape" && document.getElementById("addModal").classList.contains("open")){
+    closeAddModal();
+  }
+});
+
+function submitAddForm(ev){
+  ev.preventDefault();
+  const formData = {
+    name: document.getElementById("f_name").value.trim(),
+    kana: hiraToKata(document.getElementById("f_kana").value.trim()),
+    acq: document.getElementById("f_acq").value.trim(),
+    email: document.getElementById("f_email").value.trim(),
+    fee: parseInt(document.getElementById("f_fee").value, 10) || 5500,
+    paid: document.getElementById("f_paid").value,
+    note: document.getElementById("f_note").value.trim(),
+    renewStatus: document.getElementById("f_status").value || "unchecked",
+  };
+
+  if(currentEditId){
+    const r = records.find(x => x.id === currentEditId);
+    if(!r){ closeAddModal(); return; }
+    Object.assign(r, formData);
+    saveState();
+    closeAddModal();
+    render();
+    toast(`修正しました：${r.name}`);
+    setTimeout(() => flashRow(r.id, "accent"), 200);
+  } else {
+    const newId = document.getElementById("f_id").value.trim();
+    if(records.some(x => x.id === newId)){
+      alert("IDが重複しています。ページを再読み込みしてください。");
+      return;
+    }
+    const newRec = {
+      id: newId,
+      ...formData,
+      status: "", ws: "", clear: "", memo: "", ws1: "", ws2: "",
+      historyStr: "", isNew: true
+    };
+    records.push(newRec);
+    saveState();
+    closeAddModal();
+    render();
+    toast(`登録しました：${newRec.name}`);
+    setTimeout(() => flashRow(newRec.id, "gold"), 200);
+  }
+}
+
+function flashRow(id, color){
+  const tr = document.querySelector(`tr[data-id="${id}"]`);
+  if(!tr) return;
+  tr.scrollIntoView({ behavior: "smooth", block: "center" });
+  tr.style.transition = "background .3s";
+  tr.style.background = color === "gold" ? "rgba(212,165,116,.2)" : "rgba(77,208,225,.2)";
+  setTimeout(() => { tr.style.background = ""; }, 1800);
+}
+
+function deleteRecord(id){
+  const r = records.find(x => x.id === id);
+  if(!r) return;
+  if(!r.isNew){
+    alert("原本データは削除できません。");
+    return;
+  }
+  if(!confirm(`${r.name} さんを削除しますか？\n（新規追加された方のみ削除可能）`)) return;
+  records = records.filter(x => x.id !== id);
+  saveState();
+  render();
+  toast(`削除しました：${r.name}`);
+}
+
+/* ======= 年度リセット ======= */
+function openResetModal(){
+  const currentCompleted = records.filter(r => r.renewStatus === "completed").length;
+  const currentPaid = records.filter(r => r.paid).length;
+  const msg =
+    `【年度リセット】\n\n` +
+    `全員の更新ステータスを「未確認」に戻し、入金日をクリアします。\n` +
+    `名前・カナ・メール・取得年月日・備考はそのまま残ります。\n\n` +
+    `● 現在の状態：\n` +
+    `　・更新完了 ${currentCompleted} 名\n` +
+    `　・入金日あり ${currentPaid} 名\n\n` +
+    `⚠ この操作は取り消せません。\n` +
+    `リセット前に Excel エクスポートで控えを保存することを推奨します。\n\n` +
+    `実行してよろしいですか？`;
+  if(!confirm(msg)) return;
+  // Second confirmation
+  const confirmText = prompt('最終確認：実行する場合は「リセット」と入力してください', "");
+  if(confirmText !== "リセット"){
+    toast("キャンセルしました");
+    return;
+  }
+  records.forEach(r => {
+    r.paid = "";
+    r.renewStatus = "unchecked";
+  });
+  saveState();
+  render();
+  toast(`${records.length} 名分のステータスをリセットしました`);
+}
+
+/* ======= INIT ======= */
+function init(){
+  loadState();
+  render();
+  renderIssues();
+  // Auto-open issues panel on first login of the session
+  if(!sessionStorage.getItem("psga_issues_seen")){
+    document.getElementById("issuesPanel").classList.add("open");
+  } else {
+    document.getElementById("issuesBtn").classList.add("dismissed");
+  }
+  document.getElementById("search").addEventListener("input", e => {
+    filters.q = e.target.value;
+    render();
+  });
+  document.getElementById("statusFilter").addEventListener("change", e => {
+    filters.status = e.target.value;
+    renderStats();
+    renderTable();
+  });
+}
+
+/* ======= BOOT ======= */
+if(sessionStorage.getItem("psga_auth") === "1"){
+  showApp();
+} else {
+  document.getElementById("pwInput").focus();
+}
+</script>
+</body>
+</html>
