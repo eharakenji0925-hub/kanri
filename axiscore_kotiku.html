@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta name="referrer" content="no-referrer">
-<title>AXISCORE PILATES — UNIT-System</title>
+<title>AXISCORE PILATES — PROGRAM-UNIT-SYSTEM 10×4 / MANUAL-BUILD-SYSTEM ∞</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Montserrat:wght@300;400;500;600;700;800;900&family=Bebas+Neue&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
 <style>
@@ -1117,7 +1117,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
   display:flex;gap:4px;align-items:center;
 }
 /* P21 (エクササイズマニュアル) ではツールバーを非表示にしてヘッダーボタンとの重なりを回避 */
-body.slide21-active #ui-toolbar{display:none;}
+body.slide11-active #ui-toolbar{display:none;}
 .tb-btn{
   background:rgba(255,255,255,.06);border:1px solid var(--border2);border-radius:4px;
   color:var(--muted);font:700 10px Montserrat;padding:5px 9px;cursor:pointer;
@@ -1433,8 +1433,8 @@ body.light-mode {
   </button>
   <div class="nav-divider"></div>
   <div class="nav-center">
-    <div class="nav-counter" onclick="toggleJumpMenu()" style="cursor:pointer;user-select:none" title="クリックでジャンプ"><span id="cur" style="color:var(--white);font-weight:700">1</span><span style="color:var(--dim)" id="total-display"> / 21</span></div>
-    <div class="nav-title" id="navTitle">UNIT-SYSTEM</div>
+    <div class="nav-counter" onclick="toggleJumpMenu()" style="cursor:pointer;user-select:none" title="クリックでジャンプ"><span id="cur" style="color:var(--white);font-weight:700">1</span><span style="color:var(--dim)" id="total-display"> / 27</span></div>
+    <div class="nav-title" id="navTitle">PROGRAM-UNIT-SYSTEM</div>
   </div>
   <div class="nav-divider"></div>
   <div id="nav-dots" style="display:flex;align-items:center;gap:4px;padding:0 14px"></div>
@@ -1454,9 +1454,1582 @@ body.light-mode {
 <div class="deck">
 
 <!-- ════════════════════════════════════
-     SLIDE 1 — UNIT-SYSTEM HERO
+     SLIDE 1 — COVER (2製品紹介)
 ════════════════════════════════════ -->
-<div class="slide s1 active" data-slide="1" data-title="UNIT-SYSTEM">
+<div class="slide active" data-slide="1" data-title="AXISCORE PILATES">
+
+  <!-- ambient -->
+  <div style="position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0">
+    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font:900 40vh 'Bebas Neue';color:rgba(255,255,255,0);-webkit-text-stroke:1px rgba(255,255,255,.03);line-height:1;user-select:none;white-space:nowrap">AXISCORE</div>
+    <div style="position:absolute;top:50%;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,16,46,.18),transparent)"></div>
+  </div>
+
+  <!-- top bar -->
+  <div style="position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;padding:26px 60px 0;animation:aFD .5s .05s both">
+    <div style="display:flex;align-items:baseline;gap:1px">
+      <span style="font:900 17px Montserrat;letter-spacing:3px">AXIS</span><span style="font:900 17px Montserrat;letter-spacing:3px;color:#C8102E">CORE</span><span style="font:300 17px Montserrat;letter-spacing:3px;color:#888">&nbsp;PILATES</span>
+    </div>
+    <div style="font:300 10px Montserrat;letter-spacing:2px;color:#606060;text-align:right;line-height:1.8">
+      Personal &amp; Group Reformer<sup style="font-size:7px">®</sup><br>
+      <span style="font-size:8px;letter-spacing:1px">2026 &nbsp;|&nbsp; 株式会社大丸プランニング</span>
+    </div>
+  </div>
+
+  <!-- main content -->
+  <div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;height:calc(100vh - 160px);gap:28px;animation:aFD .6s .2s both">
+
+    <!-- brand -->
+    <div style="text-align:center">
+      <div style="font:900 60px 'Bebas Neue';letter-spacing:8px;color:#fff;line-height:1">AXISCORE</div>
+      <div style="font:300 12px Montserrat;letter-spacing:6px;color:#888;margin-top:6px">EDUCATION PROGRAM ARCHITECTURE</div>
+    </div>
+
+    <!-- INSTRUCTOR-LICENSE-SYSTEM 5 -->
+    <div onclick="show(2)" style="cursor:pointer;width:100%;max-width:900px;background:rgba(6,182,212,.04);border:1px solid rgba(6,182,212,.25);border-radius:12px;padding:24px 32px;display:flex;align-items:center;gap:28px;transition:all .25s;position:relative;overflow:hidden" onmouseover="this.style.borderColor='rgba(6,182,212,.5)';this.style.background='rgba(6,182,212,.08)'" onmouseout="this.style.borderColor='rgba(6,182,212,.25)';this.style.background='rgba(6,182,212,.04)'">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#06B6D4,#22D3EE)"></div>
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <div style="font:700 9px Montserrat;letter-spacing:4px;color:#06B6D4">INSTRUCTOR LICENSE</div>
+        <div style="font:900 26px 'Bebas Neue';letter-spacing:3px;color:#fff;line-height:1.1">INSTRUCTOR-LICENSE-SYSTEM <span style="color:#06B6D4">5</span></div>
+      </div>
+      <div style="width:1px;height:40px;background:rgba(6,182,212,.2);flex-shrink:0"></div>
+      <div style="font:400 12px 'Noto Sans JP';color:#888;line-height:1.9;flex:1">
+        5ステップ・<span style="color:#fff;font-weight:700">575時間</span>の包括的インストラクター養成プログラム<br>MAT → REFORMER → 全器具 → ADVANCE → 認定
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;flex-shrink:0">
+        <span style="font:600 9px Montserrat;padding:4px 10px;background:rgba(6,182,212,.1);color:#06B6D4;border-radius:3px;border:1px solid rgba(6,182,212,.2)">5 STEPS</span>
+        <span style="font:600 9px Montserrat;padding:4px 10px;background:rgba(6,182,212,.1);color:#06B6D4;border-radius:3px;border:1px solid rgba(6,182,212,.2)">575 HOURS</span>
+        <span style="font:600 9px Montserrat;padding:4px 10px;background:rgba(6,182,212,.1);color:#06B6D4;border-radius:3px;border:1px solid rgba(6,182,212,.2)">372 EXERCISES</span>
+      </div>
+      <div style="font:600 9px Montserrat;letter-spacing:2px;color:rgba(6,182,212,.6);flex-shrink:0">ENTER →</div>
+    </div>
+
+    <!-- 2 products -->
+    <div style="display:flex;gap:32px;width:100%;max-width:900px">
+
+      <!-- Product 2: MANUAL-BUILD-SYSTEM ♾️ -->
+      <div onclick="show(9)" style="flex:1;cursor:pointer;background:rgba(201,168,76,.04);border:1px solid rgba(201,168,76,.25);border-radius:12px;padding:36px 32px;display:flex;flex-direction:column;gap:16px;transition:all .25s;position:relative;overflow:hidden" onmouseover="this.style.borderColor='rgba(201,168,76,.5)';this.style.background='rgba(201,168,76,.08)'" onmouseout="this.style.borderColor='rgba(201,168,76,.25)';this.style.background='rgba(201,168,76,.04)'">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#C9A84C,#E8C96A)"></div>
+        <div style="font:700 9px Montserrat;letter-spacing:4px;color:#C9A84C">PRODUCT 02</div>
+        <div style="font:900 28px 'Bebas Neue';letter-spacing:3px;color:#fff;line-height:1.1">MANUAL-BUILD-<br>SYSTEM <span style="color:#C9A84C">∞</span></div>
+        <div style="height:1px;background:rgba(201,168,76,.2)"></div>
+        <div style="font:400 12px 'Noto Sans JP';color:#888;line-height:1.9">
+          各マシンの種目データを入力し<br><span style="color:#fff;font-weight:700">マニュアルを自動構築</span>する仕組み
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:auto">
+          <span style="font:600 9px Montserrat;padding:4px 10px;background:rgba(201,168,76,.1);color:#C9A84C;border-radius:3px;border:1px solid rgba(201,168,76,.2)">6 APPARATUS</span>
+          <span style="font:600 9px Montserrat;padding:4px 10px;background:rgba(201,168,76,.1);color:#C9A84C;border-radius:3px;border:1px solid rgba(201,168,76,.2)">EXCEL → JSON</span>
+          <span style="font:600 9px Montserrat;padding:4px 10px;background:rgba(201,168,76,.1);color:#C9A84C;border-radius:3px;border:1px solid rgba(201,168,76,.2)">AUTO BUILD</span>
+        </div>
+        <div style="font:600 9px Montserrat;letter-spacing:2px;color:rgba(201,168,76,.6);text-align:right">ENTER →</div>
+      </div>
+
+      <!-- Product 1: PROGRAM-UNIT-SYSTEM -->
+      <div onclick="show(12)" style="flex:1;cursor:pointer;background:rgba(200,16,46,.04);border:1px solid rgba(200,16,46,.25);border-radius:12px;padding:36px 32px;display:flex;flex-direction:column;gap:16px;transition:all .25s;position:relative;overflow:hidden" onmouseover="this.style.borderColor='rgba(200,16,46,.5)';this.style.background='rgba(200,16,46,.08)'" onmouseout="this.style.borderColor='rgba(200,16,46,.25)';this.style.background='rgba(200,16,46,.04)'">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#C8102E,#FF2244)"></div>
+        <div style="font:700 9px Montserrat;letter-spacing:4px;color:#C8102E">PRODUCT 01</div>
+        <div style="font:900 28px 'Bebas Neue';letter-spacing:3px;color:#fff;line-height:1.1">PROGRAM-UNIT-SYSTEM<br><span style="color:#C8102E">10×4</span></div>
+        <div style="height:1px;background:rgba(200,16,46,.2)"></div>
+        <div style="font:400 12px 'Noto Sans JP';color:#888;line-height:1.9">
+          10ユニット×4レベルのフレームワークで<br>インストラクターがクラスを<span style="color:#fff;font-weight:700">自由に設計</span>するシステム
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:auto">
+          <span style="font:600 9px Montserrat;padding:4px 10px;background:rgba(200,16,46,.1);color:#C8102E;border-radius:3px;border:1px solid rgba(200,16,46,.2)">10 UNITS</span>
+          <span style="font:600 9px Montserrat;padding:4px 10px;background:rgba(200,16,46,.1);color:#C8102E;border-radius:3px;border:1px solid rgba(200,16,46,.2)">4 LEVELS</span>
+          <span style="font:600 9px Montserrat;padding:4px 10px;background:rgba(200,16,46,.1);color:#C8102E;border-radius:3px;border:1px solid rgba(200,16,46,.2)">372 EXERCISES</span>
+        </div>
+        <div style="font:600 9px Montserrat;letter-spacing:2px;color:rgba(200,16,46,.6);text-align:right">ENTER →</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- bottom -->
+  <div style="position:relative;z-index:1;display:flex;align-items:center;justify-content:center;padding:0 60px 28px">
+    <div style="font:400 10px Montserrat;letter-spacing:3px;color:#606060">Structure creates <span style="color:#fff">true freedom</span>. &nbsp;—&nbsp; AXISCORE PILATES PHILOSOPHY</div>
+  </div>
+
+</div>
+
+<!-- ════════════════════════════════════
+     SLIDE — ILS HERO
+════════════════════════════════════ -->
+<div class="slide" data-slide="2" data-title="INSTRUCTOR-LICENSE-SYSTEM 5">
+
+  <!-- ambient -->
+  <div style="position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0">
+    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font:900 95vh 'Bebas Neue';color:rgba(255,255,255,0);-webkit-text-stroke:1px rgba(6,182,212,.06);line-height:1;letter-spacing:-8vw;user-select:none;white-space:nowrap;animation:ils-ghost 5s ease-in-out infinite">5</div>
+    <div style="position:absolute;top:50%;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(6,182,212,.22),transparent)"></div>
+    <div style="position:absolute;left:50%;top:0;bottom:0;width:1px;background:linear-gradient(180deg,transparent,rgba(6,182,212,.14),transparent)"></div>
+    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:12px;height:12px;border-radius:50%;background:#06B6D4;box-shadow:0 0 28px rgba(6,182,212,.9),0 0 60px rgba(6,182,212,.3)"></div>
+  </div>
+  <style>
+    @keyframes ils-ghost{0%,100%{-webkit-text-stroke-color:rgba(6,182,212,.04)}50%{-webkit-text-stroke-color:rgba(6,182,212,.10)}}
+  </style>
+
+  <!-- top bar -->
+  <div style="position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;padding:26px 60px 0;animation:aFD .5s .05s both">
+    <div style="display:flex;align-items:baseline;gap:1px">
+      <span style="font:900 17px Montserrat;letter-spacing:3px">AXIS</span><span style="font:900 17px Montserrat;letter-spacing:3px;color:#C8102E">CORE</span><span style="font:300 17px Montserrat;letter-spacing:3px;color:#888">&nbsp;PILATES</span>
+      <div style="width:1px;height:22px;background:var(--border2);margin:0 16px"></div>
+      <span style="font:400 9px Montserrat;letter-spacing:4px;color:var(--dim)">INSTRUCTOR LICENSE</span>
+    </div>
+    <div style="font:300 10px Montserrat;letter-spacing:2px;color:#606060;text-align:right;line-height:1.8">
+      Comprehensive Certification Program<br>
+      <span style="font-size:8px;letter-spacing:1px">575h &nbsp;|&nbsp; 5 STEPS &nbsp;|&nbsp; 372 EXERCISES</span>
+    </div>
+  </div>
+
+  <!-- main -->
+  <div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;height:calc(100vh - 120px);gap:0;animation:aFD .6s .2s both">
+
+    <!-- label -->
+    <div style="font:600 9px Montserrat;letter-spacing:5px;color:#06B6D4;margin-bottom:14px">INSTRUCTOR-LICENSE-SYSTEM</div>
+
+    <!-- big 5 -->
+    <div style="display:flex;align-items:center;gap:0;line-height:1">
+      <div style="font:900 28vw 'Bebas Neue';color:var(--white);letter-spacing:-4px;text-shadow:0 0 80px rgba(255,255,255,.06)">5</div>
+    </div>
+
+    <!-- sub labels -->
+    <div style="display:flex;align-items:center;gap:40px;margin-top:-10px">
+      <span style="font:700 11px Montserrat;letter-spacing:5px;color:var(--muted)">STEPS</span>
+      <span style="font:700 11px Montserrat;letter-spacing:5px;color:var(--muted)">575 HOURS</span>
+      <span style="font:700 11px Montserrat;letter-spacing:5px;color:var(--muted)">115 DAYS</span>
+    </div>
+
+    <!-- tagline -->
+    <div style="font:300 13px 'Noto Sans JP';color:var(--muted);margin-top:18px;letter-spacing:2px;text-align:center">
+      THE COMPREHENSIVE INSTRUCTOR CERTIFICATION PATHWAY
+    </div>
+
+    <!-- 5 steps strip -->
+    <div style="margin-top:24px;display:flex;align-items:center;gap:0;border:1px solid var(--border2);border-radius:4px;overflow:hidden;animation:aFU .5s .5s both">
+      <div style="padding:6px 14px;background:rgba(6,182,212,.1);border-right:1px solid var(--border2);flex-shrink:0">
+        <div style="font:700 10px Montserrat;letter-spacing:2px;color:#06B6D4">5 STEPS</div>
+      </div>
+      <div style="display:flex;align-items:center">
+        <div style="padding:6px 16px;border-right:1px solid var(--border);font:400 9px Montserrat;color:var(--muted);letter-spacing:.5px;white-space:nowrap"><span style="color:#E879F9;font-weight:700;margin-right:5px">01</span>MAT 基礎</div>
+        <div style="padding:6px 16px;border-right:1px solid var(--border);font:400 9px Montserrat;color:var(--muted);letter-spacing:.5px;white-space:nowrap"><span style="color:#818cf8;font-weight:700;margin-right:5px">02</span>REFORMER PRE+F</div>
+        <div style="padding:6px 16px;border-right:1px solid var(--border);font:400 9px Montserrat;color:var(--muted);letter-spacing:.5px;white-space:nowrap"><span style="color:#818cf8;font-weight:700;margin-right:5px">03</span>REFORMER I + CADILLAC</div>
+        <div style="padding:6px 16px;border-right:1px solid var(--border);font:400 9px Montserrat;color:var(--muted);letter-spacing:.5px;white-space:nowrap"><span style="color:#f59e0b;font-weight:700;margin-right:5px">04</span>CHAIR / BARREL / SC</div>
+        <div style="padding:6px 16px;font:400 9px Montserrat;color:var(--muted);letter-spacing:.5px;white-space:nowrap"><span style="color:#e11d48;font-weight:700;margin-right:5px">05</span>ADVANCE &amp; 認定</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- bottom -->
+  <div style="position:relative;z-index:1;display:flex;align-items:center;justify-content:center;padding:0 60px 28px">
+    <div style="font:400 10px Montserrat;letter-spacing:3px;color:#606060">From <span style="color:#06B6D4">MAT</span> to <span style="color:#e11d48">ADVANCE</span> &mdash; your path to AXISCORE certification</div>
+  </div>
+
+</div>
+
+<!-- ════════════════════════════════════
+     SLIDE 2 — PROGRAM-UNIT-SYSTEM HERO
+════════════════════════════════════ -->
+<div class="slide" data-slide="3" data-title="新規養成ロードマップ">
+<div style="display:flex;flex-direction:column;height:100%;padding:20px 28px;overflow:hidden;gap:14px">
+
+  <!-- ヘッダー -->
+  <div style="flex-shrink:0">
+    <div style="font:900 10px Montserrat;letter-spacing:6px;color:var(--red);margin-bottom:4px">● NEW INSTRUCTOR CURRICULUM</div>
+    <div style="display:flex;align-items:baseline;gap:20px">
+      <div style="font:700 20px Montserrat;color:var(--white);letter-spacing:1px">新規インストラクター養成 ロードマップ</div>
+      <div style="font:300 11px 'Noto Sans JP';color:var(--muted)">器具習得の順序に沿った5ステップ養成</div>
+      <div style="margin-left:auto;display:flex;gap:20px">
+        <div style="text-align:center">
+          <div style="font:900 22px 'Bebas Neue';color:var(--white)">50<span style="font-size:11px;color:var(--muted)">週</span></div>
+          <div style="font:600 9px Montserrat;letter-spacing:2px;color:var(--dim)">DURATION</div>
+        </div>
+        <div style="text-align:center">
+          <div style="font:900 22px 'Bebas Neue';color:var(--white)">372<span style="font-size:11px;color:var(--muted)">種目</span></div>
+          <div style="font:600 9px Montserrat;letter-spacing:2px;color:var(--dim)">EXERCISES<br><span style="color:var(--red)">（必須5種目除く）</span></div>
+        </div>
+        <div style="text-align:center">
+          <div style="font:900 22px 'Bebas Neue';color:var(--white)">575<span style="font-size:11px;color:var(--muted)">h</span></div>
+          <div style="font:600 9px Montserrat;letter-spacing:2px;color:var(--dim)">TOTAL HOURS</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- タイムライン -->
+  <div style="flex-shrink:0;display:flex;gap:0;align-items:center;padding:8px 0">
+    <!-- STEP 1 bar -->
+    <div style="flex:8;height:8px;background:linear-gradient(90deg,#E879F9,rgba(232,121,249,.4));border-radius:4px 0 0 4px;position:relative">
+      <div style="position:absolute;top:-18px;left:0;font:700 10px Montserrat;letter-spacing:2px;color:#E879F9">STEP 1</div>
+      <div style="position:absolute;bottom:-16px;left:0;font:300 9px Montserrat;color:var(--dim)">W1</div>
+      <div style="position:absolute;bottom:-16px;right:0;font:300 9px Montserrat;color:var(--dim)">W8</div>
+    </div>
+    <div style="width:2px;height:16px;background:var(--bg);flex-shrink:0"></div>
+    <!-- STEP 2 bar -->
+    <div style="flex:12;height:8px;background:linear-gradient(90deg,rgba(129,140,248,.6),rgba(129,140,248,.3));position:relative">
+      <div style="position:absolute;top:-18px;left:0;font:700 10px Montserrat;letter-spacing:2px;color:#818cf8">STEP 2</div>
+      <div style="position:absolute;bottom:-16px;left:0;font:300 9px Montserrat;color:var(--dim)">W9</div>
+      <div style="position:absolute;bottom:-16px;right:0;font:300 9px Montserrat;color:var(--dim)">W20</div>
+    </div>
+    <div style="width:2px;height:16px;background:var(--bg);flex-shrink:0"></div>
+    <!-- STEP 3 bar -->
+    <div style="flex:14;height:8px;background:linear-gradient(90deg,rgba(245,158,11,.6),rgba(245,158,11,.2));position:relative">
+      <div style="position:absolute;top:-18px;left:0;font:700 10px Montserrat;letter-spacing:2px;color:#f59e0b">STEP 3</div>
+      <div style="position:absolute;bottom:-16px;left:0;font:300 9px Montserrat;color:var(--dim)">W21</div>
+      <div style="position:absolute;bottom:-16px;right:0;font:300 9px Montserrat;color:var(--dim)">W34</div>
+    </div>
+    <div style="width:2px;height:16px;background:var(--bg);flex-shrink:0"></div>
+    <!-- STEP 4 bar -->
+    <div style="flex:4;height:8px;background:linear-gradient(90deg,rgba(245,158,11,.4),rgba(245,158,11,.15));position:relative">
+      <div style="position:absolute;top:-18px;left:0;font:700 10px Montserrat;letter-spacing:2px;color:#f59e0b">STEP 4</div>
+      <div style="position:absolute;bottom:-16px;left:0;font:300 9px Montserrat;color:var(--dim)">W35</div>
+      <div style="position:absolute;bottom:-16px;right:0;font:300 9px Montserrat;color:var(--dim)">W38</div>
+    </div>
+    <div style="width:2px;height:16px;background:var(--bg);flex-shrink:0"></div>
+    <!-- STEP 5 bar -->
+    <div style="flex:12;height:8px;background:linear-gradient(90deg,rgba(225,29,72,.6),rgba(225,29,72,.2));border-radius:0 4px 4px 0;position:relative">
+      <div style="position:absolute;top:-18px;left:0;font:700 10px Montserrat;letter-spacing:2px;color:#e11d48">STEP 5</div>
+      <div style="position:absolute;bottom:-16px;left:0;font:300 9px Montserrat;color:var(--dim)">W39</div>
+      <div style="position:absolute;bottom:-16px;right:0;font:300 9px Montserrat;color:var(--dim)">W50</div>
+    </div>
+  </div>
+
+  <!-- 5ステップカード -->
+  <div style="flex:1;display:flex;gap:10px;min-height:0;margin-top:10px">
+
+    <!-- STEP 1: MAT -->
+    <div onclick="show(4)" style="cursor:pointer;flex:2;background:var(--card);border:1px solid var(--border2);border-radius:10px;border-top:3px solid #E879F9;display:flex;flex-direction:column;overflow:hidden;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(232,121,249,.5)'" onmouseout="this.style.borderColor='var(--border2)'">
+      <div style="padding:12px 14px;border-bottom:1px solid var(--border)">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+          <div style="width:26px;height:26px;border-radius:50%;background:rgba(232,121,249,.15);border:1px solid rgba(232,121,249,.3);display:flex;align-items:center;justify-content:center;font:900 11px Montserrat;color:#E879F9;flex-shrink:0">1</div>
+          <div>
+            <div style="font:700 9px Montserrat;letter-spacing:2px;color:#E879F9">STEP 1 ─ 基礎段階</div>
+            <div style="font:300 8px 'Noto Sans JP';color:var(--muted)">W1〜8（8週間）</div>
+          </div>
+          <div style="margin-left:auto;display:flex;gap:6px;align-items:center">
+            <div style="text-align:right"><div style="font:900 16px 'Bebas Neue';color:var(--white)">23<span style="font:600 9px Montserrat;color:var(--muted);margin-left:2px">種目</span></div></div>
+            <div style="padding:2px 8px;background:rgba(232,121,249,.12);border:1px solid rgba(232,121,249,.3);border-radius:3px;text-align:center"><div style="font:900 14px 'Bebas Neue';color:#E879F9;line-height:1">65<span style="font:600 8px Montserrat;margin-left:1px">h</span></div><div style="font:600 7px Montserrat;color:rgba(232,121,249,.6);letter-spacing:1px">TOTAL</div></div>
+          </div>
+        </div>
+        <span style="padding:2px 7px;background:rgba(232,121,249,.1);border:1px solid rgba(232,121,249,.2);border-radius:3px;font:700 9px Montserrat;color:#E879F9">MAT · PRE</span>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:10px 14px;display:flex;flex-direction:column;gap:6px">
+        <div style="background:rgba(232,121,249,.04);border:1px solid rgba(232,121,249,.1);border-radius:5px;padding:8px">
+          <div style="font:700 9px Montserrat;letter-spacing:1px;color:#E879F9;margin-bottom:4px">① 理論・解剖学基礎 <span style="font-size:8px">10h</span></div>
+          <div style="font:300 9px 'Noto Sans JP';color:var(--body);line-height:1.6">ピラティス原則・PROGRAM-UNIT-SYSTEM概要・呼吸と骨盤ニュートラル</div>
+        </div>
+        <div style="background:rgba(232,121,249,.04);border:1px solid rgba(232,121,249,.1);border-radius:5px;padding:8px">
+          <div style="font:700 9px Montserrat;letter-spacing:1px;color:#E879F9;margin-bottom:4px">② マット種目（23種目） <span style="font-size:8px">15h</span></div>
+          <div style="font:300 9px 'Noto Sans JP';color:var(--body);line-height:1.6">床上での基本動作パターンを身体に定着。10ユニットの動きの本質を理解</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2: REFORMER PRE+F -->
+    <div onclick="show(5)" style="cursor:pointer;flex:3;background:var(--card);border:1px solid var(--border2);border-radius:10px;border-top:3px solid #818cf8;display:flex;flex-direction:column;overflow:hidden;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(129,140,248,.5)'" onmouseout="this.style.borderColor='var(--border2)'">
+      <div style="padding:12px 14px;border-bottom:1px solid var(--border)">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+          <div style="width:26px;height:26px;border-radius:50%;background:rgba(129,140,248,.15);border:1px solid rgba(129,140,248,.3);display:flex;align-items:center;justify-content:center;font:900 11px Montserrat;color:#818cf8;flex-shrink:0">2</div>
+          <div>
+            <div style="font:700 9px Montserrat;letter-spacing:2px;color:#818cf8">STEP 2 ─ REFORMER 基礎</div>
+            <div style="font:300 8px 'Noto Sans JP';color:var(--muted)">W9〜20（12週間）</div>
+          </div>
+          <div style="margin-left:auto;display:flex;gap:6px;align-items:center">
+            <div style="text-align:right"><div style="font:900 16px 'Bebas Neue';color:var(--white)">62<span style="font:600 9px Montserrat;color:var(--muted);margin-left:2px">種目</span></div></div>
+            <div style="padding:2px 8px;background:rgba(129,140,248,.12);border:1px solid rgba(129,140,248,.3);border-radius:3px;text-align:center"><div style="font:900 14px 'Bebas Neue';color:#818cf8;line-height:1">105<span style="font:600 8px Montserrat;margin-left:1px">h</span></div><div style="font:600 7px Montserrat;color:rgba(129,140,248,.6);letter-spacing:1px">TOTAL</div></div>
+          </div>
+        </div>
+        <span style="padding:2px 7px;background:rgba(129,140,248,.1);border:1px solid rgba(129,140,248,.2);border-radius:3px;font:700 9px Montserrat;color:#818cf8">REFORMER · PRE + F</span>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:10px 14px;display:flex;flex-direction:column;gap:6px">
+        <div style="background:rgba(129,140,248,.04);border:1px solid rgba(129,140,248,.1);border-radius:5px;padding:8px">
+          <div style="font:700 9px Montserrat;letter-spacing:1px;color:#818cf8;margin-bottom:4px">① 器具操作基礎 <span style="font-size:8px">10h</span></div>
+          <div style="font:300 9px 'Noto Sans JP';color:var(--body);line-height:1.6">スプリング設定・ヘッドレスト・フットバー調整・安全な乗降手順</div>
+        </div>
+        <div style="background:rgba(129,140,248,.04);border:1px solid rgba(129,140,248,.1);border-radius:5px;padding:8px">
+          <div style="font:700 9px Montserrat;letter-spacing:1px;color:#818cf8;margin-bottom:4px">② PRE + F種目（62種目） <span style="font-size:8px">35h</span></div>
+          <div style="font:300 9px 'Noto Sans JP';color:var(--body);line-height:1.6">全10ユニットのPRE〜Fレベル種目を器具上で実施。キューイング基礎を養成</div>
+        </div>
+        <div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:5px;padding:6px 8px;display:flex;gap:10px">
+          <div style="font:300 8px 'Noto Sans JP';color:var(--dim)">✓ スプリング設定</div>
+          <div style="font:300 8px 'Noto Sans JP';color:var(--dim)">✓ キューイング基礎</div>
+          <div style="font:300 8px 'Noto Sans JP';color:var(--dim)">✓ 見学実習</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3: 中級段階 -->
+    <div onclick="show(6)" style="cursor:pointer;flex:3;background:var(--card);border:1px solid var(--border2);border-radius:10px;border-top:3px solid #818cf8;display:flex;flex-direction:column;overflow:hidden;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(129,140,248,.5)'" onmouseout="this.style.borderColor='var(--border2)'">
+      <div style="padding:12px 14px;border-bottom:1px solid var(--border)">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+          <div style="width:26px;height:26px;border-radius:50%;background:rgba(129,140,248,.15);border:1px solid rgba(129,140,248,.3);display:flex;align-items:center;justify-content:center;font:900 11px Montserrat;color:#818cf8;flex-shrink:0">3</div>
+          <div>
+            <div style="font:700 9px Montserrat;letter-spacing:2px;color:#818cf8">STEP 3 ─ 中級段階</div>
+            <div style="font:300 8px 'Noto Sans JP';color:var(--muted)">W21〜34（14週間）</div>
+          </div>
+          <div style="margin-left:auto;display:flex;gap:6px;align-items:center">
+            <div style="text-align:right"><div style="font:900 16px 'Bebas Neue';color:var(--white)">143<span style="font:600 9px Montserrat;color:var(--muted);margin-left:2px">種目</span></div></div>
+            <div style="padding:2px 8px;background:rgba(129,140,248,.12);border:1px solid rgba(129,140,248,.3);border-radius:3px;text-align:center"><div style="font:900 14px 'Bebas Neue';color:#818cf8;line-height:1">220<span style="font:600 8px Montserrat;margin-left:1px">h</span></div><div style="font:600 7px Montserrat;color:rgba(129,140,248,.6);letter-spacing:1px">TOTAL</div></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:4px">
+          <span style="padding:2px 6px;background:rgba(129,140,248,.1);border:1px solid rgba(129,140,248,.2);border-radius:3px;font:700 8px Montserrat;color:#818cf8">REFORMER · I</span>
+          <span style="padding:2px 6px;background:rgba(45,168,120,.1);border:1px solid rgba(45,168,120,.2);border-radius:3px;font:700 8px Montserrat;color:#2da878">CADILLAC · F+I</span>
+        </div>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:10px 14px;display:flex;flex-direction:column;gap:6px">
+        <div style="background:rgba(129,140,248,.04);border:1px solid rgba(129,140,248,.1);border-radius:5px;padding:8px">
+          <div style="font:700 9px Montserrat;letter-spacing:1px;color:#818cf8;margin-bottom:4px">① Reformer I（83種目） <span style="font-size:8px">55h</span></div>
+          <div style="font:300 9px 'Noto Sans JP';color:var(--body);line-height:1.6">インターレベルの新規種目を追加。動作精度とキューイングの質を向上</div>
+        </div>
+        <div style="background:rgba(45,168,120,.04);border:1px solid rgba(45,168,120,.1);border-radius:5px;padding:8px">
+          <div style="font:700 9px Montserrat;letter-spacing:1px;color:#2da878;margin-bottom:4px">② Cadillac F+I（60種目） <span style="font-size:8px">35h</span></div>
+          <div style="font:300 9px 'Noto Sans JP';color:var(--body);line-height:1.6">キャデラックの器具構造・スプリング設定を習得。タワー・ロールダウンバー種目を実施</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+          <div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:5px;padding:6px 8px">
+            <div style="font:700 9px Montserrat;color:var(--muted);margin-bottom:2px">指導実習</div>
+            <div style="font:300 8px 'Noto Sans JP';color:var(--dim);line-height:1.5">補助指導・セッション構成</div>
+          </div>
+          <div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:5px;padding:6px 8px">
+            <div style="font:700 9px Montserrat;color:var(--muted);margin-bottom:2px">プログラム設計</div>
+            <div style="font:300 8px 'Noto Sans JP';color:var(--dim);line-height:1.5">60分レッスン設計・配分</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 4: 応用段階 -->
+    <div onclick="show(7)" style="cursor:pointer;flex:2;background:var(--card);border:1px solid var(--border2);border-radius:10px;border-top:3px solid #f59e0b;display:flex;flex-direction:column;overflow:hidden;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(245,158,11,.5)'" onmouseout="this.style.borderColor='var(--border2)'">
+      <div style="padding:12px 14px;border-bottom:1px solid var(--border)">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+          <div style="width:26px;height:26px;border-radius:50%;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);display:flex;align-items:center;justify-content:center;font:900 11px Montserrat;color:#f59e0b;flex-shrink:0">4</div>
+          <div>
+            <div style="font:700 9px Montserrat;letter-spacing:2px;color:#f59e0b">STEP 4 ─ 応用段階</div>
+            <div style="font:300 8px 'Noto Sans JP';color:var(--muted)">W35〜38（4週間）</div>
+          </div>
+          <div style="margin-left:auto;display:flex;gap:6px;align-items:center">
+            <div style="text-align:right"><div style="font:900 16px 'Bebas Neue';color:var(--white)">75<span style="font:600 9px Montserrat;color:var(--muted);margin-left:2px">種目</span></div></div>
+            <div style="padding:2px 8px;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);border-radius:3px;text-align:center"><div style="font:900 14px 'Bebas Neue';color:#f59e0b;line-height:1">75<span style="font:600 8px Montserrat;margin-left:1px">h</span></div><div style="font:600 7px Montserrat;color:rgba(245,158,11,.6);letter-spacing:1px">TOTAL</div></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:3px;flex-wrap:wrap">
+          <span style="padding:2px 5px;background:rgba(212,144,58,.1);border:1px solid rgba(212,144,58,.2);border-radius:3px;font:700 8px Montserrat;color:#d4903a">CHAIR</span>
+          <span style="padding:2px 5px;background:rgba(196,88,128,.1);border:1px solid rgba(196,88,128,.2);border-radius:3px;font:700 8px Montserrat;color:#c45880">BARREL</span>
+          <span style="padding:2px 5px;background:rgba(155,89,182,.1);border:1px solid rgba(155,89,182,.2);border-radius:3px;font:700 8px Montserrat;color:#9b59b6">SC</span>
+        </div>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:10px 14px;display:flex;flex-direction:column;gap:6px">
+        <div style="background:rgba(245,158,11,.04);border:1px solid rgba(245,158,11,.1);border-radius:5px;padding:8px">
+          <div style="font:700 9px Montserrat;letter-spacing:1px;color:#f59e0b;margin-bottom:4px">補助器具 F+I習得 <span style="font-size:8px">20h</span></div>
+          <div style="font:300 9px 'Noto Sans JP';color:var(--body);line-height:1.6">Chair・Barrel・SCのF/Iレベル種目を習得</div>
+        </div>
+        <div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:5px;padding:6px 8px">
+          <div style="font:700 9px Montserrat;color:var(--muted);margin-bottom:2px">修了審査</div>
+          <div style="font:300 8px 'Noto Sans JP';color:var(--dim);line-height:1.5">全器具60分レッスン＋筆記</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 矢印 STEP4→5 -->
+    <div style="display:flex;align-items:center;padding:0 6px;flex-shrink:0">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+        <div style="width:24px;height:2px;background:linear-gradient(90deg,var(--border2),var(--red))"></div>
+        <svg width="7" height="10" viewBox="0 0 8 12" fill="var(--red)"><path d="M0 0l8 6-8 6z"/></svg>
+      </div>
+    </div>
+
+    <!-- STEP 5: 上級段階 -->
+    <div onclick="show(8)" style="cursor:pointer;flex:1.5;background:var(--card);border:1px solid var(--border2);border-radius:10px;padding:14px 12px;display:flex;flex-direction:column;gap:8px;border-top:3px solid #e11d48;overflow:hidden;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(225,29,72,.5)'" onmouseout="this.style.borderColor='var(--border2)'">
+      <div style="display:flex;align-items:center;gap:6px">
+        <div style="width:26px;height:26px;border-radius:50%;background:rgba(225,29,72,.15);border:1px solid rgba(225,29,72,.3);display:flex;align-items:center;justify-content:center;font:900 11px Montserrat;color:#e11d48;flex-shrink:0">5</div>
+        <div>
+          <div style="font:700 8px Montserrat;letter-spacing:2px;color:#e11d48">STEP 5 ─ 上級段階</div>
+          <div style="font:300 8px 'Noto Sans JP';color:var(--muted)">W39〜50（12週間）</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;margin-left:auto">
+          <div style="font:900 14px 'Bebas Neue';color:var(--white)">71<span style="font:600 8px Montserrat;color:var(--muted);margin-left:2px">種目</span></div>
+          <div style="padding:2px 6px;background:rgba(225,29,72,.12);border:1px solid rgba(225,29,72,.3);border-radius:3px;text-align:center">
+            <div style="font:900 12px 'Bebas Neue';color:#e11d48;line-height:1.1">110<span style="font:600 8px Montserrat;margin-left:1px">h</span></div>
+            <div style="font:600 6px Montserrat;color:rgba(225,29,72,.6);letter-spacing:1px">TOTAL</div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;gap:3px;flex-wrap:wrap">
+        <span style="padding:2px 5px;background:rgba(74,143,212,.1);border:1px solid rgba(74,143,212,.2);border-radius:3px;font:600 8px Montserrat;color:#4a8fd4">R·A</span>
+        <span style="padding:2px 5px;background:rgba(45,168,120,.1);border:1px solid rgba(45,168,120,.2);border-radius:3px;font:600 8px Montserrat;color:#2da878">C·A</span>
+        <span style="padding:2px 5px;background:rgba(212,144,58,.1);border:1px solid rgba(212,144,58,.2);border-radius:3px;font:600 8px Montserrat;color:#d4903a">W·A</span>
+        <span style="padding:2px 5px;background:rgba(155,89,182,.1);border:1px solid rgba(155,89,182,.2);border-radius:3px;font:600 8px Montserrat;color:#9b59b6">SC·A</span>
+      </div>
+      <div style="background:rgba(225,29,72,.04);border:1px solid rgba(225,29,72,.1);border-radius:5px;padding:7px">
+        <div style="font:700 9px Montserrat;letter-spacing:1px;color:#e11d48;margin-bottom:4px">全器具 Advance習得</div>
+        <div style="font:300 8px 'Noto Sans JP';color:var(--body);line-height:1.5">Reformer(39) / Cadillac(21) / Chair(9) / SC(2)の上級種目を習得</div>
+      </div>
+      <div style="margin-top:auto;padding:5px;background:rgba(200,16,46,.08);border:1px solid rgba(200,16,46,.2);border-radius:5px;text-align:center">
+        <div style="font:700 9px Montserrat;letter-spacing:2px;color:var(--red)">CERTIFIED</div>
+        <div style="font:300 9px 'Noto Sans JP';color:var(--muted);margin-top:1px">AXISCORE 認定</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════
+     SLIDE 21 — STEP 1 基礎段階 詳細
+════════════════════════════════════ -->
+<div class="slide" data-slide="4" data-title="STEP 1 ─ 基礎段階">
+<div style="display:flex;flex-direction:column;height:100vh;overflow-y:auto;padding:20px 40px;gap:20px">
+
+  <!-- ヘッダー -->
+  <div style="display:flex;align-items:center;gap:16px;flex-shrink:0">
+    <div style="width:48px;height:48px;border-radius:50%;background:rgba(232,121,249,.15);border:2px solid rgba(232,121,249,.4);display:flex;align-items:center;justify-content:center;font:900 22px Montserrat;color:#E879F9;flex-shrink:0">1</div>
+    <div>
+      <div style="font:900 10px Montserrat;letter-spacing:5px;color:#E879F9">STEP 1 ─ 基礎段階</div>
+      <div style="font:700 22px 'Noto Sans JP';color:var(--white);margin-top:2px">MAT 基礎習得</div>
+    </div>
+    <div style="margin-left:auto;display:flex;gap:16px;align-items:center">
+      <div style="text-align:center"><div style="font:900 28px 'Bebas Neue';color:var(--white)">8<span style="font-size:12px;color:var(--muted)">週</span></div><div style="font:600 8px Montserrat;letter-spacing:2px;color:var(--dim)">W1–8</div></div>
+      <div style="text-align:center"><div style="font:900 28px 'Bebas Neue';color:#E879F9">23<span style="font-size:12px;color:var(--muted)">種目</span></div><div style="font:600 8px Montserrat;letter-spacing:2px;color:var(--dim)">EXERCISES</div></div>
+      <div style="text-align:center"><div style="font:900 28px 'Bebas Neue';color:#E879F9">65<span style="font-size:12px">h</span></div><div style="font:600 8px Montserrat;letter-spacing:1px;color:rgba(232,121,249,.6)">TOTAL</div></div>
+      <button onclick="show(3)" style="padding:6px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:4px;color:var(--muted);font:700 9px Montserrat;letter-spacing:1px;cursor:pointer">← ロードマップ</button>
+    </div>
+  </div>
+
+  <!-- 週別タイムライン -->
+  <div style="flex-shrink:0;display:flex;gap:2px;align-items:stretch;height:28px">
+    <div style="flex:4;background:rgba(232,121,249,.15);border-radius:4px 0 0 4px;display:flex;align-items:center;justify-content:center"><span style="font:700 9px Montserrat;color:#E879F9;letter-spacing:1px">W1–4 理論基礎</span></div>
+    <div style="flex:4;background:rgba(232,121,249,.1);border-radius:0 4px 4px 0;display:flex;align-items:center;justify-content:center"><span style="font:700 9px Montserrat;color:#E879F9;letter-spacing:1px">W5–8 マット種目</span></div>
+  </div>
+
+  <!-- 2カラム詳細 -->
+  <div style="flex:1;display:grid;grid-template-columns:repeat(2,1fr);gap:16px;min-height:0">
+
+    <!-- COL 1: 理論・解剖学基礎 -->
+    <div style="background:var(--card);border:1px solid var(--border2);border-radius:10px;border-top:3px solid #E879F9;display:flex;flex-direction:column;overflow:hidden">
+      <div style="padding:16px 18px;border-bottom:1px solid var(--border)">
+        <div style="font:700 9px Montserrat;letter-spacing:3px;color:#E879F9;margin-bottom:4px">① 理論・解剖学基礎</div>
+        <div style="font:700 14px 'Noto Sans JP';color:var(--white)">10h</div>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:14px 18px;display:flex;flex-direction:column;gap:10px">
+        <div style="background:rgba(232,121,249,.04);border:1px solid rgba(232,121,249,.1);border-radius:6px;padding:10px">
+          <div style="font:700 10px Montserrat;color:#E879F9;margin-bottom:4px">ピラティス原則</div>
+          <div style="font:300 11px 'Noto Sans JP';color:var(--body);line-height:1.8">集中・コントロール・センタリング・フロー・正確性・呼吸の6原則を理論と実践の両面から学ぶ</div>
+        </div>
+        <div style="background:rgba(232,121,249,.04);border:1px solid rgba(232,121,249,.1);border-radius:6px;padding:10px">
+          <div style="font:700 10px Montserrat;color:#E879F9;margin-bottom:4px">PROGRAM-UNIT-SYSTEM 概要</div>
+          <div style="font:300 11px 'Noto Sans JP';color:var(--body);line-height:1.8">10ユニットの目的と構造、4レベルの定義と段階設計、インストラクター裁量型クラスの考え方</div>
+        </div>
+        <div style="background:rgba(232,121,249,.04);border:1px solid rgba(232,121,249,.1);border-radius:6px;padding:10px">
+          <div style="font:700 10px Montserrat;color:#E879F9;margin-bottom:4px">呼吸と骨盤ニュートラル</div>
+          <div style="font:300 11px 'Noto Sans JP';color:var(--body);line-height:1.8">横隔膜呼吸の原理、ニュートラルポジションの評価法、キューイングの基礎言語</div>
+        </div>
+        <div style="background:rgba(232,121,249,.04);border:1px solid rgba(232,121,249,.1);border-radius:6px;padding:10px">
+          <div style="font:700 10px Montserrat;color:#E879F9;margin-bottom:4px">機能解剖学</div>
+          <div style="font:300 11px 'Noto Sans JP';color:var(--body);line-height:1.8">脊柱・骨盤・肩甲帯・股関節の構造と動き、ピラティスに必要な筋群の理解</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COL 2: マット種目 -->
+    <div style="background:var(--card);border:1px solid var(--border2);border-radius:10px;border-top:3px solid #E879F9;display:flex;flex-direction:column;overflow:hidden">
+      <div style="padding:16px 18px;border-bottom:1px solid var(--border)">
+        <div style="font:700 9px Montserrat;letter-spacing:3px;color:#E879F9;margin-bottom:4px">② マット種目習得</div>
+        <div style="display:flex;align-items:baseline;gap:8px"><span style="font:700 14px 'Noto Sans JP';color:var(--white)">23種目</span><span style="font:400 11px 'Noto Sans JP';color:var(--muted)">15h</span></div>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:14px 18px;display:flex;flex-direction:column;gap:6px">
+        <div style="font:600 9px Montserrat;letter-spacing:2px;color:var(--muted);margin-bottom:2px">UNIT別 種目構成</div>
+        <div style="padding:8px 12px;background:rgba(232,121,249,.04);border-left:2px solid #E879F9;border-radius:2px"><div style="font:600 10px Montserrat;color:#E879F9">U01 WARM UP</div><div style="font:300 10px 'Noto Sans JP';color:var(--body);margin-top:2px">Breathing / Pelvic Clock / Cat Stretch 等</div></div>
+        <div style="padding:8px 12px;background:rgba(232,121,249,.04);border-left:2px solid #E879F9;border-radius:2px"><div style="font:600 10px Montserrat;color:#E879F9">U03 ABDOMINAL</div><div style="font:300 10px 'Noto Sans JP';color:var(--body);margin-top:2px">Chest Lift / Hundred Prep / Roll Up Prep 等</div></div>
+        <div style="padding:8px 12px;background:rgba(232,121,249,.04);border-left:2px solid #E879F9;border-radius:2px"><div style="font:600 10px Montserrat;color:#E879F9">U04 HIP WORK</div><div style="font:300 10px 'Noto Sans JP';color:var(--body);margin-top:2px">Bridging / Single Leg Circle / Clam 等</div></div>
+        <div style="padding:8px 12px;background:rgba(232,121,249,.04);border-left:2px solid #E879F9;border-radius:2px"><div style="font:600 10px Montserrat;color:#E879F9">U05 SPINAL ART.</div><div style="font:300 10px 'Noto Sans JP';color:var(--body);margin-top:2px">Spine Twist / Mermaid / Swimming Prep 等</div></div>
+        <div style="padding:8px 12px;background:rgba(232,121,249,.04);border-left:2px solid #E879F9;border-radius:2px"><div style="font:600 10px Montserrat;color:#E879F9">U10 BACK EXT.</div><div style="font:300 10px 'Noto Sans JP';color:var(--body);margin-top:2px">Swan Prep / Back Extension 等</div></div>
+        <div style="margin-top:auto;padding:10px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:6px">
+          <div style="font:600 9px Montserrat;color:var(--muted);margin-bottom:4px">学習ポイント</div>
+          <div style="font:300 10px 'Noto Sans JP';color:var(--dim);line-height:1.7">床上での基本動作パターンを身体に定着させる。器具を使わずに10ユニットの動きの本質を理解する</div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+  <!-- 時間内訳 -->
+  <div style="flex-shrink:0;display:flex;gap:12px;align-items:stretch">
+    <div style="flex:1;padding:12px 16px;background:rgba(232,121,249,.06);border:1px solid rgba(232,121,249,.15);border-radius:8px">
+      <div style="font:700 9px Montserrat;letter-spacing:2px;color:#E879F9;margin-bottom:8px">直接指導 <span style="font:900 16px 'Bebas Neue'">25</span><span style="font-size:9px">h</span></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <span style="padding:3px 8px;background:rgba(232,121,249,.1);border:1px solid rgba(232,121,249,.2);border-radius:3px;font:400 9px 'Noto Sans JP';color:var(--body)">理論・解剖学 10h</span>
+        <span style="padding:3px 8px;background:rgba(232,121,249,.1);border:1px solid rgba(232,121,249,.2);border-radius:3px;font:400 9px 'Noto Sans JP';color:var(--body)">マット実技 15h</span>
+      </div>
+    </div>
+    <div style="flex:1.2;padding:12px 16px;background:rgba(255,255,255,.03);border:1px solid var(--border2);border-radius:8px">
+      <div style="font:700 9px Montserrat;letter-spacing:2px;color:var(--muted);margin-bottom:8px">自主学習 <span style="font:900 16px 'Bebas Neue';color:var(--white)">40</span><span style="font-size:9px">h</span></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <span style="padding:3px 8px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:3px;font:400 9px 'Noto Sans JP';color:var(--body)">自主練習 20h</span>
+        <span style="padding:3px 8px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:3px;font:400 9px 'Noto Sans JP';color:var(--body)">筆記学習 15h</span>
+        <span style="padding:3px 8px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:3px;font:400 9px 'Noto Sans JP';color:var(--body)">見学実習 5h</span>
+      </div>
+    </div>
+    <div style="padding:12px 16px;background:rgba(232,121,249,.1);border:1px solid rgba(232,121,249,.3);border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:80px">
+      <div style="font:900 28px 'Bebas Neue';color:#E879F9">65<span style="font-size:12px">h</span></div>
+      <div style="font:600 8px Montserrat;letter-spacing:2px;color:rgba(232,121,249,.6)">TOTAL</div>
+      <div style="font:300 9px 'Noto Sans JP';color:var(--muted);margin-top:2px">13日（5h/日）</div>
+    </div>
+  </div>
+
+  <!-- 到達目標 -->
+  <div style="flex-shrink:0;padding:14px 20px;background:rgba(232,121,249,.05);border:1px solid rgba(232,121,249,.2);border-radius:8px;display:flex;align-items:center;gap:16px">
+    <div style="font:700 9px Montserrat;letter-spacing:3px;color:#E879F9;flex-shrink:0">到達目標</div>
+    <div style="width:1px;height:20px;background:rgba(232,121,249,.3)"></div>
+    <div style="font:500 12px 'Noto Sans JP';color:var(--white);line-height:1.7"><span style="color:#E879F9">MAT 全23種目</span>の正確な実施とキューイング基礎を習得した状態</div>
+    <button onclick="show(5)" style="margin-left:auto;padding:8px 18px;background:rgba(129,140,248,.15);border:1px solid rgba(129,140,248,.3);border-radius:4px;color:#818cf8;font:700 9px Montserrat;letter-spacing:1px;cursor:pointer;flex-shrink:0">STEP 2 へ →</button>
+  </div>
+
+</div>
+</div>
+
+<!-- ════════════════════════════════════
+     SLIDE 22 — STEP 2 REFORMER PRE+F
+════════════════════════════════════ -->
+<div class="slide" data-slide="5" data-title="STEP 2 ─ REFORMER PRE+F">
+<div style="display:flex;flex-direction:column;height:100vh;overflow-y:auto;padding:20px 40px;gap:20px">
+
+  <!-- ヘッダー -->
+  <div style="display:flex;align-items:center;gap:16px;flex-shrink:0">
+    <div style="width:48px;height:48px;border-radius:50%;background:rgba(129,140,248,.15);border:2px solid rgba(129,140,248,.4);display:flex;align-items:center;justify-content:center;font:900 22px Montserrat;color:#818cf8;flex-shrink:0">2</div>
+    <div>
+      <div style="font:900 10px Montserrat;letter-spacing:5px;color:#818cf8">STEP 2 ─ REFORMER 基礎</div>
+      <div style="font:700 22px 'Noto Sans JP';color:var(--white);margin-top:2px">REFORMER PRE + FUNDAMENTAL 習得</div>
+    </div>
+    <div style="margin-left:auto;display:flex;gap:16px;align-items:center">
+      <div style="text-align:center"><div style="font:900 28px 'Bebas Neue';color:var(--white)">12<span style="font-size:12px;color:var(--muted)">週</span></div><div style="font:600 8px Montserrat;letter-spacing:2px;color:var(--dim)">W9–20</div></div>
+      <div style="text-align:center"><div style="font:900 28px 'Bebas Neue';color:#818cf8">62<span style="font-size:12px;color:var(--muted)">種目</span></div><div style="font:600 8px Montserrat;letter-spacing:2px;color:var(--dim)">EXERCISES</div></div>
+      <div style="text-align:center"><div style="font:900 28px 'Bebas Neue';color:#818cf8">105<span style="font-size:12px">h</span></div><div style="font:600 8px Montserrat;letter-spacing:1px;color:rgba(129,140,248,.6)">TOTAL</div></div>
+      <button onclick="show(3)" style="padding:6px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:4px;color:var(--muted);font:700 9px Montserrat;letter-spacing:1px;cursor:pointer">← ロードマップ</button>
+    </div>
+  </div>
+
+  <!-- 週別タイムライン -->
+  <div style="flex-shrink:0;display:flex;gap:2px;align-items:stretch;height:28px">
+    <div style="flex:4;background:rgba(129,140,248,.15);border-radius:4px 0 0 4px;display:flex;align-items:center;justify-content:center"><span style="font:700 9px Montserrat;color:#818cf8;letter-spacing:1px">W9–12 器具操作基礎</span></div>
+    <div style="flex:4;background:rgba(129,140,248,.1);display:flex;align-items:center;justify-content:center"><span style="font:700 9px Montserrat;color:#818cf8;letter-spacing:1px">W13–16 PRE種目</span></div>
+    <div style="flex:4;background:rgba(129,140,248,.07);border-radius:0 4px 4px 0;display:flex;align-items:center;justify-content:center"><span style="font:700 9px Montserrat;color:#818cf8;letter-spacing:1px">W17–20 F種目</span></div>
+  </div>
+
+  <!-- 3カラム詳細 -->
+  <div style="flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;min-height:0">
+
+    <!-- COL 1: 器具操作基礎 -->
+    <div style="background:var(--card);border:1px solid var(--border2);border-radius:10px;border-top:3px solid #818cf8;display:flex;flex-direction:column;overflow:hidden">
+      <div style="padding:16px 18px;border-bottom:1px solid var(--border)">
+        <div style="font:700 9px Montserrat;letter-spacing:3px;color:#818cf8;margin-bottom:4px">① 器具操作の基礎</div>
+        <div style="font:700 14px 'Noto Sans JP';color:var(--white)">10h</div>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:14px 18px;display:flex;flex-direction:column;gap:10px">
+        <div style="background:rgba(129,140,248,.04);border:1px solid rgba(129,140,248,.1);border-radius:6px;padding:10px">
+          <div style="font:700 10px Montserrat;color:#818cf8;margin-bottom:4px">スプリング設定</div>
+          <div style="font:300 11px 'Noto Sans JP';color:var(--body);line-height:1.8">R/Y/B/G構成の理解、種目ごとの適切なスプリング選択、安全な切替手順</div>
+        </div>
+        <div style="background:rgba(129,140,248,.04);border:1px solid rgba(129,140,248,.1);border-radius:6px;padding:10px">
+          <div style="font:700 10px Montserrat;color:#818cf8;margin-bottom:4px">器具調整</div>
+          <div style="font:300 11px 'Noto Sans JP';color:var(--body);line-height:1.8">ヘッドレスト・フットバー・ストラップの調整、クライアントの体格に合わせたセッティング</div>
+        </div>
+        <div style="background:rgba(129,140,248,.04);border:1px solid rgba(129,140,248,.1);border-radius:6px;padding:10px">
+          <div style="font:700 10px Montserrat;color:#818cf8;margin-bottom:4px">安全管理</div>
+          <div style="font:300 11px 'Noto Sans JP';color:var(--body);line-height:1.8">安全な乗降手順、スポッティング技術、緊急時の対応プロトコル</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COL 2: PRE レベル -->
+    <div style="background:var(--card);border:1px solid var(--border2);border-radius:10px;border-top:3px solid #818cf8;display:flex;flex-direction:column;overflow:hidden">
+      <div style="padding:16px 18px;border-bottom:1px solid var(--border)">
+        <div style="font:700 9px Montserrat;letter-spacing:3px;color:#818cf8;margin-bottom:4px">② PRE レベル種目</div>
+        <div style="display:flex;align-items:baseline;gap:8px"><span style="font:700 14px 'Noto Sans JP';color:var(--white)">48種目中の該当分</span><span style="font:400 11px 'Noto Sans JP';color:var(--muted)">15h</span></div>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:14px 18px;display:flex;flex-direction:column;gap:6px">
+        <div style="font:600 9px Montserrat;letter-spacing:2px;color:var(--muted);margin-bottom:2px">UNIT別 種目構成</div>
+        <div style="padding:8px 12px;background:rgba(129,140,248,.04);border-left:2px solid #818cf8;border-radius:2px"><div style="font:600 10px Montserrat;color:#818cf8">U01 WARM UP</div><div style="font:300 10px 'Noto Sans JP';color:var(--body);margin-top:2px">Footwork / Pelvic Lift 等</div></div>
+        <div style="padding:8px 12px;background:rgba(129,140,248,.04);border-left:2px solid #818cf8;border-radius:2px"><div style="font:600 10px Montserrat;color:#818cf8">U03 ABDOMINAL</div><div style="font:300 10px 'Noto Sans JP';color:var(--body);margin-top:2px">Hundred / Coordination 等</div></div>
+        <div style="padding:8px 12px;background:rgba(129,140,248,.04);border-left:2px solid #818cf8;border-radius:2px"><div style="font:600 10px Montserrat;color:#818cf8">U04 HIP WORK</div><div style="font:300 10px 'Noto Sans JP';color:var(--body);margin-top:2px">Leg Circle / Frog / Running 等</div></div>
+        <div style="padding:8px 12px;background:rgba(129,140,248,.04);border-left:2px solid #818cf8;border-radius:2px"><div style="font:600 10px Montserrat;color:#818cf8">U05 SPINAL ART.</div><div style="font:300 10px 'Noto Sans JP';color:var(--body);margin-top:2px">Short Spine / Mermaid 等</div></div>
+        <div style="padding:8px 12px;background:rgba(129,140,248,.04);border-left:2px solid #818cf8;border-radius:2px"><div style="font:600 10px Montserrat;color:#818cf8">U06–U10</div><div style="font:300 10px 'Noto Sans JP';color:var(--body);margin-top:2px">全10ユニットの導入種目を網羅</div></div>
+        <div style="margin-top:auto;padding:10px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:6px">
+          <div style="font:600 9px Montserrat;color:var(--muted);margin-bottom:4px">学習ポイント</div>
+          <div style="font:300 10px 'Noto Sans JP';color:var(--dim);line-height:1.7">安全で基本的な動作パターンを器具上で実践。MATで学んだ動作原理をReformerに展開</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COL 3: FUNDAMENTAL レベル -->
+    <div style="background:var(--card);border:1px solid var(--border2);border-radius:10px;border-top:3px solid #818cf8;display:flex;flex-direction:column;overflow:hidden">
+      <div style="padding:16px 18px;border-bottom:1px solid var(--border)">
+        <div style="font:700 9px Montserrat;letter-spacing:3px;color:#818cf8;margin-bottom:4px">③ FUNDAMENTAL レベル</div>
+        <div style="display:flex;align-items:baseline;gap:8px"><span style="font:700 14px 'Noto Sans JP';color:var(--white)">発展種目</span><span style="font:400 11px 'Noto Sans JP';color:var(--muted)">20h</span></div>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:14px 18px;display:flex;flex-direction:column;gap:8px">
+        <div style="background:rgba(129,140,248,.04);border:1px solid rgba(129,140,248,.1);border-radius:6px;padding:10px">
+          <div style="font:700 10px Montserrat;color:#818cf8;margin-bottom:4px">PREからの発展</div>
+          <div style="font:300 10px 'Noto Sans JP';color:var(--body);line-height:1.7">動作の正確性と流れを追求。PRE種目の精度を高め、Fundamentalレベルの新規種目を追加</div>
+        </div>
+        <div style="background:rgba(129,140,248,.04);border:1px solid rgba(129,140,248,.1);border-radius:6px;padding:10px">
+          <div style="font:700 10px Montserrat;color:#818cf8;margin-bottom:4px">基礎指導力の養成</div>
+          <div style="font:300 10px 'Noto Sans JP';color:var(--body);line-height:1.7">キューイングの質を向上させ、基礎レベルのクラスを設計・実施できる指導力を構築</div>
+        </div>
+        <div style="margin-top:auto;display:flex;flex-direction:column;gap:6px">
+          <div style="font:600 9px Montserrat;letter-spacing:2px;color:var(--muted)">修了チェック項目</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px">
+            <span style="font:400 9px 'Noto Sans JP';padding:4px 8px;background:rgba(129,140,248,.08);border:1px solid rgba(129,140,248,.15);border-radius:3px;color:var(--body)">✓ スプリング設定</span>
+            <span style="font:400 9px 'Noto Sans JP';padding:4px 8px;background:rgba(129,140,248,.08);border:1px solid rgba(129,140,248,.15);border-radius:3px;color:var(--body)">✓ キューイング基礎</span>
+            <span style="font:400 9px 'Noto Sans JP';padding:4px 8px;background:rgba(129,140,248,.08);border:1px solid rgba(129,140,248,.15);border-radius:3px;color:var(--body)">✓ 見学実習 2回</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 時間内訳 -->
+  <div style="flex-shrink:0;display:flex;gap:12px;align-items:stretch">
+    <div style="flex:1;padding:12px 16px;background:rgba(129,140,248,.06);border:1px solid rgba(129,140,248,.15);border-radius:8px">
+      <div style="font:700 9px Montserrat;letter-spacing:2px;color:#818cf8;margin-bottom:8px">直接指導 <span style="font:900 16px 'Bebas Neue'">45</span><span style="font-size:9px">h</span></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <span style="padding:3px 8px;background:rgba(129,140,248,.1);border:1px solid rgba(129,140,248,.2);border-radius:3px;font:400 9px 'Noto Sans JP';color:var(--body)">器具操作基礎 10h</span>
+        <span style="padding:3px 8px;background:rgba(129,140,248,.1);border:1px solid rgba(129,140,248,.2);border-radius:3px;font:400 9px 'Noto Sans JP';color:var(--body)">PRE種目 15h</span>
+        <span style="padding:3px 8px;background:rgba(129,140,248,.1);border:1px solid rgba(129,140,248,.2);border-radius:3px;font:400 9px 'Noto Sans JP';color:var(--body)">F種目 20h</span>
+      </div>
+    </div>
+    <div style="flex:1.2;padding:12px 16px;background:rgba(255,255,255,.03);border:1px solid var(--border2);border-radius:8px">
+      <div style="font:700 9px Montserrat;letter-spacing:2px;color:var(--muted);margin-bottom:8px">自主学習 <span style="font:900 16px 'Bebas Neue';color:var(--white)">60</span><span style="font-size:9px">h</span></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <span style="padding:3px 8px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:3px;font:400 9px 'Noto Sans JP';color:var(--body)">自主練習 40h</span>
+        <span style="padding:3px 8px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:3px;font:400 9px 'Noto Sans JP';color:var(--body)">見学実習 10h</span>
+        <span style="padding:3px 8px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:3px;font:400 9px 'Noto Sans JP';color:var(--body)">模擬レッスン 10h</span>
+      </div>
+    </div>
+    <div style="padding:12px 16px;background:rgba(129,140,248,.1);border:1px solid rgba(129,140,248,.3);border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:80px">
+      <div style="font:900 28px 'Bebas Neue';color:#818cf8">105<span style="font-size:12px">h</span></div>
+      <div style="font:600 8px Montserrat;letter-spacing:2px;color:rgba(129,140,248,.6)">TOTAL</div>
+      <div style="font:300 9px 'Noto Sans JP';color:var(--muted);margin-top:2px">21日（5h/日）</div>
+    </div>
+  </div>
+
+  <!-- 到達目標 -->
+  <div style="flex-shrink:0;padding:14px 20px;background:rgba(129,140,248,.05);border:1px solid rgba(129,140,248,.2);border-radius:8px;display:flex;align-items:center;gap:16px">
+    <div style="font:700 9px Montserrat;letter-spacing:3px;color:#818cf8;flex-shrink:0">到達目標</div>
+    <div style="width:1px;height:20px;background:rgba(129,140,248,.3)"></div>
+    <div style="font:500 12px 'Noto Sans JP';color:var(--white);line-height:1.7">Reformer <span style="color:#818cf8">PRE + Fundamental</span> レベルのクラスを設計・実施できる状態</div>
+    <button onclick="show(6)" style="margin-left:auto;padding:8px 18px;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);border-radius:4px;color:#f59e0b;font:700 9px Montserrat;letter-spacing:1px;cursor:pointer;flex-shrink:0">STEP 3 へ →</button>
+  </div>
+
+</div>
+</div>
+
+<!-- ════════════════════════════════════
+     SLIDE 23 — STEP 3 中級段階 詳細
+════════════════════════════════════ -->
+<div class="slide" data-slide="6" data-title="STEP 3 ─ 中級段階">
+<div style="display:flex;flex-direction:column;height:100vh;overflow-y:auto;padding:20px 40px;gap:20px">
+
+  <!-- ヘッダー -->
+  <div style="display:flex;align-items:center;gap:16px;flex-shrink:0">
+    <div style="width:48px;height:48px;border-radius:50%;background:rgba(129,140,248,.15);border:2px solid rgba(129,140,248,.4);display:flex;align-items:center;justify-content:center;font:900 22px Montserrat;color:#818cf8;flex-shrink:0">3</div>
+    <div>
+      <div style="font:900 10px Montserrat;letter-spacing:5px;color:#818cf8">STEP 3 ─ 中級段階</div>
+      <div style="font:700 22px 'Noto Sans JP';color:var(--white);margin-top:2px">REFORMER I &amp; CADILLAC 習得</div>
+    </div>
+    <div style="margin-left:auto;display:flex;gap:16px;align-items:center">
+      <div style="text-align:center"><div style="font:900 28px 'Bebas Neue';color:var(--white)">14<span style="font-size:12px;color:var(--muted)">週</span></div><div style="font:600 8px Montserrat;letter-spacing:2px;color:var(--dim)">W21–34</div></div>
+      <div style="text-align:center"><div style="font:900 28px 'Bebas Neue';color:#818cf8">143<span style="font-size:12px;color:var(--muted)">種目</span></div><div style="font:600 8px Montserrat;letter-spacing:2px;color:var(--dim)">EXERCISES</div></div>
+      <div style="text-align:center"><div style="font:900 28px 'Bebas Neue';color:#818cf8">220<span style="font-size:12px">h</span></div><div style="font:600 8px Montserrat;letter-spacing:1px;color:rgba(129,140,248,.6)">TOTAL</div></div>
+      <button onclick="show(3)" style="padding:6px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:4px;color:var(--muted);font:700 9px Montserrat;letter-spacing:1px;cursor:pointer">← ロードマップ</button>
+    </div>
+  </div>
+
+  <!-- 週別タイムライン -->
+  <div style="flex-shrink:0;display:flex;gap:2px;align-items:stretch;height:28px">
+    <div style="flex:5;background:rgba(129,140,248,.12);border-radius:4px 0 0 4px;display:flex;align-items:center;justify-content:center"><span style="font:700 9px Montserrat;color:#818cf8;letter-spacing:1px">W13–20 Reformer Intermediate</span></div>
+    <div style="flex:3;background:rgba(45,168,120,.12);display:flex;align-items:center;justify-content:center"><span style="font:700 9px Montserrat;color:#2da878;letter-spacing:1px">W19–24 Cadillac F+I</span></div>
+    <div style="flex:2;background:rgba(255,255,255,.06);border-radius:0 4px 4px 0;display:flex;align-items:center;justify-content:center"><span style="font:700 9px Montserrat;color:var(--muted);letter-spacing:1px">W25–26 実習</span></div>
+  </div>
+
+  <!-- 2カラム詳細 -->
+  <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:16px;min-height:0">
+
+    <!-- COL 1: Reformer Intermediate -->
+    <div style="background:var(--card);border:1px solid var(--border2);border-radius:10px;border-top:3px solid #818cf8;display:flex;flex-direction:column;overflow:hidden">
+      <div style="padding:16px 18px;border-bottom:1px solid var(--border)">
+        <div style="font:700 9px Montserrat;letter-spacing:3px;color:#818cf8;margin-bottom:4px">① REFORMER INTERMEDIATE</div>
+        <div style="display:flex;align-items:baseline;gap:8px"><span style="font:700 14px 'Noto Sans JP';color:var(--white)">83種目</span><span style="font:400 11px 'Noto Sans JP';color:var(--muted)">55h</span></div>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:14px 18px;display:flex;flex-direction:column;gap:8px">
+        <div style="background:rgba(129,140,248,.04);border:1px solid rgba(129,140,248,.1);border-radius:6px;padding:10px">
+          <div style="font:700 10px Montserrat;color:#818cf8;margin-bottom:4px">STEP1からの積み上げ</div>
+          <div style="font:300 10px 'Noto Sans JP';color:var(--body);line-height:1.7">PRE+Fで習得した62種目の上に、Intermediateレベルの新規種目を段階的に追加。動作の精度とフローを重視</div>
+        </div>
+        <div style="background:rgba(129,140,248,.04);border:1px solid rgba(129,140,248,.1);border-radius:6px;padding:10px">
+          <div style="font:700 10px Montserrat;color:#818cf8;margin-bottom:4px">種目の質的変化</div>
+          <div style="font:300 10px 'Noto Sans JP';color:var(--body);line-height:1.7">複合動作の増加、スプリング負荷の多様化、フローの中での移行技術、呼吸とムーブメントの統合</div>
+        </div>
+        <div style="background:rgba(129,140,248,.04);border:1px solid rgba(129,140,248,.1);border-radius:6px;padding:10px">
+          <div style="font:700 10px Montserrat;color:#818cf8;margin-bottom:4px">キューイングの深化</div>
+          <div style="font:300 10px 'Noto Sans JP';color:var(--body);line-height:1.7">視覚的・触覚的・言語的キューの使い分け。参加者の動作を観察し即座にフィードバックする力を養う</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COL 2: Cadillac F+I -->
+    <div style="background:var(--card);border:1px solid var(--border2);border-radius:10px;border-top:3px solid #2da878;display:flex;flex-direction:column;overflow:hidden">
+      <div style="padding:16px 18px;border-bottom:1px solid var(--border)">
+        <div style="font:700 9px Montserrat;letter-spacing:3px;color:#2da878;margin-bottom:4px">② CADILLAC F + I</div>
+        <div style="display:flex;align-items:baseline;gap:8px"><span style="font:700 14px 'Noto Sans JP';color:var(--white)">60種目</span><span style="font:400 11px 'Noto Sans JP';color:var(--muted)">35h</span></div>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:14px 18px;display:flex;flex-direction:column;gap:8px">
+        <div style="background:rgba(45,168,120,.04);border:1px solid rgba(45,168,120,.1);border-radius:6px;padding:10px">
+          <div style="font:700 10px Montserrat;color:#2da878;margin-bottom:4px">器具構造の理解</div>
+          <div style="font:300 10px 'Noto Sans JP';color:var(--body);line-height:1.7">プッシュスルーバー・タワー・ロールダウンバー・トラピーズの構造と安全な操作方法</div>
+        </div>
+        <div style="background:rgba(45,168,120,.04);border:1px solid rgba(45,168,120,.1);border-radius:6px;padding:10px">
+          <div style="font:700 10px Montserrat;color:#2da878;margin-bottom:4px">スプリング設定の原則</div>
+          <div style="font:300 10px 'Noto Sans JP';color:var(--body);line-height:1.7">Cadillac特有のスプリング配置と負荷調整。Reformerとの違いを理解し安全に使用する</div>
+        </div>
+        <div style="background:rgba(45,168,120,.04);border:1px solid rgba(45,168,120,.1);border-radius:6px;padding:10px">
+          <div style="font:700 10px Montserrat;color:#2da878;margin-bottom:4px">F + I レベル種目</div>
+          <div style="font:300 10px 'Noto Sans JP';color:var(--body);line-height:1.7">全10ユニットにわたるCadillac種目を段階的に習得。パーソナル指導での活用法を学ぶ</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:auto">
+          <div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:6px;padding:8px 10px">
+            <div style="font:700 9px Montserrat;color:var(--muted);margin-bottom:3px">指導実習</div>
+            <div style="font:300 9px 'Noto Sans JP';color:var(--dim);line-height:1.6">実際のクラスでの補助指導とセッション構成の実践</div>
+          </div>
+          <div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:6px;padding:8px 10px">
+            <div style="font:700 9px Montserrat;color:var(--muted);margin-bottom:3px">プログラム設計</div>
+            <div style="font:300 9px 'Noto Sans JP';color:var(--dim);line-height:1.6">60分レッスンの設計・ユニット配分・レベル別構成</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 時間内訳 -->
+  <div style="flex-shrink:0;display:flex;gap:12px;align-items:stretch">
+    <div style="flex:1;padding:12px 16px;background:rgba(129,140,248,.06);border:1px solid rgba(129,140,248,.15);border-radius:8px">
+      <div style="font:700 9px Montserrat;letter-spacing:2px;color:#818cf8;margin-bottom:8px">直接指導 <span style="font:900 16px 'Bebas Neue'">105</span><span style="font-size:9px">h</span></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <span style="padding:3px 8px;background:rgba(129,140,248,.1);border:1px solid rgba(129,140,248,.2);border-radius:3px;font:400 9px 'Noto Sans JP';color:var(--body)">Reformer I 55h</span>
+        <span style="padding:3px 8px;background:rgba(45,168,120,.1);border:1px solid rgba(45,168,120,.2);border-radius:3px;font:400 9px 'Noto Sans JP';color:var(--body)">Cadillac F+I 35h</span>
+        <span style="padding:3px 8px;background:rgba(129,140,248,.1);border:1px solid rgba(129,140,248,.2);border-radius:3px;font:400 9px 'Noto Sans JP';color:var(--body)">指導実習 15h</span>
+      </div>
+    </div>
+    <div style="flex:1.2;padding:12px 16px;background:rgba(255,255,255,.03);border:1px solid var(--border2);border-radius:8px">
+      <div style="font:700 9px Montserrat;letter-spacing:2px;color:var(--muted);margin-bottom:8px">自主学習 <span style="font:900 16px 'Bebas Neue';color:var(--white)">115</span><span style="font-size:9px">h</span></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <span style="padding:3px 8px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:3px;font:400 9px 'Noto Sans JP';color:var(--body)">自主練習 60h</span>
+        <span style="padding:3px 8px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:3px;font:400 9px 'Noto Sans JP';color:var(--body)">模擬レッスン 30h</span>
+        <span style="padding:3px 8px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:3px;font:400 9px 'Noto Sans JP';color:var(--body)">見学実習 15h</span>
+        <span style="padding:3px 8px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:3px;font:400 9px 'Noto Sans JP';color:var(--body)">レポート課題 10h</span>
+      </div>
+    </div>
+    <div style="padding:12px 16px;background:rgba(129,140,248,.1);border:1px solid rgba(129,140,248,.3);border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:80px">
+      <div style="font:900 28px 'Bebas Neue';color:#818cf8">220<span style="font-size:12px">h</span></div>
+      <div style="font:600 8px Montserrat;letter-spacing:2px;color:rgba(129,140,248,.6)">TOTAL</div>
+      <div style="font:300 9px 'Noto Sans JP';color:var(--muted);margin-top:2px">44日（5h/日）</div>
+    </div>
+  </div>
+
+  <!-- 到達目標 -->
+  <div style="flex-shrink:0;padding:14px 20px;background:rgba(129,140,248,.05);border:1px solid rgba(129,140,248,.2);border-radius:8px;display:flex;align-items:center;gap:16px">
+    <div style="font:700 9px Montserrat;letter-spacing:3px;color:#818cf8;flex-shrink:0">到達目標</div>
+    <div style="width:1px;height:20px;background:rgba(129,140,248,.3)"></div>
+    <div style="font:500 12px 'Noto Sans JP';color:var(--white);line-height:1.7">Reformer <span style="color:#818cf8">Intermediate</span> + Cadillac <span style="color:#2da878">F+I</span> を使った60分レッスンを自力で設計できる状態</div>
+    <button onclick="show(7)" style="margin-left:auto;padding:8px 18px;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);border-radius:4px;color:#f59e0b;font:700 9px Montserrat;letter-spacing:1px;cursor:pointer;flex-shrink:0">STEP 4 へ →</button>
+  </div>
+
+</div>
+</div>
+
+<!-- ════════════════════════════════════
+     SLIDE 23 — STEP 3 応用段階 詳細
+════════════════════════════════════ -->
+<div class="slide" data-slide="7" data-title="STEP 4 ─ 応用段階">
+<div style="display:flex;flex-direction:column;height:100vh;overflow-y:auto;padding:20px 40px;gap:20px">
+
+  <!-- ヘッダー -->
+  <div style="display:flex;align-items:center;gap:16px;flex-shrink:0">
+    <div style="width:48px;height:48px;border-radius:50%;background:rgba(245,158,11,.15);border:2px solid rgba(245,158,11,.4);display:flex;align-items:center;justify-content:center;font:900 22px Montserrat;color:#f59e0b;flex-shrink:0">4</div>
+    <div>
+      <div style="font:900 10px Montserrat;letter-spacing:5px;color:#f59e0b">STEP 4 ─ 応用段階</div>
+      <div style="font:700 22px 'Noto Sans JP';color:var(--white);margin-top:2px">CHAIR / BARREL / SPINE CORRECTOR</div>
+    </div>
+    <div style="margin-left:auto;display:flex;gap:16px;align-items:center">
+      <div style="text-align:center"><div style="font:900 28px 'Bebas Neue';color:var(--white)">4<span style="font-size:12px;color:var(--muted)">週</span></div><div style="font:600 8px Montserrat;letter-spacing:2px;color:var(--dim)">W35–38</div></div>
+      <div style="text-align:center"><div style="font:900 28px 'Bebas Neue';color:#f59e0b">75<span style="font-size:12px;color:var(--muted)">種目</span></div><div style="font:600 8px Montserrat;letter-spacing:2px;color:var(--dim)">EXERCISES</div></div>
+      <div style="text-align:center"><div style="font:900 28px 'Bebas Neue';color:#f59e0b">75<span style="font-size:12px">h</span></div><div style="font:600 8px Montserrat;letter-spacing:1px;color:rgba(245,158,11,.6)">TOTAL</div></div>
+      <button onclick="show(3)" style="padding:6px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:4px;color:var(--muted);font:700 9px Montserrat;letter-spacing:1px;cursor:pointer">← ロードマップ</button>
+    </div>
+  </div>
+
+  <!-- 3カラム: 器具別 -->
+  <div style="flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;min-height:0">
+
+    <!-- CHAIR -->
+    <div style="background:var(--card);border:1px solid var(--border2);border-radius:10px;border-top:3px solid #d4903a;display:flex;flex-direction:column;overflow:hidden">
+      <div style="padding:16px 18px;border-bottom:1px solid var(--border)">
+        <div style="font:700 9px Montserrat;letter-spacing:3px;color:#d4903a;margin-bottom:4px">WUNDA CHAIR</div>
+        <div style="font:700 14px 'Noto Sans JP';color:var(--white)">F + I レベル</div>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:14px 18px;display:flex;flex-direction:column;gap:8px">
+        <div style="background:rgba(212,144,58,.04);border:1px solid rgba(212,144,58,.1);border-radius:6px;padding:10px">
+          <div style="font:700 10px Montserrat;color:#d4903a;margin-bottom:4px">器具特性</div>
+          <div style="font:300 10px 'Noto Sans JP';color:var(--body);line-height:1.7">不安定な座位・立位でのエクササイズ。バランスと体幹安定性への高い要求。ペダルのスプリング設定</div>
+        </div>
+        <div style="background:rgba(212,144,58,.04);border:1px solid rgba(212,144,58,.1);border-radius:6px;padding:10px">
+          <div style="font:700 10px Montserrat;color:#d4903a;margin-bottom:4px">主な種目カテゴリ</div>
+          <div style="font:300 10px 'Noto Sans JP';color:var(--body);line-height:1.7">Footwork系 / Pike系 / Swan系 / Standing系 / Arm Work系</div>
+        </div>
+        <div style="background:rgba(212,144,58,.04);border:1px solid rgba(212,144,58,.1);border-radius:6px;padding:10px">
+          <div style="font:700 10px Montserrat;color:#d4903a;margin-bottom:4px">プログラムへの組み込み</div>
+          <div style="font:300 10px 'Noto Sans JP';color:var(--body);line-height:1.7">グループクラスでのサーキット活用、パーソナルでの集中トレーニング</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BARREL -->
+    <div style="background:var(--card);border:1px solid var(--border2);border-radius:10px;border-top:3px solid #c45880;display:flex;flex-direction:column;overflow:hidden">
+      <div style="padding:16px 18px;border-bottom:1px solid var(--border)">
+        <div style="font:700 9px Montserrat;letter-spacing:3px;color:#c45880;margin-bottom:4px">BARREL</div>
+        <div style="font:700 14px 'Noto Sans JP';color:var(--white)">F + I レベル</div>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:14px 18px;display:flex;flex-direction:column;gap:8px">
+        <div style="background:rgba(196,88,128,.04);border:1px solid rgba(196,88,128,.1);border-radius:6px;padding:10px">
+          <div style="font:700 10px Montserrat;color:#c45880;margin-bottom:4px">器具特性</div>
+          <div style="font:300 10px 'Noto Sans JP';color:var(--body);line-height:1.7">曲面を利用した脊柱の伸展・屈曲・側屈。Ladder Barrel / Arc Barrel の使い分け</div>
+        </div>
+        <div style="background:rgba(196,88,128,.04);border:1px solid rgba(196,88,128,.1);border-radius:6px;padding:10px">
+          <div style="font:700 10px Montserrat;color:#c45880;margin-bottom:4px">主な種目カテゴリ</div>
+          <div style="font:300 10px 'Noto Sans JP';color:var(--body);line-height:1.7">Back Extension系 / Side Bend系 / Hip Stretch系 / Abdominal系</div>
+        </div>
+        <div style="background:rgba(196,88,128,.04);border:1px solid rgba(196,88,128,.1);border-radius:6px;padding:10px">
+          <div style="font:700 10px Montserrat;color:#c45880;margin-bottom:4px">プログラムへの組み込み</div>
+          <div style="font:300 10px 'Noto Sans JP';color:var(--body);line-height:1.7">脊柱モビリティの向上、Reformerとの組み合わせによる総合的アプローチ</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SPINE CORRECTOR -->
+    <div style="background:var(--card);border:1px solid var(--border2);border-radius:10px;border-top:3px solid #9b59b6;display:flex;flex-direction:column;overflow:hidden">
+      <div style="padding:16px 18px;border-bottom:1px solid var(--border)">
+        <div style="font:700 9px Montserrat;letter-spacing:3px;color:#9b59b6;margin-bottom:4px">SPINE CORRECTOR</div>
+        <div style="font:700 14px 'Noto Sans JP';color:var(--white)">F + I レベル</div>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:14px 18px;display:flex;flex-direction:column;gap:8px">
+        <div style="background:rgba(155,89,182,.04);border:1px solid rgba(155,89,182,.1);border-radius:6px;padding:10px">
+          <div style="font:700 10px Montserrat;color:#9b59b6;margin-bottom:4px">器具特性</div>
+          <div style="font:300 10px 'Noto Sans JP';color:var(--body);line-height:1.7">S字カーブを活かした脊柱の矯正的アプローチ。姿勢改善と深部筋の活性化に優れる</div>
+        </div>
+        <div style="background:rgba(155,89,182,.04);border:1px solid rgba(155,89,182,.1);border-radius:6px;padding:10px">
+          <div style="font:700 10px Montserrat;color:#9b59b6;margin-bottom:4px">主な種目カテゴリ</div>
+          <div style="font:300 10px 'Noto Sans JP';color:var(--body);line-height:1.7">Swan系 / Side Lying系 / Abdominal系 / Breathing系</div>
+        </div>
+        <div style="background:rgba(155,89,182,.04);border:1px solid rgba(155,89,182,.1);border-radius:6px;padding:10px">
+          <div style="font:700 10px Montserrat;color:#9b59b6;margin-bottom:4px">プログラムへの組み込み</div>
+          <div style="font:300 10px 'Noto Sans JP';color:var(--body);line-height:1.7">ウォームアップやクールダウンへの活用、リハビリ的要素を持つクライアントへの対応</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 時間内訳 -->
+  <div style="flex-shrink:0;display:flex;gap:12px;align-items:stretch">
+    <div style="flex:1;padding:12px 16px;background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.15);border-radius:8px">
+      <div style="font:700 9px Montserrat;letter-spacing:2px;color:#f59e0b;margin-bottom:8px">直接指導 <span style="font:900 16px 'Bebas Neue'">25</span><span style="font-size:9px">h</span></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <span style="padding:3px 8px;background:rgba(212,144,58,.1);border:1px solid rgba(212,144,58,.2);border-radius:3px;font:400 9px 'Noto Sans JP';color:var(--body)">Chair 実技</span>
+        <span style="padding:3px 8px;background:rgba(196,88,128,.1);border:1px solid rgba(196,88,128,.2);border-radius:3px;font:400 9px 'Noto Sans JP';color:var(--body)">Barrel 実技</span>
+        <span style="padding:3px 8px;background:rgba(155,89,182,.1);border:1px solid rgba(155,89,182,.2);border-radius:3px;font:400 9px 'Noto Sans JP';color:var(--body)">SC 実技</span>
+      </div>
+    </div>
+    <div style="flex:1.2;padding:12px 16px;background:rgba(255,255,255,.03);border:1px solid var(--border2);border-radius:8px">
+      <div style="font:700 9px Montserrat;letter-spacing:2px;color:var(--muted);margin-bottom:8px">自主学習 <span style="font:900 16px 'Bebas Neue';color:var(--white)">50</span><span style="font-size:9px">h</span></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <span style="padding:3px 8px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:3px;font:400 9px 'Noto Sans JP';color:var(--body)">自主練習 30h</span>
+        <span style="padding:3px 8px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:3px;font:400 9px 'Noto Sans JP';color:var(--body)">模擬レッスン 15h</span>
+        <span style="padding:3px 8px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:3px;font:400 9px 'Noto Sans JP';color:var(--body)">見学実習 5h</span>
+      </div>
+    </div>
+    <div style="padding:12px 16px;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:80px">
+      <div style="font:900 28px 'Bebas Neue';color:#f59e0b">75<span style="font-size:12px">h</span></div>
+      <div style="font:600 8px Montserrat;letter-spacing:2px;color:rgba(245,158,11,.6)">TOTAL</div>
+      <div style="font:300 9px 'Noto Sans JP';color:var(--muted);margin-top:2px">15日（5h/日）</div>
+    </div>
+  </div>
+
+  <!-- 到達目標 + 修了審査 -->
+  <div style="flex-shrink:0;display:flex;gap:16px">
+    <div style="flex:1;padding:14px 20px;background:rgba(245,158,11,.05);border:1px solid rgba(245,158,11,.2);border-radius:8px;display:flex;align-items:center;gap:16px">
+      <div style="font:700 9px Montserrat;letter-spacing:3px;color:#f59e0b;flex-shrink:0">到達目標</div>
+      <div style="width:1px;height:20px;background:rgba(245,158,11,.3)"></div>
+      <div style="font:500 12px 'Noto Sans JP';color:var(--white);line-height:1.7"><span style="color:#f59e0b">6器具すべて</span>のF + I レベルを指導できる状態</div>
+    </div>
+    <div style="padding:14px 20px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;gap:12px">
+      <div style="font:700 9px Montserrat;letter-spacing:2px;color:var(--muted)">修了審査</div>
+      <div style="font:300 11px 'Noto Sans JP';color:var(--dim)">全器具60分レッスン実施 ＋ 筆記試験</div>
+    </div>
+    <button onclick="show(8)" style="padding:8px 18px;background:rgba(225,29,72,.15);border:1px solid rgba(225,29,72,.3);border-radius:4px;color:#e11d48;font:700 9px Montserrat;letter-spacing:1px;cursor:pointer;flex-shrink:0;align-self:center">STEP 5 へ →</button>
+  </div>
+
+</div>
+</div>
+
+<!-- ════════════════════════════════════
+     SLIDE 24 — STEP 4 上級段階 詳細
+════════════════════════════════════ -->
+<div class="slide" data-slide="8" data-title="STEP 5 ─ 上級段階">
+<div style="display:flex;flex-direction:column;height:100vh;overflow-y:auto;padding:20px 40px;gap:20px">
+
+  <!-- ヘッダー -->
+  <div style="display:flex;align-items:center;gap:16px;flex-shrink:0">
+    <div style="width:48px;height:48px;border-radius:50%;background:rgba(225,29,72,.15);border:2px solid rgba(225,29,72,.4);display:flex;align-items:center;justify-content:center;font:900 22px Montserrat;color:#e11d48;flex-shrink:0">5</div>
+    <div>
+      <div style="font:900 10px Montserrat;letter-spacing:5px;color:#e11d48">STEP 5 ─ 上級段階</div>
+      <div style="font:700 22px 'Noto Sans JP';color:var(--white);margin-top:2px">全器具 ADVANCE &amp; 認定</div>
+    </div>
+    <div style="margin-left:auto;display:flex;gap:16px;align-items:center">
+      <div style="text-align:center"><div style="font:900 28px 'Bebas Neue';color:var(--white)">12<span style="font-size:12px;color:var(--muted)">週</span></div><div style="font:600 8px Montserrat;letter-spacing:2px;color:var(--dim)">W39–50</div></div>
+      <div style="text-align:center"><div style="font:900 28px 'Bebas Neue';color:#e11d48">71<span style="font-size:12px;color:var(--muted)">種目</span></div><div style="font:600 8px Montserrat;letter-spacing:2px;color:var(--dim)">EXERCISES</div></div>
+      <div style="text-align:center"><div style="font:900 28px 'Bebas Neue';color:#e11d48">110<span style="font-size:12px">h</span></div><div style="font:600 8px Montserrat;letter-spacing:1px;color:rgba(225,29,72,.6)">TOTAL</div></div>
+      <button onclick="show(3)" style="padding:6px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:4px;color:var(--muted);font:700 9px Montserrat;letter-spacing:1px;cursor:pointer">← ロードマップ</button>
+    </div>
+  </div>
+
+  <!-- 器具別 Advance 種目内訳 -->
+  <div style="flex-shrink:0;display:flex;gap:12px">
+    <div style="flex:39;padding:12px;background:rgba(74,143,212,.06);border:1px solid rgba(74,143,212,.2);border-radius:6px;text-align:center">
+      <div style="font:900 24px 'Bebas Neue';color:#4a8fd4">39</div>
+      <div style="font:700 9px Montserrat;color:#4a8fd4;letter-spacing:1px">REFORMER</div>
+    </div>
+    <div style="flex:21;padding:12px;background:rgba(45,168,120,.06);border:1px solid rgba(45,168,120,.2);border-radius:6px;text-align:center">
+      <div style="font:900 24px 'Bebas Neue';color:#2da878">21</div>
+      <div style="font:700 9px Montserrat;color:#2da878;letter-spacing:1px">CADILLAC</div>
+    </div>
+    <div style="flex:9;padding:12px;background:rgba(212,144,58,.06);border:1px solid rgba(212,144,58,.2);border-radius:6px;text-align:center">
+      <div style="font:900 24px 'Bebas Neue';color:#d4903a">9</div>
+      <div style="font:700 9px Montserrat;color:#d4903a;letter-spacing:1px">CHAIR</div>
+    </div>
+    <div style="flex:2;padding:12px;background:rgba(155,89,182,.06);border:1px solid rgba(155,89,182,.2);border-radius:6px;text-align:center">
+      <div style="font:900 24px 'Bebas Neue';color:#9b59b6">2</div>
+      <div style="font:700 9px Montserrat;color:#9b59b6;letter-spacing:1px">SC</div>
+    </div>
+  </div>
+
+  <!-- 2カラム: 学習内容 + 認定 -->
+  <div style="flex:1;display:grid;grid-template-columns:1.5fr 1fr;gap:16px;min-height:0">
+
+    <!-- 学習内容 -->
+    <div style="background:var(--card);border:1px solid var(--border2);border-radius:10px;border-top:3px solid #e11d48;display:flex;flex-direction:column;overflow:hidden">
+      <div style="padding:16px 18px;border-bottom:1px solid var(--border)">
+        <div style="font:700 9px Montserrat;letter-spacing:3px;color:#e11d48;margin-bottom:4px">全器具 ADVANCE 習得</div>
+        <div style="font:700 14px 'Noto Sans JP';color:var(--white)">71種目 / 40h</div>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:14px 18px;display:flex;flex-direction:column;gap:8px">
+        <div style="background:rgba(225,29,72,.04);border:1px solid rgba(225,29,72,.1);border-radius:6px;padding:10px">
+          <div style="font:700 10px Montserrat;color:#e11d48;margin-bottom:4px">Advanceレベルの特徴</div>
+          <div style="font:300 10px 'Noto Sans JP';color:var(--body);line-height:1.7">高度な複合動作、全身の協調性が求められる種目群。動的安定性と高い身体意識が前提</div>
+        </div>
+        <div style="background:rgba(225,29,72,.04);border:1px solid rgba(225,29,72,.1);border-radius:6px;padding:10px">
+          <div style="font:700 10px Montserrat;color:#e11d48;margin-bottom:4px">複合プログラム構成力</div>
+          <div style="font:300 10px 'Noto Sans JP';color:var(--body);line-height:1.7">複数器具を組み合わせたセッション設計。クライアントの目標に応じてReformer・Cadillac・補助器具を横断的に活用</div>
+        </div>
+        <div style="background:rgba(225,29,72,.04);border:1px solid rgba(225,29,72,.1);border-radius:6px;padding:10px">
+          <div style="font:700 10px Montserrat;color:#e11d48;margin-bottom:4px">指導哲学の確立</div>
+          <div style="font:300 10px 'Noto Sans JP';color:var(--body);line-height:1.7">UNIT-SYSTEMの10×4フレームワークを自在に操り、自分の指導スタイルとクライアントのニーズを統合する</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 認定 -->
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div style="background:var(--card);border:1px solid var(--border2);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:12px;flex:1">
+        <div style="font:700 9px Montserrat;letter-spacing:3px;color:var(--muted)">修了審査・認定</div>
+        <div style="background:rgba(225,29,72,.04);border:1px solid rgba(225,29,72,.1);border-radius:6px;padding:12px">
+          <div style="font:700 10px Montserrat;color:#e11d48;margin-bottom:4px">① 実技試験</div>
+          <div style="font:300 10px 'Noto Sans JP';color:var(--body);line-height:1.7">全器具Advanceレベルの60分レッスンを実施。クラス構成力・キューイング・安全管理を総合評価</div>
+        </div>
+        <div style="background:rgba(225,29,72,.04);border:1px solid rgba(225,29,72,.1);border-radius:6px;padding:12px">
+          <div style="font:700 10px Montserrat;color:#e11d48;margin-bottom:4px">② 筆記試験</div>
+          <div style="font:300 10px 'Noto Sans JP';color:var(--body);line-height:1.7">解剖学・禁忌事項・UNIT-SYSTEM理論・プログラム設計の知識を確認</div>
+        </div>
+        <div style="background:rgba(225,29,72,.04);border:1px solid rgba(225,29,72,.1);border-radius:6px;padding:12px">
+          <div style="font:700 10px Montserrat;color:#e11d48;margin-bottom:4px">③ AXISCORE 認定証発行</div>
+          <div style="font:300 10px 'Noto Sans JP';color:var(--body);line-height:1.7">合格者にAXISCORE認定インストラクター資格を付与</div>
+        </div>
+      </div>
+      <div style="padding:16px 20px;background:rgba(200,16,46,.1);border:2px solid rgba(200,16,46,.35);border-radius:10px;text-align:center">
+        <div style="font:900 14px Montserrat;letter-spacing:4px;color:var(--red);margin-bottom:4px">CERTIFIED</div>
+        <div style="font:700 16px 'Noto Sans JP';color:var(--white)">AXISCORE 認定インストラクター</div>
+        <div style="font:300 11px 'Noto Sans JP';color:var(--muted);margin-top:6px">全レベル・全器具の指導資格を保有</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 時間内訳 -->
+  <div style="flex-shrink:0;display:flex;gap:12px;align-items:stretch">
+    <div style="flex:1;padding:12px 16px;background:rgba(225,29,72,.06);border:1px solid rgba(225,29,72,.15);border-radius:8px">
+      <div style="font:700 9px Montserrat;letter-spacing:2px;color:#e11d48;margin-bottom:8px">直接指導 <span style="font:900 16px 'Bebas Neue'">40</span><span style="font-size:9px">h</span></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <span style="padding:3px 8px;background:rgba(225,29,72,.1);border:1px solid rgba(225,29,72,.2);border-radius:3px;font:400 9px 'Noto Sans JP';color:var(--body)">全器具 Advance実技 30h</span>
+        <span style="padding:3px 8px;background:rgba(225,29,72,.1);border:1px solid rgba(225,29,72,.2);border-radius:3px;font:400 9px 'Noto Sans JP';color:var(--body)">認定審査対策 10h</span>
+      </div>
+    </div>
+    <div style="flex:1.2;padding:12px 16px;background:rgba(255,255,255,.03);border:1px solid var(--border2);border-radius:8px">
+      <div style="font:700 9px Montserrat;letter-spacing:2px;color:var(--muted);margin-bottom:8px">自主学習 <span style="font:900 16px 'Bebas Neue';color:var(--white)">70</span><span style="font-size:9px">h</span></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <span style="padding:3px 8px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:3px;font:400 9px 'Noto Sans JP';color:var(--body)">自主練習 30h</span>
+        <span style="padding:3px 8px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:3px;font:400 9px 'Noto Sans JP';color:var(--body)">模擬レッスン 25h</span>
+        <span style="padding:3px 8px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:3px;font:400 9px 'Noto Sans JP';color:var(--body)">筆記学習 10h</span>
+        <span style="padding:3px 8px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:3px;font:400 9px 'Noto Sans JP';color:var(--body)">レポート課題 5h</span>
+      </div>
+    </div>
+    <div style="padding:12px 16px;background:rgba(225,29,72,.1);border:1px solid rgba(225,29,72,.3);border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:80px">
+      <div style="font:900 28px 'Bebas Neue';color:#e11d48">110<span style="font-size:12px">h</span></div>
+      <div style="font:600 8px Montserrat;letter-spacing:2px;color:rgba(225,29,72,.6)">TOTAL</div>
+      <div style="font:300 9px 'Noto Sans JP';color:var(--muted);margin-top:2px">22日（5h/日）</div>
+    </div>
+  </div>
+
+  <!-- キャリアパス -->
+  <div style="flex-shrink:0;padding:14px 20px;background:rgba(225,29,72,.05);border:1px solid rgba(225,29,72,.2);border-radius:8px;display:flex;align-items:center;gap:16px">
+    <div style="font:700 9px Montserrat;letter-spacing:3px;color:#e11d48;flex-shrink:0">認定後</div>
+    <div style="width:1px;height:20px;background:rgba(225,29,72,.3)"></div>
+    <div style="font:300 11px 'Noto Sans JP';color:var(--muted);line-height:1.7">継続教育プログラム → マスタートレーナー候補 → 養成講師への道</div>
+    <button onclick="show(3)" style="margin-left:auto;padding:8px 18px;background:var(--bg3);border:1px solid var(--border2);border-radius:4px;color:var(--muted);font:700 9px Montserrat;letter-spacing:1px;cursor:pointer;flex-shrink:0">← ロードマップに戻る</button>
+  </div>
+
+</div>
+</div>
+
+<!-- ════════════════════════════════════
+     SLIDE — MBS HERO
+════════════════════════════════════ -->
+<div class="slide" data-slide="9" data-title="MANUAL-BUILD-SYSTEM ∞">
+
+  <!-- ambient -->
+  <div style="position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0">
+    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font:900 95vh 'Bebas Neue';color:rgba(255,255,255,0);-webkit-text-stroke:1px rgba(201,168,76,.06);line-height:1;letter-spacing:-8vw;user-select:none;white-space:nowrap;animation:mbs-ghost 5s ease-in-out infinite">&infin;</div>
+    <div style="position:absolute;top:50%;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.22),transparent)"></div>
+    <div style="position:absolute;left:50%;top:0;bottom:0;width:1px;background:linear-gradient(180deg,transparent,rgba(201,168,76,.14),transparent)"></div>
+    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:12px;height:12px;border-radius:50%;background:#C9A84C;box-shadow:0 0 28px rgba(201,168,76,.9),0 0 60px rgba(201,168,76,.3)"></div>
+  </div>
+  <style>
+    @keyframes mbs-ghost{0%,100%{-webkit-text-stroke-color:rgba(201,168,76,.04)}50%{-webkit-text-stroke-color:rgba(201,168,76,.10)}}
+  </style>
+
+  <!-- top bar -->
+  <div style="position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;padding:26px 60px 0;animation:aFD .5s .05s both">
+    <div style="display:flex;align-items:baseline;gap:1px">
+      <span style="font:900 17px Montserrat;letter-spacing:3px">AXIS</span><span style="font:900 17px Montserrat;letter-spacing:3px;color:#C8102E">CORE</span><span style="font:300 17px Montserrat;letter-spacing:3px;color:#888">&nbsp;PILATES</span>
+      <div style="width:1px;height:22px;background:var(--border2);margin:0 16px"></div>
+      <span style="font:400 9px Montserrat;letter-spacing:4px;color:var(--dim)">MANUAL BUILD SYSTEM</span>
+    </div>
+    <div style="font:300 10px Montserrat;letter-spacing:2px;color:#606060;text-align:right;line-height:1.8">
+      Exercise Manual Builder<br>
+      <span style="font-size:8px;letter-spacing:1px">6 APPARATUS &nbsp;|&nbsp; EXCEL → JSON &nbsp;|&nbsp; AUTO BUILD</span>
+    </div>
+  </div>
+
+  <!-- main -->
+  <div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;height:calc(100vh - 120px);gap:0;animation:aFD .6s .2s both">
+
+    <!-- label -->
+    <div style="font:600 9px Montserrat;letter-spacing:5px;color:#C9A84C;margin-bottom:14px">MANUAL-BUILD-SYSTEM</div>
+
+    <!-- big ∞ -->
+    <div style="display:flex;align-items:center;gap:0;line-height:1">
+      <div style="font:900 28vw 'Bebas Neue';color:var(--white);letter-spacing:-4px;text-shadow:0 0 80px rgba(255,255,255,.06)">&infin;</div>
+    </div>
+
+    <!-- sub labels -->
+    <div style="display:flex;align-items:center;gap:40px;margin-top:-10px">
+      <span style="font:700 11px Montserrat;letter-spacing:5px;color:var(--muted)">UNLIMITED</span>
+      <span style="font:700 11px Montserrat;letter-spacing:5px;color:var(--muted)">MANUALS</span>
+    </div>
+
+    <!-- tagline -->
+    <div style="font:300 13px 'Noto Sans JP';color:var(--muted);margin-top:18px;letter-spacing:2px;text-align:center">
+      BUILD UNLIMITED EXERCISE MANUALS FROM YOUR DATA
+    </div>
+
+    <!-- 4 process strip -->
+    <div style="margin-top:24px;display:flex;align-items:center;gap:0;border:1px solid var(--border2);border-radius:4px;overflow:hidden;animation:aFU .5s .5s both">
+      <div style="padding:6px 14px;background:rgba(201,168,76,.1);border-right:1px solid var(--border2);flex-shrink:0">
+        <div style="font:700 10px Montserrat;letter-spacing:2px;color:#C9A84C">4 STEPS</div>
+      </div>
+      <div style="display:flex;align-items:center">
+        <div style="padding:6px 16px;border-right:1px solid var(--border);font:400 9px Montserrat;color:var(--muted);letter-spacing:.5px;white-space:nowrap"><span style="color:var(--red);font-weight:700;margin-right:5px">01</span>DATA INPUT</div>
+        <div style="padding:6px 16px;border-right:1px solid var(--border);font:400 9px Montserrat;color:var(--muted);letter-spacing:.5px;white-space:nowrap"><span style="color:#C9A84C;font-weight:700;margin-right:5px">02</span>PHOTO SHOOT</div>
+        <div style="padding:6px 16px;border-right:1px solid var(--border);font:400 9px Montserrat;color:var(--muted);letter-spacing:.5px;white-space:nowrap"><span style="color:var(--intermediate);font-weight:700;margin-right:5px">03</span>AI BUILD</div>
+        <div style="padding:6px 16px;font:400 9px Montserrat;color:var(--muted);letter-spacing:.5px;white-space:nowrap"><span style="color:var(--fundamental);font-weight:700;margin-right:5px">04</span>REVIEW &amp; PUBLISH</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- bottom -->
+  <div style="position:relative;z-index:1;display:flex;align-items:center;justify-content:center;padding:0 60px 28px">
+    <div style="font:400 10px Montserrat;letter-spacing:3px;color:#606060">Data in, <span style="color:#C9A84C">manuals</span> out. &nbsp;&mdash;&nbsp; infinite scalability</div>
+  </div>
+
+</div>
+
+<div class="slide" data-slide="10" data-title="MANUAL-BUILD-SYSTEM ∞">
+
+  <!-- ambient -->
+  <div style="position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0">
+    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font:900 40vh Montserrat;color:rgba(255,255,255,0);-webkit-text-stroke:1px rgba(255,255,255,.02);line-height:1;user-select:none">HOW TO</div>
+  </div>
+
+  <div class="sh" style="position:relative;z-index:1">
+    <div class="sh-tag"><div class="sh-tag-dot"></div><span class="sh-tag-text">MANUAL-BUILD-SYSTEM <span style="color:#C9A84C">∞</span></span></div>
+    <div class="sh-title jp" style="font-size:28px">MANUAL-BUILD-SYSTEM <span style="color:#C9A84C;font-family:'Bebas Neue',sans-serif">∞</span></div>
+    <div class="sh-sub mono">種目マニュアル構築システム</div>
+  </div>
+
+  <div style="position:relative;z-index:1;padding:0 var(--pad);display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+
+    <!-- STEP 01 -->
+    <div style="background:var(--card);border:1px solid var(--border2);border-radius:8px;overflow:hidden;display:flex;flex-direction:column">
+      <div style="height:3px;background:linear-gradient(90deg,var(--red),var(--red2))"></div>
+      <div style="padding:20px 22px;flex:1;display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div style="font:900 32px 'Bebas Neue';color:rgba(200,16,46,.25);line-height:1">01</div>
+          <div style="width:32px;height:32px;border-radius:6px;background:rgba(200,16,46,.12);border:1px solid rgba(200,16,46,.25);display:flex;align-items:center;justify-content:center">
+            <span style="font:700 10px Montserrat;color:var(--red)">XLS</span>
+          </div>
+        </div>
+        <div>
+          <div style="font:700 9px Montserrat;letter-spacing:3px;color:var(--red);margin-bottom:6px">DATA INPUT</div>
+          <div style="font:700 14px 'Noto Sans JP';color:var(--white);line-height:1.5">Excelに<br>種目データを入力</div>
+        </div>
+        <div style="height:1px;background:var(--border)"></div>
+        <div style="font:300 11px 'Noto Sans JP';color:var(--body);line-height:1.9;flex:1">
+          AXISCORE_種目マスター.xlsx を開き、担当者ごとに分担して入力します。
+        </div>
+        <div style="display:flex;flex-direction:column;gap:5px">
+          <div style="font:700 9px Montserrat;letter-spacing:1px;color:var(--muted);margin-bottom:2px">INPUT ITEMS</div>
+          <div style="display:flex;flex-wrap:wrap;gap:4px">
+            <span style="font:400 9px 'Noto Sans JP';padding:2px 7px;background:rgba(200,16,46,.08);border:1px solid rgba(200,16,46,.15);border-radius:2px;color:var(--body)">スプリング</span>
+            <span style="font:400 9px 'Noto Sans JP';padding:2px 7px;background:rgba(200,16,46,.08);border:1px solid rgba(200,16,46,.15);border-radius:2px;color:var(--body)">レップ数</span>
+            <span style="font:400 9px 'Noto Sans JP';padding:2px 7px;background:rgba(200,16,46,.08);border:1px solid rgba(200,16,46,.15);border-radius:2px;color:var(--body)">キューイング</span>
+            <span style="font:400 9px 'Noto Sans JP';padding:2px 7px;background:rgba(200,16,46,.08);border:1px solid rgba(200,16,46,.15);border-radius:2px;color:var(--body)">禁忌事項</span>
+            <span style="font:400 9px 'Noto Sans JP';padding:2px 7px;background:rgba(200,16,46,.08);border:1px solid rgba(200,16,46,.15);border-radius:2px;color:var(--body)">写真ラベル</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 02 -->
+    <div style="background:var(--card);border:1px solid var(--border2);border-radius:8px;overflow:hidden;display:flex;flex-direction:column">
+      <div style="height:3px;background:linear-gradient(90deg,var(--gold),var(--gold2))"></div>
+      <div style="padding:20px 22px;flex:1;display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div style="font:900 32px 'Bebas Neue';color:rgba(201,168,76,.2);line-height:1">02</div>
+          <div style="width:32px;height:32px;border-radius:6px;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.25);display:flex;align-items:center;justify-content:center">
+            <span style="font:700 10px Montserrat;color:var(--gold)">CAM</span>
+          </div>
+        </div>
+        <div>
+          <div style="font:700 9px Montserrat;letter-spacing:3px;color:var(--gold);margin-bottom:6px">PHOTO SHOOT</div>
+          <div style="font:700 14px 'Noto Sans JP';color:var(--white);line-height:1.5">写真を撮影<br>（1種目4枚）</div>
+        </div>
+        <div style="height:1px;background:var(--border)"></div>
+        <div style="font:300 11px 'Noto Sans JP';color:var(--body);line-height:1.9;flex:1">
+          撮影リストを印刷して機器別・UNIT別に撮影。ファイル名はIDで命名します。
+        </div>
+        <div style="padding:8px 12px;background:rgba(201,168,76,.06);border-left:2px solid var(--gold);border-radius:2px">
+          <div style="font:400 9px Montserrat;color:var(--muted);letter-spacing:1px">命名例</div>
+          <div style="font:600 10px Montserrat;color:var(--gold);margin-top:2px">RF-U02-F-001_01.jpg</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 03 -->
+    <div style="background:var(--card);border:1px solid var(--border2);border-radius:8px;overflow:hidden;display:flex;flex-direction:column">
+      <div style="height:3px;background:linear-gradient(90deg,var(--intermediate),#60A5FA)"></div>
+      <div style="padding:20px 22px;flex:1;display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div style="font:900 32px 'Bebas Neue';color:rgba(59,130,246,.2);line-height:1">03</div>
+          <div style="width:32px;height:32px;border-radius:6px;background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.25);display:flex;align-items:center;justify-content:center">
+            <span style="font:700 10px Montserrat;color:var(--intermediate)">AI</span>
+          </div>
+        </div>
+        <div>
+          <div style="font:700 9px Montserrat;letter-spacing:3px;color:var(--intermediate);margin-bottom:6px">CONVERT</div>
+          <div style="font:700 14px 'Noto Sans JP';color:var(--white);line-height:1.5">ExcelをClaudeに<br>渡してJSON変換</div>
+        </div>
+        <div style="height:1px;background:var(--border)"></div>
+        <div style="font:300 11px 'Noto Sans JP';color:var(--body);line-height:1.9;flex:1">
+          完成したExcelをClaudeにアップロード。自動でJSONに変換してHTMLに差し込みます。
+        </div>
+        <div style="padding:8px 12px;background:rgba(59,130,246,.06);border-left:2px solid var(--intermediate);border-radius:2px">
+          <div style="font:400 9px 'Noto Sans JP';color:var(--muted)">Excel → JSON → MANUAL_DATA</div>
+          <div style="font:400 10px 'Noto Sans JP';color:var(--body);margin-top:2px">自動で全種目に反映</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 04 -->
+    <div style="background:var(--card);border:1px solid var(--border2);border-radius:8px;overflow:hidden;display:flex;flex-direction:column">
+      <div style="height:3px;background:linear-gradient(90deg,var(--fundamental),#4ADE80)"></div>
+      <div style="padding:20px 22px;flex:1;display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div style="font:900 32px 'Bebas Neue';color:rgba(34,197,94,.2);line-height:1">04</div>
+          <div style="width:32px;height:32px;border-radius:6px;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.25);display:flex;align-items:center;justify-content:center">
+            <span style="font:700 10px Montserrat;color:var(--fundamental)">SVR</span>
+          </div>
+        </div>
+        <div>
+          <div style="font:700 9px Montserrat;letter-spacing:3px;color:var(--fundamental);margin-bottom:6px">DEPLOY</div>
+          <div style="font:700 14px 'Noto Sans JP';color:var(--white);line-height:1.5">写真フォルダを配置<br>サーバーにアップ</div>
+        </div>
+        <div style="height:1px;background:var(--border)"></div>
+        <div style="font:300 11px 'Noto Sans JP';color:var(--body);line-height:1.9;flex:1">
+          manual_images/フォルダに写真を格納し、HTMLと同じSakuraサーバーにアップで完成。
+        </div>
+        <div style="padding:8px 12px;background:rgba(34,197,94,.05);border-left:2px solid var(--fundamental);border-radius:2px">
+          <div style="font:400 9px Montserrat;color:var(--muted);letter-spacing:1px">フォルダ</div>
+          <div style="font:600 10px Montserrat;color:var(--fundamental);margin-top:2px">manual_images/</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- bottom flow bar -->
+  <div style="position:relative;z-index:1;padding:14px var(--pad) 0;display:flex;align-items:center;gap:0">
+    <div style="flex:1;padding:12px 16px;background:rgba(200,16,46,.06);border:1px solid rgba(200,16,46,.2);border-radius:4px 0 0 4px;text-align:center">
+      <div style="font:700 9px Montserrat;letter-spacing:2px;color:var(--red)">EXCEL</div>
+      <div style="font:300 10px 'Noto Sans JP';color:var(--muted);margin-top:2px">データ入力</div>
+    </div>
+    <div style="font:700 14px Montserrat;color:var(--dim);padding:0 8px">→</div>
+    <div style="flex:1;padding:12px 16px;background:rgba(201,168,76,.05);border:1px solid rgba(201,168,76,.18);text-align:center">
+      <div style="font:700 9px Montserrat;letter-spacing:2px;color:var(--gold)">SHOOT</div>
+      <div style="font:300 10px 'Noto Sans JP';color:var(--muted);margin-top:2px">写真撮影</div>
+    </div>
+    <div style="font:700 14px Montserrat;color:var(--dim);padding:0 8px">→</div>
+    <div style="flex:1;padding:12px 16px;background:rgba(59,130,246,.05);border:1px solid rgba(59,130,246,.18);text-align:center">
+      <div style="font:700 9px Montserrat;letter-spacing:2px;color:var(--intermediate)">CLAUDE</div>
+      <div style="font:300 10px 'Noto Sans JP';color:var(--muted);margin-top:2px">JSON変換</div>
+    </div>
+    <div style="font:700 14px Montserrat;color:var(--dim);padding:0 8px">→</div>
+    <div style="flex:1;padding:12px 16px;background:rgba(34,197,94,.05);border:1px solid rgba(34,197,94,.18);border-radius:0 4px 4px 0;text-align:center">
+      <div style="font:700 9px Montserrat;letter-spacing:2px;color:var(--fundamental)">SAKURA</div>
+      <div style="font:300 10px 'Noto Sans JP';color:var(--muted);margin-top:2px">サーバー配置</div>
+    </div>
+    <div style="font:700 14px Montserrat;color:var(--dim);padding:0 8px">→</div>
+    <div style="padding:12px 20px;background:var(--red);border-radius:4px;text-align:center">
+      <div style="font:700 9px Montserrat;letter-spacing:2px;color:#fff">COMPLETE</div>
+      <div style="font:300 10px 'Noto Sans JP';color:rgba(255,255,255,.7);margin-top:2px">マニュアル完成</div>
+    </div>
+  </div>
+
+  <!-- マニュアルを見るボタン -->
+  <div style="position:relative;z-index:1;padding:14px var(--pad) 0;display:flex;justify-content:flex-end">
+    <button onclick="show(11)" style="padding:9px 22px;background:var(--bg3);border:1px solid var(--border2);color:var(--body);font:700 10px Montserrat;letter-spacing:2px;border-radius:4px;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--white)'" onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--body)'">エクササイズマニュアルを見る →</button>
+  </div>
+
+</div>
+
+
+<!-- ═══ UI TOOLBAR ═══════════════════════════════════════════ -->
+<div id="ui-toolbar">
+  <button class="tb-btn" onclick="toggleLight()" id="tb-light" title="ライト/ダークモード">☀</button>
+  <button class="tb-btn" onclick="setFS(-1)" title="文字小">A-</button>
+  <button class="tb-btn" onclick="setFS(1)" title="文字大">A+</button>
+  <button class="tb-btn" onclick="openKB()" title="ショートカット (?)">?</button>
+</div>
+
+<!-- ═══ KEYBOARD SHORTCUT MODAL ═══════════════════════════════ -->
+<div id="kb-modal" onclick="if(event.target===this)closeKB()">
+  <div class="kb-box">
+    <div class="kb-title">KEYBOARD SHORTCUTS</div>
+    <div class="kb-row"><div class="kb-key"><span class="kb-k">→</span><span class="kb-k">Space</span></div><span class="kb-desc">次のスライド</span></div>
+    <div class="kb-row"><div class="kb-key"><span class="kb-k">←</span></div><span class="kb-desc">前のスライド</span></div>
+    <div class="kb-row"><div class="kb-key"><span class="kb-k">?</span></div><span class="kb-desc">ショートカット表示</span></div>
+    <div class="kb-row"><div class="kb-key"><span class="kb-k">L</span></div><span class="kb-desc">ライト/ダークモード切替</span></div>
+    <div class="kb-row"><div class="kb-key"><span class="kb-k">+</span></div><span class="kb-desc">文字サイズ拡大</span></div>
+    <div class="kb-row"><div class="kb-key"><span class="kb-k">-</span></div><span class="kb-desc">文字サイズ縮小</span></div>
+    <div class="kb-row"><div class="kb-key"><span class="kb-k">M</span></div><span class="kb-desc">マニュアル（スライド22）</span></div>
+    <div class="kb-row"><div class="kb-key"><span class="kb-k">Esc</span></div><span class="kb-desc">モーダルを閉じる</span></div>
+    <div style="margin-top:16px;text-align:center">
+      <button onclick="closeKB()" style="padding:7px 24px;background:var(--red);border:none;border-radius:4px;color:#fff;font:700 10px Montserrat;letter-spacing:1px;cursor:pointer">閉じる</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PRINT PREVIEW MODAL ═══════════════════════════════════ -->
+<div id="print-modal" onclick="if(event.target===this)b3ClosePrint()">
+  <div class="pm-toolbar">
+    <span class="pm-title">PRINT PREVIEW</span>
+    <button class="pm-btn pm-primary" onclick="window.print()">🖨 印刷する</button>
+    <button class="pm-btn" onclick="b3ClosePrint()">閉じる</button>
+  </div>
+  <div class="pm-sheet" id="printSheet"></div>
+</div>
+
+<!-- ═══ JUMP MENU ═══════════════════════════════════════════════ -->
+<div id="jump-menu" id="jump-menu"></div>
+
+<!-- ═══ SIDE PANEL (Favorites + Recent) ════════════════════════ -->
+
+
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 23 ── 器具別 養成種目一覧
+══════════════════════════════════════════════════════════ -->
+
+<!-- ════════════════════════════════════════════════════════
+     SLIDE 22 ── EXERCISE MANUAL
+════════════════════════════════════════════════════════ -->
+<div class="slide s23" data-slide="11" data-title="MANUAL-BUILD-SYSTEM ∞ — マニュアル">
+  <div style="display:flex;flex-direction:column;height:100%;overflow:hidden">
+
+    <!-- ヘッダーバー -->
+    <div style="display:flex;align-items:center;padding:10px 20px;border-bottom:1px solid var(--border);flex-shrink:0;gap:12px;background:var(--bg2);position:relative;z-index:210">
+      <div style="font:900 11px Montserrat;letter-spacing:4px;color:var(--red)">● MANUAL-BUILD-SYSTEM <span style="color:#C9A84C">∞</span></div>
+      <div style="font:700 15px Montserrat;color:var(--white);letter-spacing:1px">種目マニュアル構築システム</div>
+      <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
+        <button onclick="openLayoutEditor()" style="padding:6px 14px;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);outline:none;border-radius:4px;color:#F59E0B;font:700 9px Montserrat;letter-spacing:1px;cursor:pointer">レイアウト設定</button>
+        <button onclick="mvExportPDF()" style="padding:6px 14px;background:rgba(200,16,46,.15);border:1px solid rgba(200,16,46,.3);outline:none;border-radius:4px;color:var(--red);font:700 9px Montserrat;letter-spacing:1px;cursor:pointer">絞込PDF出力</button>
+        <button onclick="openGuideOverlay()" style="padding:6px 14px;background:rgba(212,175,55,.15);border:1px solid rgba(212,175,55,.3);outline:none;border-radius:4px;color:var(--gold);font:700 9px Montserrat;letter-spacing:1px;cursor:pointer">作成ガイド</button>
+      </div>
+    </div>
+
+    <!-- フィルターバー -->
+    <div style="display:flex;align-items:center;gap:8px;padding:8px 20px;border-bottom:1px solid var(--border);flex-shrink:0;flex-wrap:wrap;background:var(--bg3)">
+      <span style="font:600 9px Montserrat;letter-spacing:2px;color:var(--muted)">機器</span>
+      <select class="mv-sel" id="mv-f-app" onchange="mvFilter()">
+        <option value="">すべての機器</option>
+        <option value="R">Reformer</option>
+        <option value="C">Cadillac</option>
+        <option value="W">Wunda Chair</option>
+        <option value="B">Barrel</option>
+        <option value="SC">Spine Corrector</option>
+        <option value="JB">Jump Board</option>
+        <option value="MAT">Mat</option>
+      </select>
+      <div class="mv-sep"></div>
+      <span style="font:600 9px Montserrat;letter-spacing:2px;color:var(--muted)">UNIT</span>
+      <select class="mv-sel" id="mv-f-unit" onchange="mvFilter()">
+        <option value="">すべてのUNIT</option>
+        <option value="1">U01 — WARM UP</option>
+        <option value="2">U02 — FOOT WORK</option>
+        <option value="3">U03 — ABDOMINAL</option>
+        <option value="4">U04 — HIP WORK</option>
+        <option value="5">U05 — SPINAL ART.</option>
+        <option value="6">U06 — FULL BODY</option>
+        <option value="7">U07 — ARM WORK</option>
+        <option value="8">U08 — LEG WORK</option>
+        <option value="9">U09 — LAT. FLEX</option>
+        <option value="10">U10 — BACK EXT.</option>
+      </select>
+      <div class="mv-sep"></div>
+      <span style="font:600 9px Montserrat;letter-spacing:2px;color:var(--muted)">LEVEL</span>
+      <select class="mv-sel" id="mv-f-lv" onchange="mvFilter()">
+        <option value="">すべてのLEVEL</option>
+        <option value="P">P — PRE</option>
+        <option value="F">F — FUNDAMENTAL</option>
+        <option value="I">I — INTERMEDIATE</option>
+        <option value="A">A — ADVANCE</option>
+      </select>
+      <input id="mv-search" type="text" placeholder="🔍 種目名を検索..." oninput="mvFilter()" autocomplete="off">
+      <span class="mv-count" id="mv-count"></span>
+      <button class="mv-reset" onclick="mvReset()">リセット</button>
+    </div>
+
+    <!-- 種目カウント行 -->
+    <div style="padding:5px 20px;border-bottom:1px solid var(--border);flex-shrink:0;display:flex;gap:16px;align-items:center;background:var(--bg2)">
+      <span style="font:400 10px Montserrat;color:var(--dim)">TOTAL</span>
+      <span style="font:700 11px Montserrat;color:var(--white)" id="mv-total-count"><span id="mv-total-num">—</span> 種目</span>
+      <span style="font:400 10px Montserrat;color:var(--muted)">EXERCISES</span>
+      <span style="font:300 9px 'Noto Sans JP';color:var(--dim)">（必須5種目除く）</span>
+      <span style="color:var(--border)">|</span>
+      <span style="font:400 10px Montserrat;color:var(--pre)">Mat <span style="color:var(--pre)">23</span></span>
+      <span style="font:400 10px Montserrat;color:var(--dim)">Reformer <span style="color:var(--body)">183</span></span>
+      <span style="font:400 10px Montserrat;color:var(--dim)">Cadillac <span style="color:var(--body)">81</span></span>
+      <span style="font:400 10px Montserrat;color:var(--dim)">Chair <span style="color:var(--body)">41</span></span>
+      <span style="font:400 10px Montserrat;color:var(--dim)">Barrel <span style="color:var(--body)">18</span></span>
+      <span style="font:400 10px Montserrat;color:var(--dim)">Spine Corrector <span style="color:var(--body)">27</span></span>
+      <span style="color:var(--border)">|</span>
+      <span style="font:300 9px Montserrat;color:var(--dim)">最終更新 2026.04</span>
+    </div>
+
+    <!-- カードグリッド -->
+    <div id="mv-grid" style="flex:1;overflow-y:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;padding:14px 20px;align-content:start"></div>
+  </div>
+
+  <!-- 詳細モーダル -->
+  <div id="mv-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:100;overflow-y:auto">
+    <div style="max-width:860px;margin:40px auto;background:var(--bg2);border:1px solid var(--border2);border-radius:10px;overflow:hidden">
+      <div style="display:flex;align-items:center;padding:14px 20px;border-bottom:1px solid var(--border);background:var(--bg3)">
+        <div>
+          <div id="mv-m-id" style="font:600 10px Montserrat;letter-spacing:2px;color:var(--muted)"></div>
+          <div id="mv-m-name" style="font:700 16px 'Noto Sans JP';color:var(--white);margin-top:2px"></div>
+          <div id="mv-m-tags" style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap"></div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;margin-left:auto">
+          <button id="mv-fav-btn" onclick="mvToggleFav()" style="width:36px;height:36px;border-radius:50%;background:var(--bg3);border:1px solid var(--border);color:var(--muted);font-size:18px;cursor:pointer;transition:all .2s" title="お気に入り">☆</button>
+          <button class="mv-x" onclick="var m=document.getElementById('mv-modal');m.classList.remove('open');m.style.display='none'">×</button>
+        </div>
+      </div>
+      <div style="padding:16px 20px;border-bottom:1px solid var(--border)">
+        <div style="font:700 9px Montserrat;letter-spacing:3px;color:var(--muted);margin-bottom:10px">PHOTOS</div>
+        <div id="mv-m-photos" style="display:flex;gap:8px;overflow-x:auto"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0">
+        <div style="padding:20px;border-right:1px solid var(--border)">
+          <div style="font:700 9px Montserrat;letter-spacing:3px;color:var(--muted);margin-bottom:8px">SETUP</div>
+          <div id="mv-m-spring" style="font:300 12px 'Noto Sans JP';color:var(--body);line-height:1.7;margin-bottom:14px"></div>
+          <div style="font:700 9px Montserrat;letter-spacing:3px;color:var(--muted);margin-bottom:8px">MOVEMENT SEQUENCE</div>
+          <div id="mv-m-sequence" style="font:300 11px 'Noto Sans JP';color:var(--body);line-height:1.7"></div>
+        </div>
+        <div style="padding:20px">
+          <div style="font:700 9px Montserrat;letter-spacing:3px;color:var(--muted);margin-bottom:6px">PURPOSE</div>
+          <div id="mv-m-purpose" style="font:300 11px 'Noto Sans JP';color:var(--body);line-height:1.6;margin-bottom:14px"></div>
+          <div style="font:700 9px Montserrat;letter-spacing:3px;color:var(--muted);margin-bottom:6px">TARGET MUSCLES</div>
+          <div id="mv-m-muscles" style="font:300 11px 'Noto Sans JP';color:var(--body);line-height:1.5;margin-bottom:14px"></div>
+          <div style="font:700 9px Montserrat;letter-spacing:3px;color:var(--muted);margin-bottom:8px">POINTS</div>
+          <div id="mv-m-points" style="display:flex;flex-direction:column;gap:6px"></div>
+        </div>
+      </div>
+      <div style="padding:14px 20px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end">
+        <button id="mv-prev" onclick="mvNav(-1)" style="padding:7px 16px;background:var(--bg3);border:1px solid var(--border2);border-radius:4px;color:var(--muted);font:600 9px Montserrat;cursor:pointer">← PREV</button>
+        <button onclick="mvPreview()" style="padding:7px 16px;background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);border-radius:4px;color:#22C55E;font:600 9px Montserrat;cursor:pointer">プレビュー</button>
+        <button id="mv-print-btn" onclick="mvPrintSingle()" style="padding:7px 16px;background:rgba(200,16,46,.15);border:1px solid rgba(200,16,46,.3);border-radius:4px;color:var(--red);font:600 9px Montserrat;cursor:pointer">PDF出力</button>
+        <button id="mv-next" onclick="mvNav(1)" style="padding:7px 16px;background:var(--bg3);border:1px solid var(--border2);border-radius:4px;color:var(--muted);font:600 9px Montserrat;cursor:pointer">NEXT →</button>
+        <button onclick="var m=document.getElementById('mv-modal');m.classList.remove('open');m.style.display='none'" style="padding:7px 16px;background:var(--red);border:none;border-radius:4px;color:#fff;font:700 9px Montserrat;cursor:pointer">閉じる</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 作成ガイドオーバーレイ -->
+  <div id="mv-guide-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:200;overflow-y:auto">
+    <div style="max-width:640px;margin:40px auto;padding:20px">
+      <div style="font:900 11px Montserrat;letter-spacing:5px;color:var(--red);margin-bottom:6px">MANUAL-BUILD-SYSTEM <span style="color:#C9A84C">∞</span></div>
+      <div style="font:700 16px 'Noto Sans JP';color:var(--white);margin-bottom:20px">種目マニュアル構築ガイド</div>
+      <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:24px">
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;display:flex;gap:14px">
+          <div style="font:900 24px 'Bebas Neue';color:var(--red);flex-shrink:0">1</div>
+          <div><div style="font:700 12px Montserrat;color:var(--white);margin-bottom:4px">Excelをダウンロード</div><div style="font:300 11px 'Noto Sans JP';color:var(--muted)">下のボタンからExcelテンプレートを取得する</div></div>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;display:flex;gap:14px">
+          <div style="font:900 24px 'Bebas Neue';color:var(--red);flex-shrink:0">2</div>
+          <div><div style="font:700 12px Montserrat;color:var(--white);margin-bottom:4px">データを入力</div><div style="font:300 11px 'Noto Sans JP';color:var(--muted)">スプリング・レップ数・キューイング等を記入する</div></div>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;display:flex;gap:14px">
+          <div style="font:900 24px 'Bebas Neue';color:var(--red);flex-shrink:0">3</div>
+          <div><div style="font:700 12px Montserrat;color:var(--white);margin-bottom:4px">Claudeにアップロード</div><div style="font:300 11px 'Noto Sans JP';color:var(--muted)">入力済みExcelをClaudeに渡してJSONに変換する</div></div>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;display:flex;gap:14px">
+          <div style="font:900 24px 'Bebas Neue';color:var(--red);flex-shrink:0">4</div>
+          <div><div style="font:700 12px Montserrat;color:var(--white);margin-bottom:4px">HTMLに差し込み</div><div style="font:300 11px 'Noto Sans JP';color:var(--muted)">MANUAL_DATAセクションを更新して完成</div></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;justify-content:center">
+        <button onclick="mvDownloadExcel()" style="padding:10px 24px;background:rgba(212,175,55,.15);border:1px solid rgba(212,175,55,.4);border-radius:5px;color:var(--gold);font:700 10px Montserrat;letter-spacing:1px;cursor:pointer">DOWNLOAD EXCEL</button>
+        <button onclick="document.getElementById('mv-guide-overlay').style.display='none'" style="padding:10px 24px;background:var(--red);border:none;border-radius:5px;color:#fff;font:700 10px Montserrat;cursor:pointer">閉じる</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- プレビューオーバーレイ -->
+  <div id="mv-preview-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:250;overflow-y:auto">
+    <div style="max-width:800px;margin:24px auto;padding:0 16px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;position:sticky;top:0;background:rgba(0,0,0,.85);padding:12px 0;z-index:1">
+        <div>
+          <div style="font:900 10px Montserrat;letter-spacing:4px;color:#22C55E">MANUAL PREVIEW</div>
+          <div id="mv-pv-title" style="font:700 14px 'Noto Sans JP';color:#fff;margin-top:2px"></div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <div id="mv-pv-status" style="font:600 10px Montserrat;padding:4px 10px;border-radius:4px"></div>
+          <button onclick="mvPreviewNav(-1)" style="padding:6px 12px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:4px;color:#fff;font:600 9px Montserrat;cursor:pointer">← PREV</button>
+          <button onclick="mvPreviewNav(1)" style="padding:6px 12px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:4px;color:#fff;font:600 9px Montserrat;cursor:pointer">NEXT →</button>
+          <button onclick="document.getElementById('mv-preview-overlay').style.display='none'" style="padding:6px 14px;background:var(--red);border:none;border-radius:4px;color:#fff;font:700 9px Montserrat;cursor:pointer">閉じる</button>
+        </div>
+      </div>
+      <div id="mv-pv-body" style="display:flex;justify-content:center"></div>
+    </div>
+  </div>
+
+  <!-- レイアウト設定オーバーレイ -->
+  <div id="mv-layout-overlay">
+    <div class="ls-wrap">
+      <div class="ls-hdr">
+        <div class="ls-title-grp">
+          <div class="ls-title-sub">LAYOUT SETTINGS</div>
+          <div class="ls-title-main">マニュアルレイアウト設定</div>
+        </div>
+        <div class="ls-actions">
+          <button class="ls-btn ls-btn-reset" onclick="lsReset()">デフォルトに戻す</button>
+          <button class="ls-btn ls-btn-save" onclick="lsSave()">保存して適用</button>
+          <button class="ls-btn ls-btn-close" onclick="document.getElementById('mv-layout-overlay').style.display='none'">閉じる</button>
+        </div>
+      </div>
+
+      <div style="padding:6px 12px;margin-bottom:16px;background:rgba(255,255,255,.05);border-radius:6px;width:fit-content;font:700 10px Montserrat;letter-spacing:2px;color:rgba(255,255,255,.6)">横 LANDSCAPE（固定）</div>
+
+      <div class="ls-toolbar">
+        <button class="ls-btn ls-btn-add" onclick="lsOpenAdd()">＋ セクション追加</button>
+        <div class="ls-hint">ドラッグで並び替え／カラム移動。「必須」チェックをすると、データが空でも常に表示されます（任意項目は空なら非表示）</div>
+      </div>
+
+      <div class="ls-columns">
+        <div class="ls-col">
+          <div class="ls-col-title">左カラム</div>
+          <div class="ls-list" id="ls-col-left"></div>
+        </div>
+        <div class="ls-col">
+          <div class="ls-col-title">右カラム</div>
+          <div class="ls-list" id="ls-col-right"></div>
+        </div>
+      </div>
+
+      <div class="ls-hidden-zone">
+        <div class="ls-hidden-title">非表示ゾーン（ここにドラッグすると表示されません）</div>
+        <div class="ls-list" id="ls-col-hidden" style="min-height:60px"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- セクション追加モーダル -->
+  <div class="ls-addmodal" id="ls-addmodal">
+    <div class="ls-addbox">
+      <h3>セクション追加</h3>
+      <label>セクション名（表示名）</label>
+      <input type="text" id="ls-add-name" placeholder="例：応用バリエーション">
+      <label>入力形式</label>
+      <select id="ls-add-type">
+        <option value="text">テキスト</option>
+        <option value="titled-list">タイトル＋説明</option>
+      </select>
+      <label>小項目数</label>
+      <select id="ls-add-count">
+        <option value="1">1（①）</option>
+        <option value="2" selected>2（①②）</option>
+        <option value="3">3（①②③）</option>
+        <option value="4">4（①②③④）</option>
+      </select>
+      <div class="ls-addbtns">
+        <button class="ls-btn ls-btn-reset" onclick="lsCloseAdd()">キャンセル</button>
+        <button class="ls-btn ls-btn-save" onclick="lsConfirmAdd()">追加</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /deck -->
+<div class="slide s1" data-slide="12" data-title="PROGRAM-UNIT-SYSTEM 10×4">
 
   <!-- ambient -->
   <div style="position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0">
@@ -1486,7 +3059,7 @@ body.light-mode {
   <div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;height:calc(100vh - 120px);gap:0;animation:aFD .6s .2s both">
 
     <!-- label -->
-    <div style="font:600 9px Montserrat;letter-spacing:5px;color:var(--red);margin-bottom:14px">INSTRUCTOR DESIGN FRAMEWORK</div>
+    <div style="font:600 9px Montserrat;letter-spacing:5px;color:var(--red);margin-bottom:14px">PROGRAM-UNIT-SYSTEM</div>
 
     <!-- 10 × 4 -->
     <div style="display:flex;align-items:center;gap:0;line-height:1">
@@ -1604,7 +3177,7 @@ body.light-mode {
 <!-- ════════════════════════════════════
      SLIDE 2 — 10×4 SYSTEM
 ════════════════════════════════════ -->
-<div class="slide" data-slide="2" data-title="10×4 SYSTEM">
+<div class="slide" data-slide="13" data-title="10×4 SYSTEM">
 
   <!-- ambient bg -->
   <div style="position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0">
@@ -1716,7 +3289,7 @@ body.light-mode {
 <!-- ════════════════════════════════════
      SLIDE 3 — WHY AXISCORE USP
 ════════════════════════════════════ -->
-<div class="slide" data-slide="3" data-title="WHY AXISCORE">
+<div class="slide" data-slide="14" data-title="WHY AXISCORE">
 
   <div style="position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0">
     <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font:900 55vh 'Bebas Neue';color:rgba(255,255,255,0);-webkit-text-stroke:1px rgba(255,255,255,.025);line-height:1;user-select:none;white-space:nowrap">WHY</div>
@@ -1891,7 +3464,7 @@ body.light-mode {
 <!-- ════════════════════════════════════
      SLIDE 4 — BUSINESS MODEL
 ════════════════════════════════════ -->
-<div class="slide" data-slide="4" data-title="LICENSE STRUCTURE">
+<div class="slide" data-slide="15" data-title="LICENSE STRUCTURE">
 
   <div style="position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0">
     <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font:900 50vh 'Bebas Neue';color:rgba(255,255,255,0);-webkit-text-stroke:1px rgba(255,255,255,.02);line-height:1;user-select:none;white-space:nowrap">LICENSE</div>
@@ -2161,7 +3734,7 @@ body.light-mode {
 <!-- ════════════════════════════════════
      SLIDE 5 — BEFORE / AFTER
 ════════════════════════════════════ -->
-<div class="slide" data-slide="5" data-title="変更の概要">
+<div class="slide" data-slide="16" data-title="変更の概要">
   <div class="sh">
     <div class="sh-tag"><div class="sh-tag-dot"></div><span class="sh-tag-text">Program Change Overview</span></div>
     <div class="sh-title jp">変更の概要</div>
@@ -2230,7 +3803,7 @@ body.light-mode {
 <!-- ════════════════════════════════════
      SLIDE 3 — 60MIN STRUCTURE
 ════════════════════════════════════ -->
-<div class="slide" data-slide="6" data-title="60分レッスン構成">
+<div class="slide" data-slide="17" data-title="60分レッスン構成">
   <div class="sh" style="padding-bottom:0">
     <div class="sh-tag"><div class="sh-tag-dot"></div><span class="sh-tag-text">60-Min Class Structure</span></div>
     <div class="sh-title jp" style="font-size:28px">60分レッスンの構成イメージ</div>
@@ -2289,14 +3862,14 @@ body.light-mode {
 <!-- ════════════════════════════════════
      SLIDE 4 — 10 UNIT SYSTEM
 ════════════════════════════════════ -->
-<div class="slide" data-slide="7" data-title="10 Unit System">
+<div class="slide" data-slide="18" data-title="PROGRAM-UNIT-SYSTEM">
 <div style="display:flex;flex-direction:column;height:100vh;overflow:hidden">
 
   <!-- compact header -->
   <div style="display:flex;align-items:baseline;gap:16px;padding:22px var(--pad) 0;flex-shrink:0">
     <div class="sh-tag-dot"></div>
     <span style="font:600 9px Montserrat;letter-spacing:4px;color:var(--red)">FOUNDATION</span>
-    <span style="font:900 26px 'Bebas Neue';letter-spacing:3px;color:var(--white)">10 Unit System</span>
+    <span style="font:900 26px 'Bebas Neue';letter-spacing:3px;color:var(--white)">PROGRAM-UNIT-SYSTEM 10×4</span>
     <span style="font:300 12px 'Noto Sans JP';color:var(--muted)">すべての養成プログラムを支える10の骨格</span>
   </div>
 
@@ -2477,7 +4050,7 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
 <!-- ════════════════════════════════════
      SLIDE 7 — 4 CLASS LEVELS
 ════════════════════════════════════ -->
-<div class="slide" data-slide="8" data-title="4つのクラスレベル">
+<div class="slide" data-slide="19" data-title="4つのクラスレベル">
   <div class="sh">
     <div class="sh-tag"><div class="sh-tag-dot"></div><span class="sh-tag-text">Class Levels</span></div>
     <div class="sh-title jp">4つのクラスレベル</div>
@@ -2511,7 +4084,7 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
 <!-- ════════════════════════════════════
      SLIDE 9 — PROGRAM DESIGN GUIDE
 ════════════════════════════════════ -->
-<div class="slide" data-slide="9" data-title="プログラム構成の考え方">
+<div class="slide" data-slide="20" data-title="プログラム構成の考え方">
   <div class="sh" style="padding-bottom:0;--slide-header-top:28px">
     <div class="sh-tag"><div class="sh-tag-dot"></div><span class="sh-tag-text">Program Design Guide</span></div>
     <div class="sh-title jp" style="font-size:26px">プログラム構成の考え方</div>
@@ -2555,7 +4128,7 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
 <!-- ════════════════════════════════════
      SLIDES 10-13 — BUILDERS
 ════════════════════════════════════ -->
-<div class="slide" data-slide="10" data-title="プログラムの組み立て方">
+<div class="slide" data-slide="21" data-title="プログラムの組み立て方">
   <div class="sh" style="--slide-header-top:24px;padding-bottom:0">
     <div class="sh-tag"><div class="sh-tag-dot"></div><span class="sh-tag-text">Program Construction Guide</span></div>
     <div class="sh-title jp" style="font-size:22px">プログラムの組み立て方</div>
@@ -2733,7 +4306,7 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
   </div>
 </div>
 
-<div class="slide s7-builder bldr-pre" data-slide="11" data-title="プログラム構成 — PRE">
+<div class="slide s7-builder bldr-pre" data-slide="22" data-title="プログラム構成 — PRE">
   <div class="builder-header" style="padding-bottom:0;padding-top:24px">
     <div class="stitle jp">60分 プログラム構成 ─ <span style="color:var(--pre)">PRE</span></div>
     <div class="ssub mono">プレ ─ Pre種目リストに基づく構成・18種目 / 60分</div>
@@ -2753,7 +4326,7 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
   </div>
 </div>
 
-<div class="slide s7-builder bldr-fundamental" data-slide="12" data-title="プログラム構成 — FUNDAMENTAL">
+<div class="slide s7-builder bldr-fundamental" data-slide="23" data-title="プログラム構成 — FUNDAMENTAL">
   <div class="builder-header" style="padding-bottom:0;padding-top:24px">
     <div class="stitle jp">60分 プログラム構成 ─ <span style="color:var(--fundamental)">FUNDAMENTAL</span></div>
     <div class="ssub mono">ファンダメンタル ─ 全レベルのベース・F種目のみで構成・18〜25種目 / 60分</div>
@@ -2773,7 +4346,7 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
   </div>
 </div>
 
-<div class="slide s7-builder bldr-intermediate" data-slide="13" data-title="プログラム構成 — INTERMEDIATE">
+<div class="slide s7-builder bldr-intermediate" data-slide="24" data-title="プログラム構成 — INTERMEDIATE">
   <div class="builder-header" style="padding-bottom:0;padding-top:24px">
     <div class="stitle jp">60分 プログラム構成 ─ <span style="color:var(--intermediate)">INTERMEDIATE</span></div>
     <div class="ssub mono">インターミディエイト ─ F種目＋I種目3〜5追加 / 60分</div>
@@ -2793,7 +4366,7 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
   </div>
 </div>
 
-<div class="slide s7-builder bldr-advance" data-slide="14" data-title="プログラム構成 — ADVANCE">
+<div class="slide s7-builder bldr-advance" data-slide="25" data-title="プログラム構成 — ADVANCE">
   <div class="builder-header" style="padding-bottom:0;padding-top:24px">
     <div class="stitle jp">60分 プログラム構成 ─ <span style="color:var(--advance)">ADVANCE</span></div>
     <div class="ssub mono">アドバンス ─ F・I・A全種目から25種目で構成 / 60分</div>
@@ -2816,7 +4389,7 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
 <!-- ════════════════════════════════════
      SLIDE 14 — CONTRAINDICATIONS
 ════════════════════════════════════ -->
-<div class="slide" data-slide="15" data-title="禁忌事項">
+<div class="slide" data-slide="26" data-title="禁忌事項">
   <div class="sh">
     <div class="sh-tag"><div class="sh-tag-dot"></div><span class="sh-tag-text">General Contraindications</span></div>
     <div class="sh-title jp">一般的な禁忌事項</div>
@@ -2838,7 +4411,7 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
 <!-- ════════════════════════════════════
      SLIDE 14 — SAFETY PRECAUTIONS
 ════════════════════════════════════ -->
-<div class="slide" data-slide="16" data-title="安全面の注意事項">
+<div class="slide" data-slide="27" data-title="安全面の注意事項">
   <div class="sh">
     <div class="sh-tag"><div class="sh-tag-dot"></div><span class="sh-tag-text">Safety Precautions</span></div>
     <div class="sh-title jp">安全面の注意事項</div>
@@ -2961,7 +4534,7 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
 <!-- ════════════════════════════════════
      SLIDE 15 — UPCOMING
 ════════════════════════════════════ -->
-<div class="slide" data-slide="17" data-title="種目・強度一覧">
+<div class="slide" data-slide="28" data-title="種目・強度一覧">
   <!-- full-height flex container -->
   <div style="display:flex;flex-direction:column;height:100%;overflow:hidden">
 
@@ -3009,7 +4582,7 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
 <!-- ════════════════════════════════════════════════════════
      APPARATUS CURRICULUM (旧P19 → P18に移動)
 ════════════════════════════════════════════════════════ -->
-<div class="slide" data-slide="18" data-title="器具別養成種目一覧">
+<div class="slide" data-slide="29" data-title="器具別養成種目一覧">
   <div style="display:flex;flex-direction:column;height:100%;padding:20px 28px;overflow:hidden">
 
     <!-- ヘッダー -->
@@ -3031,669 +4604,13 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
 <!-- ════════════════════════════════════════════════════════
      INSTRUCTOR TRAINING ROADMAP (旧P18 → P19に移動)
 ════════════════════════════════════════════════════════ -->
-<div class="slide" data-slide="19" data-title="新規養成ロードマップ">
-<div style="display:flex;flex-direction:column;height:100%;padding:20px 28px;overflow:hidden;gap:16px">
-
-  <!-- ヘッダー -->
-  <div style="flex-shrink:0">
-    <div style="font:900 10px Montserrat;letter-spacing:6px;color:var(--red);margin-bottom:4px">● NEW INSTRUCTOR CURRICULUM</div>
-    <div style="display:flex;align-items:baseline;gap:20px">
-      <div style="font:700 20px Montserrat;color:var(--white);letter-spacing:1px">新規インストラクター養成 ロードマップ</div>
-      <div style="font:300 11px 'Noto Sans JP';color:var(--muted)">器具習得の順序に沿った4ステップ養成</div>
-      <div style="margin-left:auto;display:flex;gap:20px">
-        <div style="text-align:center">
-          <div style="font:900 22px 'Bebas Neue';color:var(--white)">42<span style="font-size:11px;color:var(--muted)">週</span></div>
-          <div style="font:600 9px Montserrat;letter-spacing:2px;color:var(--dim)">DURATION</div>
-        </div>
-        <div style="text-align:center">
-          <div style="font:900 22px 'Bebas Neue';color:var(--white)">372<span style="font-size:11px;color:var(--muted)">種目</span></div>
-          <div style="font:600 9px Montserrat;letter-spacing:2px;color:var(--dim)">EXERCISES<br><span style="color:var(--red)">（必須5種目除く）</span></div>
-        </div>
-        <div style="text-align:center">
-          <div style="font:900 22px 'Bebas Neue';color:var(--white)">240<span style="font-size:11px;color:var(--muted)">h</span></div>
-          <div style="font:600 9px Montserrat;letter-spacing:2px;color:var(--dim)">TOTAL HOURS <span style="color:var(--red)">暫定</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- タイムライン -->
-  <div style="flex-shrink:0;display:flex;gap:0;align-items:center;padding:10px 0">
-    <!-- STEP 1 bar -->
-    <div style="flex:3;height:8px;background:linear-gradient(90deg,#E879F9,rgba(232,121,249,.4));border-radius:4px 0 0 4px;position:relative">
-      <div style="position:absolute;top:-18px;left:0;font:700 10px Montserrat;letter-spacing:2px;color:#E879F9">STEP 1</div>
-      <div style="position:absolute;bottom:-16px;left:0;font:300 9px Montserrat;color:var(--dim)">Week 1</div>
-      <div style="position:absolute;bottom:-16px;right:0;font:300 9px Montserrat;color:var(--dim)">W12</div>
-    </div>
-    <div style="width:2px;height:16px;background:var(--bg);flex-shrink:0"></div>
-    <!-- STEP 2 bar -->
-    <div style="flex:4;height:8px;background:linear-gradient(90deg,rgba(129,140,248,.6),rgba(129,140,248,.3));position:relative">
-      <div style="position:absolute;top:-18px;left:0;font:700 10px Montserrat;letter-spacing:2px;color:#818cf8">STEP 2</div>
-      <div style="position:absolute;bottom:-16px;left:0;font:300 9px Montserrat;color:var(--dim)">W13</div>
-      <div style="position:absolute;bottom:-16px;right:0;font:300 9px Montserrat;color:var(--dim)">W26</div>
-    </div>
-    <div style="width:2px;height:16px;background:var(--bg);flex-shrink:0"></div>
-    <!-- STEP 3 bar -->
-    <div style="flex:2;height:8px;background:linear-gradient(90deg,rgba(245,158,11,.6),rgba(245,158,11,.2));position:relative">
-      <div style="position:absolute;top:-18px;left:0;font:700 10px Montserrat;letter-spacing:2px;color:#f59e0b">STEP 3</div>
-      <div style="position:absolute;bottom:-16px;left:0;font:300 9px Montserrat;color:var(--dim)">W27</div>
-      <div style="position:absolute;bottom:-16px;right:0;font:300 9px Montserrat;color:var(--dim)">W30</div>
-    </div>
-    <div style="width:2px;height:16px;background:var(--bg);flex-shrink:0"></div>
-    <!-- STEP 4 bar -->
-    <div style="flex:3;height:8px;background:linear-gradient(90deg,rgba(225,29,72,.6),rgba(225,29,72,.2));border-radius:0 4px 4px 0;position:relative">
-      <div style="position:absolute;top:-18px;left:0;font:700 10px Montserrat;letter-spacing:2px;color:#e11d48">STEP 4</div>
-      <div style="position:absolute;bottom:-16px;left:0;font:300 9px Montserrat;color:var(--dim)">W31</div>
-      <div style="position:absolute;bottom:-16px;right:0;font:300 9px Montserrat;color:var(--dim)">W42</div>
-    </div>
-  </div>
-
-  <!-- 3ステップカード -->
-  <div style="flex:1;display:flex;gap:12px;min-height:0;margin-top:12px">
-
-    <!-- STEP 1 -->
-    <div style="flex:3;background:var(--card);border:1px solid var(--border2);border-radius:10px;border-top:3px solid #E879F9;display:flex;flex-direction:column;overflow:hidden">
-      <div style="padding:14px 16px;border-bottom:1px solid var(--border)">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
-          <div style="width:28px;height:28px;border-radius:50%;background:rgba(232,121,249,.15);border:1px solid rgba(232,121,249,.3);display:flex;align-items:center;justify-content:center;font:900 12px Montserrat;color:#E879F9;flex-shrink:0">1</div>
-          <div>
-            <div style="font:700 10px Montserrat;letter-spacing:3px;color:#E879F9">STEP 1 ─ 基礎段階</div>
-            <div style="font:300 9px 'Noto Sans JP';color:var(--muted)">Week 1〜12（12週間）</div>
-          </div>
-          <div style="margin-left:auto;display:flex;gap:10px;align-items:center"><div style="text-align:right"><div style="font:900 18px 'Bebas Neue';color:var(--white)">85<span style="font:600 10px Montserrat;color:var(--muted);margin-left:2px">種目</span></div></div><div style="padding:3px 10px;background:rgba(232,121,249,.12);border:1px solid rgba(232,121,249,.3);border-radius:4px;text-align:center"><div style="font:900 18px 'Bebas Neue';color:#E879F9;line-height:1">70<span style="font:600 10px Montserrat;color:#E879F9;margin-left:1px">h</span></div><div style="font:600 9px Montserrat;color:rgba(232,121,249,.6);letter-spacing:1px">暫定</div></div></div>
-        </div>
-        <div style="display:flex;gap:6px">
-          <span style="padding:3px 8px;background:rgba(232,121,249,.1);border:1px solid rgba(232,121,249,.2);border-radius:3px;font:700 10px Montserrat;color:#E879F9">MAT · PRE</span>
-          <span style="padding:3px 8px;background:rgba(74,143,212,.1);border:1px solid rgba(74,143,212,.2);border-radius:3px;font:700 10px Montserrat;color:#4a8fd4">REFORMER · PRE + F</span>
-        </div>
-      </div>
-      <div style="flex:1;overflow-y:auto;padding:12px 16px;display:flex;flex-direction:column;gap:8px">
-        <div style="background:rgba(232,121,249,.04);border:1px solid rgba(232,121,249,.1);border-radius:6px;padding:10px">
-          <div style="font:700 9px Montserrat;letter-spacing:2px;color:#E879F9;margin-bottom:6px">① 理論・解剖学基礎 <span style="color:#E879F9;font-size:8px">10h</span></div>
-          <div style="font:300 10px 'Noto Sans JP';color:var(--body);line-height:1.7">ピラティス原則・AXISCORE UNIT-SYSTEM概要・呼吸と骨盤ニュートラル・10ユニットの目的と構造</div>
-        </div>
-        <div style="background:rgba(232,121,249,.04);border:1px solid rgba(232,121,249,.1);border-radius:6px;padding:10px">
-          <div style="font:700 9px Montserrat;letter-spacing:2px;color:#E879F9;margin-bottom:6px">② マット種目習得（23種目） <span style="color:#E879F9;font-size:8px">15h</span></div>
-          <div style="font:300 10px 'Noto Sans JP';color:var(--body);line-height:1.7">床上での基本動作パターンを身体に定着させる。WARM UP・腹部・股関節・背面の基礎種目</div>
-        </div>
-        <div style="background:rgba(74,143,212,.04);border:1px solid rgba(74,143,212,.1);border-radius:6px;padding:10px">
-          <div style="font:700 9px Montserrat;letter-spacing:2px;color:#4a8fd4;margin-bottom:6px">③ Reformer PRE+F習得（62種目） <span style="color:#4a8fd4;font-size:8px">45h</span></div>
-          <div style="font:300 10px 'Noto Sans JP';color:var(--body);line-height:1.7">リフォーマーの機器操作とスプリング調整を習得。全10ユニットのPRE〜Fレベル種目を実施</div>
-        </div>
-        <div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:6px;padding:8px 10px;display:flex;gap:12px">
-          <div style="font:300 9px 'Noto Sans JP';color:var(--dim)">✓ Reformerスプリング設定</div>
-          <div style="font:300 9px 'Noto Sans JP';color:var(--dim)">✓ キューイング基礎</div>
-          <div style="font:300 9px 'Noto Sans JP';color:var(--dim)">✓ 見学実習（2回）</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- STEP 2 -->
-    <div style="flex:4;background:var(--card);border:1px solid var(--border2);border-radius:10px;border-top:3px solid #818cf8;display:flex;flex-direction:column;overflow:hidden">
-      <div style="padding:14px 16px;border-bottom:1px solid var(--border)">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
-          <div style="width:28px;height:28px;border-radius:50%;background:rgba(129,140,248,.15);border:1px solid rgba(129,140,248,.3);display:flex;align-items:center;justify-content:center;font:900 12px Montserrat;color:#818cf8;flex-shrink:0">2</div>
-          <div>
-            <div style="font:700 10px Montserrat;letter-spacing:3px;color:#818cf8">STEP 2 ─ 中級段階</div>
-            <div style="font:300 9px 'Noto Sans JP';color:var(--muted)">Week 13〜26（14週間）</div>
-          </div>
-          <div style="margin-left:auto;display:flex;gap:10px;align-items:center"><div style="text-align:right"><div style="font:900 18px 'Bebas Neue';color:var(--white)">143<span style="font:600 10px Montserrat;color:var(--muted);margin-left:2px">種目</span></div></div><div style="padding:3px 10px;background:rgba(129,140,248,.12);border:1px solid rgba(129,140,248,.3);border-radius:4px;text-align:center"><div style="font:900 18px 'Bebas Neue';color:#818cf8;line-height:1">105<span style="font:600 10px Montserrat;color:#818cf8;margin-left:1px">h</span></div><div style="font:600 9px Montserrat;color:rgba(129,140,248,.6);letter-spacing:1px">暫定</div></div></div>
-        </div>
-        <div style="display:flex;gap:6px">
-          <span style="padding:3px 8px;background:rgba(129,140,248,.1);border:1px solid rgba(129,140,248,.2);border-radius:3px;font:700 10px Montserrat;color:#818cf8">REFORMER · I</span>
-          <span style="padding:3px 8px;background:rgba(45,168,120,.1);border:1px solid rgba(45,168,120,.2);border-radius:3px;font:700 10px Montserrat;color:#2da878">CADILLAC · F + I</span>
-        </div>
-      </div>
-      <div style="flex:1;overflow-y:auto;padding:12px 16px;display:flex;flex-direction:column;gap:8px">
-        <div style="background:rgba(129,140,248,.04);border:1px solid rgba(129,140,248,.1);border-radius:6px;padding:10px">
-          <div style="font:700 9px Montserrat;letter-spacing:2px;color:#818cf8;margin-bottom:6px">① Reformer Intermediate習得（83種目） <span style="color:#818cf8;font-size:8px">55h</span></div>
-          <div style="font:300 10px 'Noto Sans JP';color:var(--body);line-height:1.7">STEPで習得した種目に加え、インターレベルの新規種目を追加。動作の精度とキューイングの質を向上させる</div>
-        </div>
-        <div style="background:rgba(45,168,120,.04);border:1px solid rgba(45,168,120,.1);border-radius:6px;padding:10px">
-          <div style="font:700 9px Montserrat;letter-spacing:2px;color:#2da878;margin-bottom:6px">② Cadillac F+I習得（60種目） <span style="color:#2da878;font-size:8px">35h</span></div>
-          <div style="font:300 10px 'Noto Sans JP';color:var(--body);line-height:1.7">キャデラックの器具構造・スプリング設定を習得。プッシュスルーバー・タワー・ロールダウンバーを用いた種目を実施</div>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-          <div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:6px;padding:8px 10px">
-            <div style="font:700 10px Montserrat;color:var(--muted);margin-bottom:4px">指導実習</div>
-            <div style="font:300 9px 'Noto Sans JP';color:var(--dim);line-height:1.6">実際のクラスでの補助指導・セッション構成の実践</div>
-          </div>
-          <div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:6px;padding:8px 10px">
-            <div style="font:700 10px Montserrat;color:var(--muted);margin-bottom:4px">プログラム設計</div>
-            <div style="font:300 9px 'Noto Sans JP';color:var(--dim);line-height:1.6">60分レッスンの設計・ユニット配分・レベル別構成</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- STEP 3 -->
-    <div style="flex:2;background:var(--card);border:1px solid var(--border2);border-radius:10px;border-top:3px solid #f59e0b;display:flex;flex-direction:column;overflow:hidden">
-      <div style="padding:14px 16px;border-bottom:1px solid var(--border)">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
-          <div style="width:28px;height:28px;border-radius:50%;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);display:flex;align-items:center;justify-content:center;font:900 12px Montserrat;color:#f59e0b;flex-shrink:0">3</div>
-          <div>
-            <div style="font:700 10px Montserrat;letter-spacing:3px;color:#f59e0b">STEP 3 ─ 応用段階</div>
-            <div style="font:300 9px 'Noto Sans JP';color:var(--muted)">Week 27〜30（4週間）</div>
-          </div>
-          <div style="margin-left:auto;display:flex;gap:10px;align-items:center"><div style="text-align:right"><div style="font:900 18px 'Bebas Neue';color:var(--white)">75<span style="font:600 10px Montserrat;color:var(--muted);margin-left:2px">種目</span></div></div><div style="padding:3px 10px;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);border-radius:4px;text-align:center"><div style="font:900 18px 'Bebas Neue';color:#f59e0b;line-height:1">25<span style="font:600 10px Montserrat;color:#f59e0b;margin-left:1px">h</span></div><div style="font:600 9px Montserrat;color:rgba(245,158,11,.6);letter-spacing:1px">暫定</div></div></div>
-        </div>
-        <div style="display:flex;gap:5px;flex-wrap:wrap">
-          <span style="padding:3px 7px;background:rgba(212,144,58,.1);border:1px solid rgba(212,144,58,.2);border-radius:3px;font:700 9px Montserrat;color:#d4903a">CHAIR</span>
-          <span style="padding:3px 7px;background:rgba(196,88,128,.1);border:1px solid rgba(196,88,128,.2);border-radius:3px;font:700 9px Montserrat;color:#c45880">BARREL</span>
-          <span style="padding:3px 7px;background:rgba(155,89,182,.1);border:1px solid rgba(155,89,182,.2);border-radius:3px;font:700 9px Montserrat;color:#9b59b6">SC</span>
-        </div>
-      </div>
-      <div style="flex:1;overflow-y:auto;padding:12px 16px;display:flex;flex-direction:column;gap:8px">
-        <div style="background:rgba(245,158,11,.04);border:1px solid rgba(245,158,11,.1);border-radius:6px;padding:10px">
-          <div style="font:700 9px Montserrat;letter-spacing:2px;color:#f59e0b;margin-bottom:6px">補助器具 F+I習得 <span style="color:#f59e0b;font-size:8px">20h</span></div>
-          <div style="font:300 10px 'Noto Sans JP';color:var(--body);line-height:1.7">Chair・Barrel・Spine CorrectorのF/Iレベル種目を習得。各器具の特性とプログラムへの組み込み方を学ぶ</div>
-        </div>
-        <div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:6px;padding:8px 10px">
-          <div style="font:700 10px Montserrat;color:var(--muted);margin-bottom:4px">修了審査</div>
-          <div style="font:300 9px 'Noto Sans JP';color:var(--dim);line-height:1.6">全器具を使った60分レッスン実施・筆記試験・修了認定</div>
-        </div>
-      </div>
-    </div>
-    <!-- 矢印 STEP3→4 -->
-    <div style="display:flex;align-items:center;padding:0 10px;flex-shrink:0">
-      <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
-        <div style="width:32px;height:2px;background:linear-gradient(90deg,var(--border2),var(--red))"></div>
-        <svg width="7" height="10" viewBox="0 0 8 12" fill="var(--red)"><path d="M0 0l8 6-8 6z"/></svg>
-      </div>
-    </div>
-    <!-- STEP 4 -->
-    <div style="flex:1;background:var(--card);border:1px solid var(--border2);border-radius:10px;padding:18px 14px;display:flex;flex-direction:column;gap:10px;border-top:3px solid #e11d48;overflow:hidden">
-      <div style="display:flex;align-items:center;gap:8px">
-        <div style="width:28px;height:28px;border-radius:50%;background:rgba(225,29,72,.15);border:1px solid rgba(225,29,72,.3);display:flex;align-items:center;justify-content:center;font:900 12px Montserrat;color:#e11d48;flex-shrink:0">4</div>
-        <div>
-          <div style="font:700 9px Montserrat;letter-spacing:2px;color:#e11d48">STEP 4 ─ 上級段階</div>
-          <div style="font:300 9px 'Noto Sans JP';color:var(--muted)">Week 31〜42（12週間）</div>
-        </div>
-        <div style="display:flex;flex-direction:column;align-items:flex-end;margin-left:auto">
-          <div style="font:900 16px 'Bebas Neue';color:var(--white)">71<span style="font:600 9px Montserrat;color:var(--muted);margin-left:2px">種目</span></div>
-          <div style="padding:2px 8px;background:rgba(225,29,72,.12);border:1px solid rgba(225,29,72,.3);border-radius:3px;text-align:center">
-            <div style="font:900 13px 'Bebas Neue';color:#e11d48;line-height:1.1">40<span style="font:600 9px Montserrat;margin-left:1px">h</span></div>
-            <div style="font:600 6px Montserrat;color:rgba(225,29,72,.6);letter-spacing:1px">暫定</div>
-          </div>
-        </div>
-      </div>
-      <div style="display:flex;gap:4px;flex-wrap:wrap">
-        <span style="padding:2px 7px;background:rgba(74,143,212,.1);border:1px solid rgba(74,143,212,.2);border-radius:3px;font:600 9px Montserrat;color:#4a8fd4">R·A</span>
-        <span style="padding:2px 7px;background:rgba(45,168,120,.1);border:1px solid rgba(45,168,120,.2);border-radius:3px;font:600 9px Montserrat;color:#2da878">C·A</span>
-        <span style="padding:2px 7px;background:rgba(212,144,58,.1);border:1px solid rgba(212,144,58,.2);border-radius:3px;font:600 9px Montserrat;color:#d4903a">W·A</span>
-        <span style="padding:2px 7px;background:rgba(155,89,182,.1);border:1px solid rgba(155,89,182,.2);border-radius:3px;font:600 9px Montserrat;color:#9b59b6">SC·A</span>
-      </div>
-      <div style="background:rgba(225,29,72,.04);border:1px solid rgba(225,29,72,.1);border-radius:5px;padding:9px">
-        <div style="font:700 10px Montserrat;letter-spacing:2px;color:#e11d48;margin-bottom:5px">① 全器具 Advance習得</div>
-        <div style="font:300 9px 'Noto Sans JP';color:var(--body);line-height:1.6">Reformer(39) / Cadillac(21) / Chair(9) / SC(2)の上級種目を習得。複合的プログラム構成力を養う</div>
-      </div>
-      <div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:5px;padding:8px">
-        <div style="font:700 10px Montserrat;color:var(--muted);margin-bottom:4px">修了審査・認定</div>
-        <div style="font:300 9px 'Noto Sans JP';color:var(--dim);line-height:1.5">全器具Advanceレッスン実施・筆記試験・AXISCORE認定証発行</div>
-      </div>
-      <div style="margin-top:auto;padding:6px;background:rgba(200,16,46,.08);border:1px solid rgba(200,16,46,.2);border-radius:5px;text-align:center">
-        <div style="font:700 10px Montserrat;letter-spacing:2px;color:var(--red)">CERTIFIED</div>
-        <div style="font:300 10px 'Noto Sans JP';color:var(--muted);margin-top:1px">AXISCORE インストラクター認定</div>
-      </div>
-    </div>
-
-  </div>
-</div>
-</div>
-
-<div class="slide" data-slide="20" data-title="マニュアル作成ガイド">
-
-  <!-- ambient -->
-  <div style="position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0">
-    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font:900 40vh Montserrat;color:rgba(255,255,255,0);-webkit-text-stroke:1px rgba(255,255,255,.02);line-height:1;user-select:none">HOW TO</div>
-  </div>
-
-  <div class="sh" style="position:relative;z-index:1">
-    <div class="sh-tag"><div class="sh-tag-dot"></div><span class="sh-tag-text">Manual Production Guide</span></div>
-    <div class="sh-title jp" style="font-size:28px">マニュアルの作り方</div>
-    <div class="sh-sub mono">HOW TO BUILD THE EXERCISE MANUAL</div>
-  </div>
-
-  <div style="position:relative;z-index:1;padding:0 var(--pad);display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
-
-    <!-- STEP 01 -->
-    <div style="background:var(--card);border:1px solid var(--border2);border-radius:8px;overflow:hidden;display:flex;flex-direction:column">
-      <div style="height:3px;background:linear-gradient(90deg,var(--red),var(--red2))"></div>
-      <div style="padding:20px 22px;flex:1;display:flex;flex-direction:column;gap:12px">
-        <div style="display:flex;align-items:center;justify-content:space-between">
-          <div style="font:900 32px 'Bebas Neue';color:rgba(200,16,46,.25);line-height:1">01</div>
-          <div style="width:32px;height:32px;border-radius:6px;background:rgba(200,16,46,.12);border:1px solid rgba(200,16,46,.25);display:flex;align-items:center;justify-content:center">
-            <span style="font:700 10px Montserrat;color:var(--red)">XLS</span>
-          </div>
-        </div>
-        <div>
-          <div style="font:700 9px Montserrat;letter-spacing:3px;color:var(--red);margin-bottom:6px">DATA INPUT</div>
-          <div style="font:700 14px 'Noto Sans JP';color:var(--white);line-height:1.5">Excelに<br>種目データを入力</div>
-        </div>
-        <div style="height:1px;background:var(--border)"></div>
-        <div style="font:300 11px 'Noto Sans JP';color:var(--body);line-height:1.9;flex:1">
-          AXISCORE_種目マスター.xlsx を開き、担当者ごとに分担して入力します。
-        </div>
-        <div style="display:flex;flex-direction:column;gap:5px">
-          <div style="font:700 9px Montserrat;letter-spacing:1px;color:var(--muted);margin-bottom:2px">INPUT ITEMS</div>
-          <div style="display:flex;flex-wrap:wrap;gap:4px">
-            <span style="font:400 9px 'Noto Sans JP';padding:2px 7px;background:rgba(200,16,46,.08);border:1px solid rgba(200,16,46,.15);border-radius:2px;color:var(--body)">スプリング</span>
-            <span style="font:400 9px 'Noto Sans JP';padding:2px 7px;background:rgba(200,16,46,.08);border:1px solid rgba(200,16,46,.15);border-radius:2px;color:var(--body)">レップ数</span>
-            <span style="font:400 9px 'Noto Sans JP';padding:2px 7px;background:rgba(200,16,46,.08);border:1px solid rgba(200,16,46,.15);border-radius:2px;color:var(--body)">キューイング</span>
-            <span style="font:400 9px 'Noto Sans JP';padding:2px 7px;background:rgba(200,16,46,.08);border:1px solid rgba(200,16,46,.15);border-radius:2px;color:var(--body)">禁忌事項</span>
-            <span style="font:400 9px 'Noto Sans JP';padding:2px 7px;background:rgba(200,16,46,.08);border:1px solid rgba(200,16,46,.15);border-radius:2px;color:var(--body)">写真ラベル</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- STEP 02 -->
-    <div style="background:var(--card);border:1px solid var(--border2);border-radius:8px;overflow:hidden;display:flex;flex-direction:column">
-      <div style="height:3px;background:linear-gradient(90deg,var(--gold),var(--gold2))"></div>
-      <div style="padding:20px 22px;flex:1;display:flex;flex-direction:column;gap:12px">
-        <div style="display:flex;align-items:center;justify-content:space-between">
-          <div style="font:900 32px 'Bebas Neue';color:rgba(201,168,76,.2);line-height:1">02</div>
-          <div style="width:32px;height:32px;border-radius:6px;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.25);display:flex;align-items:center;justify-content:center">
-            <span style="font:700 10px Montserrat;color:var(--gold)">CAM</span>
-          </div>
-        </div>
-        <div>
-          <div style="font:700 9px Montserrat;letter-spacing:3px;color:var(--gold);margin-bottom:6px">PHOTO SHOOT</div>
-          <div style="font:700 14px 'Noto Sans JP';color:var(--white);line-height:1.5">写真を撮影<br>（1種目4枚）</div>
-        </div>
-        <div style="height:1px;background:var(--border)"></div>
-        <div style="font:300 11px 'Noto Sans JP';color:var(--body);line-height:1.9;flex:1">
-          撮影リストを印刷して機器別・UNIT別に撮影。ファイル名はIDで命名します。
-        </div>
-        <div style="padding:8px 12px;background:rgba(201,168,76,.06);border-left:2px solid var(--gold);border-radius:2px">
-          <div style="font:400 9px Montserrat;color:var(--muted);letter-spacing:1px">命名例</div>
-          <div style="font:600 10px Montserrat;color:var(--gold);margin-top:2px">RF-U02-F-001_01.jpg</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- STEP 03 -->
-    <div style="background:var(--card);border:1px solid var(--border2);border-radius:8px;overflow:hidden;display:flex;flex-direction:column">
-      <div style="height:3px;background:linear-gradient(90deg,var(--intermediate),#60A5FA)"></div>
-      <div style="padding:20px 22px;flex:1;display:flex;flex-direction:column;gap:12px">
-        <div style="display:flex;align-items:center;justify-content:space-between">
-          <div style="font:900 32px 'Bebas Neue';color:rgba(59,130,246,.2);line-height:1">03</div>
-          <div style="width:32px;height:32px;border-radius:6px;background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.25);display:flex;align-items:center;justify-content:center">
-            <span style="font:700 10px Montserrat;color:var(--intermediate)">AI</span>
-          </div>
-        </div>
-        <div>
-          <div style="font:700 9px Montserrat;letter-spacing:3px;color:var(--intermediate);margin-bottom:6px">CONVERT</div>
-          <div style="font:700 14px 'Noto Sans JP';color:var(--white);line-height:1.5">ExcelをClaudeに<br>渡してJSON変換</div>
-        </div>
-        <div style="height:1px;background:var(--border)"></div>
-        <div style="font:300 11px 'Noto Sans JP';color:var(--body);line-height:1.9;flex:1">
-          完成したExcelをClaudeにアップロード。自動でJSONに変換してHTMLに差し込みます。
-        </div>
-        <div style="padding:8px 12px;background:rgba(59,130,246,.06);border-left:2px solid var(--intermediate);border-radius:2px">
-          <div style="font:400 9px 'Noto Sans JP';color:var(--muted)">Excel → JSON → MANUAL_DATA</div>
-          <div style="font:400 10px 'Noto Sans JP';color:var(--body);margin-top:2px">自動で全種目に反映</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- STEP 04 -->
-    <div style="background:var(--card);border:1px solid var(--border2);border-radius:8px;overflow:hidden;display:flex;flex-direction:column">
-      <div style="height:3px;background:linear-gradient(90deg,var(--fundamental),#4ADE80)"></div>
-      <div style="padding:20px 22px;flex:1;display:flex;flex-direction:column;gap:12px">
-        <div style="display:flex;align-items:center;justify-content:space-between">
-          <div style="font:900 32px 'Bebas Neue';color:rgba(34,197,94,.2);line-height:1">04</div>
-          <div style="width:32px;height:32px;border-radius:6px;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.25);display:flex;align-items:center;justify-content:center">
-            <span style="font:700 10px Montserrat;color:var(--fundamental)">SVR</span>
-          </div>
-        </div>
-        <div>
-          <div style="font:700 9px Montserrat;letter-spacing:3px;color:var(--fundamental);margin-bottom:6px">DEPLOY</div>
-          <div style="font:700 14px 'Noto Sans JP';color:var(--white);line-height:1.5">写真フォルダを配置<br>サーバーにアップ</div>
-        </div>
-        <div style="height:1px;background:var(--border)"></div>
-        <div style="font:300 11px 'Noto Sans JP';color:var(--body);line-height:1.9;flex:1">
-          manual_images/フォルダに写真を格納し、HTMLと同じSakuraサーバーにアップで完成。
-        </div>
-        <div style="padding:8px 12px;background:rgba(34,197,94,.05);border-left:2px solid var(--fundamental);border-radius:2px">
-          <div style="font:400 9px Montserrat;color:var(--muted);letter-spacing:1px">フォルダ</div>
-          <div style="font:600 10px Montserrat;color:var(--fundamental);margin-top:2px">manual_images/</div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- bottom flow bar -->
-  <div style="position:relative;z-index:1;padding:14px var(--pad) 0;display:flex;align-items:center;gap:0">
-    <div style="flex:1;padding:12px 16px;background:rgba(200,16,46,.06);border:1px solid rgba(200,16,46,.2);border-radius:4px 0 0 4px;text-align:center">
-      <div style="font:700 9px Montserrat;letter-spacing:2px;color:var(--red)">EXCEL</div>
-      <div style="font:300 10px 'Noto Sans JP';color:var(--muted);margin-top:2px">データ入力</div>
-    </div>
-    <div style="font:700 14px Montserrat;color:var(--dim);padding:0 8px">→</div>
-    <div style="flex:1;padding:12px 16px;background:rgba(201,168,76,.05);border:1px solid rgba(201,168,76,.18);text-align:center">
-      <div style="font:700 9px Montserrat;letter-spacing:2px;color:var(--gold)">SHOOT</div>
-      <div style="font:300 10px 'Noto Sans JP';color:var(--muted);margin-top:2px">写真撮影</div>
-    </div>
-    <div style="font:700 14px Montserrat;color:var(--dim);padding:0 8px">→</div>
-    <div style="flex:1;padding:12px 16px;background:rgba(59,130,246,.05);border:1px solid rgba(59,130,246,.18);text-align:center">
-      <div style="font:700 9px Montserrat;letter-spacing:2px;color:var(--intermediate)">CLAUDE</div>
-      <div style="font:300 10px 'Noto Sans JP';color:var(--muted);margin-top:2px">JSON変換</div>
-    </div>
-    <div style="font:700 14px Montserrat;color:var(--dim);padding:0 8px">→</div>
-    <div style="flex:1;padding:12px 16px;background:rgba(34,197,94,.05);border:1px solid rgba(34,197,94,.18);border-radius:0 4px 4px 0;text-align:center">
-      <div style="font:700 9px Montserrat;letter-spacing:2px;color:var(--fundamental)">SAKURA</div>
-      <div style="font:300 10px 'Noto Sans JP';color:var(--muted);margin-top:2px">サーバー配置</div>
-    </div>
-    <div style="font:700 14px Montserrat;color:var(--dim);padding:0 8px">→</div>
-    <div style="padding:12px 20px;background:var(--red);border-radius:4px;text-align:center">
-      <div style="font:700 9px Montserrat;letter-spacing:2px;color:#fff">COMPLETE</div>
-      <div style="font:300 10px 'Noto Sans JP';color:rgba(255,255,255,.7);margin-top:2px">マニュアル完成</div>
-    </div>
-  </div>
-
-  <!-- マニュアルを見るボタン -->
-  <div style="position:relative;z-index:1;padding:14px var(--pad) 0;display:flex;justify-content:flex-end">
-    <button onclick="show(21)" style="padding:9px 22px;background:var(--bg3);border:1px solid var(--border2);color:var(--body);font:700 10px Montserrat;letter-spacing:2px;border-radius:4px;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--white)'" onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--body)'">エクササイズマニュアルを見る →</button>
-  </div>
-
-</div>
-
-
-<!-- ═══ UI TOOLBAR ═══════════════════════════════════════════ -->
-<div id="ui-toolbar">
-  <button class="tb-btn" onclick="toggleLight()" id="tb-light" title="ライト/ダークモード">☀</button>
-  <button class="tb-btn" onclick="setFS(-1)" title="文字小">A-</button>
-  <button class="tb-btn" onclick="setFS(1)" title="文字大">A+</button>
-  <button class="tb-btn" onclick="openKB()" title="ショートカット (?)">?</button>
-</div>
-
-<!-- ═══ KEYBOARD SHORTCUT MODAL ═══════════════════════════════ -->
-<div id="kb-modal" onclick="if(event.target===this)closeKB()">
-  <div class="kb-box">
-    <div class="kb-title">KEYBOARD SHORTCUTS</div>
-    <div class="kb-row"><div class="kb-key"><span class="kb-k">→</span><span class="kb-k">Space</span></div><span class="kb-desc">次のスライド</span></div>
-    <div class="kb-row"><div class="kb-key"><span class="kb-k">←</span></div><span class="kb-desc">前のスライド</span></div>
-    <div class="kb-row"><div class="kb-key"><span class="kb-k">?</span></div><span class="kb-desc">ショートカット表示</span></div>
-    <div class="kb-row"><div class="kb-key"><span class="kb-k">L</span></div><span class="kb-desc">ライト/ダークモード切替</span></div>
-    <div class="kb-row"><div class="kb-key"><span class="kb-k">+</span></div><span class="kb-desc">文字サイズ拡大</span></div>
-    <div class="kb-row"><div class="kb-key"><span class="kb-k">-</span></div><span class="kb-desc">文字サイズ縮小</span></div>
-    <div class="kb-row"><div class="kb-key"><span class="kb-k">M</span></div><span class="kb-desc">マニュアル（スライド22）</span></div>
-    <div class="kb-row"><div class="kb-key"><span class="kb-k">Esc</span></div><span class="kb-desc">モーダルを閉じる</span></div>
-    <div style="margin-top:16px;text-align:center">
-      <button onclick="closeKB()" style="padding:7px 24px;background:var(--red);border:none;border-radius:4px;color:#fff;font:700 10px Montserrat;letter-spacing:1px;cursor:pointer">閉じる</button>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ PRINT PREVIEW MODAL ═══════════════════════════════════ -->
-<div id="print-modal" onclick="if(event.target===this)b3ClosePrint()">
-  <div class="pm-toolbar">
-    <span class="pm-title">PRINT PREVIEW</span>
-    <button class="pm-btn pm-primary" onclick="window.print()">🖨 印刷する</button>
-    <button class="pm-btn" onclick="b3ClosePrint()">閉じる</button>
-  </div>
-  <div class="pm-sheet" id="printSheet"></div>
-</div>
-
-<!-- ═══ JUMP MENU ═══════════════════════════════════════════════ -->
-<div id="jump-menu" id="jump-menu"></div>
-
-<!-- ═══ SIDE PANEL (Favorites + Recent) ════════════════════════ -->
-
-
-
-<!-- ══════════════════════════════════════════════════════════
-     SLIDE 23 ── 器具別 養成種目一覧
-══════════════════════════════════════════════════════════ -->
-
-<!-- ════════════════════════════════════════════════════════
-     SLIDE 22 ── EXERCISE MANUAL
-════════════════════════════════════════════════════════ -->
-<div class="slide s23" data-slide="21" data-title="エクササイズマニュアル">
-  <div style="display:flex;flex-direction:column;height:100%;overflow:hidden">
-
-    <!-- ヘッダーバー -->
-    <div style="display:flex;align-items:center;padding:10px 20px;border-bottom:1px solid var(--border);flex-shrink:0;gap:12px;background:var(--bg2);position:relative;z-index:210">
-      <div style="font:900 11px Montserrat;letter-spacing:4px;color:var(--red)">● EXERCISE MANUAL</div>
-      <div style="font:700 15px Montserrat;color:var(--white);letter-spacing:1px">種目マニュアル</div>
-      <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
-        <button onclick="openLayoutEditor()" style="padding:6px 14px;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);outline:none;border-radius:4px;color:#F59E0B;font:700 9px Montserrat;letter-spacing:1px;cursor:pointer">レイアウト設定</button>
-        <button onclick="mvExportPDF()" style="padding:6px 14px;background:rgba(200,16,46,.15);border:1px solid rgba(200,16,46,.3);outline:none;border-radius:4px;color:var(--red);font:700 9px Montserrat;letter-spacing:1px;cursor:pointer">絞込PDF出力</button>
-        <button onclick="openGuideOverlay()" style="padding:6px 14px;background:rgba(212,175,55,.15);border:1px solid rgba(212,175,55,.3);outline:none;border-radius:4px;color:var(--gold);font:700 9px Montserrat;letter-spacing:1px;cursor:pointer">作成ガイド</button>
-      </div>
-    </div>
-
-    <!-- フィルターバー -->
-    <div style="display:flex;align-items:center;gap:8px;padding:8px 20px;border-bottom:1px solid var(--border);flex-shrink:0;flex-wrap:wrap;background:var(--bg3)">
-      <span style="font:600 9px Montserrat;letter-spacing:2px;color:var(--muted)">機器</span>
-      <select class="mv-sel" id="mv-f-app" onchange="mvFilter()">
-        <option value="">すべての機器</option>
-        <option value="R">Reformer</option>
-        <option value="C">Cadillac</option>
-        <option value="W">Wunda Chair</option>
-        <option value="B">Barrel</option>
-        <option value="SC">Spine Corrector</option>
-        <option value="JB">Jump Board</option>
-        <option value="MAT">Mat</option>
-      </select>
-      <div class="mv-sep"></div>
-      <span style="font:600 9px Montserrat;letter-spacing:2px;color:var(--muted)">UNIT</span>
-      <select class="mv-sel" id="mv-f-unit" onchange="mvFilter()">
-        <option value="">すべてのUNIT</option>
-        <option value="1">U01 — WARM UP</option>
-        <option value="2">U02 — FOOT WORK</option>
-        <option value="3">U03 — ABDOMINAL</option>
-        <option value="4">U04 — HIP WORK</option>
-        <option value="5">U05 — SPINAL ART.</option>
-        <option value="6">U06 — FULL BODY</option>
-        <option value="7">U07 — ARM WORK</option>
-        <option value="8">U08 — LEG WORK</option>
-        <option value="9">U09 — LAT. FLEX</option>
-        <option value="10">U10 — BACK EXT.</option>
-      </select>
-      <div class="mv-sep"></div>
-      <span style="font:600 9px Montserrat;letter-spacing:2px;color:var(--muted)">LEVEL</span>
-      <select class="mv-sel" id="mv-f-lv" onchange="mvFilter()">
-        <option value="">すべてのLEVEL</option>
-        <option value="P">P — PRE</option>
-        <option value="F">F — FUNDAMENTAL</option>
-        <option value="I">I — INTERMEDIATE</option>
-        <option value="A">A — ADVANCE</option>
-      </select>
-      <input id="mv-search" type="text" placeholder="🔍 種目名を検索..." oninput="mvFilter()" autocomplete="off">
-      <span class="mv-count" id="mv-count"></span>
-      <button class="mv-reset" onclick="mvReset()">リセット</button>
-    </div>
-
-    <!-- 種目カウント行 -->
-    <div style="padding:5px 20px;border-bottom:1px solid var(--border);flex-shrink:0;display:flex;gap:16px;align-items:center;background:var(--bg2)">
-      <span style="font:400 10px Montserrat;color:var(--dim)">TOTAL</span>
-      <span style="font:700 11px Montserrat;color:var(--white)" id="mv-total-count"><span id="mv-total-num">—</span> 種目</span>
-      <span style="font:400 10px Montserrat;color:var(--muted)">EXERCISES</span>
-      <span style="font:300 9px 'Noto Sans JP';color:var(--dim)">（必須5種目除く）</span>
-      <span style="color:var(--border)">|</span>
-      <span style="font:400 10px Montserrat;color:var(--pre)">Mat <span style="color:var(--pre)">23</span></span>
-      <span style="font:400 10px Montserrat;color:var(--dim)">Reformer <span style="color:var(--body)">183</span></span>
-      <span style="font:400 10px Montserrat;color:var(--dim)">Cadillac <span style="color:var(--body)">81</span></span>
-      <span style="font:400 10px Montserrat;color:var(--dim)">Chair <span style="color:var(--body)">41</span></span>
-      <span style="font:400 10px Montserrat;color:var(--dim)">Barrel <span style="color:var(--body)">18</span></span>
-      <span style="font:400 10px Montserrat;color:var(--dim)">Spine Corrector <span style="color:var(--body)">27</span></span>
-      <span style="color:var(--border)">|</span>
-      <span style="font:300 9px Montserrat;color:var(--dim)">最終更新 2026.04</span>
-    </div>
-
-    <!-- カードグリッド -->
-    <div id="mv-grid" style="flex:1;overflow-y:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;padding:14px 20px;align-content:start"></div>
-  </div>
-
-  <!-- 詳細モーダル -->
-  <div id="mv-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:100;overflow-y:auto">
-    <div style="max-width:860px;margin:40px auto;background:var(--bg2);border:1px solid var(--border2);border-radius:10px;overflow:hidden">
-      <div style="display:flex;align-items:center;padding:14px 20px;border-bottom:1px solid var(--border);background:var(--bg3)">
-        <div>
-          <div id="mv-m-id" style="font:600 10px Montserrat;letter-spacing:2px;color:var(--muted)"></div>
-          <div id="mv-m-name" style="font:700 16px 'Noto Sans JP';color:var(--white);margin-top:2px"></div>
-          <div id="mv-m-tags" style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap"></div>
-        </div>
-        <div style="display:flex;gap:8px;align-items:center;margin-left:auto">
-          <button id="mv-fav-btn" onclick="mvToggleFav()" style="width:36px;height:36px;border-radius:50%;background:var(--bg3);border:1px solid var(--border);color:var(--muted);font-size:18px;cursor:pointer;transition:all .2s" title="お気に入り">☆</button>
-          <button class="mv-x" onclick="var m=document.getElementById('mv-modal');m.classList.remove('open');m.style.display='none'">×</button>
-        </div>
-      </div>
-      <div style="padding:16px 20px;border-bottom:1px solid var(--border)">
-        <div style="font:700 9px Montserrat;letter-spacing:3px;color:var(--muted);margin-bottom:10px">PHOTOS</div>
-        <div id="mv-m-photos" style="display:flex;gap:8px;overflow-x:auto"></div>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0">
-        <div style="padding:20px;border-right:1px solid var(--border)">
-          <div style="font:700 9px Montserrat;letter-spacing:3px;color:var(--muted);margin-bottom:8px">SETUP</div>
-          <div id="mv-m-spring" style="font:300 12px 'Noto Sans JP';color:var(--body);line-height:1.7;margin-bottom:14px"></div>
-          <div style="font:700 9px Montserrat;letter-spacing:3px;color:var(--muted);margin-bottom:8px">MOVEMENT SEQUENCE</div>
-          <div id="mv-m-sequence" style="font:300 11px 'Noto Sans JP';color:var(--body);line-height:1.7"></div>
-        </div>
-        <div style="padding:20px">
-          <div style="font:700 9px Montserrat;letter-spacing:3px;color:var(--muted);margin-bottom:6px">PURPOSE</div>
-          <div id="mv-m-purpose" style="font:300 11px 'Noto Sans JP';color:var(--body);line-height:1.6;margin-bottom:14px"></div>
-          <div style="font:700 9px Montserrat;letter-spacing:3px;color:var(--muted);margin-bottom:6px">TARGET MUSCLES</div>
-          <div id="mv-m-muscles" style="font:300 11px 'Noto Sans JP';color:var(--body);line-height:1.5;margin-bottom:14px"></div>
-          <div style="font:700 9px Montserrat;letter-spacing:3px;color:var(--muted);margin-bottom:8px">POINTS</div>
-          <div id="mv-m-points" style="display:flex;flex-direction:column;gap:6px"></div>
-        </div>
-      </div>
-      <div style="padding:14px 20px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end">
-        <button id="mv-prev" onclick="mvNav(-1)" style="padding:7px 16px;background:var(--bg3);border:1px solid var(--border2);border-radius:4px;color:var(--muted);font:600 9px Montserrat;cursor:pointer">← PREV</button>
-        <button onclick="mvPreview()" style="padding:7px 16px;background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);border-radius:4px;color:#22C55E;font:600 9px Montserrat;cursor:pointer">プレビュー</button>
-        <button id="mv-print-btn" onclick="mvPrintSingle()" style="padding:7px 16px;background:rgba(200,16,46,.15);border:1px solid rgba(200,16,46,.3);border-radius:4px;color:var(--red);font:600 9px Montserrat;cursor:pointer">PDF出力</button>
-        <button id="mv-next" onclick="mvNav(1)" style="padding:7px 16px;background:var(--bg3);border:1px solid var(--border2);border-radius:4px;color:var(--muted);font:600 9px Montserrat;cursor:pointer">NEXT →</button>
-        <button onclick="var m=document.getElementById('mv-modal');m.classList.remove('open');m.style.display='none'" style="padding:7px 16px;background:var(--red);border:none;border-radius:4px;color:#fff;font:700 9px Montserrat;cursor:pointer">閉じる</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- 作成ガイドオーバーレイ -->
-  <div id="mv-guide-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:200;overflow-y:auto">
-    <div style="max-width:640px;margin:40px auto;padding:20px">
-      <div style="font:900 11px Montserrat;letter-spacing:5px;color:var(--red);margin-bottom:6px">MANUAL CREATION GUIDE</div>
-      <div style="font:700 16px 'Noto Sans JP';color:var(--white);margin-bottom:20px">マニュアル作成ガイド</div>
-      <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:24px">
-        <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;display:flex;gap:14px">
-          <div style="font:900 24px 'Bebas Neue';color:var(--red);flex-shrink:0">1</div>
-          <div><div style="font:700 12px Montserrat;color:var(--white);margin-bottom:4px">Excelをダウンロード</div><div style="font:300 11px 'Noto Sans JP';color:var(--muted)">下のボタンからExcelテンプレートを取得する</div></div>
-        </div>
-        <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;display:flex;gap:14px">
-          <div style="font:900 24px 'Bebas Neue';color:var(--red);flex-shrink:0">2</div>
-          <div><div style="font:700 12px Montserrat;color:var(--white);margin-bottom:4px">データを入力</div><div style="font:300 11px 'Noto Sans JP';color:var(--muted)">スプリング・レップ数・キューイング等を記入する</div></div>
-        </div>
-        <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;display:flex;gap:14px">
-          <div style="font:900 24px 'Bebas Neue';color:var(--red);flex-shrink:0">3</div>
-          <div><div style="font:700 12px Montserrat;color:var(--white);margin-bottom:4px">Claudeにアップロード</div><div style="font:300 11px 'Noto Sans JP';color:var(--muted)">入力済みExcelをClaudeに渡してJSONに変換する</div></div>
-        </div>
-        <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;display:flex;gap:14px">
-          <div style="font:900 24px 'Bebas Neue';color:var(--red);flex-shrink:0">4</div>
-          <div><div style="font:700 12px Montserrat;color:var(--white);margin-bottom:4px">HTMLに差し込み</div><div style="font:300 11px 'Noto Sans JP';color:var(--muted)">MANUAL_DATAセクションを更新して完成</div></div>
-        </div>
-      </div>
-      <div style="display:flex;gap:10px;justify-content:center">
-        <button onclick="mvDownloadExcel()" style="padding:10px 24px;background:rgba(212,175,55,.15);border:1px solid rgba(212,175,55,.4);border-radius:5px;color:var(--gold);font:700 10px Montserrat;letter-spacing:1px;cursor:pointer">DOWNLOAD EXCEL</button>
-        <button onclick="document.getElementById('mv-guide-overlay').style.display='none'" style="padding:10px 24px;background:var(--red);border:none;border-radius:5px;color:#fff;font:700 10px Montserrat;cursor:pointer">閉じる</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- プレビューオーバーレイ -->
-  <div id="mv-preview-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:250;overflow-y:auto">
-    <div style="max-width:800px;margin:24px auto;padding:0 16px">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;position:sticky;top:0;background:rgba(0,0,0,.85);padding:12px 0;z-index:1">
-        <div>
-          <div style="font:900 10px Montserrat;letter-spacing:4px;color:#22C55E">MANUAL PREVIEW</div>
-          <div id="mv-pv-title" style="font:700 14px 'Noto Sans JP';color:#fff;margin-top:2px"></div>
-        </div>
-        <div style="display:flex;gap:8px;align-items:center">
-          <div id="mv-pv-status" style="font:600 10px Montserrat;padding:4px 10px;border-radius:4px"></div>
-          <button onclick="mvPreviewNav(-1)" style="padding:6px 12px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:4px;color:#fff;font:600 9px Montserrat;cursor:pointer">← PREV</button>
-          <button onclick="mvPreviewNav(1)" style="padding:6px 12px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:4px;color:#fff;font:600 9px Montserrat;cursor:pointer">NEXT →</button>
-          <button onclick="document.getElementById('mv-preview-overlay').style.display='none'" style="padding:6px 14px;background:var(--red);border:none;border-radius:4px;color:#fff;font:700 9px Montserrat;cursor:pointer">閉じる</button>
-        </div>
-      </div>
-      <div id="mv-pv-body" style="display:flex;justify-content:center"></div>
-    </div>
-  </div>
-
-  <!-- レイアウト設定オーバーレイ -->
-  <div id="mv-layout-overlay">
-    <div class="ls-wrap">
-      <div class="ls-hdr">
-        <div class="ls-title-grp">
-          <div class="ls-title-sub">LAYOUT SETTINGS</div>
-          <div class="ls-title-main">マニュアルレイアウト設定</div>
-        </div>
-        <div class="ls-actions">
-          <button class="ls-btn ls-btn-reset" onclick="lsReset()">デフォルトに戻す</button>
-          <button class="ls-btn ls-btn-save" onclick="lsSave()">保存して適用</button>
-          <button class="ls-btn ls-btn-close" onclick="document.getElementById('mv-layout-overlay').style.display='none'">閉じる</button>
-        </div>
-      </div>
-
-      <div style="padding:6px 12px;margin-bottom:16px;background:rgba(255,255,255,.05);border-radius:6px;width:fit-content;font:700 10px Montserrat;letter-spacing:2px;color:rgba(255,255,255,.6)">横 LANDSCAPE（固定）</div>
-
-      <div class="ls-toolbar">
-        <button class="ls-btn ls-btn-add" onclick="lsOpenAdd()">＋ セクション追加</button>
-        <div class="ls-hint">ドラッグで並び替え／カラム移動。「必須」チェックをすると、データが空でも常に表示されます（任意項目は空なら非表示）</div>
-      </div>
-
-      <div class="ls-columns">
-        <div class="ls-col">
-          <div class="ls-col-title">左カラム</div>
-          <div class="ls-list" id="ls-col-left"></div>
-        </div>
-        <div class="ls-col">
-          <div class="ls-col-title">右カラム</div>
-          <div class="ls-list" id="ls-col-right"></div>
-        </div>
-      </div>
-
-      <div class="ls-hidden-zone">
-        <div class="ls-hidden-title">非表示ゾーン（ここにドラッグすると表示されません）</div>
-        <div class="ls-list" id="ls-col-hidden" style="min-height:60px"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- セクション追加モーダル -->
-  <div class="ls-addmodal" id="ls-addmodal">
-    <div class="ls-addbox">
-      <h3>セクション追加</h3>
-      <label>セクション名（表示名）</label>
-      <input type="text" id="ls-add-name" placeholder="例：応用バリエーション">
-      <label>入力形式</label>
-      <select id="ls-add-type">
-        <option value="text">テキスト</option>
-        <option value="titled-list">タイトル＋説明</option>
-      </select>
-      <label>小項目数</label>
-      <select id="ls-add-count">
-        <option value="1">1（①）</option>
-        <option value="2" selected>2（①②）</option>
-        <option value="3">3（①②③）</option>
-        <option value="4">4（①②③④）</option>
-      </select>
-      <div class="ls-addbtns">
-        <button class="ls-btn ls-btn-reset" onclick="lsCloseAdd()">キャンセル</button>
-        <button class="ls-btn ls-btn-save" onclick="lsConfirmAdd()">追加</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-</div><!-- /deck -->
 
 <script>
 "use strict";
 /* ══════════════════════════════════
    NAVIGATION
 ══════════════════════════════════ */
-let current=1;const total=21;
+let current=1;const total=29;
 const slideTitles={};
 document.querySelectorAll('.slide[data-title]').forEach(s=>{
   slideTitles[+s.dataset.slide]=s.dataset.title;
@@ -3709,7 +4626,7 @@ function show(n){
   const target=document.querySelector('[data-slide="'+n+'"]');
   if(target) target.classList.add('active');
   // P21ではui-toolbarを非表示（ヘッダーボタンとの重なり回避）
-  document.body.classList.toggle('slide21-active', n===21);
+  document.body.classList.toggle('slide11-active', n===11);
   // Update UI
   document.getElementById('cur').textContent=n;
   document.getElementById('navTitle').textContent=slideTitles[n]||'';
@@ -3720,10 +4637,10 @@ function show(n){
   document.getElementById('btn-next').style.opacity=n===total?'0.3':'1';
   // per-slide inits
   setTimeout(()=>{
-    if(n===6){renderRail&&renderRail();renderDetail&&renderDetail();}
-    if(n===17 && typeof emlInit==='function') emlInit();
-    if(n===18 && typeof s23Init==='function') s23Init();
-    if(n===21 && typeof mvInit==='function') mvInit();
+    if(n===17){renderRail&&renderRail();renderDetail&&renderDetail();}
+    if(n===28 && typeof emlInit==='function') emlInit();
+    if(n===29 && typeof s23Init==='function') s23Init();
+    if(n===11 && typeof mvInit==='function') mvInit();
   }, 50);
 }
 
@@ -3737,7 +4654,7 @@ function buildDots(){
   const el=document.getElementById('nav-dots');
   if(!el)return;
   // Group structure: [1-3 intro], [4-7 system], [8-11 builders], [12-15 refs], [16 end]
-  const groups=[[1,2,3,4,5],[6,7,8,9],[10,11,12,13],[14,15,16,17,18],[19,20,21]];
+  const groups=[[1],[2,3,4,5,6,7,8],[9,10,11],[12,13,14,15,16],[17,18,19,20],[21,22,23,24],[25,26,27,28,29]];
   let h='';
   groups.forEach((g,gi)=>{
     if(gi>0)h+='<div style="width:4px;height:1px;background:rgba(255,255,255,.1);flex-shrink:0"></div>';
@@ -5083,7 +6000,7 @@ var EX = [
   document.head.appendChild(st);
 
   document.addEventListener('DOMContentLoaded',()=>{
-    if(document.querySelector('.slide[data-slide="17"].active'))emlInit();
+    if(document.querySelector('.slide[data-slide="28"].active'))emlInit();
   });
 })();
 /* ══════════════════════════════════
@@ -5264,7 +6181,7 @@ var EX = [
   window.mvCloseModal=function(e){if(e.target===$i('mv-modal'))$i('mv-modal').classList.remove('open');};
   window.mvNav=function(d){var n=mvCur+d;if(n>=0&&n<MV_RECORDS.length)window.mvOpen(n);};
   window.openManual=function(app,unit,name){
-    show(17);
+    show(28);
     $i('mv-f-app').value=app||'';$i('mv-f-unit').value=unit||'';$i('mv-f-lv').value='';
     window.mvFilter();
     if(name){var idx=MV_RECORDS.findIndex(function(r){
@@ -5976,7 +6893,7 @@ var EX = [
 
   /* show()をラップ：スライド22表示時にグリッドを初期化 */
   var _show=window.show;
-  window.show=function(n){_show(n);if(n===21)setTimeout(function(){mvRG();},80);};
+  window.show=function(n){_show(n);if(n===11)setTimeout(function(){mvRG();},80);};
   /* ── ガイドオーバーレイ ── */
   window.openGuideOverlay = function(){
     var el = document.getElementById('mv-guide-overlay');
@@ -6010,7 +6927,7 @@ var EX = [
 <div id="login-screen" style="position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#080808 0%,#1a1a2e 50%,#C8102E 150%);display:flex;align-items:center;justify-content:center;z-index:99999;">
 <div style="text-align:center;padding:40px;width:100%;max-width:820px;">
   <div style="font:800 28px 'Montserrat',sans-serif;color:#fff;letter-spacing:4px;margin-bottom:6px;">AXISCORE</div>
-  <div style="font:400 12px 'Montserrat',sans-serif;color:rgba(255,255,255,.5);letter-spacing:3px;margin-bottom:36px;">UNIT-SYSTEM</div>
+  <div style="font:400 12px 'Montserrat',sans-serif;color:rgba(255,255,255,.5);letter-spacing:3px;margin-bottom:36px;">PROGRAM-UNIT-SYSTEM 10×4</div>
 
   <!-- パスワード -->
   <input id="login-pw" type="password" placeholder="Password" style="width:260px;padding:14px 20px;border:1px solid rgba(255,255,255,.15);border-radius:6px;background:rgba(255,255,255,.06);color:#fff;font:400 14px 'Montserrat',sans-serif;outline:none;text-align:center;" />
@@ -6094,7 +7011,7 @@ document.addEventListener('keydown', function(e){
   if(e.key === 'l' || e.key === 'L') { toggleLight(); return; }
   if(e.key === '+' || e.key === '=') { setFS(1); return; }
   if(e.key === '-')   { setFS(-1); return; }
-  if(e.key === 'm' || e.key === 'M') { if(typeof show === 'function') show(21); return; }
+  if(e.key === 'm' || e.key === 'M') { if(typeof show === 'function') show(11); return; }
   if(e.key === 'Escape'){
     document.getElementById('kb-modal').classList.remove('open');
     document.getElementById('mv-modal') && document.getElementById('mv-modal').classList.remove('open');
@@ -6458,7 +7375,7 @@ window.selectMode = function(mode){
   if(mode === 'program'){
     show(1);
   } else if(mode === 'training'){
-    show(17);
+    show(28);
   }
 };
 window.closeModeScreen = function(){
