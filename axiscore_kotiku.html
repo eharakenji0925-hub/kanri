@@ -4962,6 +4962,10 @@ document.querySelectorAll('.slide[data-title]').forEach(s=>{
 buildDots();
 document.getElementById('btn-prev').style.opacity='0.3';
 function show(n){
+  // Auth guard: check if slide requires login
+  if(typeof window._slideAuthCheck==='function'){
+    if(!window._slideAuthCheck(n)) return;
+  }
   // Remove active from ALL slides immediately
   document.querySelectorAll('.slide').forEach(s=>{
     s.classList.remove('active','exit');
@@ -7410,24 +7414,24 @@ var EX = [
     if(sys==='ils'){
       pw = document.getElementById('pw-ils').value;
       err = document.getElementById('err-ils');
-      if(b64(pw)===OWNER_HASH){ try{sessionStorage.setItem(SS_ILS,'1');}catch(e){} closeLogin('ils'); show(2); }
+      if(b64(pw)===OWNER_HASH){ try{sessionStorage.setItem(SS_ILS,'1');}catch(e){} closeLogin('ils'); show(window._pendingDest||2); window._pendingDest=null; }
       else{ err.textContent='パスワードが違います'; }
     } else if(sys==='manual'){
       pw = document.getElementById('pw-manual').value;
       err = document.getElementById('err-manual');
-      if(b64(pw)===OWNER_HASH){ try{sessionStorage.setItem(SS_MAN,'1');}catch(e){} closeLogin('manual'); show(10); }
+      if(b64(pw)===OWNER_HASH){ try{sessionStorage.setItem(SS_MAN,'1');}catch(e){} closeLogin('manual'); show(window._pendingDest||10); window._pendingDest=null; }
       else{ err.textContent='パスワードが違います'; }
     } else if(sys==='pus'){
       pw = document.getElementById('pw-pus').value;
       err = document.getElementById('err-pus');
       /* Check default password */
-      if(b64(pw)===PUS_DEFAULT_HASH){ try{sessionStorage.setItem(SS_PUS,'1');}catch(e){} closeLogin('pus'); show(13); return; }
+      if(b64(pw)===PUS_DEFAULT_HASH){ try{sessionStorage.setItem(SS_PUS,'1');}catch(e){} closeLogin('pus'); show(window._pendingDest||13); window._pendingDest=null; return; }
       /* Check corp passwords */
       var corps = getCorps();
       for(var i=0;i<corps.length;i++){
         if(corps[i].pw === pw && corps[i].active){
           try{sessionStorage.setItem(SS_PUS,'1');}catch(e){}
-          closeLogin('pus'); show(13); return;
+          closeLogin('pus'); show(window._pendingDest||13); window._pendingDest=null; return;
         }
       }
       err.textContent='パスワードが違います';
@@ -7451,6 +7455,32 @@ var EX = [
     }
   };
 
+  /* ── Slide Auth Guard ── */
+  function getSystem(n){
+    if(n>=2 && n<=9) return 'ils';
+    if(n>=10 && n<=12) return 'manual';
+    if(n>=13) return 'pus';
+    return null; /* slide 1 = always open */
+  }
+  window.getSystem = getSystem;
+  function isAuthed(sys){
+    try{
+      if(sys==='ils') return sessionStorage.getItem(SS_ILS)==='1';
+      if(sys==='manual') return sessionStorage.getItem(SS_MAN)==='1';
+      if(sys==='pus') return sessionStorage.getItem(SS_PUS)==='1';
+    }catch(e){}
+    return false;
+  }
+  window._slideAuthCheck = function(n){
+    var sys = getSystem(n);
+    if(!sys) return true; /* slide 1 */
+    if(isAuthed(sys)) return true;
+    /* Not authed — open login modal, store destination */
+    window._pendingDest = n;
+    openLogin(sys);
+    return false;
+  };
+
   /* ── Go Home (back to P1) ── */
   window.goHome = function(){
     try{
@@ -7458,7 +7488,20 @@ var EX = [
       sessionStorage.removeItem(SS_MAN);
       sessionStorage.removeItem(SS_PUS);
     }catch(e){}
+    /* Bypass auth guard for slide 1 */
+    window._slideAuthCheck = function(){ return true; };
     if(typeof show==='function') show(1);
+    /* Restore guard */
+    setTimeout(function(){
+      window._slideAuthCheck = function(n){
+        var sys = getSystem(n);
+        if(!sys) return true;
+        if(isAuthed(sys)) return true;
+        window._pendingDest = n;
+        openLogin(sys);
+        return false;
+      };
+    }, 100);
   };
 
   /* ── Corp CRUD (localStorage) ── */
@@ -7586,9 +7629,19 @@ window.openJumpMenu = function(){
   var tot = typeof total !== 'undefined' ? total : 22;
   var html = '';
   for(var i=1; i<=tot; i++){
-    html += '<div class="jm-item'+(i===cur?' active':'')+'" onclick="show('+i+');closeJumpMenu()">'
+    var sys = typeof window._slideAuthCheck!=='undefined' && window.getSystem ? window.getSystem(i) : null;
+    var locked = false;
+    if(sys){
+      try{
+        if(sys==='ils' && sessionStorage.getItem('ax_ils_auth')!=='1') locked=true;
+        if(sys==='manual' && sessionStorage.getItem('ax_man_auth')!=='1') locked=true;
+        if(sys==='pus' && sessionStorage.getItem('ax_pus_auth')!=='1') locked=true;
+      }catch(e){}
+    }
+    var lockIcon = locked ? ' <span style="color:#666;font-size:10px">&#x1F512;</span>' : '';
+    html += '<div class="jm-item'+(i===cur?' active':'')+(locked?' jm-locked':'')+'" onclick="show('+i+');closeJumpMenu()" style="'+(locked?'opacity:.4;':'')+'"">'
       +'<span class="jm-num">'+i+'</span>'
-      +'<span>'+(titles[i]||'—')+'</span>'
+      +'<span>'+(titles[i]||'—')+lockIcon+'</span>'
     +'</div>';
   }
   el.innerHTML = html;
