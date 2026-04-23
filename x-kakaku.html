@@ -751,33 +751,33 @@ function renderAdminPanel(){
     const key = 'sec'+si;
     const open = AP_OPEN[key] !== false;
     const issues = sec.products.filter(p=>!p.p1||p.p1.trim()===''||p.p1==='—').length;
-    h += `<div class="ap-cat-hd" onclick="toggleAP('${key}')">
-      <div class="ap-cat-left">
-        <span class="ap-cat-lbl">${sec.num} ${sec.en}</span>
-        <span class="ap-cat-cnt">${sec.products.length}</span>
-        ${issues>0 ? `<span class="ap-unset">⚠ ${issues}</span>` : ''}
-      </div>
-      <div style="display:flex;align-items:center;gap:8px">
-        <button class="btn-add" onclick="event.stopPropagation();newProduct(${si})">${L('add')}</button>
-        <span class="ap-cat-ico ${open?'open':''}" id="ico-${key}">▼</span>
-      </div>
-    </div>
-    <div class="ap-cat-body" id="bd-${key}" style="max-height:${open?'3000px':'0'}">`;
+    h += '<div class="ap-cat-hd" onclick="toggleAP(\''+key+'\')">'
+      +'<div class="ap-cat-left">'
+      +'<span class="ap-cat-lbl">'+sec.num+' '+sec.en+'</span>'
+      +'<span class="ap-cat-cnt">'+sec.products.length+'</span>'
+      +(issues>0 ? '<span class="ap-unset">⚠ '+issues+'</span>' : '')
+      +'</div>'
+      +'<div style="display:flex;align-items:center;gap:8px">'
+      +'<button class="btn-add" data-action="newProduct" data-si="'+si+'">'+L('add')+'</button>'
+      +'<span class="ap-cat-ico '+(open?'open':'')+'" id="ico-'+key+'">▼</span>'
+      +'</div>'
+      +'</div>'
+      +'<div class="ap-cat-body" id="bd-'+key+'" style="max-height:'+(open?'3000px':'0')+'">';
     sec.products.forEach((p, pi) => {
       const ph = (p.photos||[])[0]||'';
       const p1e = !p.p1||p.p1.trim()===''||p.p1==='—';
       const prDisp = p1e
-        ? `<span class="ap-unset">${L('apUnset')}</span>`
-        : `${L('wholesale')}: ${p.p1} / ${L('factory')}: ${p.p2||'—'}`;
-      h += `<div class="ap-row" onclick="editProduct(${si},${pi})">
-        ${ph ? `<img class="ap-thumb" src="${ph}">` : '<div class="ap-thumb"></div>'}
-        <div class="ap-names">
-          <div class="ap-rid">${p.id}</div>
-          <div class="ap-ren">${p.nameEN}</div>
-          <div class="ap-rpr">${prDisp}</div>
-        </div>
-        <button class="ap-del" onclick="deleteProd(event,${si},${pi})">✕</button>
-      </div>`;
+        ? '<span class="ap-unset">'+L('apUnset')+'</span>'
+        : L('wholesale')+': '+p.p1+' / '+L('factory')+': '+(p.p2||'—');
+      h += '<div class="ap-row" data-action="editProduct" data-si="'+si+'" data-pi="'+pi+'">'
+        +(ph ? '<img class="ap-thumb" src="'+ph+'">' : '<div class="ap-thumb"></div>')
+        +'<div class="ap-names">'
+        +'<div class="ap-rid">'+p.id+'</div>'
+        +'<div class="ap-ren">'+p.nameEN+'</div>'
+        +'<div class="ap-rpr">'+prDisp+'</div>'
+        +'</div>'
+        +'<button class="ap-del" data-action="deleteProd" data-si="'+si+'" data-pi="'+pi+'">✕</button>'
+        +'</div>';
     });
     h += '</div>';
   });
@@ -788,31 +788,45 @@ function renderAdminPanel(){
     const open = AP_OPEN[key] !== false;
     const label = type==='small' ? L('add')+' Small' : L('add')+' Large';
     const items = S.data.accessories[type];
-    h += `<div class="ap-cat-hd" onclick="toggleAP('${key}')">
-      <div class="ap-cat-left">
-        <span class="ap-cat-lbl">06 Accessories — ${type}</span>
-        <span class="ap-cat-cnt">${items.length}</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:8px">
-        <button class="btn-add" onclick="event.stopPropagation();newAcc('${type}')">${L('add')}</button>
-        <span class="ap-cat-ico ${open?'open':''}" id="ico-${key}">▼</span>
-      </div>
+    h += '<div class="ap-cat-hd" onclick="toggleAP(\''+key+'\')">'
+      +'<div class="ap-cat-left">'
+      +'<span class="ap-cat-lbl">06 Accessories — '+type+'</span>'
+      +'<span class="ap-cat-cnt">'+items.length+'</span>'
+      +'</div>'
+      +'<div style="display:flex;align-items:center;gap:8px">'
+      +'<button class="btn-add" data-action="newAcc" data-type="'+type+'">'+L('add')+'</button>'
+      +'<span class="ap-cat-ico '+(open?'open':'')+'" id="ico-'+key+'">▼</span>'
+      +'</div>
     </div>
     <div class="ap-cat-body" id="bd-${key}" style="max-height:${open?'3000px':'0'}">`;
     items.forEach((item, ai) => {
-      h += `<div class="ap-row" onclick="editAcc('${type}',${ai})">
-        ${item.photo?`<img class="ap-thumb" src="${item.photo}">` : '<div class="ap-thumb"></div>'}
-        <div class="ap-names">
-          <div class="ap-ren">${item.name}</div>
-          <div class="ap-rpr">${L('wholesale')}: ${item.p1} / ${L('factory')}: ${item.p2||'—'}</div>
-        </div>
-        <button class="ap-del" onclick="deleteAcc(event,'${type}',${ai})">✕</button>
-      </div>`;
+      h += '<div class="ap-row" data-action="editAcc" data-type="'+type+'" data-ai="'+ai+'">'
+        +(item.photo ? '<img class="ap-thumb" src="'+item.photo+'">' : '<div class="ap-thumb"></div>')
+        +'<div class="ap-names">'
+        +'<div class="ap-ren">'+item.name+'</div>'
+        +'<div class="ap-rpr">'+L('wholesale')+': '+item.p1+' / '+L('factory')+': '+(item.p2||'—')+'</div>'
+        +'</div>'
+        +'<button class="ap-del" data-action="deleteAcc" data-type="'+type+'" data-ai="'+ai+'">✕</button>'
+        +'</div>';
     });
     h += '</div>';
   });
 
   body.innerHTML = h;
+
+  // イベント委譲（onclick属性の代わり）
+  body.addEventListener('click', function(e){
+    var el = e.target.closest('[data-action]');
+    if(!el) return;
+    var action = el.dataset.action;
+    if(action === 'newProduct'){ e.stopPropagation(); newProduct(parseInt(el.dataset.si)); }
+    else if(action === 'newAcc'){ e.stopPropagation(); newAcc(el.dataset.type); }
+    else if(action === 'editProduct'){ editProduct(parseInt(el.dataset.si), parseInt(el.dataset.pi)); }
+    else if(action === 'deleteProd'){ e.stopPropagation(); deleteProd(e, parseInt(el.dataset.si), parseInt(el.dataset.pi)); }
+    else if(action === 'editAcc'){ editAcc(el.dataset.type, parseInt(el.dataset.ai)); }
+    else if(action === 'deleteAcc'){ e.stopPropagation(); deleteAcc(e, el.dataset.type, parseInt(el.dataset.ai)); }
+  });
+
   updateSaveUI();
 }
 
