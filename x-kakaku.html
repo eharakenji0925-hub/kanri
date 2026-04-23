@@ -796,9 +796,9 @@ function renderAdminPanel(){
       +'<div style="display:flex;align-items:center;gap:8px">'
       +'<button class="btn-add" data-action="newAcc" data-type="'+type+'">'+L('add')+'</button>'
       +'<span class="ap-cat-ico '+(open?'open':'')+'" id="ico-'+key+'">▼</span>'
-      +'</div>
-    </div>
-    <div class="ap-cat-body" id="bd-${key}" style="max-height:${open?'3000px':'0'}">`;
+      +'</div>'
+      +'</div>'
+      +'<div class="ap-cat-body" id="bd-'+key+'" style="max-height:'+(open?'3000px':'0')+'">';
     items.forEach((item, ai) => {
       h += '<div class="ap-row" data-action="editAcc" data-type="'+type+'" data-ai="'+ai+'">'
         +(item.photo ? '<img class="ap-thumb" src="'+item.photo+'">' : '<div class="ap-thumb"></div>')
