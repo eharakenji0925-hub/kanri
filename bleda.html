@@ -755,7 +755,7 @@ function App(){
       var blob=new Blob(chunks,{type:isMP4?"video/mp4":"video/webm"});
       var u=URL.createObjectURL(blob);
       var a=document.createElement("a");
-      a.href=u;a.download=brand.sn+"_slideshow_"+size.id+""+(isMP4?".mp4":".webm")+";
+      a.href=u;a.download=brand.sn+"_slideshow_"+size.id+""+(isMP4?".mp4":".webm");
       document.body.appendChild(a);a.click();document.body.removeChild(a);
       URL.revokeObjectURL(u);setDlLoading(false);setVidProg("");
       notify("🎬 動画DL完了! ("+images.length+"枚×"+vidSec+"秒)");
