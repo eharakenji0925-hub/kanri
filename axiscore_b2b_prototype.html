@@ -1,0 +1,2603 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AXISCORE B2B — マスターフランチャイザー管理</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0A0A0A;--bg2:#111;--card:#161616;--card2:#1a1a1a;
+  --border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.1);
+  --red:#C8102E;--cyan:#06B6D4;--gold:#C9A84C;--green:#22C55E;
+  --pre:#E879F9;--s2:#818cf8;--s3:#f59e0b;--s4:#e11d48;
+  --fund:#22C55E;--inter:#3B82F6;--adv:#F59E0B;
+  --white:#fff;--body:#ccc;--muted:#888;--dim:#555;
+  --sidebar-w:230px;
+}
+body{font-family:'Noto Sans JP','Helvetica Neue',Arial,sans-serif;background:var(--bg);color:var(--body);display:flex;height:100vh;overflow:hidden}
+
+/* ─── Sidebar ─── */
+.sidebar{width:var(--sidebar-w);background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0}
+.sidebar-logo{padding:20px 18px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.sidebar-logo-mark{width:36px;height:38px;border-radius:50%;border:1.5px solid var(--white);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sidebar-logo-mark span{font:700 8px Montserrat,sans-serif;color:var(--white);text-align:center;line-height:1.2}
+.sidebar-logo-text{font:700 13px Montserrat,sans-serif;color:var(--white);letter-spacing:1px}
+.sidebar-logo-text em{color:var(--red);font-style:normal}
+.sidebar-logo-sub{font:400 9px 'Noto Sans JP';color:var(--dim);margin-top:2px}
+.sidebar-nav{flex:1;padding:12px 0;overflow-y:auto}
+.nav-section{padding:6px 18px;font:600 9px Montserrat,sans-serif;color:var(--dim);letter-spacing:2px;text-transform:uppercase;margin-top:8px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 18px;cursor:pointer;transition:all .15s;border-left:3px solid transparent;font:500 12px 'Noto Sans JP';color:var(--muted)}
+.nav-item:hover{background:rgba(255,255,255,.03);color:var(--body)}
+.nav-item.active{background:rgba(200,16,46,.06);color:var(--white);border-left-color:var(--red)}
+.nav-item .nav-icon{font-size:15px;width:20px;text-align:center;flex-shrink:0}
+.nav-item .nav-badge{margin-left:auto;font:600 9px Montserrat;padding:2px 7px;border-radius:8px;background:rgba(200,16,46,.15);color:var(--red)}
+.nav-item[data-color="cyan"].active{background:rgba(6,182,212,.06);border-left-color:var(--cyan)}
+.nav-item[data-color="cyan"] .nav-badge{background:rgba(6,182,212,.15);color:var(--cyan)}
+.nav-item[data-color="gold"].active{background:rgba(201,168,76,.06);border-left-color:var(--gold)}
+.nav-item[data-color="gold"] .nav-badge{background:rgba(201,168,76,.15);color:var(--gold)}
+.nav-item[data-color="green"].active{background:rgba(34,197,94,.06);border-left-color:var(--green)}
+.sidebar-bottom{padding:14px 18px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font:700 12px Montserrat;flex-shrink:0}
+.user-info{font:400 11px 'Noto Sans JP';color:var(--muted)}
+.user-info strong{display:block;color:var(--white);font-weight:600;font-size:11px}
+
+/* ─── Main ─── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{height:56px;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 28px;flex-shrink:0;gap:16px}
+.topbar-title{font:700 15px Montserrat,sans-serif;color:var(--white);letter-spacing:.5px}
+.topbar-sub{font:400 11px 'Noto Sans JP';color:var(--muted)}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+.topbar-btn{padding:6px 14px;border-radius:5px;border:1px solid var(--border2);background:transparent;color:var(--body);font:500 10px 'Noto Sans JP';cursor:pointer;transition:all .15s}
+.topbar-btn:hover{border-color:var(--muted)}
+.topbar-btn.primary{background:var(--red);border-color:var(--red);color:var(--white)}
+.topbar-btn.primary:hover{background:#a00d24}
+.content{flex:1;overflow-y:auto;padding:24px 28px}
+.page{display:none}.page.active{display:block}
+
+/* ─── Stats ─── */
+.stats-row{display:grid;gap:14px;margin-bottom:24px}
+.stats-row.col4{grid-template-columns:repeat(4,1fr)}
+.stats-row.col5{grid-template-columns:repeat(5,1fr)}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:18px;position:relative;overflow:hidden}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:8px 8px 0 0}
+.stat-card[data-c="red"]::before{background:var(--red)}
+.stat-card[data-c="cyan"]::before{background:var(--cyan)}
+.stat-card[data-c="gold"]::before{background:var(--gold)}
+.stat-card[data-c="green"]::before{background:var(--green)}
+.stat-card[data-c="purple"]::before{background:var(--pre)}
+.stat-label{font:600 9px Montserrat;color:var(--dim);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
+.stat-value{font:800 28px Montserrat;color:var(--white)}
+.stat-value span{font:500 12px Montserrat;color:var(--muted);margin-left:4px}
+.stat-sub{font:400 10px 'Noto Sans JP';color:var(--muted);margin-top:4px}
+
+/* ─── Dash grid ─── */
+.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.dash-grid.col3{grid-template-columns:1fr 1fr 1fr}
+.dash-grid.full{grid-template-columns:1fr}
+.dash-card{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.dash-card-header{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.dash-card-title{font:700 12px Montserrat;color:var(--white);letter-spacing:.5px}
+.dash-card-body{padding:14px 18px}
+
+/* ─── Table ─── */
+.data-table{width:100%;border-collapse:collapse}
+.data-table th{font:600 9px Montserrat;color:var(--dim);letter-spacing:1.5px;text-transform:uppercase;text-align:left;padding:8px 10px;border-bottom:1px solid var(--border);cursor:pointer;user-select:none;white-space:nowrap}
+.data-table th:hover{color:var(--body)}
+.data-table td{font:400 11px 'Noto Sans JP';color:var(--body);padding:10px;border-bottom:1px solid rgba(255,255,255,.03)}
+.data-table tr:hover td{background:rgba(255,255,255,.02)}
+.data-table tr.clickable{cursor:pointer}
+.status-dot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:6px}
+.status-dot.active{background:var(--green)}
+.status-dot.pending{background:var(--gold)}
+.status-dot.paused{background:var(--dim)}
+.status-dot.certified{background:var(--cyan)}
+
+/* ─── Progress bar ─── */
+.progress-bar{height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;margin-top:6px}
+.progress-bar-fill{height:100%;border-radius:3px;transition:width .3s}
+
+/* ─── STEP cards ─── */
+.step-timeline{display:flex;gap:12px;margin-bottom:20px}
+.step-card{flex:1;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;position:relative;overflow:hidden;cursor:pointer;transition:all .15s}
+.step-card:hover{border-color:var(--border2)}
+.step-card.filter-active{border-color:var(--white);box-shadow:0 0 0 1px rgba(255,255,255,.15)}
+.step-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.step-card[data-step="1"]::before{background:#E879F9}
+.step-card[data-step="2"]::before{background:#818cf8}
+.step-card[data-step="3"]::before{background:#f59e0b}
+.step-card[data-step="4"]::before{background:#e11d48}
+.step-num{font:800 20px Montserrat;margin-bottom:4px}
+.step-card[data-step="1"] .step-num{color:#E879F9}
+.step-card[data-step="2"] .step-num{color:#818cf8}
+.step-card[data-step="3"] .step-num{color:#f59e0b}
+.step-card[data-step="4"] .step-num{color:#e11d48}
+.step-name{font:600 11px 'Noto Sans JP';color:var(--white);margin-bottom:2px}
+.step-meta{font:400 9px 'Noto Sans JP';color:var(--muted)}
+
+/* ─── Instructor row (dashboard) ─── */
+.inst-avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font:700 11px Montserrat;flex-shrink:0}
+.inst-step-badge{font:700 9px Montserrat;padding:3px 8px;border-radius:3px;flex-shrink:0;white-space:nowrap}
+
+/* ─── Filter bar ─── */
+.filter-bar{display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap}
+.filter-label{font:600 10px Montserrat;color:var(--dim);letter-spacing:1px}
+.filter-btn{padding:5px 12px;border-radius:4px;border:1px solid var(--border2);background:transparent;color:var(--muted);font:500 10px 'Noto Sans JP';cursor:pointer;transition:all .15s}
+.filter-btn:hover{border-color:var(--muted);color:var(--body)}
+.filter-btn.active{background:rgba(200,16,46,.1);border-color:var(--red);color:var(--red)}
+.search-input{padding:5px 12px;border-radius:4px;border:1px solid var(--border2);background:rgba(255,255,255,.03);color:var(--body);font:400 11px 'Noto Sans JP';outline:none;width:180px}
+.search-input:focus{border-color:var(--cyan)}
+.search-input::placeholder{color:var(--dim)}
+
+/* ─── Detail panel ─── */
+.detail-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200}
+.detail-overlay.open{display:flex;justify-content:flex-end}
+.detail-panel{width:480px;background:var(--bg2);border-left:1px solid var(--border);height:100%;overflow-y:auto;padding:28px;animation:slideIn .2s ease}
+@keyframes slideIn{from{transform:translateX(100%)}to{transform:translateX(0)}}
+.detail-close{background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;position:absolute;top:16px;right:20px}
+.detail-header{display:flex;align-items:center;gap:14px;margin-bottom:24px;padding-right:30px}
+.detail-name{font:700 18px 'Noto Sans JP';color:var(--white)}
+.detail-role{font:400 11px 'Noto Sans JP';color:var(--muted);margin-top:2px}
+.detail-section{margin-bottom:20px}
+.detail-section-title{font:700 10px Montserrat;color:var(--dim);letter-spacing:2px;margin-bottom:10px;text-transform:uppercase}
+.detail-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.03)}
+.detail-row-label{font:400 11px 'Noto Sans JP';color:var(--muted)}
+.detail-row-value{font:600 11px 'Noto Sans JP';color:var(--white)}
+.checklist-item{display:flex;align-items:center;gap:8px;padding:6px 0;font:400 11px 'Noto Sans JP';color:var(--body)}
+.checklist-item .check{width:16px;height:16px;border-radius:3px;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px}
+.checklist-item .check.done{background:var(--green);border-color:var(--green);color:var(--white)}
+.checklist-item .check.current{background:var(--s2);border-color:var(--s2);color:var(--white)}
+
+/* ─── Alert card ─── */
+.alert-item{display:flex;gap:10px;padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.03)}
+.alert-item:last-child{border-bottom:none}
+.alert-dot{width:8px;height:8px;border-radius:50%;margin-top:4px;flex-shrink:0}
+.alert-dot.warn{background:var(--gold)}
+.alert-dot.info{background:var(--cyan)}
+.alert-dot.danger{background:var(--red)}
+.alert-dot.success{background:var(--green)}
+.alert-text{font:500 11px 'Noto Sans JP';color:var(--white)}
+.alert-meta{font:400 9px 'Noto Sans JP';color:var(--dim);margin-top:2px}
+
+/* ─── Mini chart bars ─── */
+.mini-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.mini-bar-label{font:600 9px Montserrat;width:55px;flex-shrink:0;text-align:right}
+.mini-bar{flex:1;height:20px;background:rgba(255,255,255,.04);border-radius:3px;overflow:hidden;display:flex;position:relative}
+.mini-bar-seg{height:100%;display:flex;align-items:center;justify-content:center;font:700 8px Montserrat;color:rgba(255,255,255,.9);min-width:20px;transition:width .3s}
+.mini-bar-count{font:600 9px Montserrat;color:var(--muted);width:24px;text-align:right;flex-shrink:0}
+
+/* ─── PROGRAM page ─── */
+.program-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.program-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;cursor:pointer;transition:all .15s}
+.program-card:hover{border-color:var(--red);transform:translateY(-2px)}
+.program-level{font:700 9px Montserrat;letter-spacing:2px;margin-bottom:8px}
+.program-title{font:600 13px 'Noto Sans JP';color:var(--white);margin-bottom:4px}
+.program-meta{font:400 10px 'Noto Sans JP';color:var(--muted)}
+.program-footer{display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+.program-author{font:400 9px 'Noto Sans JP';color:var(--dim)}
+
+/* ─── MANUAL page ─── */
+.manual-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.manual-card{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;cursor:pointer;transition:all .15s}
+.manual-card:hover{border-color:var(--gold)}
+.manual-card-top{height:80px;display:flex;align-items:center;justify-content:center;font:800 24px Montserrat;letter-spacing:2px}
+.manual-card-body{padding:14px}
+.manual-card-title{font:600 12px 'Noto Sans JP';color:var(--white);margin-bottom:4px}
+.manual-card-meta{font:400 10px 'Noto Sans JP';color:var(--muted)}
+
+/* ─── Responsive ─── */
+@media(max-width:900px){
+  .sidebar{width:60px}
+  .sidebar-logo-text,.sidebar-logo-sub,.nav-section,.nav-item span:not(.nav-icon),.nav-badge,.user-info{display:none}
+  .nav-item{justify-content:center;padding:12px 0;border-left:none;border-bottom:3px solid transparent}
+  .nav-item.active{border-bottom-color:var(--red);border-left:none}
+}
+
+/* ═══ PRINT PREVIEW MODAL ═══ */
+#print-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:600;overflow-y:auto;padding:20px 0}
+#print-modal.open{display:block}
+.pm-toolbar{position:sticky;top:0;z-index:10;background:#1a1a1a;border-bottom:1px solid rgba(255,255,255,.1);padding:10px 20px;display:flex;align-items:center;gap:10px;max-width:800px;margin:0 auto 12px}
+.pm-toolbar .pm-title{font:700 11px Montserrat;letter-spacing:3px;color:#D4AF37;margin-right:auto}
+.pm-btn{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:4px;color:#ccc;font:600 11px 'Noto Sans JP';padding:8px 16px;cursor:pointer;transition:all .15s}
+.pm-btn:hover{background:rgba(255,255,255,.12);color:#fff}
+.pm-btn.pm-primary{background:#D4AF37;color:#111;border-color:#D4AF37}
+.pm-btn.pm-primary:hover{background:#F5CD4F;color:#000}
+
+/* A4 printable sheet */
+.pm-sheet{
+  width:210mm;min-height:297mm;padding:15mm 18mm;margin:0 auto;
+  background:#fff;color:#111;
+  font-family:'Noto Sans JP','Hiragino Sans','Yu Gothic',sans-serif;
+  font-size:10.5pt;line-height:1.5;
+  box-shadow:0 4px 24px rgba(0,0,0,.4);
+  box-sizing:border-box;
+}
+.pm-sheet .p-head{border-bottom:2px solid #111;padding-bottom:8px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:flex-end}
+.pm-sheet .p-brand{font:700 14pt Montserrat,sans-serif;letter-spacing:3px;color:#111}
+.pm-sheet .p-brand .sub{display:block;font:400 9pt 'Noto Sans JP',sans-serif;letter-spacing:1px;color:#666;margin-top:2px}
+.pm-sheet .p-meta{text-align:right;font-size:9pt;color:#333;line-height:1.7}
+.pm-sheet .p-meta b{color:#111;font-weight:700}
+.pm-sheet .p-meta .p-lv{display:inline-block;padding:2px 10px;border-radius:3px;font-weight:700;letter-spacing:1px;background:#111;color:#fff;font-size:10pt;margin-left:4px}
+.pm-sheet .p-summary{display:flex;gap:20px;padding:8px 12px;background:#f5f5f0;border-radius:3px;margin-bottom:12px;font-size:10pt}
+.pm-sheet .p-summary .val{color:#B8860B;font-weight:700;margin-left:4px}
+.pm-sheet .p-unit{margin-bottom:10px;break-inside:avoid;page-break-inside:avoid}
+.pm-sheet .p-unit-head{display:flex;align-items:baseline;gap:8px;padding:3px 0;border-bottom:1px solid #999;margin-bottom:3px}
+.pm-sheet .p-unit-num{font:700 11pt Montserrat,sans-serif;color:#111;letter-spacing:1px}
+.pm-sheet .p-unit-name{font:700 10pt 'Noto Sans JP',sans-serif;color:#222}
+.pm-sheet .p-unit-time{margin-left:auto;font-size:9pt;color:#666;font-weight:600}
+.pm-sheet .p-item{display:flex;align-items:baseline;padding:2px 8px;font-size:10pt;gap:6px}
+.pm-sheet .p-item .p-name{flex:1}
+.pm-sheet .p-item .p-time{color:#555;font-variant-numeric:tabular-nums;min-width:42px;text-align:right}
+.pm-sheet .p-app{font:700 7pt Montserrat,sans-serif;letter-spacing:.5px;padding:1px 5px;border-radius:2px;flex-shrink:0}
+.pm-sheet .p-app-R{background:rgba(74,143,212,.2);color:#2a6cb5}
+.pm-sheet .p-app-C{background:rgba(45,168,120,.2);color:#1d8a5e}
+.pm-sheet .p-app-W{background:rgba(212,144,58,.2);color:#b87a2a}
+.pm-sheet .p-app-B{background:rgba(196,88,128,.2);color:#a8446a}
+.pm-sheet .p-app-SC{background:rgba(168,132,196,.2);color:#7a5a9a}
+.pm-sheet .p-app-MAT{background:rgba(120,120,120,.15);color:#666}
+.pm-sheet .p-req-head{display:flex;align-items:baseline;padding:2px 0 2px 8px;font-weight:700;color:#B8860B}
+.pm-sheet .p-req-head .p-req-label{font-size:9.5pt;letter-spacing:1px}
+.pm-sheet .p-req-head .p-req-sub{margin-left:6px;font-weight:400;font-size:9pt;color:#666}
+.pm-sheet .p-req-head .p-req-time{margin-left:auto;font-size:9pt;color:#555;font-weight:600}
+.pm-sheet .p-req-list{padding-left:20px}
+.pm-sheet .p-req-list .p-req-row{font-size:10pt;padding:1px 0;color:#222}
+.pm-sheet .p-req-list .p-req-row::before{content:'├ ';color:#999}
+.pm-sheet .p-req-list .p-req-row:last-child::before{content:'└ ';color:#999}
+.pm-sheet .p-foot{margin-top:16px;padding-top:10px;border-top:1px solid #bbb;font-size:9pt;color:#555;line-height:1.8}
+.pm-sheet .p-foot .p-note{margin-bottom:8px}
+.pm-sheet .p-sign{display:flex;gap:24px;margin-top:12px;font-size:9.5pt}
+.pm-sheet .p-sign > div{flex:1;border-bottom:1px solid #111;padding:4px 0 2px;color:#555}
+.pm-sheet .p-sign b{color:#111;display:block;margin-bottom:20px}
+
+@media print {
+  body > *{visibility:hidden!important}
+  #print-modal, #print-modal *{visibility:visible!important}
+  #print-modal{position:absolute;inset:0;background:#fff;padding:0;overflow:visible}
+  .pm-toolbar{display:none!important}
+  .pm-sheet{box-shadow:none;margin:0;width:auto;min-height:auto}
+  @page{size:A4;margin:10mm}
+  .pm-sheet{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;color-adjust:exact!important}
+}
+
+/* ═══ LOGIN MODAL ═══ */
+#login-overlay{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9000;display:flex;align-items:flex-start;justify-content:center;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:40px 0}
+#login-overlay.hidden{display:none}
+.login-box{background:#161616;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:36px 32px;width:380px;max-width:90vw;box-shadow:0 8px 40px rgba(0,0,0,.6);margin:auto 0}
+.login-brand{text-align:center;margin-bottom:28px}
+.login-brand .login-logo{width:50px;height:50px;border-radius:50%;border:2px solid #fff;display:inline-flex;align-items:center;justify-content:center;margin-bottom:10px}
+.login-brand .login-logo span{font:700 9px Montserrat,sans-serif;color:#fff;text-align:center;line-height:1.2}
+.login-brand h1{font:700 18px Montserrat,sans-serif;color:#fff;letter-spacing:2px}
+.login-brand h1 em{color:#C8102E;font-style:normal}
+.login-brand p{font:400 11px 'Noto Sans JP';color:#888;margin-top:6px}
+.login-tabs{display:flex;gap:0;margin-bottom:20px;border:1px solid rgba(255,255,255,.1);border-radius:6px;overflow:hidden}
+.login-tab{flex:1;padding:9px 0;text-align:center;font:600 11px 'Noto Sans JP';color:#888;background:transparent;border:none;cursor:pointer;transition:all .15s}
+.login-tab.active{background:rgba(200,16,46,.1);color:#C8102E}
+.login-tab:hover:not(.active){background:rgba(255,255,255,.03);color:#ccc}
+.login-field{margin-bottom:14px}
+.login-field label{display:block;font:600 9px Montserrat;color:#555;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px}
+.login-field select,.login-field input{width:100%;padding:12px 14px;border-radius:6px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:#fff;font:400 16px 'Noto Sans JP';outline:none;transition:border-color .15s;-webkit-appearance:none;appearance:none;box-sizing:border-box}
+.login-field select{background:rgba(255,255,255,.04) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' fill='none' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 14px center}
+.login-field select:focus,.login-field input:focus{border-color:#C8102E}
+.login-field select option{background:#222;color:#fff}
+.login-submit{width:100%;padding:14px 0;border-radius:6px;border:none;background:#C8102E;color:#fff;font:700 14px 'Noto Sans JP';cursor:pointer;transition:background .15s;margin-top:8px;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.login-submit:hover,.login-submit:active{background:#a00d24}
+.login-tab{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.login-error{color:#e11d48;font:400 10px 'Noto Sans JP';text-align:center;margin-top:8px;min-height:16px}
+
+/* ═══ INSTRUCTOR DASHBOARD ═══ */
+.inst-dash-header{display:flex;align-items:center;gap:16px;margin-bottom:24px;padding:20px;background:var(--card);border:1px solid var(--border);border-radius:8px}
+.inst-dash-avatar{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font:700 18px Montserrat;flex-shrink:0}
+.inst-history-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.03);transition:background .1s}
+.inst-history-item:hover{background:rgba(255,255,255,.02)}
+.inst-history-item:last-child{border-bottom:none}
+</style>
+</head>
+<body>
+<script>window.onerror=function(msg,url,line){document.title='JS ERROR: '+msg+' (line '+line+')';var d=document.createElement('div');d.style.cssText='position:fixed;top:0;left:0;right:0;background:red;color:#fff;padding:10px;z-index:99999;font:14px sans-serif';d.textContent='JS Error: '+msg+' (line '+line+')';document.body.appendChild(d);}</script>
+
+<!-- ═══ LOGIN MODAL ═══ -->
+<div id="login-overlay">
+  <div class="login-box">
+    <div class="login-brand">
+      <div class="login-logo"><span>AXIS<br>CORE</span></div>
+      <h1>AXIS<em>CORE</em> PILATES</h1>
+      <p>B2B管理システムにログイン</p>
+    </div>
+    <div class="login-tabs">
+      <button type="button" class="login-tab active" onclick="switchLoginTab('master')">マスターフランチャイザー</button>
+      <button type="button" class="login-tab" onclick="switchLoginTab('instructor')">インストラクター</button>
+    </div>
+    <div id="login-master-form">
+      <div class="login-field">
+        <label>Password</label>
+        <input type="password" id="login-master-pw" placeholder="管理者パスワードを入力" onkeydown="if(event.key==='Enter')doLogin()">
+      </div>
+    </div>
+    <div id="login-instructor-form" style="display:none">
+      <div class="login-field">
+        <label>Instructor</label>
+        <select id="login-instructor-select">
+          <option value="">インストラクターを選択...</option>
+        </select>
+      </div>
+      <div class="login-field">
+        <label>Password</label>
+        <input type="password" id="login-instructor-pw" placeholder="パスワード（イニシャル）を入力" onkeydown="if(event.key==='Enter')doLogin()">
+      </div>
+    </div>
+    <button type="button" class="login-submit" id="login-btn" onclick="doLogin()">ログイン</button>
+    <div class="login-error" id="login-error"></div>
+  </div>
+</div>
+
+<!-- ═══ SIDEBAR ═══ -->
+<div class="sidebar">
+  <div class="sidebar-logo">
+    <div class="sidebar-logo-mark"><span>AXIS<br>CORE</span></div>
+    <div>
+      <div class="sidebar-logo-text">AXIS<em>CORE</em></div>
+      <div class="sidebar-logo-sub" id="sidebar-logo-sub">Master Franchisor</div>
+    </div>
+  </div>
+
+  <div class="sidebar-nav">
+    <div class="nav-section">Overview</div>
+    <div class="nav-item active" onclick="showPage('dashboard')">
+      <span class="nav-icon">📊</span>
+      <span>ダッシュボード</span>
+    </div>
+
+    <div class="nav-section">Systems</div>
+    <div class="nav-item" data-color="cyan" onclick="showPage('license')">
+      <span class="nav-icon">🎓</span>
+      <span>LICENSE</span>
+      <span class="nav-badge">15名</span>
+    </div>
+    <div class="nav-item" onclick="showPage('program')">
+      <span class="nav-icon">🎯</span>
+      <span>PROGRAM</span>
+      <span class="nav-badge">60分</span>
+    </div>
+    <div class="nav-item" data-color="gold" onclick="showPage('manual')">
+      <span class="nav-icon">📄</span>
+      <span>MANUAL</span>
+      <span class="nav-badge">373</span>
+    </div>
+
+    <div class="nav-section" id="nav-section-analytics">Analytics</div>
+    <div class="nav-item" data-color="green" onclick="showPage('analytics')" id="nav-analytics">
+      <span class="nav-icon">📈</span>
+      <span>利用分析</span>
+    </div>
+
+    <div class="nav-section" id="nav-section-admin">Admin</div>
+    <div class="nav-item" onclick="showPage('settings')" id="nav-settings">
+      <span class="nav-icon">⚙️</span>
+      <span>スタジオ設定</span>
+    </div>
+    <div class="nav-item" onclick="showPage('billing')" id="nav-billing">
+      <span class="nav-icon">💳</span>
+      <span>契約・請求</span>
+    </div>
+  </div>
+
+  <div style="padding:8px 18px;border-top:1px solid var(--border)">
+    <div onclick="doLogout()" style="display:flex;align-items:center;gap:6px;padding:6px 10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:5px;cursor:pointer;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,.08)'" onmouseout="this.style.background='rgba(255,255,255,.04)'">
+      <span style="font-size:11px">🚪</span>
+      <div style="font:500 10px 'Noto Sans JP';color:var(--muted)">ログアウト</div>
+    </div>
+  </div>
+  <div class="sidebar-bottom" id="sidebar-user">
+    <div class="avatar" style="background:rgba(200,16,46,.2);color:var(--red)">KE</div>
+    <div class="user-info">
+      <strong>江原 健司</strong>
+      マスターフランチャイザー
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MAIN ═══ -->
+<div class="main">
+  <div class="topbar">
+    <div>
+      <div class="topbar-title" id="topbar-title">ダッシュボード</div>
+      <div class="topbar-sub" id="topbar-sub">AXISCORE PILATES — 1店舗管理</div>
+    </div>
+    <div class="topbar-right">
+      <button class="topbar-btn" id="topbar-action" style="display:none">+ 新規作成</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- ════ PAGE: DASHBOARD ════ -->
+    <!-- ════════════════════════════════════════════ -->
+    <div class="page active" id="page-dashboard">
+
+      <!-- KPI Row -->
+      <div class="stats-row col5">
+        <div class="stat-card" data-c="cyan">
+          <div class="stat-label">Instructors</div>
+          <div class="stat-value">15<span>名</span></div>
+          <div class="stat-sub">認定済 3名 · 養成中 11名 · 未開始 1名</div>
+        </div>
+        <div class="stat-card" data-c="green">
+          <div class="stat-label">Certification Rate</div>
+          <div class="stat-value">20<span>%</span></div>
+          <div class="stat-sub">3 / 15 名が全STEP修了</div>
+        </div>
+        <div class="stat-card" data-c="red">
+          <div class="stat-label">Active Programs</div>
+          <div class="stat-value">42<span>件</span></div>
+          <div class="stat-sub">今月 +8 件作成</div>
+        </div>
+        <div class="stat-card" data-c="gold">
+          <div class="stat-label">Training Hours</div>
+          <div class="stat-value">1,240<span>h</span></div>
+          <div class="stat-sub">累計養成時間</div>
+        </div>
+        <div class="stat-card" data-c="purple">
+          <div class="stat-label">Avg. Progress</div>
+          <div class="stat-value">54<span>%</span></div>
+          <div class="stat-sub">養成中インストラクター平均</div>
+        </div>
+      </div>
+
+      <div class="dash-grid">
+        <!-- STEP Distribution -->
+        <div class="dash-card">
+          <div class="dash-card-header">
+            <span class="dash-card-title">STEP別 人数分布</span>
+            <span style="font:400 10px 'Noto Sans JP';color:var(--cyan);cursor:pointer" onclick="showPage('license')">詳細 →</span>
+          </div>
+          <div class="dash-card-body">
+            <div class="mini-bar-row">
+              <div class="mini-bar-label" style="color:var(--pre)">STEP 1</div>
+              <div class="mini-bar">
+                <div class="mini-bar-seg" style="width:26.7%;background:rgba(232,121,249,.5)">4</div>
+              </div>
+              <div class="mini-bar-count">4名</div>
+            </div>
+            <div class="mini-bar-row">
+              <div class="mini-bar-label" style="color:var(--s2)">STEP 2</div>
+              <div class="mini-bar">
+                <div class="mini-bar-seg" style="width:20%;background:rgba(129,140,248,.5)">3</div>
+              </div>
+              <div class="mini-bar-count">3名</div>
+            </div>
+            <div class="mini-bar-row">
+              <div class="mini-bar-label" style="color:var(--s3)">STEP 3</div>
+              <div class="mini-bar">
+                <div class="mini-bar-seg" style="width:13.3%;background:rgba(245,158,11,.5)">2</div>
+              </div>
+              <div class="mini-bar-count">2名</div>
+            </div>
+            <div class="mini-bar-row">
+              <div class="mini-bar-label" style="color:var(--s4)">STEP 4</div>
+              <div class="mini-bar">
+                <div class="mini-bar-seg" style="width:6.7%;background:rgba(225,29,72,.5)">1</div>
+              </div>
+              <div class="mini-bar-count">1名</div>
+            </div>
+            <div class="mini-bar-row">
+              <div class="mini-bar-label" style="color:var(--green)">認定済</div>
+              <div class="mini-bar">
+                <div class="mini-bar-seg" style="width:20%;background:rgba(34,197,94,.5)">3</div>
+              </div>
+              <div class="mini-bar-count">3名</div>
+            </div>
+            <div class="mini-bar-row">
+              <div class="mini-bar-label" style="color:var(--dim)">未開始</div>
+              <div class="mini-bar">
+                <div class="mini-bar-seg" style="width:6.7%;background:rgba(255,255,255,.15)">1</div>
+              </div>
+              <div class="mini-bar-count">1名</div>
+            </div>
+            <div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--border)">
+              <div style="font:600 9px Montserrat;color:var(--dim);letter-spacing:1px;margin-bottom:6px">MASTER FRANCHISOR</div>
+              <div style="display:flex;align-items:center;gap:8px">
+                <div class="inst-avatar" style="width:28px;height:28px;font-size:9px;background:rgba(200,16,46,.2);color:var(--red)">KE</div>
+                <div style="font:600 11px 'Noto Sans JP';color:var(--white)">江原 健司</div>
+                <span class="inst-step-badge" style="background:rgba(200,16,46,.12);color:var(--red);margin-left:auto">MASTER</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Alerts -->
+        <div class="dash-card">
+          <div class="dash-card-header">
+            <span class="dash-card-title">アラート・通知</span>
+            <span style="font:700 9px Montserrat;padding:2px 7px;border-radius:8px;background:rgba(200,16,46,.15);color:var(--red)">4</span>
+          </div>
+          <div class="dash-card-body" style="padding:0">
+            <div class="alert-item">
+              <div class="alert-dot danger"></div>
+              <div>
+                <div class="alert-text">小林 雄介 — STEP 1 進捗が2週間停滞中</div>
+                <div class="alert-meta">最終ログイン: 14日前</div>
+              </div>
+            </div>
+            <div class="alert-item">
+              <div class="alert-dot warn"></div>
+              <div>
+                <div class="alert-text">伊藤 真理 — 実技チェック期限が近づいています</div>
+                <div class="alert-meta">期限: 2026.05.10 · 残り15日</div>
+              </div>
+            </div>
+            <div class="alert-item">
+              <div class="alert-dot success"></div>
+              <div>
+                <div class="alert-text">森 大輔 — STEP 1 まもなく修了（88%）</div>
+                <div class="alert-meta">残り10種目 · 予定: 2026.05 完了</div>
+              </div>
+            </div>
+            <div class="alert-item">
+              <div class="alert-dot info"></div>
+              <div>
+                <div class="alert-text">石井 菜々子 — 新規登録済・養成未開始</div>
+                <div class="alert-meta">登録日: 2026.04.20 · 開始日を設定してください</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Training Pipeline + Activity -->
+      <div class="dash-grid">
+        <div class="dash-card">
+          <div class="dash-card-header">
+            <span class="dash-card-title">養成パイプライン（進捗順）</span>
+          </div>
+          <div class="dash-card-body" style="padding:0">
+            <table class="data-table">
+              <thead><tr><th>名前</th><th>STEP</th><th>進捗</th><th>予定完了</th></tr></thead>
+              <tbody>
+                <tr><td style="display:flex;align-items:center;gap:6px"><div class="inst-avatar" style="width:24px;height:24px;font-size:8px;background:rgba(225,29,72,.15);color:#e11d48">MM</div>松本 恵</td><td><span style="font:700 9px Montserrat;color:var(--s4)">STEP 4</span></td><td><div style="display:flex;align-items:center;gap:4px"><div class="progress-bar" style="width:70px;margin:0"><div class="progress-bar-fill" style="width:60%;background:var(--s4)"></div></div><span style="font:600 9px Montserrat;color:var(--muted)">60%</span></div></td><td style="font:600 9px Montserrat;color:var(--muted)">2026.08</td></tr>
+                <tr><td style="display:flex;align-items:center;gap:6px"><div class="inst-avatar" style="width:24px;height:24px;font-size:8px;background:rgba(245,158,11,.15);color:var(--s3)">SY</div>鈴木 陽子</td><td><span style="font:700 9px Montserrat;color:var(--s3)">STEP 3</span></td><td><div style="display:flex;align-items:center;gap:4px"><div class="progress-bar" style="width:70px;margin:0"><div class="progress-bar-fill" style="width:45%;background:var(--s3)"></div></div><span style="font:600 9px Montserrat;color:var(--muted)">45%</span></div></td><td style="font:600 9px Montserrat;color:var(--muted)">2026.09</td></tr>
+                <tr><td style="display:flex;align-items:center;gap:6px"><div class="inst-avatar" style="width:24px;height:24px;font-size:8px;background:rgba(245,158,11,.15);color:var(--s3)">KS</div>加藤 さくら</td><td><span style="font:700 9px Montserrat;color:var(--s3)">STEP 3</span></td><td><div style="display:flex;align-items:center;gap:4px"><div class="progress-bar" style="width:70px;margin:0"><div class="progress-bar-fill" style="width:20%;background:var(--s3)"></div></div><span style="font:600 9px Montserrat;color:var(--muted)">20%</span></div></td><td style="font:600 9px Montserrat;color:var(--muted)">2026.10</td></tr>
+                <tr><td style="display:flex;align-items:center;gap:6px"><div class="inst-avatar" style="width:24px;height:24px;font-size:8px;background:rgba(129,140,248,.15);color:var(--s2)">TK</div>高橋 健太</td><td><span style="font:700 9px Montserrat;color:var(--s2)">STEP 2</span></td><td><div style="display:flex;align-items:center;gap:4px"><div class="progress-bar" style="width:70px;margin:0"><div class="progress-bar-fill" style="width:82%;background:var(--s2)"></div></div><span style="font:600 9px Montserrat;color:var(--muted)">82%</span></div></td><td style="font:600 9px Montserrat;color:var(--muted)">2026.06</td></tr>
+                <tr><td style="display:flex;align-items:center;gap:6px"><div class="inst-avatar" style="width:24px;height:24px;font-size:8px;background:rgba(129,140,248,.15);color:var(--s2)">YT</div>山田 太郎</td><td><span style="font:700 9px Montserrat;color:var(--s2)">STEP 2</span></td><td><div style="display:flex;align-items:center;gap:4px"><div class="progress-bar" style="width:70px;margin:0"><div class="progress-bar-fill" style="width:69%;background:var(--s2)"></div></div><span style="font:600 9px Montserrat;color:var(--muted)">69%</span></div></td><td style="font:600 9px Montserrat;color:var(--muted)">2026.07</td></tr>
+                <tr><td style="display:flex;align-items:center;gap:6px"><div class="inst-avatar" style="width:24px;height:24px;font-size:8px;background:rgba(129,140,248,.15);color:var(--s2)">NA</div>中村 愛</td><td><span style="font:700 9px Montserrat;color:var(--s2)">STEP 2</span></td><td><div style="display:flex;align-items:center;gap:4px"><div class="progress-bar" style="width:70px;margin:0"><div class="progress-bar-fill" style="width:55%;background:var(--s2)"></div></div><span style="font:600 9px Montserrat;color:var(--muted)">55%</span></div></td><td style="font:600 9px Montserrat;color:var(--muted)">2026.08</td></tr>
+              </tbody>
+            </table>
+            <div style="padding:10px 14px;text-align:center">
+              <span style="font:400 10px 'Noto Sans JP';color:var(--cyan);cursor:pointer" onclick="showPage('license')">全15名を見る →</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="dash-card">
+          <div class="dash-card-header">
+            <span class="dash-card-title">最近のアクティビティ</span>
+          </div>
+          <div class="dash-card-body">
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div style="display:flex;gap:10px;align-items:flex-start">
+                <div class="alert-dot success" style="margin-top:5px"></div>
+                <div><div style="font:500 11px 'Noto Sans JP';color:var(--white)">高橋 健太が STEP 2 Cadillac I 実技チェック合格</div><div style="font:400 9px 'Noto Sans JP';color:var(--dim);margin-top:2px">1時間前 · LICENSE</div></div>
+              </div>
+              <div style="display:flex;gap:10px;align-items:flex-start">
+                <div class="alert-dot" style="background:var(--red);margin-top:5px"></div>
+                <div><div style="font:500 11px 'Noto Sans JP';color:var(--white)">山田 太郎が FUND プログラムを新規作成</div><div style="font:400 9px 'Noto Sans JP';color:var(--dim);margin-top:2px">3時間前 · PROGRAM</div></div>
+              </div>
+              <div style="display:flex;gap:10px;align-items:flex-start">
+                <div class="alert-dot" style="background:var(--cyan);margin-top:5px"></div>
+                <div><div style="font:500 11px 'Noto Sans JP';color:var(--white)">佐藤 花子が STEP 1 MAT PRE 実技チェック完了</div><div style="font:400 9px 'Noto Sans JP';color:var(--dim);margin-top:2px">5時間前 · LICENSE</div></div>
+              </div>
+              <div style="display:flex;gap:10px;align-items:flex-start">
+                <div class="alert-dot" style="background:var(--gold);margin-top:5px"></div>
+                <div><div style="font:500 11px 'Noto Sans JP';color:var(--white)">Foot Work マニュアル v2.1 に更新</div><div style="font:400 9px 'Noto Sans JP';color:var(--dim);margin-top:2px">昨日 · MANUAL</div></div>
+              </div>
+              <div style="display:flex;gap:10px;align-items:flex-start">
+                <div class="alert-dot" style="background:var(--pre);margin-top:5px"></div>
+                <div><div style="font:500 11px 'Noto Sans JP';color:var(--white)">森 大輔が Reformer PRE 15種目を修了</div><div style="font:400 9px 'Noto Sans JP';color:var(--dim);margin-top:2px">昨日 · LICENSE</div></div>
+              </div>
+              <div style="display:flex;gap:10px;align-items:flex-start">
+                <div class="alert-dot" style="background:var(--s2);margin-top:5px"></div>
+                <div><div style="font:500 11px 'Noto Sans JP';color:var(--white)">中村 愛が STEP 2 Week 14 完了</div><div style="font:400 9px 'Noto Sans JP';color:var(--dim);margin-top:2px">2日前 · LICENSE</div></div>
+              </div>
+              <div style="display:flex;gap:10px;align-items:flex-start">
+                <div class="alert-dot" style="background:var(--green);margin-top:5px"></div>
+                <div><div style="font:500 11px 'Noto Sans JP';color:var(--white)">渡辺 翔太が INTER プログラムを共有</div><div style="font:400 9px 'Noto Sans JP';color:var(--dim);margin-top:2px">3日前 · PROGRAM</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Instructor Program History (Master view) -->
+      <div id="dash-instructor-history" style="margin-top:14px">
+        <div class="dash-card">
+          <div class="dash-card-header">
+            <span class="dash-card-title">インストラクター別 構成履歴</span>
+          </div>
+          <div class="dash-card-body" id="dash-inst-history-body">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Instructor Personal Dashboard (shown for instructor role) -->
+      <div id="dash-instructor-personal" style="display:none">
+      </div>
+
+    </div>
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- ════ PAGE: LICENSE ════ -->
+    <!-- ════════════════════════════════════════════ -->
+    <div class="page" id="page-license">
+
+      <!-- STEP Overview Cards -->
+      <div class="step-timeline">
+        <div class="step-card" data-step="1" onclick="filterByStep(1)">
+          <div class="step-num">STEP 1</div>
+          <div class="step-name">基礎段階</div>
+          <div class="step-meta">12週 · 85種目 · 70h</div>
+          <div class="step-meta" style="margin-top:4px">MAT PRE + Reformer PRE/F</div>
+          <div style="display:flex;align-items:center;gap:6px;margin-top:8px">
+            <span style="font:800 18px Montserrat;color:var(--pre)">4</span>
+            <span style="font:400 10px 'Noto Sans JP';color:var(--muted)">名</span>
+          </div>
+        </div>
+        <div class="step-card" data-step="2" onclick="filterByStep(2)">
+          <div class="step-num">STEP 2</div>
+          <div class="step-name">中級段階</div>
+          <div class="step-meta">14週 · 143種目 · 105h</div>
+          <div class="step-meta" style="margin-top:4px">Reformer I + Cadillac F/I</div>
+          <div style="display:flex;align-items:center;gap:6px;margin-top:8px">
+            <span style="font:800 18px Montserrat;color:var(--s2)">3</span>
+            <span style="font:400 10px 'Noto Sans JP';color:var(--muted)">名</span>
+          </div>
+        </div>
+        <div class="step-card" data-step="3" onclick="filterByStep(3)">
+          <div class="step-num">STEP 3</div>
+          <div class="step-name">応用段階</div>
+          <div class="step-meta">4週 · 75種目 · 25h</div>
+          <div class="step-meta" style="margin-top:4px">Chair / Barrel / SC</div>
+          <div style="display:flex;align-items:center;gap:6px;margin-top:8px">
+            <span style="font:800 18px Montserrat;color:var(--s3)">2</span>
+            <span style="font:400 10px 'Noto Sans JP';color:var(--muted)">名</span>
+          </div>
+        </div>
+        <div class="step-card" data-step="4" onclick="filterByStep(4)">
+          <div class="step-num">STEP 4</div>
+          <div class="step-name">上級 + 認定</div>
+          <div class="step-meta">12週 · 71種目 · 40h</div>
+          <div class="step-meta" style="margin-top:4px">全器具 Advance + 試験</div>
+          <div style="display:flex;align-items:center;gap:6px;margin-top:8px">
+            <span style="font:800 18px Montserrat;color:var(--s4)">1</span>
+            <span style="font:400 10px 'Noto Sans JP';color:var(--muted)">名</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filter bar -->
+      <div class="filter-bar">
+        <span class="filter-label">STATUS</span>
+        <button class="filter-btn active" onclick="filterStatus(this,'all')">全て (15)</button>
+        <button class="filter-btn" onclick="filterStatus(this,'training')">養成中 (10)</button>
+        <button class="filter-btn" onclick="filterStatus(this,'certified')">認定済 (3)</button>
+        <button class="filter-btn" onclick="filterStatus(this,'master')">マスター (1)</button>
+        <button class="filter-btn" onclick="filterStatus(this,'pending')">未開始 (1)</button>
+        <input type="text" class="search-input" placeholder="名前で検索..." oninput="searchInstructor(this.value)" style="margin-left:auto">
+      </div>
+
+      <!-- Instructor Table -->
+      <div class="dash-card">
+        <div class="dash-card-body" style="padding:0">
+          <table class="data-table" id="instructor-table">
+            <thead>
+              <tr>
+                <th style="width:180px">名前</th>
+                <th>ロール</th>
+                <th>現在のSTEP</th>
+                <th>進捗</th>
+                <th>修了種目</th>
+                <th>累計時間</th>
+                <th>開始日</th>
+                <th>予定完了</th>
+                <th>ステータス</th>
+              </tr>
+            </thead>
+            <tbody id="instructor-tbody">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ PAGE: PROGRAM — 60分ビルダー ════ -->
+    <div class="page" id="page-program">
+
+      <!-- STEP 1: Level Selection -->
+      <div id="bldr-step1">
+          <div style="text-align:center;margin:20px 0 24px">
+            <div style="font:800 20px Montserrat;color:var(--white);letter-spacing:1px">60分プログラムを構成する</div>
+            <div style="font:400 12px 'Noto Sans JP';color:var(--muted);margin-top:6px">STEP 1 — レッスンの強度レベルを選択してください</div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:900px;margin:0 auto">
+            <div onclick="startBuilder('PRE')" style="background:var(--card);border:2px solid rgba(232,121,249,.2);border-radius:10px;padding:24px 18px;cursor:pointer;transition:all .2s;text-align:center" onmouseover="this.style.borderColor='#E879F9';this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='rgba(232,121,249,.2)';this.style.transform='none'">
+              <div style="font:900 36px Montserrat;color:#E879F9;margin-bottom:8px">PRE</div>
+              <div style="font:600 11px 'Noto Sans JP';color:var(--white);margin-bottom:6px">プレ</div>
+              <div style="font:400 10px 'Noto Sans JP';color:var(--muted);line-height:1.6">入門レベル<br>安全な基本動作<br>初心者・高齢者向け</div>
+              <div style="margin-top:12px;font:600 9px Montserrat;color:var(--dim)">使用種目: 基礎のみ</div>
+            </div>
+            <div onclick="startBuilder('F')" style="background:var(--card);border:2px solid rgba(34,197,94,.2);border-radius:10px;padding:24px 18px;cursor:pointer;transition:all .2s;text-align:center" onmouseover="this.style.borderColor='#22C55E';this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='rgba(34,197,94,.2)';this.style.transform='none'">
+              <div style="font:900 36px Montserrat;color:#22C55E;margin-bottom:8px">F</div>
+              <div style="font:600 11px 'Noto Sans JP';color:var(--white);margin-bottom:6px">ファンダメンタル</div>
+              <div style="font:400 10px 'Noto Sans JP';color:var(--muted);line-height:1.6">基礎レベル<br>正しいフォーム習得<br>標準的なレッスン</div>
+              <div style="margin-top:12px;font:600 9px Montserrat;color:var(--dim)">全10ユニット対応</div>
+            </div>
+            <div onclick="startBuilder('I')" style="background:var(--card);border:2px solid rgba(59,130,246,.2);border-radius:10px;padding:24px 18px;cursor:pointer;transition:all .2s;text-align:center" onmouseover="this.style.borderColor='#3B82F6';this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='rgba(59,130,246,.2)';this.style.transform='none'">
+              <div style="font:900 36px Montserrat;color:#3B82F6;margin-bottom:8px">I</div>
+              <div style="font:600 11px 'Noto Sans JP';color:var(--white);margin-bottom:6px">インターミディエイト</div>
+              <div style="font:400 10px 'Noto Sans JP';color:var(--muted);line-height:1.6">中級レベル<br>フロー導入<br>動作の質向上</div>
+              <div style="margin-top:12px;font:600 9px Montserrat;color:var(--dim)">中級種目を追加</div>
+            </div>
+            <div onclick="startBuilder('A')" style="background:var(--card);border:2px solid rgba(245,158,11,.2);border-radius:10px;padding:24px 18px;cursor:pointer;transition:all .2s;text-align:center" onmouseover="this.style.borderColor='#F59E0B';this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='rgba(245,158,11,.2)';this.style.transform='none'">
+              <div style="font:900 36px Montserrat;color:#F59E0B;margin-bottom:8px">A</div>
+              <div style="font:600 11px 'Noto Sans JP';color:var(--white);margin-bottom:6px">アドバンス</div>
+              <div style="font:400 10px 'Noto Sans JP';color:var(--muted);line-height:1.6">上級レベル<br>複合動作<br>チャレンジ種目</div>
+              <div style="margin-top:12px;font:600 9px Montserrat;color:var(--dim)">全種目選択可</div>
+            </div>
+          </div>
+          <div style="text-align:center;margin-top:20px;font:400 10px 'Noto Sans JP';color:var(--dim)">
+            レベルによって選択できる種目が変わります · 10ユニットから種目を選んで60分のプログラムを構成します
+          </div>
+        </div>
+
+        <!-- STEP 2: Builder (shown after level selection) -->
+        <div id="bldr-step2" style="display:none">
+          <!-- Header bar -->
+          <div style="display:flex;align-items:center;gap:14px;margin-bottom:12px">
+            <button class="topbar-btn" onclick="backToLevelSelect()" style="font-size:10px;padding:5px 10px">← レベル選択</button>
+            <div id="bldr-lv-indicator" style="display:flex;align-items:center;gap:8px">
+              <!-- filled by JS -->
+            </div>
+            <div style="margin-left:auto;display:flex;align-items:center;gap:14px">
+              <div style="display:flex;align-items:center;gap:8px">
+                <div style="font:600 9px Montserrat;color:var(--dim);letter-spacing:1px">合計</div>
+                <div style="font:800 24px Montserrat;color:var(--white)" id="bldr-total-time">0<span style="font:500 11px Montserrat;color:var(--muted)">分</span></div>
+                <div style="width:100px;height:8px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden"><div id="bldr-time-bar" style="height:100%;width:0%;background:var(--red);border-radius:4px;transition:width .3s"></div></div>
+                <div style="font:400 9px 'Noto Sans JP';color:var(--dim)" id="bldr-time-label">目標: 60分</div>
+              </div>
+              <button class="topbar-btn" onclick="clearBuilder()" style="font-size:9px">クリア</button>
+              <button class="topbar-btn" onclick="openPrintPreview()" style="font:700 10px 'Noto Sans JP';background:rgba(212,175,55,.12);border-color:rgba(212,175,55,.3);color:#D4AF37">印刷</button>
+              <button class="topbar-btn primary" onclick="saveProgram()" id="bldr-save-btn" style="font:700 10px 'Noto Sans JP';display:none">保存</button>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:0;height:calc(100vh - 210px);overflow:hidden;border:1px solid var(--border);border-radius:8px;background:var(--card)">
+            <!-- LEFT: Unit Nav -->
+            <div style="width:200px;flex-shrink:0;border-right:1px solid var(--border);overflow-y:auto;padding:8px" id="bldr-unit-nav"></div>
+            <!-- MIDDLE: Exercise picker -->
+            <div style="flex:1;border-right:1px solid var(--border);overflow-y:auto;padding:12px" id="bldr-ex-picker">
+              <div style="text-align:center;padding:60px 20px;color:var(--dim);font:400 12px 'Noto Sans JP'">← ユニットを選択して<br>エクササイズを追加</div>
+            </div>
+            <!-- RIGHT: Program slots -->
+            <div style="width:300px;flex-shrink:0;display:flex;flex-direction:column;overflow:hidden">
+              <div style="padding:10px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px">
+                <span style="font:700 12px Montserrat;color:var(--white);letter-spacing:1px">PROGRAM</span>
+                <span style="font:700 11px Montserrat;color:var(--red)" id="bldr-ex-count">0種目</span>
+              </div>
+              <div style="flex:1;overflow-y:auto;padding:8px" id="bldr-program-slots">
+                <div style="text-align:center;padding:40px 16px;color:var(--dim);font:400 11px 'Noto Sans JP'">ユニットからエクササイズを<br>追加してください</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+    </div>
+
+    <!-- ════ PAGE: MANUAL ════ -->
+    <div class="page" id="page-manual">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px">
+        <span style="font:600 10px Montserrat;color:var(--dim);letter-spacing:1px">器具</span>
+        <button class="topbar-btn" style="background:rgba(74,143,212,.1);border-color:rgba(74,143,212,.3);color:#4a8fd4">Reformer 183</button>
+        <button class="topbar-btn" style="background:rgba(45,168,120,.1);border-color:rgba(45,168,120,.3);color:#2da878">Cadillac 81</button>
+        <button class="topbar-btn" style="background:rgba(212,144,58,.1);border-color:rgba(212,144,58,.3);color:#d4903a">Chair 41</button>
+        <button class="topbar-btn" style="background:rgba(196,88,128,.1);border-color:rgba(196,88,128,.3);color:#c45880">Barrel 18</button>
+        <button class="topbar-btn" style="background:rgba(155,89,182,.1);border-color:rgba(155,89,182,.3);color:#9b59b6">SC 27</button>
+        <button class="topbar-btn" style="background:rgba(232,121,249,.1);border-color:rgba(232,121,249,.3);color:#E879F9">MAT 23</button>
+      </div>
+      <div class="manual-grid">
+        <div class="manual-card"><div class="manual-card-top" style="background:linear-gradient(135deg,rgba(200,16,46,.15),rgba(200,16,46,.05))"><span style="color:var(--red)">01</span></div><div class="manual-card-body"><div class="manual-card-title">WARM UP</div><div class="manual-card-meta">Reformer 22種目 · 写真 88枚</div><div style="display:flex;gap:4px;margin-top:8px"><span style="font:600 8px Montserrat;padding:2px 5px;border-radius:2px;background:rgba(232,121,249,.1);color:#E879F9">P</span><span style="font:600 8px Montserrat;padding:2px 5px;border-radius:2px;background:rgba(34,197,94,.1);color:#22C55E">F</span><span style="font:600 8px Montserrat;padding:2px 5px;border-radius:2px;background:rgba(59,130,246,.1);color:#3B82F6">I</span><span style="font:600 8px Montserrat;padding:2px 5px;border-radius:2px;background:rgba(245,158,11,.1);color:#F59E0B">A</span></div></div></div>
+        <div class="manual-card"><div class="manual-card-top" style="background:linear-gradient(135deg,rgba(200,16,46,.15),rgba(200,16,46,.05))"><span style="color:var(--red)">02</span></div><div class="manual-card-body"><div class="manual-card-title">FOOT WORK</div><div class="manual-card-meta">Reformer 18種目 · 写真 72枚</div><div style="display:flex;gap:4px;margin-top:8px"><span style="font:600 8px Montserrat;padding:2px 5px;border-radius:2px;background:rgba(232,121,249,.1);color:#E879F9">P</span><span style="font:600 8px Montserrat;padding:2px 5px;border-radius:2px;background:rgba(34,197,94,.1);color:#22C55E">F</span><span style="font:600 8px Montserrat;padding:2px 5px;border-radius:2px;background:rgba(59,130,246,.1);color:#3B82F6">I</span><span style="font:600 8px Montserrat;padding:2px 5px;border-radius:2px;background:rgba(245,158,11,.1);color:#F59E0B">A</span></div></div></div>
+        <div class="manual-card"><div class="manual-card-top" style="background:linear-gradient(135deg,rgba(200,16,46,.15),rgba(200,16,46,.05))"><span style="color:var(--red)">03</span></div><div class="manual-card-body"><div class="manual-card-title">ABDOMINAL</div><div class="manual-card-meta">Reformer 24種目 · 写真 96枚</div><div style="display:flex;gap:4px;margin-top:8px"><span style="font:600 8px Montserrat;padding:2px 5px;border-radius:2px;background:rgba(232,121,249,.1);color:#E879F9">P</span><span style="font:600 8px Montserrat;padding:2px 5px;border-radius:2px;background:rgba(34,197,94,.1);color:#22C55E">F</span><span style="font:600 8px Montserrat;padding:2px 5px;border-radius:2px;background:rgba(59,130,246,.1);color:#3B82F6">I</span><span style="font:600 8px Montserrat;padding:2px 5px;border-radius:2px;background:rgba(245,158,11,.1);color:#F59E0B">A</span></div></div></div>
+        <div class="manual-card"><div class="manual-card-top" style="background:linear-gradient(135deg,rgba(45,168,120,.15),rgba(45,168,120,.05))"><span style="color:#2da878">C</span></div><div class="manual-card-body"><div class="manual-card-title">CADILLAC — Push Through</div><div class="manual-card-meta">Cadillac 15種目 · 写真 60枚</div></div></div>
+        <div class="manual-card"><div class="manual-card-top" style="background:linear-gradient(135deg,rgba(212,144,58,.15),rgba(212,144,58,.05))"><span style="color:#d4903a">W</span></div><div class="manual-card-body"><div class="manual-card-title">CHAIR — Swan</div><div class="manual-card-meta">Chair 8種目 · 写真 32枚</div></div></div>
+        <div class="manual-card" style="border-style:dashed;display:flex;align-items:center;justify-content:center;min-height:180px"><div style="text-align:center"><div style="font:300 28px Montserrat;color:var(--dim)">+</div><div style="font:500 11px 'Noto Sans JP';color:var(--muted);margin-top:4px">カスタムマニュアル</div></div></div>
+      </div>
+    </div>
+
+    <!-- ════ PAGE: ANALYTICS ════ -->
+    <div class="page" id="page-analytics">
+      <div class="stats-row col4">
+        <div class="stat-card" data-c="red"><div class="stat-label">Programs Created</div><div class="stat-value">156<span>件</span></div><div class="stat-sub">全期間合計</div></div>
+        <div class="stat-card" data-c="cyan"><div class="stat-label">Training Hours</div><div class="stat-value">1,240<span>h</span></div><div class="stat-sub">累計養成時間</div></div>
+        <div class="stat-card" data-c="gold"><div class="stat-label">Most Used Unit</div><div class="stat-value" style="font-size:18px">WARM UP</div><div class="stat-sub">使用率 98%</div></div>
+        <div class="stat-card" data-c="green"><div class="stat-label">Certification Rate</div><div class="stat-value">20<span>%</span></div><div class="stat-sub">3/15名が認定取得</div></div>
+      </div>
+      <div class="dash-grid">
+        <div class="dash-card">
+          <div class="dash-card-header"><span class="dash-card-title">ユニット別使用頻度</span></div>
+          <div class="dash-card-body">
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;align-items:center;gap:10px"><span style="font:600 9px Montserrat;color:var(--red);width:90px">01 WARM UP</span><div class="progress-bar" style="flex:1;margin:0"><div class="progress-bar-fill" style="width:98%;background:var(--red)"></div></div><span style="font:600 9px Montserrat;color:var(--muted);width:30px">98%</span></div>
+              <div style="display:flex;align-items:center;gap:10px"><span style="font:600 9px Montserrat;color:var(--red);width:90px">02 FOOT WORK</span><div class="progress-bar" style="flex:1;margin:0"><div class="progress-bar-fill" style="width:95%;background:var(--red)"></div></div><span style="font:600 9px Montserrat;color:var(--muted);width:30px">95%</span></div>
+              <div style="display:flex;align-items:center;gap:10px"><span style="font:600 9px Montserrat;color:var(--red);width:90px">03 ABDOMINAL</span><div class="progress-bar" style="flex:1;margin:0"><div class="progress-bar-fill" style="width:92%;background:var(--red)"></div></div><span style="font:600 9px Montserrat;color:var(--muted);width:30px">92%</span></div>
+              <div style="display:flex;align-items:center;gap:10px"><span style="font:600 9px Montserrat;color:var(--red);width:90px">06 FULL BODY</span><div class="progress-bar" style="flex:1;margin:0"><div class="progress-bar-fill" style="width:88%;background:var(--red)"></div></div><span style="font:600 9px Montserrat;color:var(--muted);width:30px">88%</span></div>
+              <div style="display:flex;align-items:center;gap:10px"><span style="font:600 9px Montserrat;color:var(--red);width:90px">10 BACK EXT.</span><div class="progress-bar" style="flex:1;margin:0"><div class="progress-bar-fill" style="width:72%;background:var(--red)"></div></div><span style="font:600 9px Montserrat;color:var(--muted);width:30px">72%</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card-header"><span class="dash-card-title">レベル別プログラム分布</span></div>
+          <div class="dash-card-body">
+            <div style="display:flex;gap:12px;height:120px;align-items:flex-end">
+              <div style="flex:1;text-align:center"><div style="height:80px;background:rgba(232,121,249,.2);border-radius:4px 4px 0 0;border-top:3px solid #E879F9"></div><div style="font:600 9px Montserrat;color:#E879F9;margin-top:4px">PRE</div><div style="font:600 8px Montserrat;color:var(--dim)">42%</div></div>
+              <div style="flex:1;text-align:center"><div style="height:56px;background:rgba(34,197,94,.2);border-radius:4px 4px 0 0;border-top:3px solid #22C55E"></div><div style="font:600 9px Montserrat;color:#22C55E;margin-top:4px">FUND.</div><div style="font:600 8px Montserrat;color:var(--dim)">30%</div></div>
+              <div style="flex:1;text-align:center"><div style="height:36px;background:rgba(59,130,246,.2);border-radius:4px 4px 0 0;border-top:3px solid #3B82F6"></div><div style="font:600 9px Montserrat;color:#3B82F6;margin-top:4px">INTER.</div><div style="font:600 8px Montserrat;color:var(--dim)">18%</div></div>
+              <div style="flex:1;text-align:center"><div style="height:20px;background:rgba(245,158,11,.2);border-radius:4px 4px 0 0;border-top:3px solid #F59E0B"></div><div style="font:600 9px Montserrat;color:#F59E0B;margin-top:4px">ADV.</div><div style="font:600 8px Montserrat;color:var(--dim)">10%</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ PAGE: SETTINGS ════ -->
+    <div class="page" id="page-settings">
+      <div class="dash-card" style="max-width:600px">
+        <div class="dash-card-header"><span class="dash-card-title">スタジオ情報</span></div>
+        <div class="dash-card-body">
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div><div style="font:600 9px Montserrat;color:var(--dim);letter-spacing:1px;margin-bottom:4px">STUDIO NAME</div><div style="font:500 13px 'Noto Sans JP';color:var(--white)">AXISCORE PILATES — Studio Alpha</div></div>
+            <div><div style="font:600 9px Montserrat;color:var(--dim);letter-spacing:1px;margin-bottom:4px">OWNER / MASTER FRANCHISOR</div><div style="font:500 13px 'Noto Sans JP';color:var(--white)">江原 健司</div></div>
+            <div><div style="font:600 9px Montserrat;color:var(--dim);letter-spacing:1px;margin-bottom:4px">COMPANY</div><div style="font:500 13px 'Noto Sans JP';color:var(--white)">株式会社大丸プランニング</div></div>
+            <div><div style="font:600 9px Montserrat;color:var(--dim);letter-spacing:1px;margin-bottom:4px">CONTACT</div><div style="font:500 13px 'Noto Sans JP';color:var(--white)">info@ace-axiscore.com</div></div>
+            <div><div style="font:600 9px Montserrat;color:var(--dim);letter-spacing:1px;margin-bottom:4px">PLAN</div><div style="font:700 13px Montserrat;color:var(--red)">ENTERPRISE<span style="font:400 10px 'Noto Sans JP';color:var(--muted);margin-left:8px">インストラクター20名まで</span></div></div>
+            <div><div style="font:600 9px Montserrat;color:var(--dim);letter-spacing:1px;margin-bottom:4px">INSTRUCTORS</div><div style="font:500 13px 'Noto Sans JP';color:var(--white)">15 / 20 名</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ PAGE: BILLING ════ -->
+    <div class="page" id="page-billing">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:800px;margin-bottom:24px">
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;text-align:center">
+          <div style="font:700 10px Montserrat;color:var(--dim);letter-spacing:2px;margin-bottom:10px">STARTER</div>
+          <div style="font:800 28px Montserrat;color:var(--muted)">¥—</div>
+          <div style="font:400 10px 'Noto Sans JP';color:var(--dim);margin:8px 0 12px">/月（税別）</div>
+          <div style="font:400 10px 'Noto Sans JP';color:var(--muted);line-height:1.8">1スタジオ<br>インストラクター5名まで<br>PROGRAM + MANUAL<br>メールサポート</div>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;text-align:center">
+          <div style="font:700 10px Montserrat;color:var(--cyan);letter-spacing:2px;margin-bottom:10px">PRO</div>
+          <div style="font:800 28px Montserrat;color:var(--muted)">¥—</div>
+          <div style="font:400 10px 'Noto Sans JP';color:var(--dim);margin:8px 0 12px">/月（税別）</div>
+          <div style="font:400 10px 'Noto Sans JP';color:var(--muted);line-height:1.8">複数拠点対応<br>インストラクター10名まで<br>全3システム + 分析<br>優先サポート</div>
+        </div>
+        <div style="background:var(--card);border:2px solid var(--red);border-radius:8px;padding:20px;text-align:center;position:relative">
+          <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--red);color:var(--white);font:700 8px Montserrat;padding:3px 10px;border-radius:3px;letter-spacing:2px">CURRENT</div>
+          <div style="font:700 10px Montserrat;color:var(--red);letter-spacing:2px;margin-bottom:10px">ENTERPRISE</div>
+          <div style="font:800 28px Montserrat;color:var(--white)">要相談</div>
+          <div style="font:400 10px 'Noto Sans JP';color:var(--dim);margin:8px 0 12px">カスタム</div>
+          <div style="font:400 10px 'Noto Sans JP';color:var(--body);line-height:1.8">無制限拠点<br>インストラクター20名まで<br>API連携 / ホワイトラベル<br>専任サポート</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- ═══ DETAIL PANEL (Instructor) ═══ -->
+<div class="detail-overlay" id="detail-overlay" onclick="if(event.target===this)closeDetail()">
+  <div class="detail-panel" style="position:relative" id="detail-panel">
+    <!-- Populated by JS -->
+  </div>
+</div>
+
+<script>
+// ── Instructor Data ──
+const instructors = [
+  {id:1,  name:'江原 健司',   init:'KE', role:'マスターフランチャイザー', step:'master', stepNum:0, progress:100, exercises:'373/373', hours:240, startDate:'2023.04', endDate:'2024.08', status:'master', color:'var(--red)', bg:'rgba(200,16,46,.15)', lastLogin:'今日'},
+  {id:2,  name:'田中 美紀',   init:'TN', role:'認定インストラクター',     step:'認定済',  stepNum:5, progress:100, exercises:'373/373', hours:240, startDate:'2024.06', endDate:'2025.12', status:'certified', color:'#e11d48',    bg:'rgba(225,29,72,.15)', lastLogin:'今日'},
+  {id:3,  name:'渡辺 翔太',   init:'WS', role:'認定インストラクター',     step:'認定済',  stepNum:5, progress:100, exercises:'373/373', hours:240, startDate:'2024.09', endDate:'2026.02', status:'certified', color:'var(--cyan)', bg:'rgba(6,182,212,.15)',  lastLogin:'昨日'},
+  {id:4,  name:'吉田 拓也',   init:'YoT',role:'認定インストラクター',     step:'認定済',  stepNum:5, progress:100, exercises:'373/373', hours:240, startDate:'2024.08', endDate:'2026.01', status:'certified', color:'var(--green)',bg:'rgba(34,197,94,.15)',  lastLogin:'3日前'},
+  {id:5,  name:'松本 恵',     init:'MM', role:'養成インストラクター',     step:'STEP 4',  stepNum:4, progress:60,  exercises:'312/373', hours:192, startDate:'2025.01', endDate:'2026.08', status:'training',  color:'var(--s4)',   bg:'rgba(225,29,72,.15)',  lastLogin:'今日'},
+  {id:6,  name:'鈴木 陽子',   init:'SY', role:'養成インストラクター',     step:'STEP 3',  stepNum:3, progress:45,  exercises:'258/373', hours:145, startDate:'2025.03', endDate:'2026.09', status:'training',  color:'var(--s3)',   bg:'rgba(245,158,11,.15)', lastLogin:'今日'},
+  {id:7,  name:'加藤 さくら', init:'KS', role:'養成インストラクター',     step:'STEP 3',  stepNum:3, progress:20,  exercises:'237/373', hours:128, startDate:'2025.06', endDate:'2026.10', status:'training',  color:'var(--s3)',   bg:'rgba(245,158,11,.15)', lastLogin:'昨日'},
+  {id:8,  name:'高橋 健太',   init:'TK', role:'養成インストラクター',     step:'STEP 2',  stepNum:2, progress:82,  exercises:'202/373', hours:120, startDate:'2025.04', endDate:'2026.06', status:'training',  color:'var(--s2)',   bg:'rgba(129,140,248,.15)',lastLogin:'今日'},
+  {id:9,  name:'山田 太郎',   init:'YT', role:'養成インストラクター',     step:'STEP 2',  stepNum:2, progress:69,  exercises:'183/373', hours:105, startDate:'2025.05', endDate:'2026.07', status:'training',  color:'var(--s2)',   bg:'rgba(129,140,248,.15)',lastLogin:'今日'},
+  {id:10, name:'中村 愛',     init:'NA', role:'養成インストラクター',     step:'STEP 2',  stepNum:2, progress:55,  exercises:'163/373', hours:90,  startDate:'2025.06', endDate:'2026.08', status:'training',  color:'var(--s2)',   bg:'rgba(129,140,248,.15)',lastLogin:'2日前'},
+  {id:11, name:'森 大輔',     init:'MD', role:'養成インストラクター',     step:'STEP 1',  stepNum:1, progress:88,  exercises:'75/85',   hours:62,  startDate:'2025.10', endDate:'2026.05', status:'training',  color:'var(--pre)',  bg:'rgba(232,121,249,.15)',lastLogin:'昨日'},
+  {id:12, name:'佐藤 花子',   init:'SK', role:'養成インストラクター',     step:'STEP 1',  stepNum:1, progress:67,  exercises:'57/85',   hours:47,  startDate:'2025.11', endDate:'2026.06', status:'training',  color:'var(--pre)',  bg:'rgba(232,121,249,.15)',lastLogin:'今日'},
+  {id:13, name:'伊藤 真理',   init:'IM', role:'養成インストラクター',     step:'STEP 1',  stepNum:1, progress:33,  exercises:'28/85',   hours:23,  startDate:'2026.01', endDate:'2026.07', status:'training',  color:'var(--pre)',  bg:'rgba(232,121,249,.15)',lastLogin:'5日前'},
+  {id:14, name:'小林 雄介',   init:'KY', role:'養成インストラクター',     step:'STEP 1',  stepNum:1, progress:15,  exercises:'13/85',   hours:11,  startDate:'2026.02', endDate:'2026.09', status:'training',  color:'var(--pre)',  bg:'rgba(232,121,249,.15)',lastLogin:'14日前'},
+  {id:15, name:'石井 菜々子', init:'IN', role:'養成予定',               step:'未開始',  stepNum:0, progress:0,   exercises:'0/85',    hours:0,   startDate:'2026.04', endDate:'—',       status:'pending',   color:'var(--dim)',  bg:'rgba(255,255,255,.08)',lastLogin:'登録済'},
+];
+
+// ── Render Instructor Table ──
+let currentFilter = 'all';
+let currentStepFilter = null;
+let searchQuery = '';
+
+function renderTable() {
+  const tbody = document.getElementById('instructor-tbody');
+  let filtered = instructors.filter(i => {
+    if (currentFilter === 'training')  return i.status === 'training';
+    if (currentFilter === 'certified') return i.status === 'certified';
+    if (currentFilter === 'master')    return i.status === 'master';
+    if (currentFilter === 'pending')   return i.status === 'pending';
+    return true;
+  });
+  if (currentStepFilter) {
+    filtered = filtered.filter(i => i.stepNum === currentStepFilter);
+  }
+  if (searchQuery) {
+    const q = searchQuery.toLowerCase();
+    filtered = filtered.filter(i => i.name.toLowerCase().includes(q) || i.init.toLowerCase().includes(q));
+  }
+
+  tbody.innerHTML = filtered.map(i => {
+    const stepColor = i.status === 'master' ? 'var(--red)' : i.status === 'certified' ? 'var(--green)' : i.color;
+    const statusLabel = i.status === 'master' ? 'MASTER' : i.status === 'certified' ? '認定' : i.status === 'pending' ? '未開始' : '進行中';
+    const statusClass = i.status === 'master' ? 'certified' : i.status;
+    const progressBar = `<div style="display:flex;align-items:center;gap:4px"><div class="progress-bar" style="width:70px;margin:0"><div class="progress-bar-fill" style="width:${i.progress}%;background:${stepColor}"></div></div><span style="font:600 9px Montserrat;color:${i.progress===100?'var(--green)':'var(--muted)'}">${i.progress}%</span></div>`;
+
+    return `<tr class="clickable" onclick="openDetail(${i.id})">
+      <td><div style="display:flex;align-items:center;gap:8px"><div class="inst-avatar" style="width:28px;height:28px;font-size:9px;background:${i.bg};color:${i.color}">${i.init}</div>${i.name}</div></td>
+      <td style="font:400 10px 'Noto Sans JP';color:var(--muted)">${i.role}</td>
+      <td><span style="font:700 10px Montserrat;color:${stepColor}">${i.step}</span></td>
+      <td>${progressBar}</td>
+      <td style="font:600 10px Montserrat;color:var(--muted)">${i.exercises}</td>
+      <td style="font:600 10px Montserrat;color:var(--muted)">${i.hours}h</td>
+      <td style="font:400 10px Montserrat;color:var(--muted)">${i.startDate}</td>
+      <td style="font:600 10px Montserrat;color:var(--muted)">${i.endDate}</td>
+      <td><span class="status-dot ${statusClass === 'training' ? 'active' : statusClass === 'certified' ? 'certified' : statusClass === 'pending' ? 'pending' : 'active'}"></span>${statusLabel}</td>
+    </tr>`;
+  }).join('');
+}
+
+function filterStatus(btn, status) {
+  currentFilter = status;
+  currentStepFilter = null;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.step-card').forEach(c => c.classList.remove('filter-active'));
+  renderTable();
+}
+
+function filterByStep(step) {
+  if (currentStepFilter === step) {
+    currentStepFilter = null;
+    document.querySelectorAll('.step-card').forEach(c => c.classList.remove('filter-active'));
+  } else {
+    currentStepFilter = step;
+    document.querySelectorAll('.step-card').forEach(c => {
+      c.classList.toggle('filter-active', parseInt(c.dataset.step) === step);
+    });
+  }
+  currentFilter = 'all';
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('.filter-btn').classList.add('active');
+  renderTable();
+}
+
+function searchInstructor(q) {
+  searchQuery = q;
+  renderTable();
+}
+
+// ── Detail Panel ──
+function openDetail(id) {
+  const i = instructors.find(x => x.id === id);
+  if (!i) return;
+  const panel = document.getElementById('detail-panel');
+  const stepColor = i.status === 'master' ? 'var(--red)' : i.status === 'certified' ? 'var(--green)' : i.color;
+
+  // STEP checklist
+  const steps = [
+    {name:'STEP 1 — 基礎', desc:'MAT PRE + Reformer PRE/F', ex:'85種目', weeks:'12週', hours:'70h'},
+    {name:'STEP 2 — 中級', desc:'Reformer I + Cadillac F/I', ex:'143種目', weeks:'14週', hours:'105h'},
+    {name:'STEP 3 — 応用', desc:'Chair / Barrel / SC',       ex:'75種目', weeks:'4週',  hours:'25h'},
+    {name:'STEP 4 — 上級', desc:'全器具 Advance + 認定試験', ex:'71種目', weeks:'12週', hours:'40h'},
+  ];
+
+  let checklistHTML = steps.map((s, idx) => {
+    const sn = idx + 1;
+    let cls = 'check';
+    let icon = '';
+    if (i.status === 'master' || i.status === 'certified' || i.stepNum > sn) { cls = 'check done'; icon = '✓'; }
+    else if (i.stepNum === sn) { cls = 'check current'; icon = '▸'; }
+    return `<div class="checklist-item">
+      <div class="${cls}">${icon}</div>
+      <div style="flex:1">
+        <div style="font:600 11px 'Noto Sans JP';color:${i.stepNum >= sn || i.status==='master' || i.status==='certified' ? 'var(--white)' : 'var(--dim)'}">${s.name}</div>
+        <div style="font:400 9px 'Noto Sans JP';color:var(--dim)">${s.desc} · ${s.ex} · ${s.hours}</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  panel.innerHTML = `
+    <button class="detail-close" onclick="closeDetail()">✕</button>
+    <div class="detail-header">
+      <div class="inst-avatar" style="width:48px;height:48px;font-size:16px;background:${i.bg};color:${i.color}">${i.init}</div>
+      <div>
+        <div class="detail-name">${i.name}</div>
+        <div class="detail-role">${i.role}</div>
+      </div>
+      <span class="inst-step-badge" style="background:${i.bg};color:${i.color};margin-left:auto;font-size:10px">${i.step}</span>
+    </div>
+
+    <div class="detail-section">
+      <div class="detail-section-title">Progress Overview</div>
+      <div style="margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+          <span style="font:600 11px 'Noto Sans JP';color:var(--white)">全体進捗</span>
+          <span style="font:800 14px Montserrat;color:${stepColor}">${i.progress}%</span>
+        </div>
+        <div class="progress-bar" style="height:10px;margin:0"><div class="progress-bar-fill" style="width:${i.progress}%;background:${stepColor};border-radius:5px"></div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:6px;padding:10px;text-align:center">
+          <div style="font:800 18px Montserrat;color:var(--white)">${i.exercises}</div>
+          <div style="font:400 9px 'Noto Sans JP';color:var(--dim);margin-top:2px">修了種目</div>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:6px;padding:10px;text-align:center">
+          <div style="font:800 18px Montserrat;color:var(--white)">${i.hours}h</div>
+          <div style="font:400 9px 'Noto Sans JP';color:var(--dim);margin-top:2px">累計時間</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-section">
+      <div class="detail-section-title">STEP Checklist</div>
+      ${checklistHTML}
+    </div>
+
+    <div class="detail-section">
+      <div class="detail-section-title">Details</div>
+      <div class="detail-row"><span class="detail-row-label">開始日</span><span class="detail-row-value">${i.startDate}</span></div>
+      <div class="detail-row"><span class="detail-row-label">予定完了</span><span class="detail-row-value">${i.endDate}</span></div>
+      <div class="detail-row"><span class="detail-row-label">最終ログイン</span><span class="detail-row-value">${i.lastLogin}</span></div>
+      <div class="detail-row"><span class="detail-row-label">ステータス</span><span class="detail-row-value" style="color:${stepColor}">${i.step}</span></div>
+    </div>
+
+    <div style="display:flex;gap:8px;margin-top:20px">
+      <button class="topbar-btn primary" style="flex:1">進捗を更新</button>
+      <button class="topbar-btn" style="flex:1">メッセージ送信</button>
+    </div>
+  `;
+
+  document.getElementById('detail-overlay').classList.add('open');
+}
+
+function closeDetail() {
+  document.getElementById('detail-overlay').classList.remove('open');
+}
+
+// ── Navigation ──
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+  const page = document.getElementById('page-' + id);
+  if (page) page.classList.add('active');
+
+  const titles = {
+    dashboard: ['ダッシュボード', 'AXISCORE PILATES — 1店舗管理'],
+    license:   ['INSTRUCTOR-LICENSE-SYSTEM', '養成カリキュラム進捗管理 · 15名'],
+    program:   ['PROGRAM-UNIT-SYSTEM', '60分レッスンプログラムの構成'],
+    manual:    ['MANUAL-BUILD-SYSTEM', '種目マニュアルの管理・構築'],
+    analytics: ['利用分析', 'プログラム・養成・種目の利用状況'],
+    settings:  ['スタジオ設定', 'スタジオ情報・アカウント管理'],
+    billing:   ['契約・請求', 'プラン・請求・支払い管理'],
+  };
+
+  const actionPages = ['manual', 'license'];
+  const actionBtn = document.getElementById('topbar-action');
+  if (actionPages.includes(id)) {
+    actionBtn.style.display = 'block';
+    actionBtn.textContent = id === 'license' ? '+ インストラクター追加' : '+ マニュアル作成';
+  } else {
+    actionBtn.style.display = 'none';
+  }
+
+  const idx = {dashboard:0, license:2, program:3, manual:4, analytics:6, settings:8, billing:9};
+  if (idx[id] !== undefined) {
+    const navItems = document.querySelectorAll('.nav-item');
+    if (navItems[idx[id]]) navItems[idx[id]].classList.add('active');
+  }
+
+  var t = titles[id] || ['',''];
+  document.getElementById('topbar-title').textContent = t[0] || '';
+  document.getElementById('topbar-sub').textContent = t[1] || '';
+
+  // Render pages when switching
+  if (id === 'license') renderTable();
+  if (id === 'program') { backToLevelSelect(); }
+  if (id === 'dashboard' && currentUser) renderDashboardForRole();
+}
+
+// ══════════════════════════════════════════
+// ── PROGRAM SYSTEM ──
+// ══════════════════════════════════════════
+
+// 10 Units data
+const UNITS = [
+  {n:'01',en:'WARM UP',jp:'ウォームアップ',focus:'呼吸・骨盤・脊柱の準備',time:5},
+  {n:'02',en:'FOOT WORK',jp:'フットワーク',focus:'下肢アライメント・筋力',time:7},
+  {n:'03',en:'ABDOMINAL',jp:'アブドミナル',focus:'体幹安定・腹部深層筋',time:8},
+  {n:'04',en:'HIP WORK',jp:'ヒップワーク',focus:'股関節可動域・安定性',time:6},
+  {n:'05',en:'SPINAL ART.',jp:'スパイナルアーティキュレーション',focus:'脊柱分節運動・柔軟性',time:5},
+  {n:'06',en:'FULL BODY',jp:'フルボディインテグレーション',focus:'全身協調・筋連鎖統合',time:8},
+  {n:'07',en:'ARM WORK',jp:'アームワーク',focus:'上肢筋力・肩甲帯安定',time:5},
+  {n:'08',en:'LEG WORK',jp:'レッグワーク',focus:'下肢筋力・動的バランス',time:6},
+  {n:'09',en:'LAT. FLEX',jp:'ラテラルフレクション＆ローテーション',focus:'側屈・回旋・三次元安定',time:5},
+  {n:'10',en:'BACK EXT.',jp:'バックエクステンション',focus:'脊柱伸展・背面活性化',time:5},
+];
+
+// Exercise database (from manual) — theme: focus/purpose of exercise
+const EXERCISES = [
+  // ════ UNIT 01: WARM UP ════
+  {u:0,app:'C',name:'Mini Roll ups',lvs:['F','I','A'],time:3},
+  {u:0,app:'C',name:'Mini Roll ups Oblique',lvs:['F','I','A'],time:3},
+  {u:0,app:'C',name:'Roll up with Push Throgh Bar Top Loaded',lvs:['F','I','A'],time:3},
+  {u:0,app:'C',name:'Roll up with Roll up Bar',lvs:['F','I','A'],time:3},
+  {u:0,app:'C',name:'Spine Twist Supine',lvs:['F','I','A'],time:3},
+  {u:0,app:'MAT',name:'Single leg lift',lvs:['PRE','F','I','A'],time:3},
+  {u:0,app:'MAT',name:'Spine Twist Supine',lvs:['PRE','F','I','A'],time:3},
+  {u:0,app:'MAT',name:'chest Lift',lvs:['PRE','F','I','A'],time:3},
+  {u:0,app:'MAT',name:'chest Lift with rotetion',lvs:['PRE','F','I','A'],time:3},
+  {u:0,app:'MAT',name:'leg change',lvs:['PRE','F','I','A'],time:3},
+  {u:0,app:'MAT',name:'pelvic curl',lvs:['PRE','F','I','A'],time:3},
+  {u:0,app:'R',name:'Criss cross',lvs:['I','A'],time:3},
+  {u:0,app:'R',name:'Double leg stretch',lvs:['I','A'],time:3},
+  {u:0,app:'R',name:'Roll up',lvs:['I','A'],time:3},
+  {u:0,app:'R',name:'Single leg lift',lvs:['F','I','A'],time:3},
+  {u:0,app:'R',name:'Single leg stretch',lvs:['I','A'],time:3},
+  {u:0,app:'R',name:'Spine Twist Supine',lvs:['F','I','A'],time:3},
+  {u:0,app:'R',name:'chest Lift with rotetion',lvs:['F','I','A'],time:3},
+  {u:0,app:'R',name:'leg change',lvs:['F','I','A'],time:3},
+  {u:0,app:'R',name:'pelvic curl',lvs:['F','I','A'],time:3},
+  // ════ UNIT 02: FOOT WORK ════
+  {u:1,app:'C',name:'Calf Raises',lvs:['F','I','A'],time:3},
+  {u:1,app:'C',name:'Hip Opener',lvs:['F','I','A'],time:3},
+  {u:1,app:'C',name:'Open V Heels',lvs:['F','I','A'],time:3},
+  {u:1,app:'C',name:'Open V Toes',lvs:['F','I','A'],time:3},
+  {u:1,app:'C',name:'Parallel Heels',lvs:['F','I','A'],time:3},
+  {u:1,app:'C',name:'Parallel Toes',lvs:['F','I','A'],time:3},
+  {u:1,app:'C',name:'Prances',lvs:['F','I','A'],time:3},
+  {u:1,app:'C',name:'Single Leg Heels',lvs:['F','I','A'],time:3},
+  {u:1,app:'C',name:'Single Leg Toes',lvs:['F','I','A'],time:3},
+  {u:1,app:'C',name:'V Position Toes',lvs:['F','I','A'],time:3},
+  {u:1,app:'R',name:'Calf Raises',lvs:['PRE','F','I','A'],time:3},
+  {u:1,app:'R',name:'Open V Heels',lvs:['PRE','F','I','A'],time:3},
+  {u:1,app:'R',name:'Open V Toes',lvs:['PRE','F','I','A'],time:3},
+  {u:1,app:'R',name:'Parallel Heels',lvs:['PRE','F','I','A'],time:3},
+  {u:1,app:'R',name:'Parallel Toes',lvs:['PRE','F','I','A'],time:3},
+  {u:1,app:'R',name:'Prances',lvs:['PRE','F','I','A'],time:3},
+  {u:1,app:'R',name:'Prehensile(arch）',lvs:['PRE','F','I','A'],time:3},
+  {u:1,app:'R',name:'Side Position(sleeper）',lvs:['PRE','F','I','A'],time:3},
+  {u:1,app:'R',name:'Single Leg Heels',lvs:['PRE','F','I','A'],time:3},
+  {u:1,app:'R',name:'Single Leg Toes',lvs:['PRE','F','I','A'],time:3},
+  {u:1,app:'R',name:'V Position Toes',lvs:['PRE','F','I','A'],time:3},
+  {u:1,app:'W',name:'Calf Raises',lvs:['F','I','A'],time:3},
+  {u:1,app:'W',name:'Open V Heels',lvs:['F','I','A'],time:3},
+  {u:1,app:'W',name:'Open V Toes',lvs:['F','I','A'],time:3},
+  {u:1,app:'W',name:'Parallel Heels',lvs:['F','I','A'],time:3},
+  {u:1,app:'W',name:'Parallel Toes',lvs:['F','I','A'],time:3},
+  {u:1,app:'W',name:'Single Leg Heels',lvs:['F','I','A'],time:3},
+  {u:1,app:'W',name:'Single Leg Toes',lvs:['F','I','A'],time:3},
+  {u:1,app:'W',name:'V Position Toes',lvs:['F','I','A'],time:3},
+  // ════ UNIT 03: ABDOMINAL ════
+  {u:2,app:'B',name:'Sitting Flat Back',lvs:['I','A'],time:3},
+  {u:2,app:'B',name:'Sitting Round Back',lvs:['I','A'],time:3},
+  {u:2,app:'B',name:'Standing Roll Down',lvs:['I','A'],time:3},
+  {u:2,app:'C',name:'Bottom Lift with Roll up Bar',lvs:['I','A'],time:3},
+  {u:2,app:'C',name:'Breathing with Push Through Bar',lvs:['I','A'],time:3},
+  {u:2,app:'C',name:'Flat Back on Box',lvs:['I','A'],time:3},
+  {u:2,app:'C',name:'Mini Roll ups',lvs:['F','I','A'],time:3},
+  {u:2,app:'C',name:'Mini Roll ups Oblique',lvs:['F','I','A'],time:3},
+  {u:2,app:'C',name:'Roll Down Side',lvs:['F','I','A'],time:3},
+  {u:2,app:'C',name:'Roll Down and arch up',lvs:['A'],time:3},
+  {u:2,app:'C',name:'Roll Down on Box',lvs:['I','A'],time:3},
+  {u:2,app:'C',name:'Roll up with Push Throgh Bar Bottom Loaded',lvs:['A'],time:3},
+  {u:2,app:'C',name:'Roll up with Push Throgh Bar Top Loaded',lvs:['I','A'],time:3},
+  {u:2,app:'C',name:'Roll up with Roll up Bar',lvs:['F','I','A'],time:3},
+  {u:2,app:'C',name:'Teaser1',lvs:['A'],time:3},
+  {u:2,app:'R',name:'Half Roll Back Series Roll down',lvs:['PRE','F','I','A'],time:3},
+  {u:2,app:'MAT',name:'Hundred',lvs:['PRE','F','I','A'],time:3},
+  {u:2,app:'R',name:'Hundred Prep',lvs:['PRE','F','I','A'],time:3},
+  {u:2,app:'MAT',name:'Hundreds prep',lvs:['PRE','F','I','A'],time:3},
+  {u:2,app:'MAT',name:'Roll up',lvs:['PRE','F','I','A'],time:3},
+  {u:2,app:'MAT',name:'chest Lift',lvs:['PRE','F','I','A'],time:3},
+  {u:2,app:'MAT',name:'chest Lift with rotetion',lvs:['PRE','F','I','A'],time:3},
+  {u:2,app:'R',name:'Backstroke',lvs:['A'],time:3},
+  {u:2,app:'R',name:'Criss cross',lvs:['I','A'],time:3},
+  {u:2,app:'R',name:'Double leg stretch',lvs:['I','A'],time:3},
+  {u:2,app:'R',name:'Half Roll Back Series Oblique',lvs:['F','I','A'],time:3},
+  {u:2,app:'R',name:'Half Roll Back Series Twist',lvs:['F','I','A'],time:3},
+  {u:2,app:'R',name:'Hamstring pull1',lvs:['I','A'],time:3},
+  {u:2,app:'R',name:'Hamstring pull2',lvs:['A'],time:3},
+  {u:2,app:'R',name:'Hamstring pull3',lvs:['A'],time:3},
+  {u:2,app:'R',name:'Hundred',lvs:['F','I','A'],time:3},
+  {u:2,app:'R',name:'Hundreds prep',lvs:['F','I','A'],time:3},
+  {u:2,app:'R',name:'Leg in Straps Series Double Leg',lvs:['I','A'],time:3},
+  {u:2,app:'R',name:'Leg in Straps Series Double Leg With Rotation',lvs:['I','A'],time:3},
+  {u:2,app:'R',name:'Neck pull',lvs:['A'],time:3},
+  {u:2,app:'R',name:'Plank Full Pike',lvs:['A'],time:3},
+  {u:2,app:'R',name:'Roll up',lvs:['F','I','A'],time:3},
+  {u:2,app:'R',name:'Short Box Series Climb a Tree',lvs:['A'],time:3},
+  {u:2,app:'R',name:'Short Box Series Flat Back',lvs:['I','A'],time:3},
+  {u:2,app:'R',name:'Short Box Series Round About',lvs:['A'],time:3},
+  {u:2,app:'R',name:'Short Box Series Round Back',lvs:['I','A'],time:3},
+  {u:2,app:'R',name:'Short Box Series Tilt',lvs:['F','I','A'],time:3},
+  {u:2,app:'R',name:'Short Box Series twist',lvs:['F','I','A'],time:3},
+  {u:2,app:'R',name:'Single leg stretch',lvs:['I','A'],time:3},
+  {u:2,app:'R',name:'Teaser prep',lvs:['I','A'],time:3},
+  {u:2,app:'R',name:'Teaser1',lvs:['A'],time:3},
+  {u:2,app:'R',name:'Teaser2',lvs:['A'],time:3},
+  {u:2,app:'R',name:'Teaser3',lvs:['A'],time:3},
+  {u:2,app:'R',name:'chest Lift',lvs:['F','I','A'],time:3},
+  {u:2,app:'R',name:'chest Lift with rotetion',lvs:['F','I','A'],time:3},
+  {u:2,app:'SC',name:'Chest LIft',lvs:['F','I','A'],time:3},
+  {u:2,app:'SC',name:'Hundred Prep',lvs:['F','I','A'],time:3},
+  {u:2,app:'SC',name:'Overhead Streth',lvs:['F','I','A'],time:3},
+  {u:2,app:'SC',name:'Reach',lvs:['F','I','A'],time:3},
+  {u:2,app:'SC',name:'Teaser',lvs:['A'],time:3},
+  {u:2,app:'SC',name:'Teaser Prep',lvs:['I','A'],time:3},
+  {u:2,app:'W',name:'Cat Streth Kneeling',lvs:['I','A'],time:3},
+  {u:2,app:'W',name:'Full Pike',lvs:['A'],time:3},
+  {u:2,app:'W',name:'Pike Sitting',lvs:['I','A'],time:3},
+  {u:2,app:'W',name:'Standing Pike',lvs:['F','I','A'],time:3},
+  {u:2,app:'W',name:'Standing Pike Reverse',lvs:['F','I','A'],time:3},
+  {u:2,app:'W',name:'Torso Press Sit',lvs:['A'],time:3},
+  // ════ UNIT 04: HIP WORK ════
+  {u:3,app:'C',name:'Bicycles',lvs:['F','I','A'],time:3},
+  {u:3,app:'C',name:'Circle Down',lvs:['F','I','A'],time:3},
+  {u:3,app:'C',name:'Circle Up',lvs:['F','I','A'],time:3},
+  {u:3,app:'C',name:'Flying Magician',lvs:['A'],time:3},
+  {u:3,app:'C',name:'Frog',lvs:['F','I','A'],time:3},
+  {u:3,app:'C',name:'Single Leg Series Bicycles',lvs:['I','A'],time:3},
+  {u:3,app:'C',name:'Single Leg Series Circle Down',lvs:['I','A'],time:3},
+  {u:3,app:'C',name:'Single Leg Series Circle Up',lvs:['I','A'],time:3},
+  {u:3,app:'C',name:'Single Leg Series Frog',lvs:['I','A'],time:3},
+  {u:3,app:'C',name:'Single Leg Series Hip Extension',lvs:['I','A'],time:3},
+  {u:3,app:'C',name:'Walking',lvs:['F','I','A'],time:3},
+  {u:3,app:'C',name:'Walking on Air',lvs:['A'],time:3},
+  {u:3,app:'R',name:'Hundred',lvs:['F','I','A'],time:3},
+  {u:3,app:'R',name:'Hundreds prep',lvs:['F','I','A'],time:3},
+  {u:3,app:'R',name:'Roll up',lvs:['F','I','A'],time:3},
+  {u:3,app:'R',name:'chest Lift',lvs:['F','I','A'],time:3},
+  {u:3,app:'R',name:'chest Lift with rotetion',lvs:['F','I','A'],time:3},
+  {u:3,app:'R',name:'Circle Down',lvs:['PRE','F','I','A'],time:3},
+  {u:3,app:'R',name:'Circle Up',lvs:['PRE','F','I','A'],time:3},
+  {u:3,app:'R',name:'Frog',lvs:['PRE','F','I','A'],time:3},
+  {u:3,app:'MAT',name:'Leg change',lvs:['PRE','F','I','A'],time:3},
+  {u:3,app:'R',name:'Lower Lift',lvs:['PRE','F','I','A'],time:3},
+  {u:3,app:'R',name:'Openings',lvs:['PRE','F','I','A'],time:3},
+  {u:3,app:'MAT',name:'Single Leg Lift',lvs:['PRE','F','I','A'],time:3},
+  {u:3,app:'MAT',name:'double Leg lift',lvs:['PRE','F','I','A'],time:3},
+  {u:3,app:'MAT',name:'leg circle',lvs:['PRE','F','I','A'],time:3},
+  {u:3,app:'R',name:'Frog Open',lvs:['I','A'],time:3},
+  {u:3,app:'R',name:'Frog Open Single Leg',lvs:['I','A'],time:3},
+  {u:3,app:'R',name:'Side Lying Series Frog',lvs:['I','A'],time:3},
+  {u:3,app:'R',name:'Side Lying Series Side kick',lvs:['I','A'],time:3},
+  {u:3,app:'SC',name:'Bicycle',lvs:['I','A'],time:3},
+  {u:3,app:'SC',name:'Bicycle Reverse',lvs:['I','A'],time:3},
+  {u:3,app:'SC',name:'Frog',lvs:['F','I','A'],time:3},
+  {u:3,app:'SC',name:'Helicopter',lvs:['F','I','A'],time:3},
+  {u:3,app:'SC',name:'Hip Abduction',lvs:['I','A'],time:3},
+  {u:3,app:'SC',name:'Hip Abduction with Extension',lvs:['I','A'],time:3},
+  {u:3,app:'SC',name:'Openings',lvs:['F','I','A'],time:3},
+  {u:3,app:'SC',name:'Scissiors',lvs:['F','I','A'],time:3},
+  // ════ UNIT 05: SPINAL ART. ════
+  {u:4,app:'B',name:'Jack Knife',lvs:['I','A'],time:3},
+  {u:4,app:'B',name:'Pelvic curl',lvs:['I','A'],time:3},
+  {u:4,app:'B',name:'Roll over',lvs:['I','A'],time:3},
+  {u:4,app:'C',name:'Monkey',lvs:['F','I','A'],time:3},
+  {u:4,app:'C',name:'Parakeet',lvs:['A'],time:3},
+  {u:4,app:'C',name:'Push Throgh Bar  Spine Streth',lvs:['F','I','A'],time:3},
+  {u:4,app:'C',name:'Tower',lvs:['A'],time:3},
+  {u:4,app:'C',name:'Tower Prep',lvs:['F','I','A'],time:3},
+  {u:4,app:'MAT',name:'Rolling like a ball',lvs:['PRE','F','I','A'],time:3},
+  {u:4,app:'MAT',name:'pelvic curl',lvs:['PRE','F','I','A'],time:3},
+  {u:4,app:'MAT',name:'spine stretch',lvs:['PRE','F','I','A'],time:3},
+  {u:4,app:'R',name:'Bicycle',lvs:['A'],time:3},
+  {u:4,app:'R',name:'Boomerang',lvs:['A'],time:3},
+  {u:4,app:'R',name:'Bottom Lift',lvs:['F','I','A'],time:3},
+  {u:4,app:'R',name:'Bottom Lift with Extensions',lvs:['I','A'],time:3},
+  {u:4,app:'R',name:'Control balance',lvs:['A'],time:3},
+  {u:4,app:'R',name:'Crab',lvs:['A'],time:3},
+  {u:4,app:'R',name:'Long Spine',lvs:['I','A'],time:3},
+  {u:4,app:'R',name:'Open leg rocker',lvs:['I','A'],time:3},
+  {u:4,app:'R',name:'Roll over',lvs:['I','A'],time:3},
+  {u:4,app:'R',name:'Rolling like a ball',lvs:['F','I','A'],time:3},
+  {u:4,app:'R',name:'Scissors',lvs:['A'],time:3},
+  {u:4,app:'R',name:'Seal puppy',lvs:['I','A'],time:3},
+  {u:4,app:'R',name:'Semi-Circle',lvs:['I','A'],time:3},
+  {u:4,app:'R',name:'Short Spine',lvs:['I','A'],time:3},
+  {u:4,app:'R',name:'jack knife',lvs:['A'],time:3},
+  {u:4,app:'R',name:'pelvic curl',lvs:['PRE','F','I','A'],time:3},
+  {u:4,app:'R',name:'spine stretch',lvs:['F','I','A'],time:3},
+  {u:4,app:'SC',name:'Bottom Lift',lvs:['F','I','A'],time:3},
+  {u:4,app:'SC',name:'Roll Over',lvs:['I','A'],time:3},
+  {u:4,app:'W',name:'Jack Knife',lvs:['A'],time:3},
+  {u:4,app:'W',name:'Pelvic Curl',lvs:['I','A'],time:3},
+  // ════ UNIT 06: FULL BODY ════
+  {u:5,app:'C',name:'Cat Streth Kneeling',lvs:['I','A'],time:3},
+  {u:5,app:'C',name:'Circumduction',lvs:['A'],time:3},
+  {u:5,app:'C',name:'Saw',lvs:['A'],time:3},
+  {u:5,app:'C',name:'Side Reach',lvs:['I','A'],time:3},
+  {u:5,app:'C',name:'Sitting Back',lvs:['A'],time:3},
+  {u:5,app:'C',name:'Sitting Forward',lvs:['I','A'],time:3},
+  {u:5,app:'C',name:'Thigh Streth with Roll up Bar',lvs:['I','A'],time:3},
+  {u:5,app:'R',name:'Back Support',lvs:['I','A'],time:3},
+  {u:5,app:'R',name:'Control Balance Back',lvs:['A'],time:3},
+  {u:5,app:'R',name:'Control Balance Back Prep',lvs:['A'],time:3},
+  {u:5,app:'R',name:'Control Balance Front',lvs:['A'],time:3},
+  {u:5,app:'R',name:'Down Streth',lvs:['I','A'],time:3},
+  {u:5,app:'R',name:'Elephant Streth',lvs:['F','I','A'],time:3},
+  {u:5,app:'R',name:'Flat Back',lvs:['F','I','A'],time:3},
+  {u:5,app:'R',name:'Knee Streth Reverse',lvs:['I','A'],time:3},
+  {u:5,app:'R',name:'Leg pull back',lvs:['I','A'],time:3},
+  {u:5,app:'R',name:'Leg pull front',lvs:['I','A'],time:3},
+  {u:5,app:'R',name:'Lomg Streth Kneeling',lvs:['F','I','A'],time:3},
+  {u:5,app:'R',name:'Long Back Stretch',lvs:['A'],time:3},
+  {u:5,app:'R',name:'Long Streth',lvs:['I','A'],time:3},
+  {u:5,app:'R',name:'Push up',lvs:['A'],time:3},
+  {u:5,app:'R',name:'Front Support',lvs:['I','A'],time:3},
+  {u:5,app:'R',name:'Round Back',lvs:['F','I','A'],time:3},
+  {u:5,app:'R',name:'Scooter',lvs:['I','A'],time:3},
+  {u:5,app:'R',name:'Stomach Massage Flat',lvs:['I','A'],time:3},
+  {u:5,app:'R',name:'Stomach Massage Reaching',lvs:['I','A'],time:3},
+  {u:5,app:'R',name:'Stomach Massage Round',lvs:['I','A'],time:3},
+  {u:5,app:'R',name:'Teaser',lvs:['A'],time:3},
+  {u:5,app:'R',name:'Teaser Prep',lvs:['A'],time:3},
+  {u:5,app:'R',name:'Tendon Stretch',lvs:['A'],time:3},
+  {u:5,app:'R',name:'Up Streth1',lvs:['F','I','A'],time:3},
+  {u:5,app:'R',name:'Up Streth2',lvs:['I','A'],time:3},
+  {u:5,app:'R',name:'Up Streth3',lvs:['A'],time:3},
+  {u:5,app:'R',name:'Up stretch',lvs:['F','I','A'],time:3},
+  {u:5,app:'SC',name:'Leg Pull Front',lvs:['F','I','A'],time:3},
+  {u:5,app:'SC',name:'Push Up',lvs:['F','I','A'],time:3},
+  {u:5,app:'W',name:'Tendon Streth',lvs:['A'],time:3},
+  // ════ UNIT 07: ARM WORK ════
+  {u:6,app:'B',name:'Shoulder Streth Extension',lvs:['F','I','A'],time:3},
+  {u:6,app:'B',name:'Shoulder Streth Flexion',lvs:['F','I','A'],time:3},
+  {u:6,app:'C',name:'Arms Standing Series Biceps',lvs:['I','A'],time:3},
+  {u:6,app:'C',name:'Arms Standing Series Chest Expansion',lvs:['I','A'],time:3},
+  {u:6,app:'C',name:'Arms Standing Series Circle down',lvs:['I','A'],time:3},
+  {u:6,app:'C',name:'Arms Standing Series Circle up',lvs:['I','A'],time:3},
+  {u:6,app:'C',name:'Arms Standing Series Hug a Tree',lvs:['I','A'],time:3},
+  {u:6,app:'C',name:'Arms Standing Series Punches',lvs:['I','A'],time:3},
+  {u:6,app:'C',name:'Bridge1',lvs:['A'],time:3},
+  {u:6,app:'C',name:'Butterfly',lvs:['A'],time:3},
+  {u:6,app:'C',name:'Half Roll Back Series Biceps',lvs:['I','A'],time:3},
+  {u:6,app:'C',name:'Rowing Back',lvs:['A'],time:3},
+  {u:6,app:'C',name:'Shoulder Adduction Double  Arm',lvs:['I','A'],time:3},
+  {u:6,app:'C',name:'Shoulder Adduction Single Arm',lvs:['I','A'],time:3},
+  {u:6,app:'C',name:'Shoulder Streth',lvs:['I','A'],time:3},
+  {u:6,app:'C',name:'Sitting Side',lvs:['I','A'],time:3},
+  {u:6,app:'C',name:'Sitting Side Prep',lvs:['I','A'],time:3},
+  {u:6,app:'R',name:'Arms Supine Series Addction',lvs:['PRE','F','I','A'],time:3},
+  {u:6,app:'R',name:'Arms Supine Series Circle Down',lvs:['PRE','F','I','A'],time:3},
+  {u:6,app:'R',name:'Arms Supine Series Circle Up',lvs:['PRE','F','I','A'],time:3},
+  {u:6,app:'R',name:'Arms Supine Series Extension',lvs:['PRE','F','I','A'],time:3},
+  {u:6,app:'R',name:'Arms Supine Series Triceps',lvs:['PRE','F','I','A'],time:3},
+  {u:6,app:'R',name:'Arms Kneeling Series Biceps',lvs:['I','A'],time:3},
+  {u:6,app:'R',name:'Arms Kneeling Series Down Circle',lvs:['I','A'],time:3},
+  {u:6,app:'R',name:'Arms Kneeling Series Triceps',lvs:['I','A'],time:3},
+  {u:6,app:'R',name:'Arms Kneeling Series Up Circle',lvs:['I','A'],time:3},
+  {u:6,app:'R',name:'Arms Kneeling Series chest Expansion',lvs:['I','A'],time:3},
+  {u:6,app:'R',name:'Arms Sitting Series Arm Circle',lvs:['I','A'],time:3},
+  {u:6,app:'R',name:'Arms Sitting Series Biceps',lvs:['I','A'],time:3},
+  {u:6,app:'R',name:'Arms Sitting Series Chest Expansion',lvs:['I','A'],time:3},
+  {u:6,app:'R',name:'Arms Sitting Series Crack the Walnut',lvs:['I','A'],time:3},
+  {u:6,app:'R',name:'Arms Sitting Series Hug a Tree',lvs:['I','A'],time:3},
+  {u:6,app:'R',name:'Arms Sitting Series Rhomboids',lvs:['I','A'],time:3},
+  {u:6,app:'R',name:'Arms Sitting Series Salute',lvs:['I','A'],time:3},
+  {u:6,app:'R',name:'Arms Sitting Series Serve a Tray',lvs:['I','A'],time:3},
+  {u:6,app:'R',name:'Kneeling Arms Side Bend Press',lvs:['I','A'],time:3},
+  {u:6,app:'R',name:'Rowing Back1',lvs:['I','A'],time:3},
+  {u:6,app:'R',name:'Rowing Back2',lvs:['I','A'],time:3},
+  {u:6,app:'R',name:'Rowing Front1',lvs:['I','A'],time:3},
+  {u:6,app:'R',name:'Rowing Front2',lvs:['I','A'],time:3},
+  {u:6,app:'R',name:'Shoulder Push Double Arm',lvs:['I','A'],time:3},
+  {u:6,app:'R',name:'Shoulder Push Single Arm',lvs:['I','A'],time:3},
+  {u:6,app:'R',name:'Side Arms Series Cross Arm Pull',lvs:['A'],time:3},
+  {u:6,app:'R',name:'Side Arms Series Deltoid Reach',lvs:['A'],time:3},
+  {u:6,app:'R',name:'Side Arms Series Triceps',lvs:['A'],time:3},
+  {u:6,app:'W',name:'Frog Back',lvs:['I','A'],time:3},
+  {u:6,app:'W',name:'Shrugs',lvs:['F','I','A'],time:3},
+  {u:6,app:'W',name:'Side Kneeling Arm',lvs:['I','A'],time:3},
+  {u:6,app:'W',name:'Standing Triceps Backward',lvs:['A'],time:3},
+  {u:6,app:'W',name:'Standing Triceps Front',lvs:['A'],time:3},
+  {u:6,app:'W',name:'Triceps Press Sit',lvs:['I','A'],time:3},
+  {u:6,app:'W',name:'Triceps Prone',lvs:['I','A'],time:3},
+  // ════ UNIT 08: LEG WORK ════
+  {u:7,app:'B',name:'Addctors Streth',lvs:['F','I','A'],time:3},
+  {u:7,app:'B',name:'Gluteals Streth',lvs:['F','I','A'],time:3},
+  {u:7,app:'B',name:'Hamstrings Streth',lvs:['F','I','A'],time:3},
+  {u:7,app:'B',name:'Hip Flexors Streth',lvs:['F','I','A'],time:3},
+  {u:7,app:'C',name:'Hamstrings Strerth',lvs:['I','A'],time:3},
+  {u:7,app:'C',name:'Lunge Streth',lvs:['I','A'],time:3},
+  {u:7,app:'C',name:'Lying Side Single Leg Series Changes',lvs:['A'],time:3},
+  {u:7,app:'C',name:'Lying Side Single Leg Series Circles Back',lvs:['A'],time:3},
+  {u:7,app:'C',name:'Lying Side Single Leg Series Circles Forward',lvs:['A'],time:3},
+  {u:7,app:'C',name:'Lying Side Single Leg Series Scissors',lvs:['A'],time:3},
+  {u:7,app:'C',name:'Lying Side Single Leg Series Side Kick',lvs:['A'],time:3},
+  {u:7,app:'C',name:'Squats',lvs:['A'],time:3},
+  {u:7,app:'R',name:'Front Split',lvs:['I','A'],time:3},
+  {u:7,app:'R',name:'Full Lunge',lvs:['I','A'],time:3},
+  {u:7,app:'R',name:'Hamstring Curl',lvs:['I','A'],time:3},
+  {u:7,app:'R',name:'Jumping Series Parallel Position',lvs:['I','A'],time:3},
+  {u:7,app:'R',name:'Jumping Series Single Leg Changes',lvs:['I','A'],time:3},
+  {u:7,app:'R',name:'Jumping Series Single Leg Parallel Position',lvs:['I','A'],time:3},
+  {u:7,app:'R',name:'Jumping Series V Position',lvs:['I','A'],time:3},
+  {u:7,app:'R',name:'Lunge Balance',lvs:['I','A'],time:3},
+  {u:7,app:'R',name:'Lunge Kneeling',lvs:['I','A'],time:3},
+  {u:7,app:'R',name:'Lunge Standing',lvs:['F','I','A'],time:3},
+  {u:7,app:'R',name:'Shoulder Bridge prep',lvs:['I','A'],time:3},
+  {u:7,app:'R',name:'Shoulder bridge',lvs:['A'],time:3},
+  {u:7,app:'R',name:'Side Split',lvs:['I','A'],time:3},
+  {u:7,app:'R',name:'Side Split Picking Flower',lvs:['I','A'],time:3},
+  {u:7,app:'R',name:'Single Leg Skating',lvs:['I','A'],time:3},
+  {u:7,app:'SC',name:'Kneeling Lunge Streth',lvs:['I','A'],time:3},
+  {u:7,app:'W',name:'Backward Step Down',lvs:['I','A'],time:3},
+  {u:7,app:'W',name:'Frog Front',lvs:['I','A'],time:3},
+  {u:7,app:'W',name:'Hamstring Curl',lvs:['F','I','A'],time:3},
+  {u:7,app:'W',name:'Hip Opener',lvs:['I','A'],time:3},
+  {u:7,app:'W',name:'Leg Press Standing',lvs:['F','I','A'],time:3},
+  {u:7,app:'W',name:'Lunge Forward',lvs:['A'],time:3},
+  {u:7,app:'W',name:'Standing Leg Pumps Front',lvs:['I','A'],time:3},
+  {u:7,app:'W',name:'Standing Leg Pumps Side',lvs:['I','A'],time:3},
+  // ════ UNIT 09: LAT. FLEX ════
+  {u:8,app:'B',name:'Side Bend',lvs:['F','I','A'],time:3},
+  {u:8,app:'B',name:'Side Over Prep',lvs:['F','I','A'],time:3},
+  {u:8,app:'B',name:'Side Overs',lvs:['I','A'],time:3},
+  {u:8,app:'C',name:'Mermaid on Box',lvs:['I','A'],time:3},
+  {u:8,app:'C',name:'Side Lift',lvs:['I','A'],time:3},
+  {u:8,app:'C',name:'Side Plank',lvs:['I','A'],time:3},
+  {u:8,app:'MAT',name:'Spine Twist Supine',lvs:['PRE','F','I','A'],time:3},
+  {u:8,app:'MAT',name:'mermaid',lvs:['PRE','F','I','A'],time:3},
+  {u:8,app:'MAT',name:'side lifts',lvs:['PRE','F','I','A'],time:3},
+  {u:8,app:'R',name:'Corkscrew',lvs:['I','A'],time:3},
+  {u:8,app:'R',name:'Corkscrew advanced',lvs:['A'],time:3},
+  {u:8,app:'R',name:'Hip circle prep',lvs:['A'],time:3},
+  {u:8,app:'R',name:'Hip circles',lvs:['A'],time:3},
+  {u:8,app:'R',name:'Memaid',lvs:['F','I','A'],time:3},
+  {u:8,app:'R',name:'Saw',lvs:['I','A'],time:3},
+  {u:8,app:'R',name:'Short Box Series Side Over on Box',lvs:['I','A'],time:3},
+  {u:8,app:'R',name:'Side Plank',lvs:['A'],time:3},
+  {u:8,app:'R',name:'Side bend',lvs:['A'],time:3},
+  {u:8,app:'R',name:'Side kick',lvs:['I','A'],time:3},
+  {u:8,app:'R',name:'Side kick kneeling',lvs:['A'],time:3},
+  {u:8,app:'R',name:'Spine Twist',lvs:['I','A'],time:3},
+  {u:8,app:'R',name:'Spine Twist Supine',lvs:['F','I','A'],time:3},
+  {u:8,app:'R',name:'Twist',lvs:['A'],time:3},
+  {u:8,app:'R',name:'mermaid',lvs:['F','I','A'],time:3},
+  {u:8,app:'R',name:'side lifts',lvs:['F','I','A'],time:3},
+  {u:8,app:'SC',name:'Corkscrew',lvs:['I','A'],time:3},
+  {u:8,app:'SC',name:'Corkscrew Advanced',lvs:['A'],time:3},
+  {u:8,app:'SC',name:'Shoulder Streth Lying Side',lvs:['F','I','A'],time:3},
+  {u:8,app:'SC',name:'Side Lift',lvs:['F','I','A'],time:3},
+  {u:8,app:'SC',name:'Side Over with Arm Extended',lvs:['I','A'],time:3},
+  {u:8,app:'SC',name:'Spine Twist Supine',lvs:['F','I','A'],time:3},
+  {u:8,app:'W',name:'Side Bend',lvs:['A'],time:3},
+  {u:8,app:'W',name:'Side Kneeling Arm',lvs:['I','A'],time:3},
+  {u:8,app:'W',name:'Side Kneeling Streth',lvs:['I','A'],time:3},
+  {u:8,app:'W',name:'Side Pike',lvs:['I','A'],time:3},
+  {u:8,app:'W',name:'Side Streth',lvs:['F','I','A'],time:3},
+  // ════ UNIT 10: BACK EXT. ════
+  {u:9,app:'B',name:'Swan',lvs:['I','A'],time:3},
+  {u:9,app:'B',name:'Swan Prep',lvs:['F','I','A'],time:3},
+  {u:9,app:'B',name:'Swimming',lvs:['I','A'],time:3},
+  {u:9,app:'C',name:'Hanging Back',lvs:['A'],time:3},
+  {u:9,app:'C',name:'Hanging Fuzzies',lvs:['A'],time:3},
+  {u:9,app:'C',name:'Prone1',lvs:['I','A'],time:3},
+  {u:9,app:'C',name:'Prone2',lvs:['I','A'],time:3},
+  {u:9,app:'MAT',name:'Back Extension',lvs:['PRE','F','I','A'],time:3},
+  {u:9,app:'R',name:'Prone elbow push',lvs:['PRE','F','I','A'],time:3},
+  {u:9,app:'MAT',name:'rest position',lvs:['PRE','F','I','A'],time:3},
+  {u:9,app:'R',name:'Back Extension',lvs:['F','I','A'],time:3},
+  {u:9,app:'R',name:'Breaststroke',lvs:['I','A'],time:3},
+  {u:9,app:'R',name:'Breaststroke Prep',lvs:['F','I','A'],time:3},
+  {u:9,app:'R',name:'Cat stretch',lvs:['I','A'],time:3},
+  {u:9,app:'R',name:'Double leg kick',lvs:['I','A'],time:3},
+  {u:9,app:'R',name:'Pulling Straps1',lvs:['I','A'],time:3},
+  {u:9,app:'R',name:'Pulling Straps2',lvs:['I','A'],time:3},
+  {u:9,app:'R',name:'Rocking',lvs:['A'],time:3},
+  {u:9,app:'R',name:'Rocking prep',lvs:['I','A'],time:3},
+  {u:9,app:'R',name:'Single leg kick',lvs:['I','A'],time:3},
+  {u:9,app:'R',name:'Swan dive',lvs:['A'],time:3},
+  {u:9,app:'R',name:'Swan dive prep',lvs:['A'],time:3},
+  {u:9,app:'R',name:'Swimming',lvs:['I','A'],time:3},
+  {u:9,app:'R',name:'rest position',lvs:['F','I','A'],time:3},
+  {u:9,app:'SC',name:'Swan',lvs:['I','A'],time:3},
+  {u:9,app:'SC',name:'Swna Prep',lvs:['F','I','A'],time:3},
+  {u:9,app:'W',name:'Back Extension Single Arm',lvs:['I','A'],time:3},
+  {u:9,app:'W',name:'One Arm Push on Top',lvs:['A'],time:3},
+  {u:9,app:'W',name:'Swan Basic',lvs:['F','I','A'],time:3},
+  {u:9,app:'W',name:'Swan on Floor',lvs:['I','A'],time:3},
+  // ════ UNIT 08: LEG WORK ════
+  {u:7,app:'R',name:'Eve\'s Lunge',lvs:['I','A'],time:3},
+];
+
+const APP_COLORS = {R:'#4a8fd4',C:'#2da878',W:'#d4903a',B:'#c45880',MAT:'#E879F9',SC:'#8B5CF6'};
+const APP_NAMES = {R:'Reformer',C:'Cadillac',W:'Chair',B:'Barrel',MAT:'Mat',SC:'Spine Corrector'};
+const LV_COLORS = {PRE:'#E879F9',F:'#22C55E',I:'#3B82F6',A:'#F59E0B'};
+const LV_NAMES = {PRE:'PRE',F:'FUNDAMENTAL',I:'INTERMEDIATE',A:'ADVANCE'};
+
+// ── ユニットガイドデータ（レベル別 必須/推奨/選択/制限） ──
+const UNIT_GUIDE = {
+  F:[
+    {tag:'req',time:'5-8'},{tag:'req',time:'7-10'},{tag:'req',time:'5-8'},
+    {tag:'req',time:'5-8'},{tag:'req',time:'5-8'},{tag:'req',time:'3-5'},
+    {tag:'req',time:'3-5'},{tag:'req',time:'3-5'},{tag:'req',time:'3-5'},
+    {tag:'req',time:'3-5'}
+  ],
+  I:[
+    {tag:'req',time:'5-8'},{tag:'req',time:'7-10'},{tag:'req',time:'5-8'},
+    {tag:'req',time:'5-8'},{tag:'req',time:'5-8'},{tag:'req',time:'5-8'},
+    {tag:'req',time:'3-5'},{tag:'req',time:'3-5'},{tag:'req',time:'3-5'},
+    {tag:'req',time:'3-5'}
+  ],
+  A:[
+    {tag:'req',time:'5-8'},{tag:'req',time:'7-10'},{tag:'req',time:'5-8'},
+    {tag:'req',time:'5-8'},{tag:'req',time:'5-8'},{tag:'req',time:'5-8'},
+    {tag:'req',time:'5-8'},{tag:'req',time:'5-8'},{tag:'req',time:'3-5'},
+    {tag:'req',time:'3-5'}
+  ]
+};
+const TAG_LABEL = {req:'必須',rec:'推奨',opt:'選択',no:'制限'};
+const TAG_COLOR = {req:'#C8102E',rec:'#3B82F6',opt:'#888',no:'#EF4444'};
+const TAG_BG    = {req:'rgba(200,16,46,.15)',rec:'rgba(59,130,246,.12)',opt:'rgba(255,255,255,.06)',no:'rgba(239,68,68,.1)'};
+
+// ── ユニット選択時に自動追加される必須エクササイズ（インデックス） ──
+// PRE: WARM UPは5種、他はFと同じ / F/I/A: レベルで使える種目に合わせる
+const UNIT_REQUIRED = {
+  PRE:[
+    [5,6,7,8,9,10],   // u0 WARM UP: MAT Single leg lift, Spine Twist Supine, chest Lift, chest Lift with rotetion, leg change, pelvic curl
+    [],  // u1 FOOT WORK
+    [],  // u2 ABDOMINAL
+    [],  // u3 HIP WORK
+    [],  // u4 SPINAL ART
+    [],  // u5 FULL BODY
+    [],  // u6 ARM WORK
+    [],  // u7 LEG WORK
+    [],  // u8 LAT FLEX
+    [],  // u9 BACK EXT
+  ],
+  F:[
+    [14,16,17,18],  // u0 WARM UP: R Single leg lift, Spine Twist Supine, chest Lift with rotetion, leg change
+    [],  // u1
+    [],  // u2
+    [],  // u3
+    [],  // u4
+    [],  // u5
+    [],  // u6
+    [],  // u7
+    [],  // u8
+    [],  // u9
+  ],
+  I:[
+    [11,12,13,14],  // u0 WARM UP: R Criss cross, Double leg stretch, Roll up, Single leg lift
+    [],  // u1
+    [],  // u2
+    [],  // u3
+    [],  // u4
+    [],  // u5
+    [],  // u6
+    [],  // u7
+    [],  // u8
+    [],  // u9
+  ],
+  A:[
+    [11,12,13,14],  // u0 WARM UP: R Criss cross, Double leg stretch, Roll up, Single leg lift
+    [],  // u1
+    [],  // u2
+    [],  // u3
+    [],  // u4
+    [],  // u5
+    [],  // u6
+    [],  // u7
+    [],  // u8
+    [],  // u9
+  ],
+};
+
+// ── レベル別サブタイトル ──
+const LV_SUBTITLE = {
+  PRE:'プレ — Pre種目リストに基づく構成・18種目 / 60分',
+  F:'ファンダメンタル — 全レベルのベース・F種目のみで構成・18〜25種目 / 60分',
+  I:'インターミディエイト — F種目＋I種目3〜5追加 / 60分',
+  A:'アドバンス — F・I・A全種目から25種目で構成 / 60分'
+};
+
+// Saved programs (sample data)
+const defaultPrograms = [
+  {id:1,level:'PRE',title:'PRE 基本60分プログラム A',units:10,time:60,app:'Reformer',author:'江原 健司',init:'KE',authorId:1,date:'2026.04.15',tag:'テンプレート',tagColor:'var(--green)'},
+  {id:2,level:'PRE',title:'PRE 高齢者向け安全構成',units:8,time:55,app:'Reformer',author:'山田 太郎',init:'YT',authorId:9,date:'2026.04.08',tag:null},
+  {id:3,level:'PRE',title:'PRE 産後リカバリー',units:7,time:50,app:'Reformer',author:'田中 美紀',init:'TN',authorId:2,date:'2026.04.01',tag:null},
+  {id:4,level:'FUND',title:'FUND. スタンダード構成',units:10,time:58,app:'Reformer',author:'田中 美紀',init:'TN',authorId:2,date:'2026.04.12',tag:'テンプレート',tagColor:'var(--green)'},
+  {id:5,level:'FUND',title:'FUND. Cadillac Mix',units:10,time:60,app:'R + C',author:'渡辺 翔太',init:'WS',authorId:3,date:'2026.04.10',tag:null},
+  {id:6,level:'FUND',title:'FUND. コア集中構成',units:8,time:55,app:'Reformer',author:'佐藤 花子',init:'SK',authorId:12,date:'2026.04.06',tag:null},
+  {id:7,level:'INTER',title:'INTER. フロー重視',units:10,time:62,app:'R + C',author:'田中 美紀',init:'TN',authorId:2,date:'2026.04.10',tag:'共有',tagColor:'var(--cyan)'},
+  {id:8,level:'INTER',title:'INTER. 全器具バランス',units:10,time:60,app:'R+C+W+B',author:'吉田 拓也',init:'YoT',authorId:4,date:'2026.04.05',tag:null},
+  {id:9,level:'INTER',title:'INTER. 体幹強化構成',units:9,time:58,app:'Reformer',author:'高橋 健太',init:'TK',authorId:8,date:'2026.03.28',tag:null},
+  {id:10,level:'ADV',title:'ADV. 全器具チャレンジ',units:10,time:60,app:'R+C+W+B',author:'江原 健司',init:'KE',authorId:1,date:'2026.04.05',tag:'テンプレート',tagColor:'var(--green)'},
+  {id:11,level:'ADV',title:'ADV. フロー上級',units:10,time:65,app:'R + C',author:'渡辺 翔太',init:'WS',authorId:3,date:'2026.03.30',tag:null},
+];
+
+// Load from localStorage, merge with defaults
+let savedPrograms = (function() {
+  try {
+    const stored = JSON.parse(localStorage.getItem('axiscore_programs') || '[]');
+    // Merge: keep all defaults, add stored ones that are not in defaults (by id)
+    const defaultIds = new Set(defaultPrograms.map(p => p.id));
+    const extra = stored.filter(p => !defaultIds.has(p.id));
+    return [...defaultPrograms, ...extra];
+  } catch(e) { return [...defaultPrograms]; }
+})();
+
+let progLevelFilter = 'all';
+
+function renderProgramGrid() {
+  const grid = document.getElementById('prog-grid');
+  if (!grid) return;
+  let progs = savedPrograms;
+  if (progLevelFilter !== 'all') progs = progs.filter(p => p.level === progLevelFilter);
+
+  const authorColors = {KE:'rgba(200,16,46,.15)',TN:'rgba(225,29,72,.15)',YT:'rgba(34,197,94,.15)',WS:'rgba(6,182,212,.15)',SK:'rgba(232,121,249,.15)',YoT:'rgba(34,197,94,.15)',TK:'rgba(129,140,248,.15)'};
+  const authorFC = {KE:'var(--red)',TN:'#e11d48',YT:'#22C55E',WS:'var(--cyan)',SK:'#E879F9',YoT:'#22C55E',TK:'var(--s2)'};
+  const lvColors = {PRE:'var(--pre)',FUND:'var(--fund)',INTER:'var(--inter)',ADV:'var(--adv)'};
+
+  grid.innerHTML = progs.map(p => `
+    <div class="program-card" onclick="viewSavedProgram(${p.id})">
+      <div class="program-level" style="color:${lvColors[p.level]}">${p.level === 'FUND' ? 'FUNDAMENTAL' : p.level === 'INTER' ? 'INTERMEDIATE' : p.level === 'ADV' ? 'ADVANCE' : p.level}</div>
+      <div class="program-title">${p.title}</div>
+      <div class="program-meta">${p.units}ユニット · ${p.time}分 · ${p.app}</div>
+      <div class="program-footer">
+        <div class="avatar" style="width:22px;height:22px;font-size:8px;background:${authorColors[p.init]||'rgba(200,16,46,.15)'};color:${authorFC[p.init]||'var(--red)'}">${p.init}</div>
+        <div class="program-author">${p.author} · ${p.date}</div>
+        ${p.tag ? `<span style="margin-left:auto;font:600 8px Montserrat;color:${p.tagColor};padding:2px 6px;background:${p.tagColor}18;border-radius:3px">${p.tag}</span>` : ''}
+      </div>
+    </div>
+  `).join('') + `
+    <div class="program-card" style="border-style:dashed;display:flex;align-items:center;justify-content:center;min-height:140px;cursor:pointer" onclick="setProgramView('builder')">
+      <div style="text-align:center">
+        <div style="font:300 28px Montserrat;color:var(--dim)">+</div>
+        <div style="font:500 11px 'Noto Sans JP';color:var(--muted);margin-top:4px">新規プログラム作成</div>
+        <div style="font:400 9px 'Noto Sans JP';color:var(--dim);margin-top:2px">60分ビルダーを開く</div>
+      </div>
+    </div>`;
+
+  const countEl = document.getElementById('prog-count');
+  if (countEl) countEl.textContent = `全 ${progs.length} プログラム`;
+}
+
+function filterProgLevel(btn, level) {
+  progLevelFilter = level;
+  document.querySelectorAll('#page-program .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderProgramGrid();
+}
+
+function setProgramView(view) {
+  // Builder is now the only view — just reset to level select
+  backToLevelSelect();
+}
+
+function startBuilder(lv) {
+  builderLevel = lv;
+  builderProgram = [];
+  builderSelectedUnit = null;
+  document.getElementById('bldr-step1').style.display = 'none';
+  document.getElementById('bldr-step2').style.display = 'block';
+  // Level indicator with subtitle
+  const c = LV_COLORS[lv];
+  const n = LV_NAMES[lv];
+  document.getElementById('bldr-lv-indicator').innerHTML = `
+    <div>
+      <div style="font:700 16px 'Noto Sans JP';color:var(--white)">60分 プログラム構成 ─ <span style="color:${c};font:900 18px Montserrat;letter-spacing:1px">${n}</span></div>
+      <div style="font:300 10px 'Noto Sans JP';color:var(--muted);margin-top:2px">${LV_SUBTITLE[lv]}</div>
+    </div>
+  `;
+  renderBuilderNav();
+  document.getElementById('bldr-ex-picker').innerHTML = '<div style="text-align:center;padding:60px 20px;color:var(--dim);font:400 12px \'Noto Sans JP\'">← ユニットを選択して<br>エクササイズを追加</div>';
+  updateBuilder();
+}
+
+function backToLevelSelect() {
+  builderLevel = null;
+  builderProgram = [];
+  builderSelectedUnit = null;
+  document.getElementById('bldr-step1').style.display = 'block';
+  document.getElementById('bldr-step2').style.display = 'none';
+}
+
+function saveProgram() {
+  const total = builderProgram.reduce((s, p) => s + p.time, 0);
+  const lvName = builderLevel === 'PRE' ? 'PRE' : builderLevel === 'F' ? 'FUND' : builderLevel === 'I' ? 'INTER' : 'ADV';
+  const unitCount = new Set(builderProgram.map(p => p.unitIdx)).size;
+  const apps = [...new Set(builderProgram.map(p => EXERCISES[p.exIdx].app))].map(a => APP_NAMES[a]).join(' + ');
+
+  const maxId = savedPrograms.reduce((m, p) => Math.max(m, p.id), 0);
+  // Add to saved programs
+  savedPrograms.unshift({
+    id: maxId + 1,
+    level: lvName,
+    title: `${LV_NAMES[builderLevel]} ${total}分構成`,
+    units: unitCount,
+    time: total,
+    app: apps || 'Reformer',
+    author: currentUser ? currentUser.name : '江原 健司',
+    init: currentUser ? currentUser.init : 'KE',
+    authorId: currentUser ? currentUser.id : 1,
+    date: new Date().toISOString().slice(0,10).replace(/-/g,'.'),
+    tag: '新規',
+    tagColor: 'var(--cyan)',
+    programData: builderProgram.map(p => ({exIdx: p.exIdx, unitIdx: p.unitIdx, time: p.time})),
+    builderLevel: builderLevel,
+  });
+
+  // Persist to localStorage
+  persistPrograms();
+
+  // Switch back to level select
+  backToLevelSelect();
+
+  // Brief notification
+  const notify = document.createElement('div');
+  notify.style.cssText = 'position:fixed;top:70px;right:30px;background:var(--green);color:#fff;padding:10px 20px;border-radius:6px;font:600 12px "Noto Sans JP";z-index:300;animation:slideIn .2s ease';
+  notify.textContent = 'プログラムを保存しました';
+  document.body.appendChild(notify);
+  setTimeout(() => notify.remove(), 2000);
+}
+
+// ── Builder ──
+let builderLevel = null;
+let builderSelectedUnit = null;
+let builderProgram = []; // {exIdx, unitIdx, time}
+
+function setBuilderLevel(lv, btn) {
+  // Now handled by startBuilder
+  startBuilder(lv);
+}
+
+function renderBuilderNav() {
+  const nav = document.getElementById('bldr-unit-nav');
+  const lvKey = builderLevel === 'PRE' ? 'F' : builderLevel;
+  const guide = UNIT_GUIDE[lvKey] || UNIT_GUIDE['F'];
+  const reqData = UNIT_REQUIRED[builderLevel] || UNIT_REQUIRED['F'];
+  nav.innerHTML = UNITS.map((u, i) => {
+    const reqCount = (reqData[i] || []).length;
+    const selected = builderSelectedUnit === i;
+    const progCount = builderProgram.filter(p => p.unitIdx === i).length;
+    const g = guide[i];
+    const tLbl = TAG_LABEL[g.tag];
+    const tCol = TAG_COLOR[g.tag];
+    const tBg  = TAG_BG[g.tag];
+    const isNo = g.tag === 'no';
+    return `<button onclick="selectBuilderUnit(${i})" style="
+      width:100%;display:flex;align-items:center;gap:6px;padding:7px 9px;
+      background:${selected ? 'rgba(200,16,46,.1)' : 'var(--card2)'};
+      border:1px solid ${selected ? 'rgba(200,16,46,.4)' : 'var(--border)'};
+      border-radius:5px;cursor:pointer;text-align:left;margin-bottom:3px;transition:all .15s;
+      ${isNo ? 'opacity:.45;' : ''}
+    ">
+      <span style="font:700 14px Montserrat;color:${selected ? 'var(--red)' : 'var(--dim)'};width:22px;flex-shrink:0">${u.n}</span>
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:center;gap:5px">
+          <span style="font:600 9px Montserrat;color:${selected ? 'var(--white)' : 'var(--muted)'};letter-spacing:.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${u.en}</span>
+          <span style="font:700 7px 'Noto Sans JP';padding:1px 4px;border-radius:2px;background:${tBg};color:${tCol};flex-shrink:0;letter-spacing:.5px">${tLbl}</span>
+        </div>
+        <div style="font:300 8px 'Noto Sans JP';color:var(--dim);margin-top:1px">${g.time}分</div>
+      </div>
+      <span style="font:700 9px Montserrat;padding:1px 5px;border-radius:8px;background:${progCount > 0 ? 'var(--red)' : 'rgba(255,255,255,.08)'};color:${progCount > 0 ? '#fff' : 'var(--dim)'};min-width:18px;text-align:center">${progCount > 0 ? progCount : reqCount}</span>
+    </button>`;
+  }).join('');
+}
+
+function selectBuilderUnit(i) {
+  builderSelectedUnit = i;
+  // Auto-add required exercises on first selection of this unit
+  const hasUnitExercises = builderProgram.some(p => p.unitIdx === i);
+  if (!hasUnitExercises) {
+    const reqIndices = (UNIT_REQUIRED[builderLevel] || UNIT_REQUIRED['F'])[i] || [];
+    reqIndices.forEach(exIdx => {
+      const ex = EXERCISES[exIdx];
+      if (ex && !builderProgram.some(p => p.exIdx === exIdx)) {
+        builderProgram.push({exIdx, unitIdx: ex.u, time: ex.time});
+      }
+    });
+  }
+  renderBuilderNav();
+  renderExercisePicker(i);
+  updateBuilder();
+}
+
+// ── 必須種目判定 ──
+function isRequiredEx(exIdx) {
+  const reqIndices = (UNIT_REQUIRED[builderLevel] || UNIT_REQUIRED['F'])[EXERCISES[exIdx].u] || [];
+  return reqIndices.includes(exIdx);
+}
+
+function renderExercisePicker(unitIdx) {
+  const picker = document.getElementById('bldr-ex-picker');
+  const u = UNITS[unitIdx];
+  const lvKey = builderLevel === 'PRE' ? 'F' : builderLevel;
+  const guide = UNIT_GUIDE[lvKey] || UNIT_GUIDE['F'];
+  const g = guide[unitIdx];
+  const tLbl = TAG_LABEL[g.tag];
+  const tCol = TAG_COLOR[g.tag];
+  const tBg  = TAG_BG[g.tag];
+  const allExs = EXERCISES.filter(e => e.u === unitIdx && e.lvs.includes(builderLevel));
+  const reqIndices = (UNIT_REQUIRED[builderLevel] || UNIT_REQUIRED['F'])[unitIdx] || [];
+  const reqExs = allExs.filter(ex => reqIndices.includes(EXERCISES.indexOf(ex)));
+  const regExs = allExs.filter(ex => !reqIndices.includes(EXERCISES.indexOf(ex)));
+
+  // ── 必須セクション ──
+  let reqSection = '';
+  if (reqExs.length > 0) {
+    const chips = reqExs.map(ex => `<span style="font:400 10px 'Noto Sans JP';color:var(--red)">● ${ex.name}</span>`).join(' ');
+    reqSection = `
+      <div style="padding:8px 10px;margin-bottom:8px;background:rgba(200,16,46,.06);border:1px solid rgba(200,16,46,.2);border-radius:6px">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+          <span style="font:700 10px 'Noto Sans JP';color:var(--red)">★ 必須</span>
+          <span style="font:400 9px 'Noto Sans JP';color:var(--muted)">(${reqExs.length}種目・自動追加済み)</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:4px 10px">${chips}</div>
+      </div>`;
+  }
+
+  picker.innerHTML = `
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;padding-bottom:10px;border-bottom:1px solid var(--border)">
+      <span style="font:900 28px Montserrat;color:var(--red);line-height:1">${u.n}</span>
+      <div>
+        <div style="display:flex;align-items:center;gap:6px">
+          <span style="font:700 12px Montserrat;color:var(--white);letter-spacing:.5px">${u.en}</span>
+          <span style="font:700 9px 'Noto Sans JP';padding:2px 7px;border-radius:3px;background:${tBg};color:${tCol};letter-spacing:.5px">${tLbl}</span>
+        </div>
+        <div style="font:300 10px 'Noto Sans JP';color:var(--muted)">${u.focus} · 目安 ${g.time}分</div>
+      </div>
+      <span style="margin-left:auto;font:600 9px Montserrat;color:var(--muted)">${allExs.length} 種目</span>
+    </div>
+    ${reqSection}
+    ${regExs.map(ex => {
+      const globalIdx = EXERCISES.indexOf(ex);
+      const inProg = builderProgram.some(p => p.exIdx === globalIdx);
+      return `<div style="
+        display:flex;align-items:center;gap:8px;padding:8px 10px;margin-bottom:4px;
+        background:${inProg ? 'rgba(200,16,46,.08)' : 'rgba(255,255,255,.02)'};
+        border:1px solid ${inProg ? 'rgba(200,16,46,.3)' : 'var(--border)'};
+        border-radius:6px;transition:all .15s;
+      ">
+        <span style="font:600 9px Montserrat;padding:2px 6px;border-radius:3px;background:${APP_COLORS[ex.app]}22;color:${APP_COLORS[ex.app]};flex-shrink:0">${ex.app}</span>
+        <div style="flex:1;min-width:0">
+          <div style="font:500 11px 'Noto Sans JP';color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${ex.name}</div>
+          <div style="font:300 9px Montserrat;color:var(--dim)">${ex.lvs.join('/')}</div>
+        </div>
+        <button onclick="toggleBuilder(${globalIdx})" style="
+          padding:3px 12px;border-radius:4px;cursor:pointer;font:600 10px 'Noto Sans JP';letter-spacing:.5px;
+          background:${inProg ? 'rgba(200,16,46,.15)' : 'rgba(255,255,255,.06)'};
+          border:1px solid ${inProg ? 'rgba(200,16,46,.4)' : 'var(--border)'};
+          color:${inProg ? 'var(--red)' : 'var(--muted)'};flex-shrink:0;
+        ">${inProg ? '✓ 追加済' : '+ 追加'}</button>
+      </div>`;
+    }).join('')}
+  `;
+}
+
+// ── トグル追加/削除（ピッカーボタン用）──
+function toggleBuilder(exIdx) {
+  const existing = builderProgram.findIndex(p => p.exIdx === exIdx);
+  if (existing >= 0) {
+    // 必須種目は削除不可
+    if (isRequiredEx(exIdx)) return;
+    builderProgram.splice(existing, 1);
+  } else {
+    const ex = EXERCISES[exIdx];
+    builderProgram.push({exIdx, unitIdx: ex.u, time: ex.time});
+  }
+  updateBuilder();
+}
+
+function addToBuilder(exIdx) {
+  const ex = EXERCISES[exIdx];
+  if (builderProgram.some(p => p.exIdx === exIdx)) return;
+  builderProgram.push({exIdx, unitIdx: ex.u, time: ex.time});
+  updateBuilder();
+}
+
+function removeFromBuilder(exIdx) {
+  // 必須種目は削除不可
+  if (isRequiredEx(exIdx)) return;
+  builderProgram = builderProgram.filter(p => p.exIdx !== exIdx);
+  updateBuilder();
+}
+
+function adjustTime(exIdx, delta) {
+  const item = builderProgram.find(p => p.exIdx === exIdx);
+  if (!item) return;
+  item.time = Math.max(1, Math.min(15, item.time + delta));
+  updateBuilder();
+}
+
+// ── 必須種目のまとめて時間調整 ──
+function adjustReqTime(unitIdx, delta) {
+  const reqIndices = (UNIT_REQUIRED[builderLevel] || UNIT_REQUIRED['F'])[unitIdx] || [];
+  const reqItems = builderProgram.filter(p => reqIndices.includes(p.exIdx));
+  if (!reqItems.length) return;
+  const cur = reqItems[0].time;
+  const next = Math.max(1, Math.min(15, cur + delta));
+  reqItems.forEach(p => { p.time = next; });
+  updateBuilder();
+}
+
+function adjustUnitTime(unitIdx, delta) {
+  const items = builderProgram.filter(p => p.unitIdx === unitIdx);
+  if (!items.length) return;
+  // distribute delta across items (adjust first item, or spread evenly)
+  const newTotal = items.reduce((s,i) => s + i.time, 0) + delta;
+  if (newTotal < items.length || newTotal > items.length * 15) return;
+  // Adjust first item that can absorb the delta
+  for (const item of items) {
+    const newTime = item.time + delta;
+    if (newTime >= 1 && newTime <= 15) { item.time = newTime; break; }
+  }
+  updateBuilder();
+}
+
+function addAllFromUnit(unitIdx) {
+  const exs = EXERCISES.filter(e => e.u === unitIdx && e.lvs.includes(builderLevel));
+  let added = false;
+  exs.forEach(ex => {
+    const globalIdx = EXERCISES.indexOf(ex);
+    if (!builderProgram.some(p => p.exIdx === globalIdx)) {
+      builderProgram.push({exIdx: globalIdx, unitIdx: ex.u, time: ex.time});
+      added = true;
+    }
+  });
+  if (added) updateBuilder();
+}
+
+function clearBuilder() {
+  // 必須種目は残す
+  builderProgram = builderProgram.filter(p => isRequiredEx(p.exIdx));
+  builderSelectedUnit = null;
+  updateBuilder();
+}
+
+function updateBuilder() {
+  // Re-render
+  renderBuilderNav();
+  if (builderSelectedUnit !== null) renderExercisePicker(builderSelectedUnit);
+
+  const lvKey = builderLevel === 'PRE' ? 'F' : builderLevel;
+  const guide = UNIT_GUIDE[lvKey] || UNIT_GUIDE['F'];
+  const lvColor = LV_COLORS[builderLevel] || LV_COLORS['F'];
+
+  // Program slots
+  const slots = document.getElementById('bldr-program-slots');
+  if (builderProgram.length === 0) {
+    slots.innerHTML = '<div style="text-align:center;padding:40px 16px;color:var(--dim);font:400 11px \'Noto Sans JP\'">ユニットからエクササイズを<br>追加してください</div>';
+  } else {
+    // Group by unit
+    const grouped = {};
+    builderProgram.forEach(p => {
+      if (!grouped[p.unitIdx]) grouped[p.unitIdx] = [];
+      grouped[p.unitIdx].push(p);
+    });
+
+    slots.innerHTML = Object.keys(grouped).sort((a,b) => a - b).map(uIdx => {
+      const u = UNITS[uIdx];
+      const items = grouped[uIdx];
+      const g = guide[uIdx];
+      const reqIndicesU = (UNIT_REQUIRED[builderLevel] || UNIT_REQUIRED['F'])[uIdx] || [];
+      const reqItems = items.filter(p => reqIndicesU.includes(p.exIdx));
+      const regItems = items.filter(p => !reqIndicesU.includes(p.exIdx));
+      const unitTime = items.reduce((s,i) => s + i.time, 0);
+
+      // ── 必須グループ ──
+      let reqHtml = '';
+      if (reqItems.length > 0) {
+        const reqTime = reqItems[0].time;
+        reqHtml = `<div style="padding:6px 10px;background:rgba(200,16,46,.05);border:1px solid rgba(200,16,46,.15);border-radius:5px;margin-bottom:4px">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px">
+            <span style="font:700 9px 'Noto Sans JP';color:var(--red)">★ 必須 ${reqItems.length}種目</span>
+            <span style="font:600 8px Montserrat;padding:1px 4px;border-radius:2px;background:${APP_COLORS[reqItems.length>0?EXERCISES[reqItems[0].exIdx].app:'R']}22;color:${APP_COLORS[reqItems.length>0?EXERCISES[reqItems[0].exIdx].app:'R']};flex-shrink:0">${reqItems.length>0?EXERCISES[reqItems[0].exIdx].app:'R'}</span>
+            <span style="font:400 8px 'Noto Sans JP';color:var(--muted)">まとめて</span>
+            <div style="margin-left:auto;display:flex;align-items:center;gap:2px">
+              <button onclick="adjustReqTime(${uIdx},-1)" style="width:16px;height:16px;border-radius:3px;border:1px solid rgba(200,16,46,.3);background:transparent;color:var(--red);cursor:pointer;font:700 10px Montserrat;display:flex;align-items:center;justify-content:center;padding:0">−</button>
+              <span style="font:700 9px Montserrat;color:var(--white);min-width:22px;text-align:center">${reqTime}m</span>
+              <button onclick="adjustReqTime(${uIdx},1)" style="width:16px;height:16px;border-radius:3px;border:1px solid rgba(200,16,46,.3);background:transparent;color:var(--red);cursor:pointer;font:700 10px Montserrat;display:flex;align-items:center;justify-content:center;padding:0">+</button>
+            </div>
+          </div>
+          ${reqItems.map((p, idx) => {
+            const ex = EXERCISES[p.exIdx];
+            const branch = idx < reqItems.length - 1 ? '├' : '└';
+            return `<div style="display:flex;align-items:center;gap:5px;padding:1px 0;color:var(--body)">
+              <span style="font:400 10px monospace;color:var(--dim);width:10px">${branch}</span>
+              <span style="font:400 10px 'Noto Sans JP';color:var(--muted)">${ex.name}</span>
+            </div>`;
+          }).join('')}
+        </div>`;
+      }
+
+      // ── 通常種目 ──
+      let regHtml = regItems.map(p => {
+        const ex = EXERCISES[p.exIdx];
+        return `<div style="display:flex;align-items:center;gap:6px;padding:4px 0;color:var(--body)">
+          <span style="font:600 8px Montserrat;padding:1px 4px;border-radius:2px;background:${APP_COLORS[ex.app]}22;color:${APP_COLORS[ex.app]};flex-shrink:0">${ex.app}</span>
+          <span style="font:400 10px 'Noto Sans JP';flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${ex.name}</span>
+          <div style="display:flex;align-items:center;gap:1px;flex-shrink:0">
+            <button onclick="adjustTime(${p.exIdx},-1)" style="width:16px;height:16px;border-radius:3px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font:700 10px Montserrat;display:flex;align-items:center;justify-content:center;padding:0">−</button>
+            <span style="font:700 9px Montserrat;color:var(--white);min-width:22px;text-align:center">${p.time}m</span>
+            <button onclick="adjustTime(${p.exIdx},1)" style="width:16px;height:16px;border-radius:3px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font:700 10px Montserrat;display:flex;align-items:center;justify-content:center;padding:0">+</button>
+          </div>
+          <span style="cursor:pointer;color:var(--dim);font-size:10px;flex-shrink:0" onclick="removeFromBuilder(${p.exIdx})">×</span>
+        </div>`;
+      }).join('');
+
+      return `<div style="background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:8px">
+        <div style="padding:8px 12px;background:rgba(255,255,255,.03);border-bottom:1px solid var(--border)">
+          <div style="display:flex;align-items:center;gap:6px">
+            <span style="font:700 13px Montserrat;color:var(--red)">${u.n}</span>
+            <span style="font:500 10px Montserrat;color:var(--white);letter-spacing:.3px">${u.en}</span>
+            <span style="margin-left:auto;font:700 10px Montserrat;color:var(--white)">${unitTime}m</span>
+          </div>
+        </div>
+        <div style="padding:6px 12px 8px">
+          ${reqHtml}
+          ${regHtml}
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  // Totals
+  const total = builderProgram.reduce((s, p) => s + p.time, 0);
+  document.getElementById('bldr-total-time').innerHTML = `${total}<span style="font:500 11px Montserrat;color:var(--muted)">分</span>`;
+  document.getElementById('bldr-ex-count').textContent = `${builderProgram.length}種目`;
+  const pct = Math.min(100, (total / 60) * 100);
+  const bar = document.getElementById('bldr-time-bar');
+  bar.style.width = pct + '%';
+  bar.style.background = total > 65 ? '#e11d48' : total >= 55 ? 'var(--green)' : 'var(--red)';
+
+  // Time label
+  const label = document.getElementById('bldr-time-label');
+  if (label) {
+    if (total === 0) label.textContent = '目標: 60分';
+    else if (total < 55) label.textContent = `あと ${60 - total}分`;
+    else if (total <= 65) label.textContent = '適正範囲';
+    else label.textContent = '超過注意';
+    label.style.color = total > 65 ? '#e11d48' : total >= 55 ? 'var(--green)' : 'var(--dim)';
+  }
+
+  // Save button visibility
+  const saveBtn = document.getElementById('bldr-save-btn');
+  if (saveBtn) saveBtn.style.display = builderProgram.length >= 3 ? 'block' : 'none';
+}
+
+// ═══ PRINT PREVIEW ═══
+function openPrintPreview() {
+  if (builderProgram.length === 0) return;
+  const html = buildPrintSheet();
+  document.getElementById('printSheet').innerHTML = html;
+  document.getElementById('print-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closePrintPreview() {
+  document.getElementById('print-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function buildPrintSheet() {
+  const LVL_LABEL = {PRE:'PRE',F:'FUNDAMENTAL',I:'INTERMEDIATE',A:'ADVANCE'};
+  const LVL_DESC = {
+    PRE:'リフォーマー中心の安全な導入 / 18種目',
+    F:'全レベルのベース / F種目のみ構成 / 18〜25種目',
+    I:'F種目ベース＋I種目3〜5追加 / 60分',
+    A:'F・I・A全種目から25種目構成 / 60分'
+  };
+  const APP_SHORT = {R:'R',C:'C',W:'W',B:'B',SC:'SC',MAT:'MAT'};
+
+  const prog = builderProgram;
+  const byUnit = {};
+  prog.forEach(p => { (byUnit[p.unitIdx] = byUnit[p.unitIdx] || []).push(p); });
+
+  const total = prog.reduce((s, p) => s + p.time, 0);
+  const now = new Date();
+  const dateStr = now.getFullYear() + '/' + String(now.getMonth()+1).padStart(2,'0') + '/' + String(now.getDate()).padStart(2,'0');
+
+  let h = `<div class="p-head">
+    <div class="p-brand">AXISCORE PILATES<span class="sub">60分 プログラム構成</span></div>
+    <div class="p-meta">
+      <div>Level: <span class="p-lv">${LVL_LABEL[builderLevel]}</span></div>
+      <div>${LVL_DESC[builderLevel]}</div>
+      <div>作成日: <b>${dateStr}</b></div>
+    </div>
+  </div>
+  <div class="p-summary">
+    <div>合計時間 <span class="val">${total} 分 / 60</span></div>
+    <div>種目数 <span class="val">${prog.length} 種目</span></div>
+    <div>ユニット <span class="val">${Object.keys(byUnit).length} / 10</span></div>
+  </div>`;
+
+  for (let u = 0; u < 10; u++) {
+    const items = byUnit[u] || [];
+    if (!items.length) continue;
+    const reqIndicesU = (UNIT_REQUIRED[builderLevel] || UNIT_REQUIRED['F'])[u] || [];
+    const reqItems = items.filter(p => reqIndicesU.includes(p.exIdx));
+    const regItems = items.filter(p => !reqIndicesU.includes(p.exIdx));
+    const reqTime = reqItems.length ? reqItems[0].time : 0;
+    const unitTime = (reqItems.length ? reqTime : 0) + regItems.reduce((s,p) => s + p.time, 0);
+    const unitInfo = UNITS[u];
+
+    h += `<div class="p-unit">
+      <div class="p-unit-head">
+        <span class="p-unit-num">${unitInfo.n}</span>
+        <span class="p-unit-name">${unitInfo.en}</span>
+        <span class="p-unit-time">計 ${unitTime} 分・${items.length} 種目</span>
+      </div>`;
+
+    if (reqItems.length) {
+      const reqApp = EXERCISES[reqItems[0].exIdx].app;
+      h += `<div class="p-req-head">
+        <span class="p-req-label">★ 必須 ${reqItems.length}種目</span>
+        <span class="p-app p-app-${reqApp}">${APP_SHORT[reqApp]}</span>
+        <span class="p-req-sub">まとめて</span>
+        <span class="p-req-time">${reqTime} 分</span>
+      </div>
+      <div class="p-req-list">`;
+      reqItems.forEach(p => {
+        h += `<div class="p-req-row">${EXERCISES[p.exIdx].name}</div>`;
+      });
+      h += `</div>`;
+    }
+
+    regItems.forEach(p => {
+      const ex = EXERCISES[p.exIdx];
+      h += `<div class="p-item">
+        <span class="p-app p-app-${ex.app}">${APP_SHORT[ex.app]}</span>
+        <span class="p-name">${ex.name}</span>
+        <span class="p-time">${p.time} 分</span>
+      </div>`;
+    });
+
+    h += `</div>`;
+  }
+
+  h += `<div class="p-foot">
+    <div class="p-note">★ 印は必須種目（各ユニット毎にまとめて時間配分されます）</div>
+    <div class="p-sign">
+      <div><b>Instructor</b></div>
+      <div><b>Client</b></div>
+      <div><b>Date</b></div>
+    </div>
+  </div>`;
+  return h;
+}
+
+// ══════════════════════════════════════════
+// ── LOGIN & USER MANAGEMENT ──
+// ══════════════════════════════════════════
+
+let currentUser = null;
+let loginMode = 'master';
+
+function switchLoginTab(mode) {
+  loginMode = mode;
+  document.querySelectorAll('.login-tab').forEach(t => t.classList.remove('active'));
+  document.querySelector(`.login-tab:${mode === 'master' ? 'first-child' : 'last-child'}`).classList.add('active');
+  document.getElementById('login-master-form').style.display = mode === 'master' ? 'block' : 'none';
+  document.getElementById('login-instructor-form').style.display = mode === 'instructor' ? 'block' : 'none';
+  document.getElementById('login-error').textContent = '';
+}
+
+function populateInstructorSelect() {
+  const sel = document.getElementById('login-instructor-select');
+  sel.innerHTML = '<option value="">インストラクターを選択...</option>' +
+    instructors.map(i => `<option value="${i.id}">${i.name}（${i.init}）</option>`).join('');
+}
+
+function doLogin() {
+  const errEl = document.getElementById('login-error');
+  errEl.textContent = '';
+
+  if (loginMode === 'master') {
+    const pw = document.getElementById('login-master-pw').value;
+    if (pw !== 'daimaru') {
+      errEl.textContent = 'パスワードが正しくありません';
+      return;
+    }
+    currentUser = {id: 1, name: '江原 健司', init: 'KE', role: 'master'};
+  } else {
+    const selVal = document.getElementById('login-instructor-select').value;
+    const pw = document.getElementById('login-instructor-pw').value;
+    if (!selVal) {
+      errEl.textContent = 'インストラクターを選択してください';
+      return;
+    }
+    const inst = instructors.find(i => i.id === parseInt(selVal));
+    if (!inst) { errEl.textContent = 'エラーが発生しました'; return; }
+    if (pw.toUpperCase() !== inst.init.toUpperCase()) {
+      errEl.textContent = 'パスワードが正しくありません';
+      return;
+    }
+    currentUser = {id: inst.id, name: inst.name, init: inst.init, role: 'instructor'};
+  }
+
+  document.getElementById('login-overlay').classList.add('hidden');
+  applyUserRole();
+}
+
+function doLogout() {
+  location.reload();
+}
+
+function applyUserRole() {
+  // Update sidebar user
+  const sidebarUser = document.getElementById('sidebar-user');
+  const inst = instructors.find(i => i.id === currentUser.id);
+  const bg = inst ? inst.bg : 'rgba(200,16,46,.15)';
+  const col = inst ? inst.color : 'var(--red)';
+  const roleLabel = currentUser.role === 'master' ? 'マスターフランチャイザー' : (inst ? inst.role : 'インストラクター');
+  sidebarUser.innerHTML = `
+    <div class="avatar" style="background:${bg};color:${col}">${currentUser.init}</div>
+    <div class="user-info">
+      <strong>${currentUser.name}</strong>
+      ${roleLabel}
+    </div>`;
+
+  // Update sidebar logo sub
+  const logoSub = document.getElementById('sidebar-logo-sub');
+  if (logoSub) logoSub.textContent = currentUser.role === 'master' ? 'Master Franchisor' : 'Instructor Portal';
+
+  // Hide/show admin nav for instructors
+  const adminItems = ['nav-section-analytics','nav-analytics','nav-section-admin','nav-settings','nav-billing'];
+  adminItems.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = currentUser.role === 'instructor' ? 'none' : '';
+  });
+
+  // Render appropriate dashboard
+  renderDashboardForRole();
+}
+
+function renderDashboardForRole() {
+  const masterContent = document.getElementById('page-dashboard');
+  const personalDash = document.getElementById('dash-instructor-personal');
+  const historySection = document.getElementById('dash-instructor-history');
+
+  if (currentUser.role === 'master') {
+    // Show master dashboard content; show instructor history section
+    // Hide children: stats, grids are already visible
+    personalDash.style.display = 'none';
+    historySection.style.display = 'block';
+    renderMasterInstructorHistory();
+  } else {
+    // Instructor: hide master content, show personal dashboard
+    // Hide the master-specific elements
+    const statsRow = masterContent.querySelector('.stats-row');
+    const dashGrids = masterContent.querySelectorAll('.dash-grid');
+    if (statsRow) statsRow.style.display = 'none';
+    dashGrids.forEach(g => g.style.display = 'none');
+    historySection.style.display = 'none';
+    personalDash.style.display = 'block';
+    renderInstructorDashboard();
+  }
+}
+
+function renderMasterInstructorHistory() {
+  const body = document.getElementById('dash-inst-history-body');
+  // Group programs by authorId
+  const byAuthor = {};
+  savedPrograms.forEach(p => {
+    const aid = p.authorId || 0;
+    if (!byAuthor[aid]) byAuthor[aid] = [];
+    byAuthor[aid].push(p);
+  });
+
+  const authorColors = {KE:'rgba(200,16,46,.15)',TN:'rgba(225,29,72,.15)',YT:'rgba(34,197,94,.15)',WS:'rgba(6,182,212,.15)',SK:'rgba(232,121,249,.15)',YoT:'rgba(34,197,94,.15)',TK:'rgba(129,140,248,.15)'};
+  const authorFC = {KE:'var(--red)',TN:'#e11d48',YT:'#22C55E',WS:'var(--cyan)',SK:'#E879F9',YoT:'#22C55E',TK:'var(--s2)'};
+  const lvColors = {PRE:'var(--pre)',FUND:'var(--fund)',INTER:'var(--inter)',ADV:'var(--adv)'};
+
+  let html = '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">';
+  Object.keys(byAuthor).forEach(aid => {
+    const progs = byAuthor[aid];
+    const inst = instructors.find(i => i.id === parseInt(aid));
+    if (!inst) return;
+    const levels = [...new Set(progs.map(p => p.level))];
+    const levelBadges = levels.map(l => `<span style="font:700 8px Montserrat;color:${lvColors[l] || '#888'};padding:1px 5px;border-radius:2px;background:${lvColors[l] || '#888'}18">${l}</span>`).join(' ');
+
+    html += `<div style="background:var(--card2);border:1px solid var(--border);border-radius:6px;padding:12px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:all .15s" onmouseover="this.style.borderColor='rgba(255,255,255,.15)'" onmouseout="this.style.borderColor=''" onclick="filterProgramsByInstructor(${inst.id})">
+      <div class="inst-avatar" style="width:32px;height:32px;font-size:10px;background:${authorColors[inst.init] || 'rgba(200,16,46,.15)'};color:${authorFC[inst.init] || 'var(--red)'}">${inst.init}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font:600 11px 'Noto Sans JP';color:var(--white)">${inst.name}</div>
+        <div style="display:flex;align-items:center;gap:4px;margin-top:3px;flex-wrap:wrap">
+          <span style="font:600 9px Montserrat;color:var(--muted)">${progs.length}件</span>
+          ${levelBadges}
+        </div>
+      </div>
+      <span style="font:400 10px 'Noto Sans JP';color:var(--cyan);flex-shrink:0">詳細→</span>
+    </div>`;
+  });
+  html += '</div>';
+  body.innerHTML = html;
+}
+
+function filterProgramsByInstructor(instId) {
+  showPage('program');
+  // Filter program grid to this instructor
+  const inst = instructors.find(i => i.id === instId);
+  if (!inst) return;
+  progLevelFilter = 'all';
+  const grid = document.getElementById('prog-grid');
+  if (!grid) return;
+  const progs = savedPrograms.filter(p => p.authorId === instId);
+  const authorColors = {KE:'rgba(200,16,46,.15)',TN:'rgba(225,29,72,.15)',YT:'rgba(34,197,94,.15)',WS:'rgba(6,182,212,.15)',SK:'rgba(232,121,249,.15)',YoT:'rgba(34,197,94,.15)',TK:'rgba(129,140,248,.15)'};
+  const authorFC = {KE:'var(--red)',TN:'#e11d48',YT:'#22C55E',WS:'var(--cyan)',SK:'#E879F9',YoT:'#22C55E',TK:'var(--s2)'};
+  const lvColors = {PRE:'var(--pre)',FUND:'var(--fund)',INTER:'var(--inter)',ADV:'var(--adv)'};
+
+  grid.innerHTML = `<div style="grid-column:1/-1;display:flex;align-items:center;gap:8px;padding:8px 0;margin-bottom:4px">
+    <span style="font:600 11px 'Noto Sans JP';color:var(--white)">${inst.name} のプログラム（${progs.length}件）</span>
+    <button onclick="renderProgramGrid()" style="font:400 10px 'Noto Sans JP';color:var(--cyan);background:none;border:none;cursor:pointer">全て表示に戻る</button>
+  </div>` + progs.map(p => `
+    <div class="program-card" onclick="viewSavedProgram(${p.id})">
+      <div class="program-level" style="color:${lvColors[p.level]}">${p.level === 'FUND' ? 'FUNDAMENTAL' : p.level === 'INTER' ? 'INTERMEDIATE' : p.level === 'ADV' ? 'ADVANCE' : p.level}</div>
+      <div class="program-title">${p.title}</div>
+      <div class="program-meta">${p.units}ユニット · ${p.time}分 · ${p.app}</div>
+      <div class="program-footer">
+        <div class="avatar" style="width:22px;height:22px;font-size:8px;background:${authorColors[p.init]||'rgba(200,16,46,.15)'};color:${authorFC[p.init]||'var(--red)'}">${p.init}</div>
+        <div class="program-author">${p.author} · ${p.date}</div>
+        ${p.tag ? `<span style="margin-left:auto;font:600 8px Montserrat;color:${p.tagColor};padding:2px 6px;background:${p.tagColor}18;border-radius:3px">${p.tag}</span>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderInstructorDashboard() {
+  const container = document.getElementById('dash-instructor-personal');
+  const inst = instructors.find(i => i.id === currentUser.id);
+  if (!inst) return;
+  const myPrograms = savedPrograms.filter(p => p.authorId === currentUser.id);
+  const levels = [...new Set(myPrograms.map(p => p.level))];
+  const lastDate = myPrograms.length > 0 ? myPrograms.sort((a,b) => b.date.localeCompare(a.date))[0].date : '---';
+
+  const lvColors = {PRE:'var(--pre)',FUND:'var(--fund)',INTER:'var(--inter)',ADV:'var(--adv)'};
+  const levelBadges = levels.map(l => `<span style="font:700 9px Montserrat;color:${lvColors[l] || '#888'};padding:2px 8px;border-radius:3px;background:${lvColors[l] || '#888'}18">${l}</span>`).join(' ');
+
+  let historyHTML = myPrograms.map(p => `
+    <div class="inst-history-item">
+      <span style="font:400 10px Montserrat;color:var(--muted);width:80px;flex-shrink:0">${p.date}</span>
+      <span style="font:700 9px Montserrat;color:${lvColors[p.level] || '#888'};padding:2px 8px;border-radius:3px;background:${lvColors[p.level] || '#888'}18;flex-shrink:0">${p.level}</span>
+      <div style="flex:1;min-width:0">
+        <div style="font:500 11px 'Noto Sans JP';color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.title}</div>
+        <div style="font:400 9px 'Noto Sans JP';color:var(--dim)">${p.units}ユニット · ${p.app}</div>
+      </div>
+      <span style="font:600 10px Montserrat;color:var(--muted);flex-shrink:0">${p.time}分</span>
+      <button onclick="viewSavedProgram(${p.id})" style="font:500 10px 'Noto Sans JP';color:var(--cyan);background:none;border:1px solid rgba(6,182,212,.3);border-radius:4px;padding:4px 10px;cursor:pointer;flex-shrink:0;transition:all .15s" onmouseover="this.style.background='rgba(6,182,212,.1)'" onmouseout="this.style.background='none'">表示→</button>
+    </div>
+  `).join('');
+
+  if (myPrograms.length === 0) {
+    historyHTML = '<div style="text-align:center;padding:30px;color:var(--dim);font:400 12px \'Noto Sans JP\'">まだプログラムがありません</div>';
+  }
+
+  container.innerHTML = `
+    <div class="inst-dash-header">
+      <div class="inst-dash-avatar" style="background:${inst.bg};color:${inst.color}">${inst.init}</div>
+      <div>
+        <div style="font:700 16px 'Noto Sans JP';color:var(--white)">${inst.name}</div>
+        <div style="font:400 11px 'Noto Sans JP';color:var(--muted);margin-top:2px">${inst.role}</div>
+      </div>
+      <span style="margin-left:auto;font:700 10px Montserrat;padding:4px 12px;border-radius:4px;background:${inst.bg};color:${inst.color}">${inst.step}</span>
+    </div>
+
+    <div class="stats-row" style="grid-template-columns:repeat(3,1fr)">
+      <div class="stat-card" data-c="red">
+        <div class="stat-label">Total Programs</div>
+        <div class="stat-value">${myPrograms.length}<span>件</span></div>
+        <div class="stat-sub">総構成数</div>
+      </div>
+      <div class="stat-card" data-c="cyan">
+        <div class="stat-label">Levels Used</div>
+        <div class="stat-value">${levels.length}<span>種</span></div>
+        <div class="stat-sub">${levelBadges || '---'}</div>
+      </div>
+      <div class="stat-card" data-c="gold">
+        <div class="stat-label">Last Created</div>
+        <div style="font:700 16px Montserrat;color:var(--white);margin-top:8px">${lastDate}</div>
+        <div class="stat-sub">最終構成日</div>
+      </div>
+    </div>
+
+    <div class="dash-card" style="margin-top:14px">
+      <div class="dash-card-header">
+        <span class="dash-card-title">構成履歴</span>
+        <span style="font:600 9px Montserrat;color:var(--muted)">${myPrograms.length}件</span>
+      </div>
+      <div class="dash-card-body" style="padding:0">
+        ${historyHTML}
+      </div>
+    </div>
+  `;
+}
+
+// ── Program History Viewer ──
+function viewSavedProgram(programId) {
+  const prog = savedPrograms.find(p => p.id === programId);
+  if (!prog) return;
+
+  const sheet = document.getElementById('printSheet');
+
+  if (prog.programData && prog.programData.length > 0 && prog.builderLevel) {
+    // Full program data available — render like print preview
+    const LVL_LABEL = {PRE:'PRE',F:'FUNDAMENTAL',I:'INTERMEDIATE',A:'ADVANCE'};
+    const LVL_DESC = {
+      PRE:'リフォーマー中心の安全な導入 / 18種目',
+      F:'全レベルのベース / F種目のみ構成 / 18〜25種目',
+      I:'F種目ベース＋I種目3〜5追加 / 60分',
+      A:'F・I・A全種目から25種目構成 / 60分'
+    };
+    const APP_SHORT = {R:'R',C:'C',W:'W',B:'B',SC:'SC',MAT:'MAT'};
+    const bLevel = prog.builderLevel;
+    const data = prog.programData;
+    const byUnit = {};
+    data.forEach(p => { (byUnit[p.unitIdx] = byUnit[p.unitIdx] || []).push(p); });
+    const total = data.reduce((s, p) => s + p.time, 0);
+
+    let h = `<div class="p-head">
+      <div class="p-brand">AXISCORE PILATES<span class="sub">60分 プログラム構成</span></div>
+      <div class="p-meta">
+        <div>Level: <span class="p-lv">${LVL_LABEL[bLevel] || prog.level}</span></div>
+        <div>${LVL_DESC[bLevel] || ''}</div>
+        <div>作成日: <b>${prog.date}</b>　作成者: <b>${prog.author}</b></div>
+      </div>
+    </div>
+    <div class="p-summary">
+      <div>合計時間 <span class="val">${total} 分 / 60</span></div>
+      <div>種目数 <span class="val">${data.length} 種目</span></div>
+      <div>ユニット <span class="val">${Object.keys(byUnit).length} / 10</span></div>
+    </div>`;
+
+    for (let u = 0; u < 10; u++) {
+      const items = byUnit[u] || [];
+      if (!items.length) continue;
+      const reqIndicesU = (UNIT_REQUIRED[bLevel] || UNIT_REQUIRED['F'])[u] || [];
+      const reqItems = items.filter(p => reqIndicesU.includes(p.exIdx));
+      const regItems = items.filter(p => !reqIndicesU.includes(p.exIdx));
+      const reqTime = reqItems.length ? reqItems[0].time : 0;
+      const unitTime = (reqItems.length ? reqTime : 0) + regItems.reduce((s,p) => s + p.time, 0);
+      const unitInfo = UNITS[u];
+
+      h += `<div class="p-unit">
+        <div class="p-unit-head">
+          <span class="p-unit-num">${unitInfo.n}</span>
+          <span class="p-unit-name">${unitInfo.en}</span>
+          <span class="p-unit-time">計 ${unitTime} 分・${items.length} 種目</span>
+        </div>`;
+
+      if (reqItems.length) {
+        const reqApp = EXERCISES[reqItems[0].exIdx] ? EXERCISES[reqItems[0].exIdx].app : 'R';
+        h += `<div class="p-req-head">
+          <span class="p-req-label">★ 必須 ${reqItems.length}種目</span>
+          <span class="p-app p-app-${reqApp}">${APP_SHORT[reqApp]}</span>
+          <span class="p-req-sub">まとめて</span>
+          <span class="p-req-time">${reqTime} 分</span>
+        </div>
+        <div class="p-req-list">`;
+        reqItems.forEach(p => {
+          const ex = EXERCISES[p.exIdx];
+          h += `<div class="p-req-row">${ex ? ex.name : '---'}</div>`;
+        });
+        h += `</div>`;
+      }
+
+      regItems.forEach(p => {
+        const ex = EXERCISES[p.exIdx];
+        if (!ex) return;
+        h += `<div class="p-item">
+          <span class="p-app p-app-${ex.app}">${APP_SHORT[ex.app]}</span>
+          <span class="p-name">${ex.name}</span>
+          <span class="p-time">${p.time} 分</span>
+        </div>`;
+      });
+
+      h += `</div>`;
+    }
+
+    h += `<div class="p-foot">
+      <div class="p-note">★ 印は必須種目（各ユニット毎にまとめて時間配分されます）</div>
+      <div class="p-sign">
+        <div><b>Instructor</b> ${prog.author}</div>
+        <div><b>Client</b></div>
+        <div><b>Date</b> ${prog.date}</div>
+      </div>
+    </div>`;
+    sheet.innerHTML = h;
+  } else {
+    // Legacy sample data — show basic info
+    const lvColors = {PRE:'#E879F9',FUND:'#22C55E',INTER:'#3B82F6',ADV:'#F59E0B'};
+    sheet.innerHTML = `<div class="p-head">
+      <div class="p-brand">AXISCORE PILATES<span class="sub">60分 プログラム構成</span></div>
+      <div class="p-meta">
+        <div>Level: <span class="p-lv">${prog.level}</span></div>
+        <div>作成日: <b>${prog.date}</b>　作成者: <b>${prog.author}</b></div>
+      </div>
+    </div>
+    <div class="p-summary">
+      <div>合計時間 <span class="val">${prog.time} 分</span></div>
+      <div>ユニット <span class="val">${prog.units}</span></div>
+      <div>器具 <span class="val">${prog.app}</span></div>
+    </div>
+    <div style="padding:40px 20px;text-align:center;color:#999;font:400 12pt 'Noto Sans JP'">
+      <div style="font-size:24pt;margin-bottom:12px">📄</div>
+      このプログラムの詳細データは保存されていません。<br>
+      新しく作成されたプログラムは詳細が表示されます。
+    </div>
+    <div class="p-foot">
+      <div class="p-sign">
+        <div><b>Instructor</b> ${prog.author}</div>
+        <div><b>Client</b></div>
+        <div><b>Date</b> ${prog.date}</div>
+      </div>
+    </div>`;
+  }
+
+  document.getElementById('print-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function persistPrograms() {
+  try {
+    localStorage.setItem('axiscore_programs', JSON.stringify(savedPrograms));
+  } catch(e) { /* ignore storage errors */ }
+}
+
+// Initialize
+populateInstructorSelect();
+renderTable();
+
+// iPad Safari fallback: ensure touch events work on login
+(function(){
+  var btn = document.getElementById('login-btn');
+  if(btn){
+    btn.addEventListener('touchend', function(e){
+      e.preventDefault();
+      doLogin();
+    }, {passive:false});
+  }
+  // Ensure tabs respond to touch
+  document.querySelectorAll('.login-tab').forEach(function(tab){
+    tab.addEventListener('touchend', function(e){
+      e.preventDefault();
+      var mode = this.textContent.indexOf('マスター') >= 0 ? 'master' : 'instructor';
+      switchLoginTab(mode);
+    }, {passive:false});
+  });
+})();
+</script>
+
+<!-- ═══ PRINT PREVIEW MODAL ═══ -->
+<div id="print-modal" onclick="if(event.target===this)closePrintPreview()">
+  <div class="pm-toolbar">
+    <span class="pm-title">PRINT PREVIEW</span>
+    <button class="pm-btn pm-primary" onclick="window.print()">印刷する</button>
+    <button class="pm-btn" onclick="closePrintPreview()">閉じる</button>
+  </div>
+  <div class="pm-sheet" id="printSheet"></div>
+</div>
+
+</body>
+</html>
