@@ -344,6 +344,110 @@ function setupFAQ() {
   });
 }
 
+// ====== UI Enhancement Layer ======
+
+// 1. Scroll-Reveal — fade up as elements enter viewport
+function setupScrollReveal() {
+  const targets = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window) || targets.length === 0) {
+    targets.forEach(el => el.classList.add('visible'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+  targets.forEach(el => io.observe(el));
+}
+
+// 2. Number Counter — animate from 0 to target when number cards enter view
+function animateNumberCard(card) {
+  const numEl = card.querySelector('.num');
+  if (!numEl || numEl.dataset.animated === 'true') return;
+  numEl.dataset.animated = 'true';
+
+  const raw = numEl.textContent.trim();
+  const match = raw.match(/^(\d+)(.*)$/);
+  if (!match) return;
+  const target = parseInt(match[1], 10);
+  const suffixHtml = numEl.innerHTML.replace(/^\d+/, '');
+  const duration = 1400;
+  const startTime = performance.now();
+  const pad = match[1].length;
+
+  function tick(now) {
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const value = Math.floor(target * eased);
+    numEl.innerHTML = String(value).padStart(pad, '0') + suffixHtml;
+    if (progress < 1) requestAnimationFrame(tick);
+    else numEl.innerHTML = String(target).padStart(pad, '0') + suffixHtml;
+  }
+  requestAnimationFrame(tick);
+}
+
+function setupNumberCounters() {
+  const cards = document.querySelectorAll('.number-card');
+  if (!('IntersectionObserver' in window) || cards.length === 0) return;
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        animateNumberCard(entry.target);
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.4 });
+  cards.forEach(card => io.observe(card));
+}
+
+// 3. Hero cursor spotlight — track mouse position via CSS variables
+function setupHeroSpotlight() {
+  const hero = document.querySelector('.hero');
+  if (!hero) return;
+  let raf = null;
+  hero.addEventListener('mousemove', (e) => {
+    if (raf) cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(() => {
+      const rect = hero.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      hero.style.setProperty('--mx', x + '%');
+      hero.style.setProperty('--my', y + '%');
+    });
+  });
+}
+
+// 4. Smooth scroll for in-page anchors with custom easing
+function setupSmoothScroll() {
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', (e) => {
+      const href = a.getAttribute('href');
+      if (href === '#' || href.length < 2) return;
+      const target = document.querySelector(href);
+      if (!target) return;
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+}
+
+// 5. Header background intensifies as you scroll
+function setupHeaderScroll() {
+  const header = document.querySelector('.site-header');
+  if (!header) return;
+  function update() {
+    if (window.scrollY > 40) header.classList.add('scrolled');
+    else header.classList.remove('scrolled');
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   renderBrandMarks();
   renderFeatured();
@@ -353,4 +457,11 @@ document.addEventListener('DOMContentLoaded', () => {
     setupFilters();
   }
   setupFAQ();
+
+  // UI enhancement features
+  setupScrollReveal();
+  setupNumberCounters();
+  setupHeroSpotlight();
+  setupSmoothScroll();
+  setupHeaderScroll();
 });
