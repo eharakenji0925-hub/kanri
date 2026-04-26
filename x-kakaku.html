@@ -625,29 +625,32 @@ function renderCard(p, si, pi){
   const _si = si !== undefined ? si : '';
   const _pi = pi !== undefined ? pi : '';
   let priceH = '';
+  // p3販売価格ブロック（共通ヘルパー）
+  const fmtYen = n => { const num = parseInt(String(n).replace(/[^0-9]/g,'')); return isNaN(num) ? n : '¥'+num.toLocaleString(); };
+  let p3H = '';
+  if(p.p3 && String(p.p3).trim()){
+    const p3v = String(p.p3).trim();
+    const p3t = (p.p3tax && String(p.p3tax).trim()) ? String(p.p3tax).trim() : '';
+    p3H = `<div class="p3-block">
+      <div class="p3-lbl">販売価格</div>
+      <div class="p3-dual">
+        <div class="p3-col"><span class="p3-sub">税抜</span><div class="p3-val">${fmtYen(p3v)}</div></div>
+        ${p3t ? `<div class="p3-col"><span class="p3-sub">税込</span><div class="p3-val">${fmtYen(p3t)}</div></div>` : ''}
+      </div>
+    </div>`;
+  }
+
   if(S.mode === 'a' || S.mode === 'f'){
     priceH = (p1empty ? `<div class='badge-unset'>${L('priceUnsetMsg')}</div>` : '') +
       `<div class="price-dual">
         <div class="pd-col col1"><span class="pd-lbl">${L('wholesale')}</span><div class="pd-v">${p1empty ? '未設定' : p.p1}</div></div>
         <div class="pd-col col2"><span class="pd-lbl">${L('factory')}</span><div class="pd-v">${p.p2||'—'}</div></div>
-      </div>`;
+      </div>` + p3H;
   } else {
     priceH = p1empty
       ? '<div class="badge-unset">⚠ 価格未設定</div>'
       : `<div class="price-single"><div class="pv">${p.p1}</div><div class="pu">USD</div></div>`;
-    // 販売価格 p3（管理者が設定、大丸に表示）
-    if(p.p3 && String(p.p3).trim()){
-      const p3v = String(p.p3).trim();
-      const p3t = (p.p3tax && String(p.p3tax).trim()) ? String(p.p3tax).trim() : '';
-      const fmtYen = n => { const num = parseInt(String(n).replace(/[^0-9]/g,'')); return isNaN(num) ? n : '¥'+num.toLocaleString(); };
-      priceH += `<div class="p3-block">
-        <div class="p3-lbl">販売価格</div>
-        <div class="p3-dual">
-          <div class="p3-col"><span class="p3-sub">税抜</span><div class="p3-val">${fmtYen(p3v)}</div></div>
-          ${p3t ? `<div class="p3-col"><span class="p3-sub">税込</span><div class="p3-val">${fmtYen(p3t)}</div></div>` : ''}
-        </div>
-      </div>`;
-    }
+    priceH += p3H;
   }
 
   // スペック
