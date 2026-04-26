@@ -291,6 +291,9 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN',sans-serif;b
 .p3-save:hover{background:var(--gold-lt)}
 .p3-clear{padding:6px 10px;background:#e8e5e0;border:none;border-radius:2px;color:#888;font-size:11px;cursor:pointer}
 .p3-margin{font-size:11px;color:#27ae60;font-weight:600;margin-top:4px}
+.p3-dual{display:flex;gap:16px}
+.p3-col{flex:1}
+.p3-sub{font-size:10px;color:#999;letter-spacing:1px}
 .p3-margin.neg{color:#e74c3c}
 </style>
 </head>
@@ -352,6 +355,7 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN',sans-serif;b
     <div style="display:flex;gap:8px;align-items:center">
       <span class="save-msg" id="save-msg"></span>
       <button class="btn-save" id="btn-save" onclick="saveToGitHub()" disabled>Save</button>
+      <button class="btn-import-p3" id="btn-import-p3" onclick="importP3FromExcel()" style="padding:10px 16px;background:#e74c3c;border:none;border-radius:3px;color:#fff;font-size:10px;font-weight:700;cursor:pointer;display:none">販売価格を一括反映</button>
     </div>
   </div>
 </div>
@@ -521,6 +525,7 @@ function applyLang(){
   document.getElementById('search-inp').placeholder = L('search');
   document.getElementById('admin-fab').title = L('admin');
   document.getElementById('btn-save').textContent = L('save');
+  document.getElementById('btn-import-p3').style.display = (S.mode==='a') ? 'inline-block' : 'none';
   document.getElementById('save-status').textContent = L('disconnected');
   const ap = document.getElementById('ap-title');
   if(ap) ap.textContent = L('admin');
@@ -630,6 +635,19 @@ function renderCard(p, si, pi){
     priceH = p1empty
       ? '<div class="badge-unset">⚠ 価格未設定</div>'
       : `<div class="price-single"><div class="pv">${p.p1}</div><div class="pu">USD</div></div>`;
+    // 販売価格 p3（管理者が設定、大丸に表示）
+    if(p.p3 && String(p.p3).trim()){
+      const p3v = String(p.p3).trim();
+      const p3t = (p.p3tax && String(p.p3tax).trim()) ? String(p.p3tax).trim() : '';
+      const fmtYen = n => { const num = parseInt(String(n).replace(/[^0-9]/g,'')); return isNaN(num) ? n : '¥'+num.toLocaleString(); };
+      priceH += `<div class="p3-block">
+        <div class="p3-lbl">販売価格</div>
+        <div class="p3-dual">
+          <div class="p3-col"><span class="p3-sub">税抜</span><div class="p3-val">${fmtYen(p3v)}</div></div>
+          ${p3t ? `<div class="p3-col"><span class="p3-sub">税込</span><div class="p3-val">${fmtYen(p3t)}</div></div>` : ''}
+        </div>
+      </div>`;
+    }
   }
 
   // スペック
@@ -672,7 +690,6 @@ function renderCard(p, si, pi){
       <div class="p-njp">${p.nameJP||''}</div>
       <div class="p-desc">${p.desc||''}</div>
       ${priceH}${specH}${optH}${sprH}
-      ${S.mode==='d' ? renderP3Block(p) : ''}
     </div>
   </div>`;
 }
@@ -691,6 +708,18 @@ function renderAccessories(){
       </div>`;
     } else {
       pH = `<div class="acc-price">${item.p1}<span style="font-size:10px;color:#aaa;margin-left:4px">USD</span></div>`;
+      // アクセサリーにもp3販売価格を表示
+      if(item.p3 && String(item.p3).trim()){
+        const fmtYen = n => { const num = parseInt(String(n).replace(/[^0-9]/g,'')); return isNaN(num) ? n : '¥'+num.toLocaleString(); };
+        const p3t = (item.p3tax && String(item.p3tax).trim()) ? String(item.p3tax).trim() : '';
+        pH += `<div class="p3-block" style="margin-top:6px;padding:8px">
+          <div class="p3-lbl">販売��格</div>
+          <div class="p3-dual">
+            <div class="p3-col"><span class="p3-sub">税抜</span><div class="p3-val" style="font-size:16px">${fmtYen(item.p3)}</div></div>
+            ${p3t ? `<div class="p3-col"><span class="p3-sub">税込</span><div class="p3-val" style="font-size:16px">${fmtYen(p3t)}</div></div>` : ''}
+          </div>
+        </div>`;
+      }
     }
     return `<div class="acc-card">
       ${item.photo
@@ -962,7 +991,7 @@ function newProduct(si){
   EDIT = { type:'prod', si, pi:-1 };
   editData = {
     id:'',nameEN:'',nameJP:'',desc:'',
-    p1:'',p2:'',size:'',pack:'',weight:'',packW:'',height:'',
+    p1:'',p2:'',p3:'',p3tax:'',size:'',pack:'',weight:'',packW:'',height:'',
     eva1:'EVA +$',eva2:'EVA +$',paint1:'塗装 +$',paint2:'塗装 +$',
     springs:'',photos:[]
   };
@@ -1033,6 +1062,14 @@ function renderProdEditor(){
         <input class="f-inp field-factory" id="e-p2" value="${esc(editData.p2||'')}"></div>
       </div>
     </div>
+    ${S.mode==='a' ? `<div class="f-group">
+      <div class="f-row">
+        <div><label class="f-lbl">販売価格 税抜(円) <span style="font-size:9px;color:#f44">(大丸に表示)</span></label>
+        <input class="f-inp" id="e-p3" value="${esc(editData.p3||'')}" placeholder="例: 410400" oninput="autoP3tax()"></div>
+        <div><label class="f-lbl">販売価格 税込(円) <span style="font-size:9px;color:#f44">(自動計算)</span></label>
+        <input class="f-inp" id="e-p3tax" value="${esc(editData.p3tax||'')}" placeholder="自動: 税抜×1.1"></div>
+      </div>
+    </div>` : ''}
     <hr class="f-div">
     <div class="f-sec">SPECIFICATIONS</div>
     <div class="f-group">
@@ -1169,6 +1206,8 @@ function applyEdit(){
       desc:    document.getElementById('e-desc').value.trim(),
       p1:      (S.mode==='f') ? (orig.p1||'') : document.getElementById('e-p1').value.trim(),
       p2:      document.getElementById('e-p2').value.trim(),
+      p3:      (S.mode==='a' && document.getElementById('e-p3')) ? document.getElementById('e-p3').value.trim() : (orig.p3||''),
+      p3tax:   (S.mode==='a' && document.getElementById('e-p3tax')) ? document.getElementById('e-p3tax').value.trim() : (orig.p3tax||''),
       size:    document.getElementById('e-size').value.trim()||'—',
       pack:    document.getElementById('e-pack').value.trim()||'—',
       weight:  document.getElementById('e-wt').value.trim()||'—',
@@ -1317,82 +1356,50 @@ window.addEventListener('beforeunload', e => {
   if(S.dirty){ e.preventDefault(); e.returnValue=''; }
 });
 
+// ── Excelから販売価格を一括インポート ──
+var P3_IMPORT_MAP = {"axiscore-X01-A":{"p3":"410400","p3tax":"451440"},"axiscore-X01-B":{"p3":"480960","p3tax":"529056"},"axiscore-X01-C":{"p3":"389760","p3tax":"428736"},"3.5mm輸入ハードメープル":{"p3":"439200","p3tax":"483120"},"4対6の比率フレームワーク":{"p3":"280800","p3tax":"308880"},"50/50折りたたみフレーム":{"p3":"280800","p3tax":"308880"},"リフォーマー(グレー)":{"p3":"302400","p3tax":"332640"},"axiscore-X02-A":{"p3":"494400","p3tax":"543840"},"axiscore-X02-B":{"p3":"444480","p3tax":"488928"},"axiscore-X02-C":{"p3":"600000","p3tax":"660000"},"axiscore-X03-A":{"p3":"503040","p3tax":"553344"},"axiscore-X03-B":{"p3":"537600","p3tax":"591360"},"axiscore-X03-C":{"p3":"694400","p3tax":"763840"},"axiscore-X04-A":{"p3":"170400","p3tax":"187440"},"axiscore-X04-B":{"p3":"194880","p3tax":"214368"},"axiscore-X04-C":{"p3":"195840","p3tax":"215424"},"axiscore-X05-A":{"p3":"184800","p3tax":"203280"},"axiscore-X05-B":{"p3":"194400","p3tax":"213840"},"axiscore-X05-C":{"p3":"180000","p3tax":"198000"},"axiscore-X05-D":{"p3":"166080","p3tax":"182688"},"Pilates Circle":{"p3":"2048","p3tax":"2253"},"Pilates Ball":{"p3":"1152","p3tax":"1267"},"Foam Roller 33cm":{"p3":"2880","p3tax":"3168"},"Foam Roller 45cm":{"p3":"3120","p3tax":"3432"},"Elastic Band":{"p3":"960","p3tax":"1056"},"Yoga Block":{"p3":"2400","p3tax":"2640"},"Balance Disc":{"p3":"3040","p3tax":"3344"},"Spinal Corrector (Wood)":{"p3":"44800","p3tax":"49280"},"EPP Spinal Corrector":{"p3":"22080","p3tax":"24288"},"Spine Trainer":{"p3":"117120","p3tax":"128832"},"Massage Stick":{"p3":"13440","p3tax":"14784"},"Balance Pad":{"p3":"4800","p3tax":"5280"},"Pilates Mat":{"p3":"11520","p3tax":"12672"},"Box":{"p3":"32000","p3tax":"35200"},"Maple Stick 80cm":{"p3":"11520","p3tax":"12672"},"Maple Stick 120cm":{"p3":"15360","p3tax":"16896"},"アークバレル(取っ手なし)":{"p3":"25600","p3tax":"28160"},"アークバレル(取っ手付き)":{"p3":"48000","p3tax":"52800"},"C字型矯正器具":{"p3":"128000","p3tax":"140800"},"フィギュアエイトスケートボード":{"p3":"35200","p3tax":"38720"},"ビーチウッド足底矯正器具":{"p3":"48000","p3tax":"52800"},"妊婦用ウェッジクッション":{"p3":"37120","p3tax":"40832"}};
 
-// ── 販売価格 p3 (大丸専用・localStorage保存) ──
-function p3Key(p){ return 'p3_' + (p.id||p.nameEN||'').replace(/[^a-zA-Z0-9]/g,'_'); }
-
-function getP3(p){ return localStorage.getItem(p3Key(p)) || ''; }
-function setP3(p, val){ localStorage.setItem(p3Key(p), val); }
-function clearP3(p){ localStorage.removeItem(p3Key(p)); }
-
-function renderP3Block(p){
-  const key = p3Key(p);
-  const val = getP3(p);
-  const p1num = parseFloat((p.p1||'').replace(/[^0-9.]/g,'')) || 0;
-  const p3num = parseFloat(val.replace(/[^0-9.]/g,'')) || 0;
-
-  let marginH = '';
-  if(p1num > 0 && p3num > 0){
-    const margin = ((p3num - p1num) / p1num * 100).toFixed(1);
-    const diff = (p3num - p1num).toFixed(0);
-    const cls = p3num >= p1num ? '' : ' neg';
-    marginH = `<div class="p3-margin${cls}">粗利: $${diff} (${margin}%)</div>`;
-  }
-
-  if(val){
-    return `<div class="p3-block">
-      <div class="p3-lbl">販売価格（自社設定）<span>クリックで編集</span></div>
-      <div class="p3-row">
-        <div class="p3-val" onclick="editP3('${key}',this)" data-p3key="${key}">${val} <span style="font-size:13px;color:#aaa;margin-left:4px">USD</span></div>
-        <button class="p3-clear" onclick="clearP3Block('${key}')">クリア</button>
-      </div>
-      ${marginH}
-    </div>`;
-  } else {
-    return `<div class="p3-block">
-      <div class="p3-lbl">販売価格（自社設定）<span>クリックで設定</span></div>
-      <div class="p3-row">
-        <div class="p3-val empty" onclick="editP3('${key}',this)" data-p3key="${key}">クリックして販売価格を入力</div>
-      </div>
-    </div>`;
-  }
-}
-
-function editP3(key, el){
-  const block = el.closest('.p3-block');
-  const current = el.dataset.p3key ? localStorage.getItem(el.dataset.p3key) || '' : '';
-  block.innerHTML = `
-    <div class="p3-lbl">販売価格（自社設定）</div>
-    <div class="p3-row">
-      <input class="p3-inp" id="p3-inp-${key}" type="text" value="${current}" placeholder="例: $1,350" autofocus>
-      <button class="p3-save" onclick="saveP3Block('${key}')">保存</button>
-      <button class="p3-clear" onclick="cancelP3Block('${key}')">キャンセル</button>
-    </div>`;
-  const inp = document.getElementById('p3-inp-' + key);
-  if(inp){ inp.focus(); inp.select(); }
-  inp.addEventListener('keydown', e => { if(e.key === 'Enter') saveP3Block(key); });
-}
-
-function saveP3Block(key){
-  const inp = document.getElementById('p3-inp-' + key);
-  if(!inp) return;
-  const val = inp.value.trim();
-  if(val) localStorage.setItem(key, val);
-  else localStorage.removeItem(key);
-  renderCatalog(); // 再描画
-  // スクロール位置維持のため少し待つ
-}
-
-function clearP3Block(key){
-  if(!confirm('販売価格をクリアしますか？')) return;
-  localStorage.removeItem(key);
+function importP3FromExcel(){
+  if(S.mode !== 'a'){ alert('管理者モードでのみ実行できます'); return; }
+  var count = 0;
+  S.data.sections.forEach(function(sec){
+    sec.products.forEach(function(p){
+      // IDまたは名前でマッチ
+      var match = P3_IMPORT_MAP[p.id] || P3_IMPORT_MAP[p.nameEN] || P3_IMPORT_MAP[p.nameJP];
+      if(match){
+        p.p3 = match.p3;
+        p.p3tax = match.p3tax;
+        count++;
+      }
+    });
+  });
+  // アクセサリーにも適用
+  ['small','large'].forEach(function(k){
+    (S.data.accessories[k]||[]).forEach(function(item){
+      var match = P3_IMPORT_MAP[item.name];
+      if(match){
+        item.p3 = match.p3;
+        item.p3tax = match.p3tax;
+        count++;
+      }
+    });
+  });
+  S.dirty = true;
+  alert('販売価格を ' + count + ' 件の商品に反映しました。\n「GitHubに保存」を押して保存してください。');
   renderCatalog();
+  renderAdminPanel();
 }
 
-function cancelP3Block(key){
-  renderCatalog();
+// 税抜入力時に税込を自動計算
+function autoP3tax(){
+  const inp = document.getElementById('e-p3');
+  const out = document.getElementById('e-p3tax');
+  if(!inp || !out) return;
+  const v = parseFloat(inp.value.replace(/[^0-9.]/g,''));
+  if(!isNaN(v) && v > 0){
+    out.value = Math.round(v * 1.1);
+  }
 }
-
 
 </script>
 </body>
