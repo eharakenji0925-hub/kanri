@@ -448,6 +448,156 @@ function setupHeaderScroll() {
   update();
 }
 
+// ====== UI Enhancement v2 ======
+
+// 6. Preloader hide after page load
+function setupPreloader() {
+  const preloader = document.querySelector('.preloader');
+  if (!preloader) return;
+  // Inject the brand mark svg into preloader
+  const markSlot = preloader.querySelector('[data-brand-mark="loader"]');
+  if (markSlot) markSlot.innerHTML = BRAND_MARK_SMALL_SVG;
+  // Hide after fixed delay (lets the animation run)
+  setTimeout(() => {
+    preloader.classList.add('hidden');
+    setTimeout(() => preloader.remove(), 1000);
+  }, 1700);
+}
+
+// 7. Custom cursor (desktop only)
+function setupCustomCursor() {
+  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const cursor = document.createElement('div');
+  cursor.className = 'custom-cursor';
+  document.body.appendChild(cursor);
+  const dot = document.createElement('div');
+  dot.className = 'custom-cursor-dot';
+  document.body.appendChild(dot);
+
+  let mx = 0, my = 0, cx = 0, cy = 0;
+  document.addEventListener('mousemove', (e) => {
+    mx = e.clientX;
+    my = e.clientY;
+    dot.style.left = mx + 'px';
+    dot.style.top = my + 'px';
+  });
+  function loop() {
+    cx += (mx - cx) * 0.18;
+    cy += (my - cy) * 0.18;
+    cursor.style.left = cx + 'px';
+    cursor.style.top = cy + 'px';
+    requestAnimationFrame(loop);
+  }
+  loop();
+
+  const interactiveSel = 'a, button, .product-card, .filter-tabs button, [role="button"]';
+  document.addEventListener('mouseover', (e) => {
+    if (e.target.closest(interactiveSel)) cursor.classList.add('expand');
+  });
+  document.addEventListener('mouseout', (e) => {
+    if (e.target.closest(interactiveSel)) cursor.classList.remove('expand');
+  });
+  document.addEventListener('mouseleave', () => {
+    cursor.style.opacity = '0';
+    dot.style.opacity = '0';
+  });
+  document.addEventListener('mouseenter', () => {
+    cursor.style.opacity = '';
+    dot.style.opacity = '';
+  });
+}
+
+// 8. Scroll progress bar
+function setupScrollProgress() {
+  const bar = document.createElement('div');
+  bar.className = 'scroll-progress';
+  document.body.appendChild(bar);
+  function update() {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    bar.style.width = progress + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+}
+
+// 9. Magnetic buttons
+function setupMagneticButtons() {
+  if (!window.matchMedia('(hover: hover)').matches) return;
+  const buttons = document.querySelectorAll('.magnetic, .btn-shop, .btn-outline, .cta-banner .btn-primary');
+  buttons.forEach(btn => {
+    btn.classList.add('magnetic');
+    btn.addEventListener('mousemove', (e) => {
+      const rect = btn.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+    });
+    btn.addEventListener('mouseleave', () => {
+      btn.style.transform = '';
+    });
+  });
+}
+
+// 10. 3D Tilt on product cards
+function setupTiltCards() {
+  if (!window.matchMedia('(hover: hover)').matches) return;
+  document.querySelectorAll('.product-card').forEach(card => {
+    const inner = card.querySelector('.img-wrap svg');
+    if (!inner) return;
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      inner.style.setProperty('--ry', (x * 12) + 'deg');
+      inner.style.setProperty('--rx', (-y * 12) + 'deg');
+    });
+    card.addEventListener('mouseleave', () => {
+      inner.style.setProperty('--ry', '0deg');
+      inner.style.setProperty('--rx', '0deg');
+    });
+  });
+}
+
+// 11. Image mask reveal — adds in-view to product cards on enter
+function setupImageReveal() {
+  const cards = document.querySelectorAll('.product-card');
+  if (!('IntersectionObserver' in window) || cards.length === 0) {
+    cards.forEach(c => c.classList.add('in-view'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('in-view'), Math.random() * 200);
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  cards.forEach(c => io.observe(c));
+}
+
+// 12. Back to top button
+function setupBackToTop() {
+  const btn = document.createElement('button');
+  btn.className = 'back-to-top';
+  btn.setAttribute('aria-label', 'Back to top');
+  btn.innerHTML = '↑';
+  document.body.appendChild(btn);
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  function update() {
+    if (window.scrollY > 600) btn.classList.add('visible');
+    else btn.classList.remove('visible');
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   renderBrandMarks();
   renderFeatured();
@@ -458,10 +608,19 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   setupFAQ();
 
-  // UI enhancement features
+  // UI enhancement v1
   setupScrollReveal();
   setupNumberCounters();
   setupHeroSpotlight();
   setupSmoothScroll();
   setupHeaderScroll();
+
+  // UI enhancement v2
+  setupPreloader();
+  setupCustomCursor();
+  setupScrollProgress();
+  setupMagneticButtons();
+  setupTiltCards();
+  setupImageReveal();
+  setupBackToTop();
 });

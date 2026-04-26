@@ -5,9 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AXISCORE PICKLEBALL ｜ Pickleball を Design する</title>
 <meta name="description" content="AXISCORE pickleball — ピックルボールを、Designする。プレイヤーの軸となるラケット、ボール、ウェアを、デザインの視点から再構築するピックルボールブランド。">
-<link rel="stylesheet" href="styles.css?v=3">
+<link rel="stylesheet" href="styles.css?v=4">
 </head>
 <body>
+
+<!-- PRELOADER -->
+<div class="preloader">
+  <div class="preloader-mark" data-brand-mark="loader"></div>
+  <div class="preloader-bar"></div>
+</div>
+
+<!-- IDLE PICKLEBALL — subtle ambient brand element -->
+<div class="idle-ball" aria-hidden="true"></div>
 
 <header class="site-header">
   <div class="container header-inner">
@@ -64,7 +73,7 @@
 </div>
 
 <!-- BRAND IDENTITY — LIGHT -->
-<section class="section section-light">
+<section class="section section-light" data-section-num="01 / Identity">
   <div class="container-narrow">
     <div class="section-head">
       <span class="eyebrow">Brand Identity</span>
@@ -85,7 +94,7 @@
 </section>
 
 <!-- MERCHANDISE — DARK -->
-<section class="section">
+<section class="section" data-section-num="02 / Merchandise">
   <div class="container">
     <div class="section-head">
       <span class="eyebrow">Merchandise</span>
@@ -118,7 +127,7 @@
 </section>
 
 <!-- NUMBERS — LIGHT -->
-<section class="section section-light">
+<section class="section section-light" data-section-num="03 / Numbers">
   <div class="container">
     <div class="section-head">
       <span class="eyebrow">Numbers</span>
@@ -146,7 +155,7 @@
 </section>
 
 <!-- CORE VALUES — DARK -->
-<section class="section">
+<section class="section" data-section-num="04 / Values">
   <div class="container">
     <div class="section-head">
       <span class="eyebrow">Core Values</span>
@@ -174,7 +183,7 @@
 </section>
 
 <!-- LINE UP — LIGHT -->
-<section class="section section-light">
+<section class="section section-light" data-section-num="05 / Line Up">
   <div class="container">
     <div class="section-head">
       <span class="eyebrow">Line Up</span>
@@ -189,7 +198,7 @@
 </section>
 
 <!-- BRAND FAMILY — DARK -->
-<section class="section">
+<section class="section" data-section-num="06 / Family">
   <div class="container-narrow">
     <div class="section-head">
       <span class="eyebrow">Brand Family</span>
@@ -220,7 +229,7 @@
 </section>
 
 <!-- CONTACT — LIGHT -->
-<section class="section section-light" id="contact">
+<section class="section section-light" id="contact" data-section-num="07 / Contact">
   <div class="container-narrow">
     <div class="contact-block reveal">
       <div class="small-label">Contact</div>
@@ -238,12 +247,38 @@
   </div>
 </section>
 
+<!-- FOOTER MARQUEE — mirror of header marquee for symmetry -->
+<div class="footer-marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span><em>Designed</em> in Japan</span>
+    <span class="star">✦</span>
+    <span>AXISCORE — Pickleball</span>
+    <span class="star">✦</span>
+    <span><em>Find</em> your AXIS</span>
+    <span class="star">✦</span>
+    <span>Since 2026</span>
+    <span class="star">✦</span>
+    <span><em>Pickleball</em> を Design する</span>
+    <span class="star">✦</span>
+    <span><em>Designed</em> in Japan</span>
+    <span class="star">✦</span>
+    <span>AXISCORE — Pickleball</span>
+    <span class="star">✦</span>
+    <span><em>Find</em> your AXIS</span>
+    <span class="star">✦</span>
+    <span>Since 2026</span>
+    <span class="star">✦</span>
+    <span><em>Pickleball</em> を Design する</span>
+    <span class="star">✦</span>
+  </div>
+</div>
+
 <footer class="site-footer">
   <div class="container">
     <p>© AXISCORE PICKLEBALL — All rights reserved</p>
   </div>
 </footer>
 
-<script src="script.js?v=3"></script>
+<script src="script.js?v=4"></script>
 </body>
 </html>
