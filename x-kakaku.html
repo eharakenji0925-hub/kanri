@@ -294,6 +294,9 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN',sans-serif;b
 .p3-dual{display:flex;gap:16px}
 .p3-col{flex:1}
 .p3-sub{font-size:10px;color:#999;letter-spacing:1px}
+.p-memo{margin-top:12px;padding:10px 12px;background:rgba(100,149,237,.08);border:1px solid rgba(100,149,237,.2);border-radius:3px}
+.p-memo-lbl{font-size:9px;letter-spacing:2px;color:#6495ed;margin-bottom:4px;font-weight:700}
+.p-memo-txt{font-size:12px;color:#555;line-height:1.6;white-space:pre-wrap}
 .p3-margin.neg{color:#e74c3c}
 </style>
 </head>
@@ -693,6 +696,7 @@ function renderCard(p, si, pi){
       <div class="p-njp">${p.nameJP||''}</div>
       <div class="p-desc">${p.desc||''}</div>
       ${priceH}${specH}${optH}${sprH}
+      ${(S.mode==='a'||S.mode==='f') && p.memo ? `<div class="p-memo"><div class="p-memo-lbl">MEMO</div><div class="p-memo-txt">${p.memo.replace(/\n/g,'<br>')}</div></div>` : ''}
     </div>
   </div>`;
 }
@@ -972,7 +976,7 @@ function stripP2(fullData){
   const d = JSON.parse(JSON.stringify(fullData));
   d.sections.forEach(sec => {
     sec.products.forEach(p => {
-      delete p.p2; delete p.eva2; delete p.paint2;
+      delete p.p2; delete p.eva2; delete p.paint2; delete p.memo;
     });
   });
   [...d.accessories.small, ...d.accessories.large].forEach(item => {
@@ -994,7 +998,7 @@ function newProduct(si){
   EDIT = { type:'prod', si, pi:-1 };
   editData = {
     id:'',nameEN:'',nameJP:'',desc:'',
-    p1:'',p2:'',p3:'',p3tax:'',size:'',pack:'',weight:'',packW:'',height:'',
+    p1:'',p2:'',p3:'',p3tax:'',memo:'',size:'',pack:'',weight:'',packW:'',height:'',
     eva1:'EVA +$',eva2:'EVA +$',paint1:'塗装 +$',paint2:'塗装 +$',
     springs:'',photos:[]
   };
@@ -1112,6 +1116,11 @@ function renderProdEditor(){
       <textarea class="f-ta" id="e-spr">${esc(editData.springs||'')}</textarea>
     </div>
     <hr class="f-div">
+    <div class="f-sec">MEMO <span style="font-size:9px;color:#888;font-weight:400">（江原↔工場 共有メモ）</span></div>
+    <div class="f-group">
+      <textarea class="f-ta" id="e-memo" rows="4" placeholder="備品リスト、仕様変更の連絡など…">${esc(editData.memo||'')}</textarea>
+    </div>
+    <hr class="f-div">
     <div class="f-sec">PHOTOS</div>
     ${renderPhotoGrid(editData.photos||[])}
   `;
@@ -1221,6 +1230,7 @@ function applyEdit(){
       paint1:  (S.mode==='f') ? (orig.paint1||'') : document.getElementById('e-pnt1').value.trim(),
       paint2:  document.getElementById('e-pnt2').value.trim(),
       springs: document.getElementById('e-spr').value.trim(),
+      memo:    document.getElementById('e-memo').value.trim(),
       photos:  editData.photos||[]
     };
     if(EDIT.pi === -1){
