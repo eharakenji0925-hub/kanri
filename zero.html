@@ -34,7 +34,7 @@
 <script>
 'use strict';
 (function(){
-  var TOP_HASH='5ee63c97bc92e747475b8a82fb6b072344b2c284e6e0d7d18b8cdec1ec6c86b2';
+  var TOP_HASH='f9194e73f9e9459e3450ea10a179cdf77aafa695beecd3b9344a98d111622243';
   var SK='sns_zero_auth';
   function sha256(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,'0')}).join('')});}
   if(sessionStorage.getItem(SK)==='1'){document.getElementById('login-screen').style.display='none';}
