@@ -294,6 +294,10 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN',sans-serif;b
 .p3-dual{display:flex;gap:16px}
 .p3-col{flex:1}
 .p3-sub{font-size:10px;color:#999;letter-spacing:1px}
+.p4-block{margin-top:12px;padding:12px;background:rgba(33,150,243,.07);border:1px solid rgba(33,150,243,.18);border-radius:3px}
+.p4-lbl{font-size:9px;letter-spacing:2px;color:#2196f3;margin-bottom:6px;font-weight:700}
+.p4-val{font-size:20px;font-weight:700;color:#1565c0}
+.p4-profit{font-size:18px;font-weight:700;color:#2e7d32}
 .p-memo{margin-top:12px;padding:10px 12px;background:rgba(100,149,237,.08);border:1px solid rgba(100,149,237,.2);border-radius:3px}
 .p-memo-lbl{font-size:9px;letter-spacing:2px;color:#6495ed;margin-bottom:4px;font-weight:700}
 .p-memo-txt{font-size:12px;color:#555;line-height:1.6;white-space:pre-wrap}
@@ -642,18 +646,41 @@ function renderCard(p, si, pi){
       </div>
     </div>`;
   }
+  let p4H = '';
+  if(p.p4 && String(p.p4).trim()){
+    const p4v = String(p.p4).trim();
+    const p4t = (p.p4tax && String(p.p4tax).trim()) ? String(p.p4tax).trim() : '';
+    const profitV = (p.p4profit && String(p.p4profit).trim()) ? String(p.p4profit).trim() : '';
+    p4H = `<div class="p4-block">
+      <div class="p4-lbl">代理店価格</div>
+      <div class="p3-dual">
+        <div class="p3-col"><span class="p3-sub">税抜</span><div class="p4-val">${fmtYen(p4v)}</div></div>
+        ${p4t ? `<div class="p3-col"><span class="p3-sub">税込</span><div class="p4-val">${fmtYen(p4t)}</div></div>` : ''}
+        ${(profitV && S.mode==='a') ? `<div class="p3-col"><span class="p3-sub">利益</span><div class="p4-profit">${fmtYen(profitV)}</div></div>` : ''}
+      </div>
+    </div>`;
+  }
 
-  if(S.mode === 'a' || S.mode === 'f'){
+  if(S.mode === 'a'){
+    // 江原管理: C(仕入れUSD) + 原価(紫) + F,G(代理店価格) + J,K(販売価格)
     priceH = (p1empty ? `<div class='badge-unset'>${L('priceUnsetMsg')}</div>` : '') +
       `<div class="price-dual">
         <div class="pd-col col1"><span class="pd-lbl">${L('wholesale')}</span><div class="pd-v">${p1empty ? '未設定' : p.p1}</div></div>
         <div class="pd-col col2"><span class="pd-lbl">${L('factory')}</span><div class="pd-v">${p.p2||'—'}</div></div>
-      </div>` + p3H;
+      </div>` + p4H + p3H;
+  } else if(S.mode === 'f'){
+    // 工場: そのまま（p1+p2のみ）
+    priceH = (p1empty ? `<div class='badge-unset'>${L('priceUnsetMsg')}</div>` : '') +
+      `<div class="price-dual">
+        <div class="pd-col col1"><span class="pd-lbl">${L('wholesale')}</span><div class="pd-v">${p1empty ? '未設定' : p.p1}</div></div>
+        <div class="pd-col col2"><span class="pd-lbl">${L('factory')}</span><div class="pd-v">${p.p2||'—'}</div></div>
+      </div>`;
   } else {
+    // 大丸: C(仕入れUSD) + F,G(代理店価格) + J,K(販売価格) — 利益なし、原価なし
     priceH = p1empty
       ? '<div class="badge-unset">⚠ 価格未設定</div>'
       : `<div class="price-single"><div class="pv">${p.p1}</div><div class="pu">USD</div></div>`;
-    priceH += p3H;
+    priceH += p4H + p3H;
   }
 
   // スペック
@@ -976,7 +1003,7 @@ function stripP2(fullData){
   const d = JSON.parse(JSON.stringify(fullData));
   d.sections.forEach(sec => {
     sec.products.forEach(p => {
-      delete p.p2; delete p.eva2; delete p.paint2; delete p.memo;
+      delete p.p2; delete p.eva2; delete p.paint2; delete p.memo; delete p.p4profit;
     });
   });
   [...d.accessories.small, ...d.accessories.large].forEach(item => {
@@ -998,7 +1025,7 @@ function newProduct(si){
   EDIT = { type:'prod', si, pi:-1 };
   editData = {
     id:'',nameEN:'',nameJP:'',desc:'',
-    p1:'',p2:'',p3:'',p3tax:'',memo:'',size:'',pack:'',weight:'',packW:'',height:'',
+    p1:'',p2:'',p3:'',p3tax:'',p4:'',p4tax:'',p4profit:'',memo:'',size:'',pack:'',weight:'',packW:'',height:'',
     eva1:'EVA +$',eva2:'EVA +$',paint1:'塗装 +$',paint2:'塗装 +$',
     springs:'',photos:[]
   };
@@ -1075,6 +1102,20 @@ function renderProdEditor(){
         <input class="f-inp" id="e-p3" value="${esc(editData.p3||'')}" placeholder="例: 410400" oninput="autoP3tax()"></div>
         <div><label class="f-lbl">販売価格 税込(円) <span style="font-size:9px;color:#f44">(自動計算)</span></label>
         <input class="f-inp" id="e-p3tax" value="${esc(editData.p3tax||'')}" placeholder="自動: 税抜×1.1"></div>
+      </div>
+    </div>` : ''}
+    ${S.mode==='a' ? `<div class="f-group">
+      <div class="f-row">
+        <div><label class="f-lbl">代理店価格 税抜(円) <span style="font-size:9px;color:#2196f3">(大丸にも表示)</span></label>
+        <input class="f-inp" id="e-p4" value="${esc(editData.p4||'')}" placeholder="例: 246240" oninput="autoP4tax()"></div>
+        <div><label class="f-lbl">代理店価格 税込(円)</label>
+        <input class="f-inp" id="e-p4tax" value="${esc(editData.p4tax||'')}" placeholder="自動: 税抜×1.1"></div>
+      </div>
+    </div>
+    <div class="f-group">
+      <div class="f-row">
+        <div><label class="f-lbl">当社利益(円) <span style="font-size:9px;color:#4caf50">(代理店価格−仕入れ円)</span></label>
+        <input class="f-inp" id="e-p4profit" value="${esc(editData.p4profit||'')}" placeholder="自動計算"></div>
       </div>
     </div>` : ''}
     <hr class="f-div">
@@ -1220,6 +1261,9 @@ function applyEdit(){
       p2:      document.getElementById('e-p2').value.trim(),
       p3:      (S.mode==='a' && document.getElementById('e-p3')) ? document.getElementById('e-p3').value.trim() : (orig.p3||''),
       p3tax:   (S.mode==='a' && document.getElementById('e-p3tax')) ? document.getElementById('e-p3tax').value.trim() : (orig.p3tax||''),
+      p4:      (S.mode==='a' && document.getElementById('e-p4')) ? document.getElementById('e-p4').value.trim() : (orig.p4||''),
+      p4tax:   (S.mode==='a' && document.getElementById('e-p4tax')) ? document.getElementById('e-p4tax').value.trim() : (orig.p4tax||''),
+      p4profit:(S.mode==='a' && document.getElementById('e-p4profit')) ? document.getElementById('e-p4profit').value.trim() : (orig.p4profit||''),
       size:    document.getElementById('e-size').value.trim()||'—',
       pack:    document.getElementById('e-pack').value.trim()||'—',
       weight:  document.getElementById('e-wt').value.trim()||'—',
@@ -1401,6 +1445,17 @@ function importP3FromExcel(){
   alert('販売価格を ' + count + ' 件の商品に反映しました。\n「GitHubに保存」を押して保存してください。');
   renderCatalog();
   renderAdminPanel();
+}
+
+// 代理店価格の税込を自動計算
+function autoP4tax(){
+  const inp = document.getElementById('e-p4');
+  const out = document.getElementById('e-p4tax');
+  if(!inp || !out) return;
+  const v = parseFloat(inp.value.replace(/[^0-9.]/g,''));
+  if(!isNaN(v) && v > 0){
+    out.value = Math.round(v * 1.1);
+  }
 }
 
 // 税抜入力時に税込を自動計算
