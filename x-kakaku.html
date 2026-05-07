@@ -728,7 +728,7 @@ function renderAccessories(){
     pH += accP4Block(item);
     pH += accP3Block(item);
   }
-  const imgH = item.img ? '<img class="acc-img" src="'+item.img+'" alt="">' : '<div class="acc-img" style="background:#eee"></div>';
+  const imgSrc = item.img || item.photo || ''; const imgH = imgSrc ? '<img class="acc-img" src="'+imgSrc+'" alt="">' : '<div class="acc-img" style="background:#eee"></div>';
   return '<div class="acc-card">'+imgH+'<div class="acc-body"><div class="acc-name">'+item.name+'</div>'+(item.spec?'<div class="acc-spec">'+item.spec+'</div>':'')+' '+pH+'</div></div>';
 }
 
