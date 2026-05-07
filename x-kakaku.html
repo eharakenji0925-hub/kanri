@@ -291,16 +291,6 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN',sans-serif;b
 .p3-save:hover{background:var(--gold-lt)}
 .p3-clear{padding:6px 10px;background:#e8e5e0;border:none;border-radius:2px;color:#888;font-size:11px;cursor:pointer}
 .p3-margin{font-size:11px;color:#27ae60;font-weight:600;margin-top:4px}
-.p3-dual{display:flex;gap:16px}
-.p3-col{flex:1}
-.p3-sub{font-size:10px;color:#999;letter-spacing:1px}
-.p4-block{margin-top:12px;padding:12px;background:rgba(33,150,243,.07);border:1px solid rgba(33,150,243,.18);border-radius:3px}
-.p4-lbl{font-size:9px;letter-spacing:2px;color:#2196f3;margin-bottom:6px;font-weight:700}
-.p4-val{font-size:20px;font-weight:700;color:#1565c0}
-.p4-profit{font-size:18px;font-weight:700;color:#2e7d32}
-.p-memo{margin-top:12px;padding:10px 12px;background:rgba(100,149,237,.08);border:1px solid rgba(100,149,237,.2);border-radius:3px}
-.p-memo-lbl{font-size:9px;letter-spacing:2px;color:#6495ed;margin-bottom:4px;font-weight:700}
-.p-memo-txt{font-size:12px;color:#555;line-height:1.6;white-space:pre-wrap}
 .p3-margin.neg{color:#e74c3c}
 </style>
 </head>
@@ -362,7 +352,6 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN',sans-serif;b
     <div style="display:flex;gap:8px;align-items:center">
       <span class="save-msg" id="save-msg"></span>
       <button class="btn-save" id="btn-save" onclick="saveToGitHub()" disabled>Save</button>
-      <button class="btn-import-p3" id="btn-import-p3" onclick="importP3FromExcel()" style="padding:10px 16px;background:#e74c3c;border:none;border-radius:3px;color:#fff;font-size:10px;font-weight:700;cursor:pointer;display:none">販売価格を一括反映</button>
     </div>
   </div>
 </div>
@@ -532,7 +521,6 @@ function applyLang(){
   document.getElementById('search-inp').placeholder = L('search');
   document.getElementById('admin-fab').title = L('admin');
   document.getElementById('btn-save').textContent = L('save');
-  document.getElementById('btn-import-p3').style.display = (S.mode==='a') ? 'inline-block' : 'none';
   document.getElementById('save-status').textContent = L('disconnected');
   const ap = document.getElementById('ap-title');
   if(ap) ap.textContent = L('admin');
@@ -632,55 +620,16 @@ function renderCard(p, si, pi){
   const _si = si !== undefined ? si : '';
   const _pi = pi !== undefined ? pi : '';
   let priceH = '';
-  // p3販売価格ブロック（共通ヘルパー）
-  const fmtYen = n => { const num = parseInt(String(n).replace(/[^0-9]/g,'')); return isNaN(num) ? n : '¥'+num.toLocaleString(); };
-  let p3H = '';
-  if(p.p3 && String(p.p3).trim()){
-    const p3v = String(p.p3).trim();
-    const p3t = (p.p3tax && String(p.p3tax).trim()) ? String(p.p3tax).trim() : '';
-    p3H = `<div class="p3-block">
-      <div class="p3-lbl">販売価格</div>
-      <div class="p3-dual">
-        <div class="p3-col"><span class="p3-sub">税抜</span><div class="p3-val">${fmtYen(p3v)}</div></div>
-        ${p3t ? `<div class="p3-col"><span class="p3-sub">税込</span><div class="p3-val">${fmtYen(p3t)}</div></div>` : ''}
-      </div>
-    </div>`;
-  }
-  let p4H = '';
-  if(p.p4 && String(p.p4).trim()){
-    const p4v = String(p.p4).trim();
-    const p4t = (p.p4tax && String(p.p4tax).trim()) ? String(p.p4tax).trim() : '';
-    const profitV = (p.p4profit && String(p.p4profit).trim()) ? String(p.p4profit).trim() : '';
-    p4H = `<div class="p4-block">
-      <div class="p4-lbl">代理店価格</div>
-      <div class="p3-dual">
-        <div class="p3-col"><span class="p3-sub">税抜</span><div class="p4-val">${fmtYen(p4v)}</div></div>
-        ${p4t ? `<div class="p3-col"><span class="p3-sub">税込</span><div class="p4-val">${fmtYen(p4t)}</div></div>` : ''}
-        ${(profitV && S.mode==='a') ? `<div class="p3-col"><span class="p3-sub">利益</span><div class="p4-profit">${fmtYen(profitV)}</div></div>` : ''}
-      </div>
-    </div>`;
-  }
-
-  if(S.mode === 'a'){
-    // 江原管理: C(仕入れUSD) + 原価(紫) + F,G(代理店価格) + J,K(販売価格)
-    priceH = (p1empty ? `<div class='badge-unset'>${L('priceUnsetMsg')}</div>` : '') +
-      `<div class="price-dual">
-        <div class="pd-col col1"><span class="pd-lbl">${L('wholesale')}</span><div class="pd-v">${p1empty ? '未設定' : p.p1}</div></div>
-        <div class="pd-col col2"><span class="pd-lbl">${L('factory')}</span><div class="pd-v">${p.p2||'—'}</div></div>
-      </div>` + p4H + p3H;
-  } else if(S.mode === 'f'){
-    // 工場: そのまま（p1+p2のみ）
+  if(S.mode === 'a' || S.mode === 'f'){
     priceH = (p1empty ? `<div class='badge-unset'>${L('priceUnsetMsg')}</div>` : '') +
       `<div class="price-dual">
         <div class="pd-col col1"><span class="pd-lbl">${L('wholesale')}</span><div class="pd-v">${p1empty ? '未設定' : p.p1}</div></div>
         <div class="pd-col col2"><span class="pd-lbl">${L('factory')}</span><div class="pd-v">${p.p2||'—'}</div></div>
       </div>`;
   } else {
-    // 大丸: C(仕入れUSD) + F,G(代理店価格) + J,K(販売価格) — 利益なし、原価なし
     priceH = p1empty
       ? '<div class="badge-unset">⚠ 価格未設定</div>'
       : `<div class="price-single"><div class="pv">${p.p1}</div><div class="pu">USD</div></div>`;
-    priceH += p4H + p3H;
   }
 
   // スペック
@@ -723,7 +672,7 @@ function renderCard(p, si, pi){
       <div class="p-njp">${p.nameJP||''}</div>
       <div class="p-desc">${p.desc||''}</div>
       ${priceH}${specH}${optH}${sprH}
-      ${(S.mode==='a'||S.mode==='f') && p.memo ? `<div class="p-memo"><div class="p-memo-lbl">MEMO</div><div class="p-memo-txt">${p.memo.replace(/\n/g,'<br>')}</div></div>` : ''}
+      ${S.mode==='d' ? renderP3Block(p) : ''}
     </div>
   </div>`;
 }
@@ -742,18 +691,6 @@ function renderAccessories(){
       </div>`;
     } else {
       pH = `<div class="acc-price">${item.p1}<span style="font-size:10px;color:#aaa;margin-left:4px">USD</span></div>`;
-      // アクセサリーにもp3販売価格を表示
-      if(item.p3 && String(item.p3).trim()){
-        const fmtYen = n => { const num = parseInt(String(n).replace(/[^0-9]/g,'')); return isNaN(num) ? n : '¥'+num.toLocaleString(); };
-        const p3t = (item.p3tax && String(item.p3tax).trim()) ? String(item.p3tax).trim() : '';
-        pH += `<div class="p3-block" style="margin-top:6px;padding:8px">
-          <div class="p3-lbl">販売��格</div>
-          <div class="p3-dual">
-            <div class="p3-col"><span class="p3-sub">税抜</span><div class="p3-val" style="font-size:16px">${fmtYen(item.p3)}</div></div>
-            ${p3t ? `<div class="p3-col"><span class="p3-sub">税込</span><div class="p3-val" style="font-size:16px">${fmtYen(p3t)}</div></div>` : ''}
-          </div>
-        </div>`;
-      }
     }
     return `<div class="acc-card">
       ${item.photo
@@ -814,33 +751,33 @@ function renderAdminPanel(){
     const key = 'sec'+si;
     const open = AP_OPEN[key] !== false;
     const issues = sec.products.filter(p=>!p.p1||p.p1.trim()===''||p.p1==='—').length;
-    h += '<div class="ap-cat-hd" onclick="toggleAP(\''+key+'\')">'
-      +'<div class="ap-cat-left">'
-      +'<span class="ap-cat-lbl">'+sec.num+' '+sec.en+'</span>'
-      +'<span class="ap-cat-cnt">'+sec.products.length+'</span>'
-      +(issues>0 ? '<span class="ap-unset">⚠ '+issues+'</span>' : '')
-      +'</div>'
-      +'<div style="display:flex;align-items:center;gap:8px">'
-      +'<button class="btn-add" data-action="newProduct" data-si="'+si+'">'+L('add')+'</button>'
-      +'<span class="ap-cat-ico '+(open?'open':'')+'" id="ico-'+key+'">▼</span>'
-      +'</div>'
-      +'</div>'
-      +'<div class="ap-cat-body" id="bd-'+key+'" style="max-height:'+(open?'3000px':'0')+'">';
+    h += `<div class="ap-cat-hd" onclick="toggleAP('${key}')">
+      <div class="ap-cat-left">
+        <span class="ap-cat-lbl">${sec.num} ${sec.en}</span>
+        <span class="ap-cat-cnt">${sec.products.length}</span>
+        ${issues>0 ? `<span class="ap-unset">⚠ ${issues}</span>` : ''}
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <button class="btn-add" onclick="event.stopPropagation();newProduct(${si})">${L('add')}</button>
+        <span class="ap-cat-ico ${open?'open':''}" id="ico-${key}">▼</span>
+      </div>
+    </div>
+    <div class="ap-cat-body" id="bd-${key}" style="max-height:${open?'3000px':'0'}">`;
     sec.products.forEach((p, pi) => {
       const ph = (p.photos||[])[0]||'';
       const p1e = !p.p1||p.p1.trim()===''||p.p1==='—';
       const prDisp = p1e
-        ? '<span class="ap-unset">'+L('apUnset')+'</span>'
-        : L('wholesale')+': '+p.p1+' / '+L('factory')+': '+(p.p2||'—');
-      h += '<div class="ap-row" data-action="editProduct" data-si="'+si+'" data-pi="'+pi+'">'
-        +(ph ? '<img class="ap-thumb" src="'+ph+'">' : '<div class="ap-thumb"></div>')
-        +'<div class="ap-names">'
-        +'<div class="ap-rid">'+p.id+'</div>'
-        +'<div class="ap-ren">'+p.nameEN+'</div>'
-        +'<div class="ap-rpr">'+prDisp+'</div>'
-        +'</div>'
-        +'<button class="ap-del" data-action="deleteProd" data-si="'+si+'" data-pi="'+pi+'">✕</button>'
-        +'</div>';
+        ? `<span class="ap-unset">${L('apUnset')}</span>`
+        : `${L('wholesale')}: ${p.p1} / ${L('factory')}: ${p.p2||'—'}`;
+      h += `<div class="ap-row" onclick="editProduct(${si},${pi})">
+        ${ph ? `<img class="ap-thumb" src="${ph}">` : '<div class="ap-thumb"></div>'}
+        <div class="ap-names">
+          <div class="ap-rid">${p.id}</div>
+          <div class="ap-ren">${p.nameEN}</div>
+          <div class="ap-rpr">${prDisp}</div>
+        </div>
+        <button class="ap-del" onclick="deleteProd(event,${si},${pi})">✕</button>
+      </div>`;
     });
     h += '</div>';
   });
@@ -851,45 +788,31 @@ function renderAdminPanel(){
     const open = AP_OPEN[key] !== false;
     const label = type==='small' ? L('add')+' Small' : L('add')+' Large';
     const items = S.data.accessories[type];
-    h += '<div class="ap-cat-hd" onclick="toggleAP(\''+key+'\')">'
-      +'<div class="ap-cat-left">'
-      +'<span class="ap-cat-lbl">06 Accessories — '+type+'</span>'
-      +'<span class="ap-cat-cnt">'+items.length+'</span>'
-      +'</div>'
-      +'<div style="display:flex;align-items:center;gap:8px">'
-      +'<button class="btn-add" data-action="newAcc" data-type="'+type+'">'+L('add')+'</button>'
-      +'<span class="ap-cat-ico '+(open?'open':'')+'" id="ico-'+key+'">▼</span>'
-      +'</div>'
-      +'</div>'
-      +'<div class="ap-cat-body" id="bd-'+key+'" style="max-height:'+(open?'3000px':'0')+'">';
+    h += `<div class="ap-cat-hd" onclick="toggleAP('${key}')">
+      <div class="ap-cat-left">
+        <span class="ap-cat-lbl">06 Accessories — ${type}</span>
+        <span class="ap-cat-cnt">${items.length}</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <button class="btn-add" onclick="event.stopPropagation();newAcc('${type}')">${L('add')}</button>
+        <span class="ap-cat-ico ${open?'open':''}" id="ico-${key}">▼</span>
+      </div>
+    </div>
+    <div class="ap-cat-body" id="bd-${key}" style="max-height:${open?'3000px':'0'}">`;
     items.forEach((item, ai) => {
-      h += '<div class="ap-row" data-action="editAcc" data-type="'+type+'" data-ai="'+ai+'">'
-        +(item.photo ? '<img class="ap-thumb" src="'+item.photo+'">' : '<div class="ap-thumb"></div>')
-        +'<div class="ap-names">'
-        +'<div class="ap-ren">'+item.name+'</div>'
-        +'<div class="ap-rpr">'+L('wholesale')+': '+item.p1+' / '+L('factory')+': '+(item.p2||'—')+'</div>'
-        +'</div>'
-        +'<button class="ap-del" data-action="deleteAcc" data-type="'+type+'" data-ai="'+ai+'">✕</button>'
-        +'</div>';
+      h += `<div class="ap-row" onclick="editAcc('${type}',${ai})">
+        ${item.photo?`<img class="ap-thumb" src="${item.photo}">` : '<div class="ap-thumb"></div>'}
+        <div class="ap-names">
+          <div class="ap-ren">${item.name}</div>
+          <div class="ap-rpr">${L('wholesale')}: ${item.p1} / ${L('factory')}: ${item.p2||'—'}</div>
+        </div>
+        <button class="ap-del" onclick="deleteAcc(event,'${type}',${ai})">✕</button>
+      </div>`;
     });
     h += '</div>';
   });
 
   body.innerHTML = h;
-
-  // イベント委譲（onclick属性の代わり）
-  body.addEventListener('click', function(e){
-    var el = e.target.closest('[data-action]');
-    if(!el) return;
-    var action = el.dataset.action;
-    if(action === 'newProduct'){ e.stopPropagation(); newProduct(parseInt(el.dataset.si)); }
-    else if(action === 'newAcc'){ e.stopPropagation(); newAcc(el.dataset.type); }
-    else if(action === 'editProduct'){ editProduct(parseInt(el.dataset.si), parseInt(el.dataset.pi)); }
-    else if(action === 'deleteProd'){ e.stopPropagation(); deleteProd(e, parseInt(el.dataset.si), parseInt(el.dataset.pi)); }
-    else if(action === 'editAcc'){ editAcc(el.dataset.type, parseInt(el.dataset.ai)); }
-    else if(action === 'deleteAcc'){ e.stopPropagation(); deleteAcc(e, el.dataset.type, parseInt(el.dataset.ai)); }
-  });
-
   updateSaveUI();
 }
 
@@ -1003,7 +926,7 @@ function stripP2(fullData){
   const d = JSON.parse(JSON.stringify(fullData));
   d.sections.forEach(sec => {
     sec.products.forEach(p => {
-      delete p.p2; delete p.eva2; delete p.paint2; delete p.memo; delete p.p4profit;
+      delete p.p2; delete p.eva2; delete p.paint2;
     });
   });
   [...d.accessories.small, ...d.accessories.large].forEach(item => {
@@ -1025,7 +948,7 @@ function newProduct(si){
   EDIT = { type:'prod', si, pi:-1 };
   editData = {
     id:'',nameEN:'',nameJP:'',desc:'',
-    p1:'',p2:'',p3:'',p3tax:'',p4:'',p4tax:'',p4profit:'',memo:'',size:'',pack:'',weight:'',packW:'',height:'',
+    p1:'',p2:'',size:'',pack:'',weight:'',packW:'',height:'',
     eva1:'EVA +$',eva2:'EVA +$',paint1:'塗装 +$',paint2:'塗装 +$',
     springs:'',photos:[]
   };
@@ -1096,28 +1019,6 @@ function renderProdEditor(){
         <input class="f-inp field-factory" id="e-p2" value="${esc(editData.p2||'')}"></div>
       </div>
     </div>
-    ${S.mode==='a' ? `<div class="f-group">
-      <div class="f-row">
-        <div><label class="f-lbl">販売価格 税抜(円) <span style="font-size:9px;color:#f44">(大丸に表示)</span></label>
-        <input class="f-inp" id="e-p3" value="${esc(editData.p3||'')}" placeholder="例: 410400" oninput="autoP3tax()"></div>
-        <div><label class="f-lbl">販売価格 税込(円) <span style="font-size:9px;color:#f44">(自動計算)</span></label>
-        <input class="f-inp" id="e-p3tax" value="${esc(editData.p3tax||'')}" placeholder="自動: 税抜×1.1"></div>
-      </div>
-    </div>` : ''}
-    ${S.mode==='a' ? `<div class="f-group">
-      <div class="f-row">
-        <div><label class="f-lbl">代理店価格 税抜(円) <span style="font-size:9px;color:#2196f3">(大丸にも表示)</span></label>
-        <input class="f-inp" id="e-p4" value="${esc(editData.p4||'')}" placeholder="例: 246240" oninput="autoP4tax()"></div>
-        <div><label class="f-lbl">代理店価格 税込(円)</label>
-        <input class="f-inp" id="e-p4tax" value="${esc(editData.p4tax||'')}" placeholder="自動: 税抜×1.1"></div>
-      </div>
-    </div>
-    <div class="f-group">
-      <div class="f-row">
-        <div><label class="f-lbl">当社利益(円) <span style="font-size:9px;color:#4caf50">(代理店価格−仕入れ円)</span></label>
-        <input class="f-inp" id="e-p4profit" value="${esc(editData.p4profit||'')}" placeholder="自動計算"></div>
-      </div>
-    </div>` : ''}
     <hr class="f-div">
     <div class="f-sec">SPECIFICATIONS</div>
     <div class="f-group">
@@ -1155,11 +1056,6 @@ function renderProdEditor(){
     <div class="f-group">
       <label class="f-lbl">SPRINGS</label>
       <textarea class="f-ta" id="e-spr">${esc(editData.springs||'')}</textarea>
-    </div>
-    <hr class="f-div">
-    <div class="f-sec">MEMO <span style="font-size:9px;color:#888;font-weight:400">（江原↔工場 共有メモ）</span></div>
-    <div class="f-group">
-      <textarea class="f-ta" id="e-memo" rows="4" placeholder="備品リスト、仕様変更の連絡など…">${esc(editData.memo||'')}</textarea>
     </div>
     <hr class="f-div">
     <div class="f-sec">PHOTOS</div>
@@ -1259,11 +1155,6 @@ function applyEdit(){
       desc:    document.getElementById('e-desc').value.trim(),
       p1:      (S.mode==='f') ? (orig.p1||'') : document.getElementById('e-p1').value.trim(),
       p2:      document.getElementById('e-p2').value.trim(),
-      p3:      (S.mode==='a' && document.getElementById('e-p3')) ? document.getElementById('e-p3').value.trim() : (orig.p3||''),
-      p3tax:   (S.mode==='a' && document.getElementById('e-p3tax')) ? document.getElementById('e-p3tax').value.trim() : (orig.p3tax||''),
-      p4:      (S.mode==='a' && document.getElementById('e-p4')) ? document.getElementById('e-p4').value.trim() : (orig.p4||''),
-      p4tax:   (S.mode==='a' && document.getElementById('e-p4tax')) ? document.getElementById('e-p4tax').value.trim() : (orig.p4tax||''),
-      p4profit:(S.mode==='a' && document.getElementById('e-p4profit')) ? document.getElementById('e-p4profit').value.trim() : (orig.p4profit||''),
       size:    document.getElementById('e-size').value.trim()||'—',
       pack:    document.getElementById('e-pack').value.trim()||'—',
       weight:  document.getElementById('e-wt').value.trim()||'—',
@@ -1274,7 +1165,6 @@ function applyEdit(){
       paint1:  (S.mode==='f') ? (orig.paint1||'') : document.getElementById('e-pnt1').value.trim(),
       paint2:  document.getElementById('e-pnt2').value.trim(),
       springs: document.getElementById('e-spr').value.trim(),
-      memo:    document.getElementById('e-memo').value.trim(),
       photos:  editData.photos||[]
     };
     if(EDIT.pi === -1){
@@ -1413,61 +1303,82 @@ window.addEventListener('beforeunload', e => {
   if(S.dirty){ e.preventDefault(); e.returnValue=''; }
 });
 
-// ── Excelから販売価格を一括インポート ──
-var P3_IMPORT_MAP = {"axiscore-X01-A":{"p3":"410400","p3tax":"451440"},"axiscore-X01-B":{"p3":"480960","p3tax":"529056"},"axiscore-X01-C":{"p3":"389760","p3tax":"428736"},"3.5mm輸入ハードメープル":{"p3":"439200","p3tax":"483120"},"4対6の比率フレームワーク":{"p3":"280800","p3tax":"308880"},"50/50折りたたみフレーム":{"p3":"280800","p3tax":"308880"},"リフォーマー(グレー)":{"p3":"302400","p3tax":"332640"},"axiscore-X02-A":{"p3":"494400","p3tax":"543840"},"axiscore-X02-B":{"p3":"444480","p3tax":"488928"},"axiscore-X02-C":{"p3":"600000","p3tax":"660000"},"axiscore-X03-A":{"p3":"503040","p3tax":"553344"},"axiscore-X03-B":{"p3":"537600","p3tax":"591360"},"axiscore-X03-C":{"p3":"694400","p3tax":"763840"},"axiscore-X04-A":{"p3":"170400","p3tax":"187440"},"axiscore-X04-B":{"p3":"194880","p3tax":"214368"},"axiscore-X04-C":{"p3":"195840","p3tax":"215424"},"axiscore-X05-A":{"p3":"184800","p3tax":"203280"},"axiscore-X05-B":{"p3":"194400","p3tax":"213840"},"axiscore-X05-C":{"p3":"180000","p3tax":"198000"},"axiscore-X05-D":{"p3":"166080","p3tax":"182688"},"Pilates Circle":{"p3":"2048","p3tax":"2253"},"Pilates Ball":{"p3":"1152","p3tax":"1267"},"Foam Roller 33cm":{"p3":"2880","p3tax":"3168"},"Foam Roller 45cm":{"p3":"3120","p3tax":"3432"},"Elastic Band":{"p3":"960","p3tax":"1056"},"Yoga Block":{"p3":"2400","p3tax":"2640"},"Balance Disc":{"p3":"3040","p3tax":"3344"},"Spinal Corrector (Wood)":{"p3":"44800","p3tax":"49280"},"EPP Spinal Corrector":{"p3":"22080","p3tax":"24288"},"Spine Trainer":{"p3":"117120","p3tax":"128832"},"Massage Stick":{"p3":"13440","p3tax":"14784"},"Balance Pad":{"p3":"4800","p3tax":"5280"},"Pilates Mat":{"p3":"11520","p3tax":"12672"},"Box":{"p3":"32000","p3tax":"35200"},"Maple Stick 80cm":{"p3":"11520","p3tax":"12672"},"Maple Stick 120cm":{"p3":"15360","p3tax":"16896"},"アークバレル(取っ手なし)":{"p3":"25600","p3tax":"28160"},"アークバレル(取っ手付き)":{"p3":"48000","p3tax":"52800"},"C字型矯正器具":{"p3":"128000","p3tax":"140800"},"フィギュアエイトスケートボード":{"p3":"35200","p3tax":"38720"},"ビーチウッド足底矯正器具":{"p3":"48000","p3tax":"52800"},"妊婦用ウェッジクッション":{"p3":"37120","p3tax":"40832"}};
 
-function importP3FromExcel(){
-  if(S.mode !== 'a'){ alert('管理者モードでのみ実行できます'); return; }
-  var count = 0;
-  S.data.sections.forEach(function(sec){
-    sec.products.forEach(function(p){
-      // IDまたは名前でマッチ
-      var match = P3_IMPORT_MAP[p.id] || P3_IMPORT_MAP[p.nameEN] || P3_IMPORT_MAP[p.nameJP];
-      if(match){
-        p.p3 = match.p3;
-        p.p3tax = match.p3tax;
-        count++;
-      }
-    });
-  });
-  // アクセサリーにも適用
-  ['small','large'].forEach(function(k){
-    (S.data.accessories[k]||[]).forEach(function(item){
-      var match = P3_IMPORT_MAP[item.name];
-      if(match){
-        item.p3 = match.p3;
-        item.p3tax = match.p3tax;
-        count++;
-      }
-    });
-  });
-  S.dirty = true;
-  alert('販売価格を ' + count + ' 件の商品に反映しました。\n「GitHubに保存」を押して保存してください。');
+// ── 販売価格 p3 (大丸専用・localStorage保存) ──
+function p3Key(p){ return 'p3_' + (p.id||p.nameEN||'').replace(/[^a-zA-Z0-9]/g,'_'); }
+
+function getP3(p){ return localStorage.getItem(p3Key(p)) || ''; }
+function setP3(p, val){ localStorage.setItem(p3Key(p), val); }
+function clearP3(p){ localStorage.removeItem(p3Key(p)); }
+
+function renderP3Block(p){
+  const key = p3Key(p);
+  const val = getP3(p);
+  const p1num = parseFloat((p.p1||'').replace(/[^0-9.]/g,'')) || 0;
+  const p3num = parseFloat(val.replace(/[^0-9.]/g,'')) || 0;
+
+  let marginH = '';
+  if(p1num > 0 && p3num > 0){
+    const margin = ((p3num - p1num) / p1num * 100).toFixed(1);
+    const diff = (p3num - p1num).toFixed(0);
+    const cls = p3num >= p1num ? '' : ' neg';
+    marginH = `<div class="p3-margin${cls}">粗利: $${diff} (${margin}%)</div>`;
+  }
+
+  if(val){
+    return `<div class="p3-block">
+      <div class="p3-lbl">販売価格（自社設定）<span>クリックで編集</span></div>
+      <div class="p3-row">
+        <div class="p3-val" onclick="editP3('${key}',this)" data-p3key="${key}">${val} <span style="font-size:13px;color:#aaa;margin-left:4px">USD</span></div>
+        <button class="p3-clear" onclick="clearP3Block('${key}')">クリア</button>
+      </div>
+      ${marginH}
+    </div>`;
+  } else {
+    return `<div class="p3-block">
+      <div class="p3-lbl">販売価格（自社設定）<span>クリックで設定</span></div>
+      <div class="p3-row">
+        <div class="p3-val empty" onclick="editP3('${key}',this)" data-p3key="${key}">クリックして販売価格を入力</div>
+      </div>
+    </div>`;
+  }
+}
+
+function editP3(key, el){
+  const block = el.closest('.p3-block');
+  const current = el.dataset.p3key ? localStorage.getItem(el.dataset.p3key) || '' : '';
+  block.innerHTML = `
+    <div class="p3-lbl">販売価格（自社設定）</div>
+    <div class="p3-row">
+      <input class="p3-inp" id="p3-inp-${key}" type="text" value="${current}" placeholder="例: $1,350" autofocus>
+      <button class="p3-save" onclick="saveP3Block('${key}')">保存</button>
+      <button class="p3-clear" onclick="cancelP3Block('${key}')">キャンセル</button>
+    </div>`;
+  const inp = document.getElementById('p3-inp-' + key);
+  if(inp){ inp.focus(); inp.select(); }
+  inp.addEventListener('keydown', e => { if(e.key === 'Enter') saveP3Block(key); });
+}
+
+function saveP3Block(key){
+  const inp = document.getElementById('p3-inp-' + key);
+  if(!inp) return;
+  const val = inp.value.trim();
+  if(val) localStorage.setItem(key, val);
+  else localStorage.removeItem(key);
+  renderCatalog(); // 再描画
+  // スクロール位置維持のため少し待つ
+}
+
+function clearP3Block(key){
+  if(!confirm('販売価格をクリアしますか？')) return;
+  localStorage.removeItem(key);
   renderCatalog();
-  renderAdminPanel();
 }
 
-// 代理店価格の税込を自動計算
-function autoP4tax(){
-  const inp = document.getElementById('e-p4');
-  const out = document.getElementById('e-p4tax');
-  if(!inp || !out) return;
-  const v = parseFloat(inp.value.replace(/[^0-9.]/g,''));
-  if(!isNaN(v) && v > 0){
-    out.value = Math.round(v * 1.1);
-  }
+function cancelP3Block(key){
+  renderCatalog();
 }
 
-// 税抜入力時に税込を自動計算
-function autoP3tax(){
-  const inp = document.getElementById('e-p3');
-  const out = document.getElementById('e-p3tax');
-  if(!inp || !out) return;
-  const v = parseFloat(inp.value.replace(/[^0-9.]/g,''));
-  if(!isNaN(v) && v > 0){
-    out.value = Math.round(v * 1.1);
-  }
-}
 
 </script>
 </body>
