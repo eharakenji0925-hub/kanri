@@ -14,7 +14,7 @@
 }
 body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN',sans-serif;background:#111;color:#fff;min-height:100vh}
 
-/* ─ LOGIN ─ */
+/* â LOGIN â */
 #login-screen{
   position:fixed;inset:0;z-index:2000;
   display:flex;align-items:center;justify-content:center;
@@ -30,7 +30,7 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN',sans-serif;b
 .lb-err{color:#ff6b6b;font-size:11px;margin-top:10px;height:14px}
 .lb-loading{color:rgba(255,255,255,.5);font-size:11px;margin-top:10px;height:14px}
 
-/* ─ CATALOG ─ */
+/* â CATALOG â */
 #catalog{display:none}
 
 .c-head{position:sticky;top:0;z-index:100;height:56px;padding:0 28px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.1)}
@@ -127,7 +127,7 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN',sans-serif;b
 .mode-f .c-foot{background:#0d0020}
 .mode-a .c-foot{background:#050505}
 
-/* ─ ADMIN PANEL ─ */
+/* â ADMIN PANEL â */
 #admin-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:500}
 #admin-overlay.open{display:block}
 #admin-panel{
@@ -174,7 +174,7 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN',sans-serif;b
 .ap-del{background:none;border:none;color:#ccc;font-size:16px;cursor:pointer;padding:0 2px;flex-shrink:0}
 .ap-del:hover{color:#e74c3c}
 
-/* ─ EDITOR ─ */
+/* â EDITOR â */
 #editor-panel{
   position:fixed;top:0;right:-560px;width:540px;height:100vh;
   background:#fff;z-index:502;overflow-y:auto;
@@ -197,7 +197,7 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN',sans-serif;b
 .f-div{border:none;border-top:1px solid #e8e5e0;margin:18px 0}
 .f-sec{font-size:10px;letter-spacing:3px;color:#aaa;margin-bottom:12px}
 
-/* factory: p2フィールドのみ強調 */
+/* factory: p2ãã£ã¼ã«ãã®ã¿å¼·èª¿ */
 .field-factory{border-left:3px solid var(--purple-mid)!important;padding-left:8px}
 
 .photo-grid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
@@ -218,7 +218,7 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN',sans-serif;b
 #admin-fab.show{display:flex}
 .dirty-dot{width:8px;height:8px;background:#e74c3c;border-radius:50%;display:inline-block;margin-left:6px}
 
-/* 価格未設定バッジ */
+/* ä¾¡æ ¼æªè¨­å®ããã¸ */
 .badge-unset{
   display:inline-block;padding:3px 10px;
   background:#e74c3c;color:#fff;
@@ -239,7 +239,7 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN',sans-serif;b
   font-size:11px;color:var(--purple-mid);
 }
 
-/* ─ SEARCH BAR ─ */
+/* â SEARCH BAR â */
 .search-bar{padding:10px 28px;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(255,255,255,.07)}
 .mode-d .search-bar{background:#111}.mode-f .search-bar{background:#1a0050}.mode-a .search-bar{background:#0a0a0a}
 .search-wrap{position:relative;flex:1;max-width:420px}
@@ -275,7 +275,7 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN',sans-serif;b
 /* badge */
 .badge-unset{display:inline-block;padding:3px 10px;background:#e74c3c;color:#fff;font-size:10px;font-weight:700;letter-spacing:1px;border-radius:2px;margin-bottom:10px}
 
-/* ─ 販売価格 (p3) ─ */
+/* â è²©å£²ä¾¡æ ¼ (p3) â */
 .p3-block{
   margin-top:12px;padding:12px;
   background:rgba(196,164,90,.08);border:1px solid rgba(196,164,90,.2);
@@ -300,9 +300,9 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN',sans-serif;b
 <div id="login-screen">
   <div class="lb">
     <h1>AXISCORE</h1>
-    <sub>X SERIES — PROFESSIONAL PILATES EQUIPMENT</sub>
-    <input type="password" id="pw-inp" placeholder="パスワードを入力" autocomplete="off">
-    <button onclick="doLogin()">入 室</button>
+    <sub>X SERIES â PROFESSIONAL PILATES EQUIPMENT</sub>
+    <input type="password" id="pw-inp" placeholder="ãã¹ã¯ã¼ããå¥å" autocomplete="off">
+    <button onclick="doLogin()">å¥ å®¤</button>
     <div class="lb-err" id="pw-err"></div>
     <div class="lb-loading" id="pw-loading"></div>
   </div>
@@ -314,28 +314,28 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN',sans-serif;b
     <div class="c-brand">axiscore &nbsp; X Series</div>
     <div style="display:flex;align-items:center;gap:12px">
       <div class="c-badge" id="mode-badge"></div>
-      <button id="logout-btn" onclick="doLogout()" title="ログアウト">ログアウト</button>
+      <button id="logout-btn" onclick="doLogout()" title="ã­ã°ã¢ã¦ã">ã­ã°ã¢ã¦ã</button>
     </div>
   </header>
   <nav class="c-nav" id="c-nav"></nav>
   <div class="search-bar" id="search-bar">
     <div class="search-wrap">
-      <span class="search-icon">🔍</span>
+      <span class="search-icon">ð</span>
       <input class="search-inp" id="search-inp" type="text" placeholder="Search...">
-      <button class="search-clear" id="search-clear" onclick="clearSearch()">✕</button>
+      <button class="search-clear" id="search-clear" onclick="clearSearch()">â</button>
     </div>
     <div class="cat-tabs" id="cat-tabs"></div>
     <span class="search-count" id="search-count"></span>
   </div>
   <main id="cat-main"></main>
-  <footer class="c-foot">AXISCORE X Series — Professional Pilates Equipment</footer>
+  <footer class="c-foot">AXISCORE X Series â Professional Pilates Equipment</footer>
 </div>
 
 <!-- TOAST -->
 <div id="toast"></div>
 
 <!-- ADMIN FAB -->
-<button id="admin-fab" onclick="openAdmin()" title="管理パネル">⚙</button>
+<button id="admin-fab" onclick="openAdmin()" title="ç®¡çããã«">â</button>
 
 <!-- OVERLAY -->
 <div id="admin-overlay" onclick="closeAdmin()"></div>
@@ -344,11 +344,11 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN',sans-serif;b
 <div id="admin-panel">
   <div class="ap-head">
     <h2 id="ap-title">ADMIN PANEL</h2>
-    <button class="ap-close" onclick="closeAdmin()">✕</button>
+    <button class="ap-close" onclick="closeAdmin()">â</button>
   </div>
   <div class="ap-body" id="ap-body"></div>
   <div class="save-bar">
-    <span id="save-status">—</span>
+    <span id="save-status">â</span>
     <div style="display:flex;gap:8px;align-items:center">
       <span class="save-msg" id="save-msg"></span>
       <button class="btn-save" id="btn-save" onclick="saveToGitHub()" disabled>Save</button>
@@ -359,8 +359,8 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN',sans-serif;b
 <!-- EDITOR -->
 <div id="editor-panel">
   <div class="ep-head">
-    <button class="ep-back" onclick="closeEditor()">←</button>
-    <h3 id="ep-title">編集</h3>
+    <button class="ep-back" onclick="closeEditor()">â</button>
+    <h3 id="ep-title">ç·¨é</h3>
   </div>
   <div class="ep-body" id="ep-body"></div>
   <div class="ep-foot">
@@ -374,22 +374,22 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN',sans-serif;b
 
 <script>
 
-/* ── BUNDLED DATA (offline fallback) ── */
+/* ââ BUNDLED DATA (offline fallback) ââ */
 var BUNDLED_FULL    = {"sections": [{"num": "01", "en": "Reformer", "jp": "\u30ea\u30d5\u30a9\u30fc\u30de\u30fc", "products": [{"id": "X01-A", "nameEN": "STANDARD REFORMER", "nameJP": "\u30b9\u30bf\u30f3\u30c0\u30fc\u30c9\u30ea\u30d5\u30a9\u30fc\u30de\u30fc", "desc": "\u30e1\u30fc\u30d7\u30eb\u6750\u30d5\u30ec\u30fc\u30e0\u3001\u30b3\u30f3\u30d1\u30af\u30c8\u8a2d\u8a08\u3002", "p1": "$905", "p2": "$605", "size": "2280\u00d7720\u00d71850mm", "pack": "2360\u00d7780\u00d7495mm", "weight": "90 KG", "packW": "120 KG", "height": "340mm", "eva1": "EVA +$80", "eva2": "EVA +$40", "paint1": "\u5857\u88c5 +$100", "paint2": "\u5857\u88c5 +$50", "springs": "", "photos": []}, {"id": "X01-B", "nameEN": "ENHANCED REFORMER", "nameJP": "\u30a8\u30f3\u30cf\u30f3\u30b9\u30c9\u30ea\u30d5\u30a9\u30fc\u30de\u30fc", "desc": "\u30d8\u30c3\u30c9\u30ec\u30b9\u30c8\u30fb\u30b7\u30e7\u30eb\u30c0\u30fc\u30d6\u30ed\u30c3\u30af\u4ed8\u304d\u3002\u30e1\u30fc\u30d7\u30eb\u6750\u30d5\u30ec\u30fc\u30e0\u3002", "p1": "$1,052", "p2": "$752", "size": "2280\u00d7720\u00d71850mm", "pack": "2360\u00d7780\u00d7495mm", "weight": "100 KG", "packW": "130 KG", "height": "340mm", "eva1": "EVA +$80", "eva2": "EVA +$40", "paint1": "\u5857\u88c5 +$100", "paint2": "\u5857\u88c5 +$50", "springs": "", "photos": []}, {"id": "X01-C", "nameEN": "PROFESSIONAL REFORMER", "nameJP": "\u30d7\u30ed\u30d5\u30a7\u30c3\u30b7\u30e7\u30ca\u30eb\u30ea\u30d5\u30a9\u30fc\u30de\u30fc", "desc": "\u30b9\u30c1\u30fc\u30eb\u30d5\u30ec\u30fc\u30e0\u3001\u30e2\u30c0\u30f3\u30d6\u30e9\u30c3\u30af\u30c7\u30b6\u30a4\u30f3\u3002", "p1": "$862", "p2": "$562", "size": "2300\u00d7600\u00d7375mm", "pack": "2380\u00d7680\u00d7420mm", "weight": "110 KG", "packW": "140 KG", "height": "312mm", "eva1": "EVA +$80", "eva2": "EVA +$40", "paint1": "\u5857\u88c5 N/A", "paint2": "\u5857\u88c5 N/A", "springs": "", "photos": []}, {"id": "\u2014", "nameEN": "3.5mm HARD MAPLE", "nameJP": "3.5mm \u8f38\u5165\u30cf\u30fc\u30c9\u30e1\u30fc\u30d7\u30eb", "desc": "3.5mm \u8f38\u5165\u30cf\u30fc\u30c9\u30e1\u30fc\u30d7\u30eb\u6750\u4f7f\u7528\u3002", "p1": "$965", "p2": "$665", "size": "\u2014", "pack": "\u2014", "weight": "\u2014", "packW": "\u2014", "height": "\u2014", "eva1": "EVA +$80", "eva2": "EVA +$40", "paint1": "\u5857\u88c5 +$100\uff08\u767d\uff09", "paint2": "\u5857\u88c5 +$50\uff08\u767d\uff09", "springs": "", "photos": []}, {"id": "\u2014", "nameEN": "4:6 RATIO FRAME", "nameJP": "4\u5bfe6\u306e\u6bd4\u7387\u30d5\u30ec\u30fc\u30e0\u30ef\u30fc\u30af", "desc": "4\u5bfe6\u306e\u6bd4\u7387\u30d5\u30ec\u30fc\u30e0\u30ef\u30fc\u30af\u3002", "p1": "$635", "p2": "$335", "size": "\u2014", "pack": "\u2014", "weight": "\u2014", "packW": "\u2014", "height": "\u2014", "eva1": "EVA +$80", "eva2": "EVA +$40", "paint1": "\u5857\u88c5 +$100", "paint2": "\u5857\u88c5 +$50", "springs": "", "photos": []}, {"id": "\u2014", "nameEN": "50/50 FOLDING FRAME", "nameJP": "50/50 \u6298\u308a\u305f\u305f\u307f\u30d5\u30ec\u30fc\u30e0", "desc": "50/50 \u6298\u308a\u305f\u305f\u307f\u30d5\u30ec\u30fc\u30e0\u3002\u7701\u30b9\u30da\u30fc\u30b9\u53ce\u7d0d\u53ef\u80fd\u3002", "p1": "$635", "p2": "$335", "size": "\u2014", "pack": "\u2014", "weight": "\u2014", "packW": "\u2014", "height": "\u2014", "eva1": "EVA +$80", "eva2": "EVA +$40", "paint1": "\u5857\u88c5 +$100", "paint2": "\u5857\u88c5 +$50", "springs": "", "photos": []}]}, {"num": "02", "en": "Half Tower", "jp": "\u30cf\u30fc\u30d5\u30bf\u30ef\u30fc", "products": [{"id": "X02-A", "nameEN": "HALF TOWER REFORMER", "nameJP": "\u30cf\u30fc\u30d5\u30bf\u30ef\u30fc\u30ea\u30d5\u30a9\u30fc\u30de\u30fc", "desc": "\u30ea\u30d5\u30a9\u30fc\u30de\u30fc\uff0b\u30cf\u30fc\u30d5\u30bf\u30ef\u30fc\u3002\u30e1\u30fc\u30d7\u30eb\u6750\u3001\u30d5\u30eb\u30b9\u30d7\u30ea\u30f3\u30b0\u30b7\u30b9\u30c6\u30e0\u3002", "p1": "$1,154", "p2": "$854", "size": "2280\u00d7720\u00d71850mm", "pack": "2360\u00d7780\u00d7495mm", "weight": "110 KG", "packW": "140 KG", "height": "340mm", "eva1": "EVA +$80", "eva2": "EVA +$40", "paint1": "\u5857\u88c5 +$100", "paint2": "\u5857\u88c5 +$50", "springs": "\u30d9\u30c3\u30c9: \u8d64\u00d72 \u7dd1\u00d72 \u9ec4\u00d72 \uff0f \u30bf\u30ef\u30fc: \u7dd1L\u00d72 \u7dd1S\u00d72 \u9ec4L\u00d72 \u9ec4S\u00d72", "photos": []}, {"id": "X02-B", "nameEN": "FOLDING HALF TOWER", "nameJP": "\u6298\u308a\u305f\u305f\u307f\u5f0f\u30bf\u30ef\u30fc\u4ed8\u304d\u30ea\u30d5\u30a9\u30fc\u30de\u30fc", "desc": "\u6298\u308a\u305f\u305f\u307f\u5f0f\u30bf\u30ef\u30fc\u4ed8\u304d\u30ea\u30d5\u30a9\u30fc\u30de\u30fc\u3002\u7701\u30b9\u30da\u30fc\u30b9\u8a2d\u8a08\u3002", "p1": "$1,050", "p2": "$750", "size": "2280\u00d7690\u00d71850mm", "pack": "2510\u00d7770\u00d7520mm", "weight": "110 KG", "packW": "140 KG", "height": "340mm", "eva1": "EVA +$80", "eva2": "EVA +$40", "paint1": "\u5857\u88c5 +$100", "paint2": "\u5857\u88c5 +$50", "springs": "\u30d9\u30c3\u30c9: \u8d64\u00d72 \u7dd1\u00d72 \u9ec4\u00d72 \uff0f \u30bf\u30ef\u30fc: \u7dd1L\u00d72 \u7dd1S\u00d72 \u9ec4L\u00d72 \u9ec4S\u00d72", "photos": []}, {"id": "X02-C", "nameEN": "PREMIUM HALF TOWER", "nameJP": "\u30d7\u30ec\u30df\u30a2\u30e0\u30fb\u30cf\u30fc\u30d5\u30bf\u30ef\u30fc", "desc": "\u30d7\u30ec\u30df\u30a2\u30e0\u30fb\u30cf\u30fc\u30d5\u30bf\u30ef\u30fc\u3002\u9ad8\u54c1\u8cea\u30d1\u30c3\u30c9\u3001\u30d5\u30eb\u30a2\u30af\u30bb\u30b5\u30ea\u30fc\u4ed8\u5c5e\u3002", "p1": "$1,350", "p2": "$1,050", "size": "2280\u00d7720\u00d71850mm", "pack": "2360\u00d7780\u00d7495mm", "weight": "120 KG", "packW": "150 KG", "height": "340mm", "eva1": "EVA +$80", "eva2": "EVA +$40", "paint1": "\u5857\u88c5 +$100", "paint2": "\u5857\u88c5 +$50", "springs": "\u30d9\u30c3\u30c9: \u8d64\u00d74 \u7dd1\u00d74 \u9ec4\u00d74 \uff0f \u30bf\u30ef\u30fc: \u7dd1L\u00d72 \u7dd1S\u00d72 \u9ec4L\u00d72 \u9ec4S\u00d72", "photos": []}]}, {"num": "03", "en": "Cadillac", "jp": "\u30ad\u30e3\u30c7\u30e9\u30c3\u30af", "products": [{"id": "X03-A", "nameEN": "STEEL CADILLAC", "nameJP": "\u30b9\u30c1\u30fc\u30eb\u88fd\u30ad\u30e3\u30c7\u30e9\u30c3\u30af", "desc": "\u30b9\u30c1\u30fc\u30eb\u88fd\u30ad\u30e3\u30c7\u30e9\u30c3\u30af\u3002\u30d5\u30eb\u30d5\u30ec\u30fc\u30e0\u3001\u5404\u7a2e\u30a2\u30bf\u30c3\u30c1\u30e1\u30f3\u30c8\u4ed8\u5c5e\u3002", "p1": "$836", "p2": "$536", "size": "2320\u00d7760\u00d71990mm", "pack": "2350\u00d7770\u00d7340mm", "weight": "90 KG", "packW": "120 KG", "height": "550mm", "eva1": "EVA N/A", "eva2": "EVA N/A", "paint1": "\u5857\u88c5 N/A", "paint2": "\u5857\u88c5 N/A", "springs": "\u7dd1L\u00d72 \u7dd1S\u00d72 \u9ec4L\u00d72 \u9ec4S\u00d72 \u8d64S\u00d72", "photos": []}, {"id": "X03-B", "nameEN": "MAPLE CADILLAC", "nameJP": "\u30e1\u30fc\u30d7\u30eb\u6750\u30ad\u30e3\u30c7\u30e9\u30c3\u30af", "desc": "\u30e1\u30fc\u30d7\u30eb\u6750\u30ad\u30e3\u30c7\u30e9\u30c3\u30af\u3002\u5929\u7136\u6728\u306e\u8cea\u611f\u3001\u30d7\u30ed\u4ed5\u69d8\u3002", "p1": "$890", "p2": "$590", "size": "2190\u00d7800\u00d72120mm", "pack": "2310\u00d7820\u00d7690mm", "weight": "100 KG", "packW": "120 KG", "height": "635mm", "eva1": "EVA +$80", "eva2": "EVA +$40", "paint1": "\u5857\u88c5 +$100", "paint2": "\u5857\u88c5 +$50", "springs": "\u7dd1L\u00d72 \u7dd1S\u00d72 \u9ec4L\u00d72 \u9ec4S\u00d72 \u8d64S\u00d72", "photos": []}, {"id": "X03-C", "nameEN": "PREMIUM MAPLE CADILLAC", "nameJP": "\u30ea\u30d5\u30a9\u30fc\u30de\u30fc\u30d9\u30c3\u30c9\u4e00\u4f53\u578b\u30ad\u30e3\u30c7\u30e9\u30c3\u30af", "desc": "\u30ea\u30d5\u30a9\u30fc\u30de\u30fc\u30d9\u30c3\u30c9\u4e00\u4f53\u578b\u30ad\u30e3\u30c7\u30e9\u30c3\u30af\u3002\u6700\u9ad8\u30b0\u30ec\u30fc\u30c9\u4ed5\u69d8\u3002", "p1": "$1,135", "p2": "$835", "size": "2190\u00d7800\u00d72120mm", "pack": "2310\u00d7820\u00d7690mm", "weight": "120 KG", "packW": "150 KG", "height": "635mm", "eva1": "EVA +$80", "eva2": "EVA +$40", "paint1": "\u5857\u88c5 +$100", "paint2": "\u5857\u88c5 +$50", "springs": "\u30d9\u30c3\u30c9: \u8d64\u00d72 \u7dd1\u00d72 \u9ec4\u00d72 \uff0f \u30bf\u30ef\u30fc: \u7dd1L\u00d72 \u7dd1S\u00d72 \u9ec4L\u00d72 \u9ec4S\u00d72 \u8d64S\u00d72", "photos": []}]}, {"num": "04", "en": "Chair", "jp": "\u30c1\u30a7\u30a2", "products": [{"id": "X04-A", "nameEN": "STABILITY CHAIR", "nameJP": "\u30ef\u30f3\u30c0\u30c1\u30a7\u30a2", "desc": "\u30e1\u30fc\u30d7\u30eb\u6750\u3001\u30b9\u30d7\u30ea\u30c3\u30c8\u30fb\u30da\u30c0\u30eb\u30b7\u30b9\u30c6\u30e0\u3002", "p1": "$650", "p2": "$450", "size": "840\u00d7680\u00d7615mm", "pack": "900\u00d7725\u00d7758mm", "weight": "45 KG", "packW": "65 KG", "height": "\u2014", "eva1": "EVA +$40", "eva2": "EVA +$20", "paint1": "\u5857\u88c5 +$60", "paint2": "\u5857\u88c5 +$30", "springs": "\u8d64\u00d72 \u7dd1\u00d72", "photos": []}, {"id": "X04-B", "nameEN": "WUNDA CHAIR", "nameJP": "\u30b3\u30f3\u30dc\u30c1\u30a7\u30a2", "desc": "\u5929\u7136\u6728\u30d5\u30ec\u30fc\u30e0\u3001\u30b3\u30f3\u30d1\u30af\u30c8\u8a2d\u8a08\u3002", "p1": "$500", "p2": "$300", "size": "840\u00d7600\u00d7600mm", "pack": "800\u00d7720\u00d7770mm", "weight": "45 KG", "packW": "65 KG", "height": "\u2014", "eva1": "EVA +$40", "eva2": "EVA +$20", "paint1": "\u5857\u88c5 +$60", "paint2": "\u5857\u88c5 +$30", "springs": "\u8d64\u00d72 \u7dd1\u00d72", "photos": []}, {"id": "X04-C", "nameEN": "PROFESSIONAL CHAIR", "nameJP": "\u30cf\u30a4\u30d0\u30c3\u30af\u30c1\u30a7\u30a2", "desc": "\u30b9\u30c1\u30fc\u30eb\uff0b\u30db\u30ef\u30a4\u30c8\u30d1\u30cd\u30eb\u3002", "p1": "$458", "p2": "$258", "size": "750\u00d7600\u00d71300mm", "pack": "910\u00d7720\u00d7710mm", "weight": "45 KG", "packW": "65 KG", "height": "\u2014", "eva1": "EVA N/A", "eva2": "EVA N/A", "paint1": "\u5857\u88c5 N/A", "paint2": "\u5857\u88c5 N/A", "springs": "\u8d64\u00d72 \u7dd1\u00d72", "photos": []}]}, {"num": "05", "en": "Ladder Barrel", "jp": "\u30e9\u30c0\u30fc\u30d0\u30ec\u30eb", "products": [{"id": "X05-A", "nameEN": "MAPLE LADDER BARREL", "nameJP": "\u901a\u5e38\u30b9\u30dd\u30f3\u30b8\u30fb\u30d5\u30c3\u30c8\u30da\u30c0\u30eb\u4ed8\u304d", "desc": "\u30e1\u30fc\u30d7\u30eb\u6750\u3002\u30d5\u30c3\u30c8\u30da\u30c0\u30eb\u6a5f\u80fd\u4ed8\u304d\u3002", "p1": "$435", "p2": "$235", "size": "1100\u00d7620\u00d7980mm", "pack": "1170\u00d7690\u00d71110mm", "weight": "90 KG", "packW": "110 KG", "height": "\u2014", "eva1": "EVA +$40", "eva2": "EVA +$20", "paint1": "\u5857\u88c5 +$60", "paint2": "\u5857\u88c5 +$30", "springs": "", "photos": []}, {"id": "X05-B", "nameEN": "IRON FRAME MAPLE BARREL", "nameJP": "\u9244\u88fd\u30d5\u30ec\u30fc\u30e0\u30fb\u30e1\u30fc\u30d7\u30eb\u6750", "desc": "\u9244\u88fd\u30d5\u30ec\u30fc\u30e0\u3001\u30e1\u30fc\u30d7\u30eb\u6750\u677f\u3002\u30d5\u30c3\u30c8\u30da\u30c0\u30eb\u8abf\u7bc0\u53ef\u80fd\u3002", "p1": "$455", "p2": "$255", "size": "1100\u00d7620\u00d7980mm", "pack": "1170\u00d7690\u00d71110mm", "weight": "90 KG", "packW": "110 KG", "height": "\u2014", "eva1": "EVA +$40", "eva2": "EVA +$20", "paint1": "\u5857\u88c5 +$60", "paint2": "\u5857\u88c5 +$30", "springs": "", "photos": []}, {"id": "X05-C", "nameEN": "STEEL LADDER BARREL", "nameJP": "\u30b9\u30c1\u30fc\u30eb\u30d5\u30ec\u30fc\u30e0\u30fb\u30da\u30c0\u30eb\u4ed8\u304d", "desc": "\u30aa\u30fc\u30eb\u30b9\u30c1\u30fc\u30eb\u30d5\u30ec\u30fc\u30e0\u3002\u30d5\u30c3\u30c8\u30da\u30c0\u30eb\u6a5f\u80fd\u4ed8\u304d\u3002", "p1": "$425", "p2": "$225", "size": "1100\u00d7620\u00d7980mm", "pack": "1170\u00d7690\u00d71110mm", "weight": "90 KG", "packW": "110 KG", "height": "\u2014", "eva1": "EVA N/A", "eva2": "EVA N/A", "paint1": "\u5857\u88c5 N/A", "paint2": "\u5857\u88c5 N/A", "springs": "", "photos": []}, {"id": "X05-D", "nameEN": "BASIC LADDER BARREL", "nameJP": "\u30d9\u30fc\u30b7\u30c3\u30af\u30fb\u30da\u30c0\u30eb\u306a\u3057", "desc": "\u30d5\u30c3\u30c8\u30da\u30c0\u30eb\u6a5f\u80fd\u306a\u3057\u3002\u30af\u30e9\u30b7\u30c3\u30af\u30c7\u30b6\u30a4\u30f3\u3002", "p1": "$396", "p2": "$196", "size": "1100\u00d7620\u00d7980mm", "pack": "1170\u00d7690\u00d71110mm", "weight": "90 KG", "packW": "110 KG", "height": "\u2014", "eva1": "EVA +$40", "eva2": "EVA +$20", "paint1": "\u5857\u88c5 +$60", "paint2": "\u5857\u88c5 +$30", "springs": "", "photos": []}]}], "accessories": {"small": [{"name": "Pilates Circle", "nameJP": "\u30d4\u30e9\u30c6\u30a3\u30b9\u30ea\u30f3\u30b0", "p1": "$3.2", "p2": "$2.2", "spec": "38cm", "photo": ""}, {"name": "Pilates Ball", "nameJP": "\u30d4\u30e9\u30c6\u30a3\u30b9\u30dc\u30fc\u30eb", "p1": "$1.3\u301c2.3", "p2": "$0.8\u301c1.8", "spec": "25cm", "photo": ""}, {"name": "Foam Roller", "nameJP": "\u30d5\u30a9\u30fc\u30e0\u30ed\u30fc\u30e9\u30fc", "p1": "$6\u301c6.5", "p2": "$5\u301c5.5", "spec": "33\u00d713 / 45\u00d713cm", "photo": ""}, {"name": "Elastic Band", "nameJP": "\u30a8\u30e9\u30b9\u30c6\u30a3\u30c3\u30af\u30d0\u30f3\u30c9", "p1": "$1.2", "p2": "$0.7", "spec": "1500\u00d7150\u00d70.35mm", "photo": ""}, {"name": "Yoga Block", "nameJP": "\u30e8\u30ac\u30d6\u30ed\u30c3\u30af", "p1": "$5", "p2": "$4", "spec": "23\u00d715\u00d77.5cm", "photo": ""}, {"name": "Balance Disc", "nameJP": "\u30d0\u30e9\u30f3\u30b9\u30c7\u30a3\u30b9\u30af", "p1": "$3.8", "p2": "$2.8", "spec": "\u76f4\u5f8434cm", "photo": ""}, {"name": "Spinal Corrector (Wood)", "nameJP": "\u30b9\u30d1\u30a4\u30ca\u30eb\u30b3\u30ec\u30af\u30bf\u30fc\uff08\u6728\u88fd\uff09", "p1": "$70", "p2": "$65", "spec": "", "photo": ""}, {"name": "EPP Spinal Corrector", "nameJP": "EPP\u30b9\u30d1\u30a4\u30ca\u30eb\u30b3\u30ec\u30af\u30bf\u30fc", "p1": "$23", "p2": "$18", "spec": "96\u00d736\u00d726cm", "photo": ""}, {"name": "Spine Trainer", "nameJP": "\u30b9\u30d1\u30a4\u30f3\u30c8\u30ec\u30fc\u30ca\u30fc", "p1": "$183", "p2": "$178", "spec": "", "photo": ""}, {"name": "Massage Stick", "nameJP": "\u30de\u30c3\u30b5\u30fc\u30b8\u30b9\u30c6\u30a3\u30c3\u30af", "p1": "$21", "p2": "$16", "spec": "", "photo": ""}, {"name": "Balance Pad", "nameJP": "\u30d0\u30e9\u30f3\u30b9\u30d1\u30c3\u30c9", "p1": "$6", "p2": "$5", "spec": "28\u00d717\u00d76cm", "photo": ""}, {"name": "Pilates Mat", "nameJP": "\u30d4\u30e9\u30c6\u30a3\u30b9\u30de\u30c3\u30c8", "p1": "$18", "p2": "$13", "spec": "5mm", "photo": ""}], "large": [{"name": "Box", "nameJP": "\u30dc\u30c3\u30af\u30b9", "p1": "$50", "p2": "$45", "spec": "\u5bf8\u6cd5\u30ab\u30b9\u30bf\u30de\u30a4\u30ba\u53ef", "photo": ""}, {"name": "Maple Stick 80cm", "nameJP": "\u30e1\u30fc\u30d7\u30eb\u30b9\u30c6\u30a3\u30c3\u30af 80cm", "p1": "$12", "p2": "$7", "spec": "80cm", "photo": ""}, {"name": "Maple Stick 120cm", "nameJP": "\u30e1\u30fc\u30d7\u30eb\u30b9\u30c6\u30a3\u30c3\u30af 120cm", "p1": "$16", "p2": "$11", "spec": "120cm", "photo": ""}, {"name": "Arc Barrel", "nameJP": "\u30a2\u30fc\u30af\u30d0\u30ec\u30eb\uff08\u53d6\u3063\u624b\u306a\u3057\uff09", "p1": "$40", "p2": "$35", "spec": "\u4e2d\u7a7a\u30fb\u53d6\u3063\u624b\u306a\u3057", "photo": ""}, {"name": "Arc Barrel (Handle)", "nameJP": "\u30a2\u30fc\u30af\u30d0\u30ec\u30eb\uff08\u53d6\u3063\u624b\u4ed8\u304d\uff09", "p1": "$45", "p2": "$40", "spec": "\u53d6\u3063\u624b\u4ed8\u304d", "photo": ""}]}};
 var BUNDLED_DAIMARU = {"sections": [{"num": "01", "en": "Reformer", "jp": "\u30ea\u30d5\u30a9\u30fc\u30de\u30fc", "products": [{"id": "X01-A", "nameEN": "STANDARD REFORMER", "nameJP": "\u30b9\u30bf\u30f3\u30c0\u30fc\u30c9\u30ea\u30d5\u30a9\u30fc\u30de\u30fc", "desc": "\u30e1\u30fc\u30d7\u30eb\u6750\u30d5\u30ec\u30fc\u30e0\u3001\u30b3\u30f3\u30d1\u30af\u30c8\u8a2d\u8a08\u3002", "p1": "$905", "size": "2280\u00d7720\u00d71850mm", "pack": "2360\u00d7780\u00d7495mm", "weight": "90 KG", "packW": "120 KG", "height": "340mm", "eva1": "EVA +$80", "paint1": "\u5857\u88c5 +$100", "springs": "", "photos": []}, {"id": "X01-B", "nameEN": "ENHANCED REFORMER", "nameJP": "\u30a8\u30f3\u30cf\u30f3\u30b9\u30c9\u30ea\u30d5\u30a9\u30fc\u30de\u30fc", "desc": "\u30d8\u30c3\u30c9\u30ec\u30b9\u30c8\u30fb\u30b7\u30e7\u30eb\u30c0\u30fc\u30d6\u30ed\u30c3\u30af\u4ed8\u304d\u3002\u30e1\u30fc\u30d7\u30eb\u6750\u30d5\u30ec\u30fc\u30e0\u3002", "p1": "$1,052", "size": "2280\u00d7720\u00d71850mm", "pack": "2360\u00d7780\u00d7495mm", "weight": "100 KG", "packW": "130 KG", "height": "340mm", "eva1": "EVA +$80", "paint1": "\u5857\u88c5 +$100", "springs": "", "photos": []}, {"id": "X01-C", "nameEN": "PROFESSIONAL REFORMER", "nameJP": "\u30d7\u30ed\u30d5\u30a7\u30c3\u30b7\u30e7\u30ca\u30eb\u30ea\u30d5\u30a9\u30fc\u30de\u30fc", "desc": "\u30b9\u30c1\u30fc\u30eb\u30d5\u30ec\u30fc\u30e0\u3001\u30e2\u30c0\u30f3\u30d6\u30e9\u30c3\u30af\u30c7\u30b6\u30a4\u30f3\u3002", "p1": "$862", "size": "2300\u00d7600\u00d7375mm", "pack": "2380\u00d7680\u00d7420mm", "weight": "110 KG", "packW": "140 KG", "height": "312mm", "eva1": "EVA +$80", "paint1": "\u5857\u88c5 N/A", "springs": "", "photos": []}, {"id": "\u2014", "nameEN": "3.5mm HARD MAPLE", "nameJP": "3.5mm \u8f38\u5165\u30cf\u30fc\u30c9\u30e1\u30fc\u30d7\u30eb", "desc": "3.5mm \u8f38\u5165\u30cf\u30fc\u30c9\u30e1\u30fc\u30d7\u30eb\u6750\u4f7f\u7528\u3002", "p1": "$965", "size": "\u2014", "pack": "\u2014", "weight": "\u2014", "packW": "\u2014", "height": "\u2014", "eva1": "EVA +$80", "paint1": "\u5857\u88c5 +$100\uff08\u767d\uff09", "springs": "", "photos": []}, {"id": "\u2014", "nameEN": "4:6 RATIO FRAME", "nameJP": "4\u5bfe6\u306e\u6bd4\u7387\u30d5\u30ec\u30fc\u30e0\u30ef\u30fc\u30af", "desc": "4\u5bfe6\u306e\u6bd4\u7387\u30d5\u30ec\u30fc\u30e0\u30ef\u30fc\u30af\u3002", "p1": "$635", "size": "\u2014", "pack": "\u2014", "weight": "\u2014", "packW": "\u2014", "height": "\u2014", "eva1": "EVA +$80", "paint1": "\u5857\u88c5 +$100", "springs": "", "photos": []}, {"id": "\u2014", "nameEN": "50/50 FOLDING FRAME", "nameJP": "50/50 \u6298\u308a\u305f\u305f\u307f\u30d5\u30ec\u30fc\u30e0", "desc": "50/50 \u6298\u308a\u305f\u305f\u307f\u30d5\u30ec\u30fc\u30e0\u3002\u7701\u30b9\u30da\u30fc\u30b9\u53ce\u7d0d\u53ef\u80fd\u3002", "p1": "$635", "size": "\u2014", "pack": "\u2014", "weight": "\u2014", "packW": "\u2014", "height": "\u2014", "eva1": "EVA +$80", "paint1": "\u5857\u88c5 +$100", "springs": "", "photos": []}]}, {"num": "02", "en": "Half Tower", "jp": "\u30cf\u30fc\u30d5\u30bf\u30ef\u30fc", "products": [{"id": "X02-A", "nameEN": "HALF TOWER REFORMER", "nameJP": "\u30cf\u30fc\u30d5\u30bf\u30ef\u30fc\u30ea\u30d5\u30a9\u30fc\u30de\u30fc", "desc": "\u30ea\u30d5\u30a9\u30fc\u30de\u30fc\uff0b\u30cf\u30fc\u30d5\u30bf\u30ef\u30fc\u3002\u30e1\u30fc\u30d7\u30eb\u6750\u3001\u30d5\u30eb\u30b9\u30d7\u30ea\u30f3\u30b0\u30b7\u30b9\u30c6\u30e0\u3002", "p1": "$1,154", "size": "2280\u00d7720\u00d71850mm", "pack": "2360\u00d7780\u00d7495mm", "weight": "110 KG", "packW": "140 KG", "height": "340mm", "eva1": "EVA +$80", "paint1": "\u5857\u88c5 +$100", "springs": "\u30d9\u30c3\u30c9: \u8d64\u00d72 \u7dd1\u00d72 \u9ec4\u00d72 \uff0f \u30bf\u30ef\u30fc: \u7dd1L\u00d72 \u7dd1S\u00d72 \u9ec4L\u00d72 \u9ec4S\u00d72", "photos": []}, {"id": "X02-B", "nameEN": "FOLDING HALF TOWER", "nameJP": "\u6298\u308a\u305f\u305f\u307f\u5f0f\u30bf\u30ef\u30fc\u4ed8\u304d\u30ea\u30d5\u30a9\u30fc\u30de\u30fc", "desc": "\u6298\u308a\u305f\u305f\u307f\u5f0f\u30bf\u30ef\u30fc\u4ed8\u304d\u30ea\u30d5\u30a9\u30fc\u30de\u30fc\u3002\u7701\u30b9\u30da\u30fc\u30b9\u8a2d\u8a08\u3002", "p1": "$1,050", "size": "2280\u00d7690\u00d71850mm", "pack": "2510\u00d7770\u00d7520mm", "weight": "110 KG", "packW": "140 KG", "height": "340mm", "eva1": "EVA +$80", "paint1": "\u5857\u88c5 +$100", "springs": "\u30d9\u30c3\u30c9: \u8d64\u00d72 \u7dd1\u00d72 \u9ec4\u00d72 \uff0f \u30bf\u30ef\u30fc: \u7dd1L\u00d72 \u7dd1S\u00d72 \u9ec4L\u00d72 \u9ec4S\u00d72", "photos": []}, {"id": "X02-C", "nameEN": "PREMIUM HALF TOWER", "nameJP": "\u30d7\u30ec\u30df\u30a2\u30e0\u30fb\u30cf\u30fc\u30d5\u30bf\u30ef\u30fc", "desc": "\u30d7\u30ec\u30df\u30a2\u30e0\u30fb\u30cf\u30fc\u30d5\u30bf\u30ef\u30fc\u3002\u9ad8\u54c1\u8cea\u30d1\u30c3\u30c9\u3001\u30d5\u30eb\u30a2\u30af\u30bb\u30b5\u30ea\u30fc\u4ed8\u5c5e\u3002", "p1": "$1,350", "size": "2280\u00d7720\u00d71850mm", "pack": "2360\u00d7780\u00d7495mm", "weight": "120 KG", "packW": "150 KG", "height": "340mm", "eva1": "EVA +$80", "paint1": "\u5857\u88c5 +$100", "springs": "\u30d9\u30c3\u30c9: \u8d64\u00d74 \u7dd1\u00d74 \u9ec4\u00d74 \uff0f \u30bf\u30ef\u30fc: \u7dd1L\u00d72 \u7dd1S\u00d72 \u9ec4L\u00d72 \u9ec4S\u00d72", "photos": []}]}, {"num": "03", "en": "Cadillac", "jp": "\u30ad\u30e3\u30c7\u30e9\u30c3\u30af", "products": [{"id": "X03-A", "nameEN": "STEEL CADILLAC", "nameJP": "\u30b9\u30c1\u30fc\u30eb\u88fd\u30ad\u30e3\u30c7\u30e9\u30c3\u30af", "desc": "\u30b9\u30c1\u30fc\u30eb\u88fd\u30ad\u30e3\u30c7\u30e9\u30c3\u30af\u3002\u30d5\u30eb\u30d5\u30ec\u30fc\u30e0\u3001\u5404\u7a2e\u30a2\u30bf\u30c3\u30c1\u30e1\u30f3\u30c8\u4ed8\u5c5e\u3002", "p1": "$836", "size": "2320\u00d7760\u00d71990mm", "pack": "2350\u00d7770\u00d7340mm", "weight": "90 KG", "packW": "120 KG", "height": "550mm", "eva1": "EVA N/A", "paint1": "\u5857\u88c5 N/A", "springs": "\u7dd1L\u00d72 \u7dd1S\u00d72 \u9ec4L\u00d72 \u9ec4S\u00d72 \u8d64S\u00d72", "photos": []}, {"id": "X03-B", "nameEN": "MAPLE CADILLAC", "nameJP": "\u30e1\u30fc\u30d7\u30eb\u6750\u30ad\u30e3\u30c7\u30e9\u30c3\u30af", "desc": "\u30e1\u30fc\u30d7\u30eb\u6750\u30ad\u30e3\u30c7\u30e9\u30c3\u30af\u3002\u5929\u7136\u6728\u306e\u8cea\u611f\u3001\u30d7\u30ed\u4ed5\u69d8\u3002", "p1": "$890", "size": "2190\u00d7800\u00d72120mm", "pack": "2310\u00d7820\u00d7690mm", "weight": "100 KG", "packW": "120 KG", "height": "635mm", "eva1": "EVA +$80", "paint1": "\u5857\u88c5 +$100", "springs": "\u7dd1L\u00d72 \u7dd1S\u00d72 \u9ec4L\u00d72 \u9ec4S\u00d72 \u8d64S\u00d72", "photos": []}, {"id": "X03-C", "nameEN": "PREMIUM MAPLE CADILLAC", "nameJP": "\u30ea\u30d5\u30a9\u30fc\u30de\u30fc\u30d9\u30c3\u30c9\u4e00\u4f53\u578b\u30ad\u30e3\u30c7\u30e9\u30c3\u30af", "desc": "\u30ea\u30d5\u30a9\u30fc\u30de\u30fc\u30d9\u30c3\u30c9\u4e00\u4f53\u578b\u30ad\u30e3\u30c7\u30e9\u30c3\u30af\u3002\u6700\u9ad8\u30b0\u30ec\u30fc\u30c9\u4ed5\u69d8\u3002", "p1": "$1,135", "size": "2190\u00d7800\u00d72120mm", "pack": "2310\u00d7820\u00d7690mm", "weight": "120 KG", "packW": "150 KG", "height": "635mm", "eva1": "EVA +$80", "paint1": "\u5857\u88c5 +$100", "springs": "\u30d9\u30c3\u30c9: \u8d64\u00d72 \u7dd1\u00d72 \u9ec4\u00d72 \uff0f \u30bf\u30ef\u30fc: \u7dd1L\u00d72 \u7dd1S\u00d72 \u9ec4L\u00d72 \u9ec4S\u00d72 \u8d64S\u00d72", "photos": []}]}, {"num": "04", "en": "Chair", "jp": "\u30c1\u30a7\u30a2", "products": [{"id": "X04-A", "nameEN": "STABILITY CHAIR", "nameJP": "\u30ef\u30f3\u30c0\u30c1\u30a7\u30a2", "desc": "\u30e1\u30fc\u30d7\u30eb\u6750\u3001\u30b9\u30d7\u30ea\u30c3\u30c8\u30fb\u30da\u30c0\u30eb\u30b7\u30b9\u30c6\u30e0\u3002", "p1": "$650", "size": "840\u00d7680\u00d7615mm", "pack": "900\u00d7725\u00d7758mm", "weight": "45 KG", "packW": "65 KG", "height": "\u2014", "eva1": "EVA +$40", "paint1": "\u5857\u88c5 +$60", "springs": "\u8d64\u00d72 \u7dd1\u00d72", "photos": []}, {"id": "X04-B", "nameEN": "WUNDA CHAIR", "nameJP": "\u30b3\u30f3\u30dc\u30c1\u30a7\u30a2", "desc": "\u5929\u7136\u6728\u30d5\u30ec\u30fc\u30e0\u3001\u30b3\u30f3\u30d1\u30af\u30c8\u8a2d\u8a08\u3002", "p1": "$500", "size": "840\u00d7600\u00d7600mm", "pack": "800\u00d7720\u00d7770mm", "weight": "45 KG", "packW": "65 KG", "height": "\u2014", "eva1": "EVA +$40", "paint1": "\u5857\u88c5 +$60", "springs": "\u8d64\u00d72 \u7dd1\u00d72", "photos": []}, {"id": "X04-C", "nameEN": "PROFESSIONAL CHAIR", "nameJP": "\u30cf\u30a4\u30d0\u30c3\u30af\u30c1\u30a7\u30a2", "desc": "\u30b9\u30c1\u30fc\u30eb\uff0b\u30db\u30ef\u30a4\u30c8\u30d1\u30cd\u30eb\u3002", "p1": "$458", "size": "750\u00d7600\u00d71300mm", "pack": "910\u00d7720\u00d7710mm", "weight": "45 KG", "packW": "65 KG", "height": "\u2014", "eva1": "EVA N/A", "paint1": "\u5857\u88c5 N/A", "springs": "\u8d64\u00d72 \u7dd1\u00d72", "photos": []}]}, {"num": "05", "en": "Ladder Barrel", "jp": "\u30e9\u30c0\u30fc\u30d0\u30ec\u30eb", "products": [{"id": "X05-A", "nameEN": "MAPLE LADDER BARREL", "nameJP": "\u901a\u5e38\u30b9\u30dd\u30f3\u30b8\u30fb\u30d5\u30c3\u30c8\u30da\u30c0\u30eb\u4ed8\u304d", "desc": "\u30e1\u30fc\u30d7\u30eb\u6750\u3002\u30d5\u30c3\u30c8\u30da\u30c0\u30eb\u6a5f\u80fd\u4ed8\u304d\u3002", "p1": "$435", "size": "1100\u00d7620\u00d7980mm", "pack": "1170\u00d7690\u00d71110mm", "weight": "90 KG", "packW": "110 KG", "height": "\u2014", "eva1": "EVA +$40", "paint1": "\u5857\u88c5 +$60", "springs": "", "photos": []}, {"id": "X05-B", "nameEN": "IRON FRAME MAPLE BARREL", "nameJP": "\u9244\u88fd\u30d5\u30ec\u30fc\u30e0\u30fb\u30e1\u30fc\u30d7\u30eb\u6750", "desc": "\u9244\u88fd\u30d5\u30ec\u30fc\u30e0\u3001\u30e1\u30fc\u30d7\u30eb\u6750\u677f\u3002\u30d5\u30c3\u30c8\u30da\u30c0\u30eb\u8abf\u7bc0\u53ef\u80fd\u3002", "p1": "$455", "size": "1100\u00d7620\u00d7980mm", "pack": "1170\u00d7690\u00d71110mm", "weight": "90 KG", "packW": "110 KG", "height": "\u2014", "eva1": "EVA +$40", "paint1": "\u5857\u88c5 +$60", "springs": "", "photos": []}, {"id": "X05-C", "nameEN": "STEEL LADDER BARREL", "nameJP": "\u30b9\u30c1\u30fc\u30eb\u30d5\u30ec\u30fc\u30e0\u30fb\u30da\u30c0\u30eb\u4ed8\u304d", "desc": "\u30aa\u30fc\u30eb\u30b9\u30c1\u30fc\u30eb\u30d5\u30ec\u30fc\u30e0\u3002\u30d5\u30c3\u30c8\u30da\u30c0\u30eb\u6a5f\u80fd\u4ed8\u304d\u3002", "p1": "$425", "size": "1100\u00d7620\u00d7980mm", "pack": "1170\u00d7690\u00d71110mm", "weight": "90 KG", "packW": "110 KG", "height": "\u2014", "eva1": "EVA N/A", "paint1": "\u5857\u88c5 N/A", "springs": "", "photos": []}, {"id": "X05-D", "nameEN": "BASIC LADDER BARREL", "nameJP": "\u30d9\u30fc\u30b7\u30c3\u30af\u30fb\u30da\u30c0\u30eb\u306a\u3057", "desc": "\u30d5\u30c3\u30c8\u30da\u30c0\u30eb\u6a5f\u80fd\u306a\u3057\u3002\u30af\u30e9\u30b7\u30c3\u30af\u30c7\u30b6\u30a4\u30f3\u3002", "p1": "$396", "size": "1100\u00d7620\u00d7980mm", "pack": "1170\u00d7690\u00d71110mm", "weight": "90 KG", "packW": "110 KG", "height": "\u2014", "eva1": "EVA +$40", "paint1": "\u5857\u88c5 +$60", "springs": "", "photos": []}]}], "accessories": {"small": [{"name": "Pilates Circle", "nameJP": "\u30d4\u30e9\u30c6\u30a3\u30b9\u30ea\u30f3\u30b0", "p1": "$3.2", "spec": "38cm", "photo": ""}, {"name": "Pilates Ball", "nameJP": "\u30d4\u30e9\u30c6\u30a3\u30b9\u30dc\u30fc\u30eb", "p1": "$1.3\u301c2.3", "spec": "25cm", "photo": ""}, {"name": "Foam Roller", "nameJP": "\u30d5\u30a9\u30fc\u30e0\u30ed\u30fc\u30e9\u30fc", "p1": "$6\u301c6.5", "spec": "33\u00d713 / 45\u00d713cm", "photo": ""}, {"name": "Elastic Band", "nameJP": "\u30a8\u30e9\u30b9\u30c6\u30a3\u30c3\u30af\u30d0\u30f3\u30c9", "p1": "$1.2", "spec": "1500\u00d7150\u00d70.35mm", "photo": ""}, {"name": "Yoga Block", "nameJP": "\u30e8\u30ac\u30d6\u30ed\u30c3\u30af", "p1": "$5", "spec": "23\u00d715\u00d77.5cm", "photo": ""}, {"name": "Balance Disc", "nameJP": "\u30d0\u30e9\u30f3\u30b9\u30c7\u30a3\u30b9\u30af", "p1": "$3.8", "spec": "\u76f4\u5f8434cm", "photo": ""}, {"name": "Spinal Corrector (Wood)", "nameJP": "\u30b9\u30d1\u30a4\u30ca\u30eb\u30b3\u30ec\u30af\u30bf\u30fc\uff08\u6728\u88fd\uff09", "p1": "$70", "spec": "", "photo": ""}, {"name": "EPP Spinal Corrector", "nameJP": "EPP\u30b9\u30d1\u30a4\u30ca\u30eb\u30b3\u30ec\u30af\u30bf\u30fc", "p1": "$23", "spec": "96\u00d736\u00d726cm", "photo": ""}, {"name": "Spine Trainer", "nameJP": "\u30b9\u30d1\u30a4\u30f3\u30c8\u30ec\u30fc\u30ca\u30fc", "p1": "$183", "spec": "", "photo": ""}, {"name": "Massage Stick", "nameJP": "\u30de\u30c3\u30b5\u30fc\u30b8\u30b9\u30c6\u30a3\u30c3\u30af", "p1": "$21", "spec": "", "photo": ""}, {"name": "Balance Pad", "nameJP": "\u30d0\u30e9\u30f3\u30b9\u30d1\u30c3\u30c9", "p1": "$6", "spec": "28\u00d717\u00d76cm", "photo": ""}, {"name": "Pilates Mat", "nameJP": "\u30d4\u30e9\u30c6\u30a3\u30b9\u30de\u30c3\u30c8", "p1": "$18", "spec": "5mm", "photo": ""}], "large": [{"name": "Box", "nameJP": "\u30dc\u30c3\u30af\u30b9", "p1": "$50", "spec": "\u5bf8\u6cd5\u30ab\u30b9\u30bf\u30de\u30a4\u30ba\u53ef", "photo": ""}, {"name": "Maple Stick 80cm", "nameJP": "\u30e1\u30fc\u30d7\u30eb\u30b9\u30c6\u30a3\u30c3\u30af 80cm", "p1": "$12", "spec": "80cm", "photo": ""}, {"name": "Maple Stick 120cm", "nameJP": "\u30e1\u30fc\u30d7\u30eb\u30b9\u30c6\u30a3\u30c3\u30af 120cm", "p1": "$16", "spec": "120cm", "photo": ""}, {"name": "Arc Barrel", "nameJP": "\u30a2\u30fc\u30af\u30d0\u30ec\u30eb\uff08\u53d6\u3063\u624b\u306a\u3057\uff09", "p1": "$40", "spec": "\u4e2d\u7a7a\u30fb\u53d6\u3063\u624b\u306a\u3057", "photo": ""}, {"name": "Arc Barrel (Handle)", "nameJP": "\u30a2\u30fc\u30af\u30d0\u30ec\u30eb\uff08\u53d6\u3063\u624b\u4ed8\u304d\uff09", "p1": "$45", "spec": "\u53d6\u3063\u624b\u4ed8\u304d", "photo": ""}]}};
 
 
-// ── STATE (global vars - no TDZ) ──
+// ââ STATE (global vars - no TDZ) ââ
 var S        = { mode:null, token:null, data:null, dirty:false };
 var EDIT     = {};
 var editData = {};
 var activeFilter = 'all';
 
-// ── CONFIG ──
+// ââ CONFIG ââ
 var REPO_OWNER = 'eharakenji0925-hub';
 var REPO_NAME  = 'xseries';
 
-// 2つのJSONファイル
+// 2ã¤ã®JSONãã¡ã¤ã«
 var FILES = {
   full:    { name:'products_full.json',    sha:null },
   daimaru: { name:'products_daimaru.json', sha:null }
@@ -400,10 +400,10 @@ var RAW = (fname) =>
 var API = (fname) =>
   `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${fname}`;
 
-// ── パスワード定義 ──
-// d = 大丸（daimaru.jsonのみ読み込み・編集不可）
-// f = 工場（full.json読み込み・p2編集可）
-// a = 江原管理者（full.json読み込み・全編集可）
+// ââ ãã¹ã¯ã¼ãå®ç¾© ââ
+// d = å¤§ä¸¸ï¼daimaru.jsonã®ã¿èª­ã¿è¾¼ã¿ã»ç·¨éä¸å¯ï¼
+// f = å·¥å ´ï¼full.jsonèª­ã¿è¾¼ã¿ã»p2ç·¨éå¯ï¼
+// a = æ±åç®¡çèï¼full.jsonèª­ã¿è¾¼ã¿ã»å¨ç·¨éå¯ï¼
 var PASSWORDS = {
   'daimaru2026': 'd',
   'factory2026': 'f',
@@ -411,26 +411,26 @@ var PASSWORDS = {
 };
 
 var MODE_INFO = {
-  d: { label:'大丸 仕入れ価格', dataFile:'daimaru', canEdit:false, lang:'ja' },
-  f: { label:'工厂管理模式',    dataFile:'full',    canEdit:true,  lang:'zh' },
-  a: { label:'江原 管理モード', dataFile:'full',    canEdit:true,  lang:'ja' }
+  d: { label:'å¤§ä¸¸ ä»å¥ãä¾¡æ ¼', dataFile:'daimaru', canEdit:false, lang:'ja' },
+  f: { label:'å·¥åç®¡çæ¨¡å¼',    dataFile:'full',    canEdit:true,  lang:'zh' },
+  a: { label:'æ±å ç®¡çã¢ã¼ã', dataFile:'full',    canEdit:true,  lang:'ja' }
 };
 
 var LANG = {
   ja:{
-    logout:'ログアウト', admin:'ADMIN PANEL', save:'GitHubに保存',
-    disconnected:'— 未接続', connected:'接続済み', connect:'接 続',
-    add:'＋ 追加', edit:'✎ 編集', apply:'適 用', cancel:'キャンセル',
-    addPhoto:'写真を追加', search:'製品名・モデル番号で検索...',
-    saveOk:'✓ GitHubに保存しました', saveFail:'保存失敗',
-    unsaved:'未保存の変更があります。閉じますか？',
-    logoutDirty:'未保存の変更があります。ログアウトしますか？',
-    logoutConfirm:'ログアウトしますか？',
-    noResult:'に一致する製品が見つかりません',
-    catAll:'ALL', wholesale:L('fldP1'), factory:'原 価',
-    priceUnset:'⚠ 価格未設定',
-    priceUnsetMsg:'⚠ 仕入れ価格 未設定 — 江原さんの入力が必要です',
-    apUnset:'⚠ 仕入れ未設定',
+    logout:'ã­ã°ã¢ã¦ã', admin:'ADMIN PANEL', save:'GitHubã«ä¿å­',
+    disconnected:'â æªæ¥ç¶', connected:'æ¥ç¶æ¸ã¿', connect:'æ¥ ç¶',
+    add:'ï¼ è¿½å ', edit:'â ç·¨é', apply:'é© ç¨', cancel:'ã­ã£ã³ã»ã«',
+    addPhoto:'åçãè¿½å ', search:'è£½ååã»ã¢ãã«çªå·ã§æ¤ç´¢...',
+    saveOk:'â GitHubã«ä¿å­ãã¾ãã', saveFail:'ä¿å­å¤±æ',
+    unsaved:'æªä¿å­ã®å¤æ´ãããã¾ããéãã¾ããï¼',
+    logoutDirty:'æªä¿å­ã®å¤æ´ãããã¾ããã­ã°ã¢ã¦ããã¾ããï¼',
+    logoutConfirm:'ã­ã°ã¢ã¦ããã¾ããï¼',
+    noResult:'ã«ä¸è´ããè£½åãè¦ã¤ããã¾ãã',
+    catAll:'ALL', wholesale:L('fldP1'), factory:'å ä¾¡',
+    priceUnset:'â  ä¾¡æ ¼æªè¨­å®',
+    priceUnsetMsg:'â  ä»å¥ãä¾¡æ ¼ æªè¨­å® â æ±åããã®å¥åãå¿è¦ã§ã',
+    apUnset:'â  ä»å¥ãæªè¨­å®',
     fldId:L('fldId'), fldCat:L('fldCat'), fldNameEN:L('fldNameEN'),
     fldNameJP:L('fldNameJP'), fldDesc:L('fldDesc'),
     fldP1:L('fldP1'), fldP2:L('fldP2'),
@@ -438,32 +438,32 @@ var LANG = {
     fldWt:L('fldWt'), fldPw:L('fldPw'), fldHt:L('fldHt'),
     fldEva1:L('fldEva1'), fldEva2:L('fldEva2'),
     fldPnt1:L('fldPnt1'), fldPnt2:L('fldPnt2'),
-    fldSpr:L('fldSpr'), fldPic:L('fldPic'), roNote:'（変更不可）',
+    fldSpr:L('fldSpr'), fldPic:L('fldPic'), roNote:'ï¼å¤æ´ä¸å¯ï¼',
     accName:'NAME', accNameJP:L('accNameJP'), accSpec:'SPEC',
   },
   zh:{
-    logout:'退出登录', admin:'管理面板', save:'保存到 GitHub',
-    disconnected:'— 未连接', connected:'已连接', connect:'连 接',
-    add:'＋ 添加', edit:'✎ 编辑', apply:'确 认', cancel:'取 消',
-    addPhoto:'添加照片', search:'按产品名称·型号搜索...',
-    saveOk:'✓ 已保存到 GitHub', saveFail:'保存失败',
-    unsaved:'有未保存的更改，确认关闭？',
-    logoutDirty:'有未保存的更改，确认退出？',
-    logoutConfirm:'确认退出登录？',
-    noResult:'未找到匹配的产品',
-    catAll:'全部', wholesale:'批发价', factory:'出厂价',
-    priceUnset:'⚠ 批发价未设定',
-    priceUnsetMsg:'⚠ 批发价未设定 — 需要 Ehara 填写',
-    apUnset:'⚠ 批发价未设定',
-    fldId:'型号', fldCat:'分类', fldNameEN:'英文名称',
-    fldNameJP:'日文名称', fldDesc:'说明',
-    fldP1:'批发价', fldP2:'出厂价',
-    fldSize:'尺寸 (mm)', fldPack:'包装尺寸 (mm)',
-    fldWt:'净重', fldPw:'毛重', fldHt:'高度',
-    fldEva1:'EVA — 批发', fldEva2:'EVA — 出厂',
-    fldPnt1:'喷涂 — 批发', fldPnt2:'喷涂 — 出厂',
-    fldSpr:'弹簧配置', fldPic:'产品图片', roNote:'（只读）',
-    accName:'名称', accNameJP:'日文名称', accSpec:'规格',
+    logout:'éåºç»å½', admin:'ç®¡çé¢æ¿', save:'ä¿å­å° GitHub',
+    disconnected:'â æªè¿æ¥', connected:'å·²è¿æ¥', connect:'è¿ æ¥',
+    add:'ï¼ æ·»å ', edit:'â ç¼è¾', apply:'ç¡® è®¤', cancel:'å æ¶',
+    addPhoto:'æ·»å ç§ç', search:'æäº§ååç§°Â·åå·æç´¢...',
+    saveOk:'â å·²ä¿å­å° GitHub', saveFail:'ä¿å­å¤±è´¥',
+    unsaved:'ææªä¿å­çæ´æ¹ï¼ç¡®è®¤å³é­ï¼',
+    logoutDirty:'ææªä¿å­çæ´æ¹ï¼ç¡®è®¤éåºï¼',
+    logoutConfirm:'ç¡®è®¤éåºç»å½ï¼',
+    noResult:'æªæ¾å°å¹éçäº§å',
+    catAll:'å¨é¨', wholesale:'æ¹åä»·', factory:'åºåä»·',
+    priceUnset:'â  æ¹åä»·æªè®¾å®',
+    priceUnsetMsg:'â  æ¹åä»·æªè®¾å® â éè¦ Ehara å¡«å',
+    apUnset:'â  æ¹åä»·æªè®¾å®',
+    fldId:'åå·', fldCat:'åç±»', fldNameEN:'è±æåç§°',
+    fldNameJP:'æ¥æåç§°', fldDesc:'è¯´æ',
+    fldP1:'æ¹åä»·', fldP2:'åºåä»·',
+    fldSize:'å°ºå¯¸ (mm)', fldPack:'åè£å°ºå¯¸ (mm)',
+    fldWt:'åé', fldPw:'æ¯é', fldHt:'é«åº¦',
+    fldEva1:'EVA â æ¹å', fldEva2:'EVA â åºå',
+    fldPnt1:'å·æ¶ â æ¹å', fldPnt2:'å·æ¶ â åºå',
+    fldSpr:'å¼¹ç°§éç½®', fldPic:'äº§åå¾ç', roNote:'ï¼åªè¯»ï¼',
+    accName:'åç§°', accNameJP:'æ¥æåç§°', accSpec:'è§æ ¼',
   }
 };
 
@@ -474,21 +474,21 @@ function L(key){
   return dict[key] !== undefined ? dict[key] : String(key);
 }
 
-// ── LOGIN ──
+// ââ LOGIN ââ
 async function doLogin(){
   const pw   = document.getElementById('pw-inp').value.trim();
   const err  = document.getElementById('pw-err');
   const load = document.getElementById('pw-loading');
 
   if(!PASSWORDS[pw]){
-    err.textContent = 'パスワードが正しくありません';
+    err.textContent = 'ãã¹ã¯ã¼ããæ­£ããããã¾ãã';
     setTimeout(()=>err.textContent='', 2500);
     return;
   }
 
   S.mode = PASSWORDS[pw];
   const info = MODE_INFO[S.mode];
-  load.textContent = 'データを読み込み中...';
+  load.textContent = 'ãã¼ã¿ãèª­ã¿è¾¼ã¿ä¸­...';
   document.querySelector('.lb button').disabled = true;
 
   const ok = await fetchData(info.dataFile);
@@ -496,7 +496,7 @@ async function doLogin(){
   document.querySelector('.lb button').disabled = false;
 
   if(!ok){
-    err.textContent = 'データ読み込み失敗。ネットワークを確認してください。';
+    err.textContent = 'ãã¼ã¿èª­ã¿è¾¼ã¿å¤±æããããã¯ã¼ã¯ãç¢ºèªãã¦ãã ããã';
     return;
   }
 
@@ -535,9 +535,9 @@ function doLogout(){
   } else {
     if(!confirm(L('logoutConfirm'))) return;
   }
-  // 状態リセット
+  // ç¶æãªã»ãã
   S = { mode:null, token:null, data:null, dirty:false };
-  // 画面リセット
+  // ç»é¢ãªã»ãã
   document.getElementById('catalog').style.display = 'none';
   document.getElementById('login-screen').style.display = 'flex';
   document.getElementById('pw-inp').value = '';
@@ -545,19 +545,21 @@ function doLogout(){
   document.getElementById('cat-main').innerHTML = '';
   document.getElementById('admin-fab').classList.remove('show');
   document.body.className = '';
-  // パネルを閉じる
+  // ããã«ãéãã
   document.getElementById('admin-panel').classList.remove('open');
   document.getElementById('editor-panel').classList.remove('open');
   document.getElementById('admin-overlay').classList.remove('open');
 }
 
-// ── DATA FETCH ──
+// ââ DATA FETCH ââ
 async function fetchData(fileKey){
   const fname = FILES[fileKey].name;
   try {
     const r = await fetch(RAW(fname) + '?t=' + Date.now());
     if(!r.ok) return false;
     S.data = await r.json();
+      if(S.data&&S.data.sections){S.data.sections.forEach(sec=>{if(sec.products)sec.products.sort((a,b)=>a.id.localeCompare(b.id));});}
+
     return true;
   } catch(e){ return false; }
 }
@@ -576,7 +578,7 @@ async function getFileSha(fileKey){
   } catch(e){ return false; }
 }
 
-// ── RENDER ──
+// ââ RENDER ââ
 function renderNav(){
   const nav = document.getElementById('c-nav');
   let h = '';
@@ -615,35 +617,35 @@ function renderCard(p, si, pi){
   const extras = photos.slice(1);
   const info   = MODE_INFO[S.mode];
 
-  // 価格表示
-  const p1empty = !p.p1 || p.p1.trim() === '' || p.p1 === '—';
+  // ä¾¡æ ¼è¡¨ç¤º
+  const p1empty = !p.p1 || p.p1.trim() === '' || p.p1 === 'â';
   const _si = si !== undefined ? si : '';
   const _pi = pi !== undefined ? pi : '';
   let priceH = '';
   if(S.mode === 'a' || S.mode === 'f'){
     priceH = (p1empty ? `<div class='badge-unset'>${L('priceUnsetMsg')}</div>` : '') +
       `<div class="price-dual">
-        <div class="pd-col col1"><span class="pd-lbl">${L('wholesale')}</span><div class="pd-v">${p1empty ? '未設定' : p.p1}</div></div>
-        <div class="pd-col col2"><span class="pd-lbl">${L('factory')}</span><div class="pd-v">${p.p2||'—'}</div></div>
+        <div class="pd-col col1"><span class="pd-lbl">${L('wholesale')}</span><div class="pd-v">${p1empty ? 'æªè¨­å®' : p.p1}</div></div>
+        <div class="pd-col col2"><span class="pd-lbl">${L('factory')}</span><div class="pd-v">${p.p2||'â'}</div></div>
       </div>`;
   } else {
     priceH = p1empty
-      ? '<div class="badge-unset">⚠ 価格未設定</div>'
+      ? '<div class="badge-unset">â  ä¾¡æ ¼æªè¨­å®</div>'
       : `<div class="price-single"><div class="pv">${p.p1}</div><div class="pu">USD</div></div>`;
   }
 
-  // スペック
+  // ã¹ããã¯
   const specs = [];
-  if(p.size   && p.size!=='—')   specs.push(['SIZE',    p.size]);
-  if(p.pack   && p.pack!=='—')   specs.push(['PACK',    p.pack]);
-  if(p.weight && p.weight!=='—') specs.push([L('fldWt'), p.weight]);
-  if(p.packW  && p.packW!=='—')  specs.push([L('fldPw'), p.packW]);
-  if(p.height && p.height!=='—') specs.push([L('fldHt'),    p.height]);
+  if(p.size   && p.size!=='â')   specs.push(['SIZE',    p.size]);
+  if(p.pack   && p.pack!=='â')   specs.push(['PACK',    p.pack]);
+  if(p.weight && p.weight!=='â') specs.push([L('fldWt'), p.weight]);
+  if(p.packW  && p.packW!=='â')  specs.push([L('fldPw'), p.packW]);
+  if(p.height && p.height!=='â') specs.push([L('fldHt'),    p.height]);
   const specH = specs.length
     ? `<table class="spec-tbl">${specs.map(([k,v])=>`<tr><td>${k}</td><td>${v}</td></tr>`).join('')}</table>`
     : '';
 
-  // オプション（大丸はeva1/paint1、工場はeva2/paint2）
+  // ãªãã·ã§ã³ï¼å¤§ä¸¸ã¯eva1/paint1ãå·¥å ´ã¯eva2/paint2ï¼
   const eva  = S.mode==='f' ? (p.eva2||'') : (p.eva1||'');
   const pnt  = S.mode==='f' ? (p.paint2||'') : (p.paint1||'');
   const optH = `<div class="opts">
@@ -685,9 +687,9 @@ function renderAccessories(){
     let pH = '';
     if(showBoth){
       pH = `<div class="acc-dual">
-        <div><span class="ad-lbl">仕入れ</span><span class="ad1">${item.p1}</span></div>
+        <div><span class="ad-lbl">ä»å¥ã</span><span class="ad1">${item.p1}</span></div>
         <span style="color:#ddd">/</span>
-        <div><span class="ad-lbl">原価</span><span class="ad2">${item.p2||'—'}</span></div>
+        <div><span class="ad-lbl">åä¾¡</span><span class="ad2">${item.p2||'â'}</span></div>
       </div>`;
     } else {
       pH = `<div class="acc-price">${item.p1}<span style="font-size:10px;color:#aaa;margin-left:4px">USD</span></div>`;
@@ -695,7 +697,7 @@ function renderAccessories(){
     return `<div class="acc-card">
       ${item.photo
         ? `<img class="acc-img" src="${item.photo}" loading="lazy" alt="${item.name}">`
-        : '<div class="acc-img" style="display:flex;align-items:center;justify-content:center;color:#ddd">—</div>'}
+        : '<div class="acc-img" style="display:flex;align-items:center;justify-content:center;color:#ddd">â</div>'}
       <div class="acc-body">
         <div class="acc-name">${item.name}</div>
         ${item.spec ? `<div class="acc-spec">${item.spec}</div>` : ''}
@@ -707,7 +709,7 @@ function renderAccessories(){
   return `<section id="sec-06">
     <div class="s-hd">
       <div class="s-num">06</div>
-      <div><div class="s-en">Accessories</div><div class="s-jp">アクセサリー</div></div>
+      <div><div class="s-en">Accessories</div><div class="s-jp">ã¢ã¯ã»ãµãªã¼</div></div>
     </div>
     <div class="acc-sec">
       <div class="acc-grid">${acc.small.map(accCard).join('')}</div>
@@ -716,7 +718,7 @@ function renderAccessories(){
   </section>`;
 }
 
-// ── ADMIN PANEL ──
+// ââ ADMIN PANEL ââ
 function openAdmin(){
   document.getElementById('admin-overlay').classList.add('open');
   document.getElementById('admin-panel').classList.add('open');
@@ -731,44 +733,44 @@ function renderAdminPanel(){
   const body = document.getElementById('ap-body');
   let h = '';
 
-  // 権限の説明
+  // æ¨©éã®èª¬æ
 
 
   // GitHub Token
   h += `<div class="tok-box">
-    <label>${L('connect')} GITHUB TOKEN（repo scope）</label>
+    <label>${L('connect')} GITHUB TOKENï¼repo scopeï¼</label>
     <div class="tok-row">
       <input class="tok-inp" type="password" id="tok-inp" value="${S.token||''}" placeholder="ghp_xxxxxxxxxxxx">
       <button class="btn-connect" onclick="connectGitHub()">${L('connect')}</button>
     </div>
     <div class="tok-status ${S.token?'ok':'ng'}" id="tok-status">
-      ${S.token ? '✓ ' + L('connected') : L('disconnected')}
+      ${S.token ? 'â ' + L('connected') : L('disconnected')}
     </div>
   </div>`;
 
-  // 製品リスト（折りたたみ）
+  // è£½åãªã¹ãï¼æãããã¿ï¼
   S.data.sections.forEach((sec, si) => {
     const key = 'sec'+si;
     const open = AP_OPEN[key] !== false;
-    const issues = sec.products.filter(p=>!p.p1||p.p1.trim()===''||p.p1==='—').length;
+    const issues = sec.products.filter(p=>!p.p1||p.p1.trim()===''||p.p1==='â').length;
     h += `<div class="ap-cat-hd" onclick="toggleAP('${key}')">
       <div class="ap-cat-left">
         <span class="ap-cat-lbl">${sec.num} ${sec.en}</span>
         <span class="ap-cat-cnt">${sec.products.length}</span>
-        ${issues>0 ? `<span class="ap-unset">⚠ ${issues}</span>` : ''}
+        ${issues>0 ? `<span class="ap-unset">â  ${issues}</span>` : ''}
       </div>
       <div style="display:flex;align-items:center;gap:8px">
         <button class="btn-add" onclick="event.stopPropagation();newProduct(${si})">${L('add')}</button>
-        <span class="ap-cat-ico ${open?'open':''}" id="ico-${key}">▼</span>
+        <span class="ap-cat-ico ${open?'open':''}" id="ico-${key}">â¼</span>
       </div>
     </div>
     <div class="ap-cat-body" id="bd-${key}" style="max-height:${open?'3000px':'0'}">`;
     sec.products.forEach((p, pi) => {
       const ph = (p.photos||[])[0]||'';
-      const p1e = !p.p1||p.p1.trim()===''||p.p1==='—';
+      const p1e = !p.p1||p.p1.trim()===''||p.p1==='â';
       const prDisp = p1e
         ? `<span class="ap-unset">${L('apUnset')}</span>`
-        : `${L('wholesale')}: ${p.p1} / ${L('factory')}: ${p.p2||'—'}`;
+        : `${L('wholesale')}: ${p.p1} / ${L('factory')}: ${p.p2||'â'}`;
       h += `<div class="ap-row" onclick="editProduct(${si},${pi})">
         ${ph ? `<img class="ap-thumb" src="${ph}">` : '<div class="ap-thumb"></div>'}
         <div class="ap-names">
@@ -776,13 +778,13 @@ function renderAdminPanel(){
           <div class="ap-ren">${p.nameEN}</div>
           <div class="ap-rpr">${prDisp}</div>
         </div>
-        <button class="ap-del" onclick="deleteProd(event,${si},${pi})">✕</button>
+        <button class="ap-del" onclick="deleteProd(event,${si},${pi})">â</button>
       </div>`;
     });
     h += '</div>';
   });
 
-  // Accessories（折りたたみ）
+  // Accessoriesï¼æãããã¿ï¼
   ['small','large'].forEach(type => {
     const key = 'acc_'+type;
     const open = AP_OPEN[key] !== false;
@@ -790,12 +792,12 @@ function renderAdminPanel(){
     const items = S.data.accessories[type];
     h += `<div class="ap-cat-hd" onclick="toggleAP('${key}')">
       <div class="ap-cat-left">
-        <span class="ap-cat-lbl">06 Accessories — ${type}</span>
+        <span class="ap-cat-lbl">06 Accessories â ${type}</span>
         <span class="ap-cat-cnt">${items.length}</span>
       </div>
       <div style="display:flex;align-items:center;gap:8px">
         <button class="btn-add" onclick="event.stopPropagation();newAcc('${type}')">${L('add')}</button>
-        <span class="ap-cat-ico ${open?'open':''}" id="ico-${key}">▼</span>
+        <span class="ap-cat-ico ${open?'open':''}" id="ico-${key}">â¼</span>
       </div>
     </div>
     <div class="ap-cat-body" id="bd-${key}" style="max-height:${open?'3000px':'0'}">`;
@@ -804,9 +806,9 @@ function renderAdminPanel(){
         ${item.photo?`<img class="ap-thumb" src="${item.photo}">` : '<div class="ap-thumb"></div>'}
         <div class="ap-names">
           <div class="ap-ren">${item.name}</div>
-          <div class="ap-rpr">${L('wholesale')}: ${item.p1} / ${L('factory')}: ${item.p2||'—'}</div>
+          <div class="ap-rpr">${L('wholesale')}: ${item.p1} / ${L('factory')}: ${item.p2||'â'}</div>
         </div>
-        <button class="ap-del" onclick="deleteAcc(event,'${type}',${ai})">✕</button>
+        <button class="ap-del" onclick="deleteAcc(event,'${type}',${ai})">â</button>
       </div>`;
     });
     h += '</div>';
@@ -818,21 +820,21 @@ function renderAdminPanel(){
 
 async function connectGitHub(){
   const tok = document.getElementById('tok-inp').value.trim();
-  if(!tok){ alert('トークンを入力してください'); return; }
+  if(!tok){ alert('ãã¼ã¯ã³ãå¥åãã¦ãã ãã'); return; }
   S.token = tok;
   const fileKey = MODE_INFO[S.mode].dataFile;
   const ok = await getFileSha(fileKey);
 
-  // adminはdaimaru.jsonのSHAも取得
+  // adminã¯daimaru.jsonã®SHAãåå¾
   if(S.mode === 'a') await getFileSha('daimaru');
 
   const el = document.getElementById('tok-status');
   if(ok){
-    el.textContent = '✓ ' + L('connected');
+    el.textContent = 'â ' + L('connected');
     el.className = 'tok-status ok';
     document.getElementById('btn-save').disabled = false;
   } else {
-    el.textContent = '✗ ' + L('saveFail');
+    el.textContent = 'â ' + L('saveFail');
     el.className = 'tok-status ng';
   }
   updateSaveUI();
@@ -843,10 +845,10 @@ function updateSaveUI(){
   const stat = document.getElementById('save-status');
   if(!S.token){ stat.textContent = L('disconnected'); btn.disabled = true; return; }
   if(S.dirty){
-    stat.innerHTML = `未保存の変更あり <span class="dirty-dot"></span>`;
+    stat.innerHTML = `æªä¿å­ã®å¤æ´ãã <span class="dirty-dot"></span>`;
     btn.disabled = false;
   } else {
-    stat.textContent = '✓ ' + L('connected');
+    stat.textContent = 'â ' + L('connected');
     btn.disabled = false;
   }
 }
@@ -857,37 +859,37 @@ function markDirty(){
   updateSaveUI();
 }
 
-// ── SAVE TO GITHUB ──
-// 工場: products_full.json のみ更新
-// 江原管理者: products_full.json + products_daimaru.json（p2除去版）を両方更新
+// ââ SAVE TO GITHUB ââ
+// å·¥å ´: products_full.json ã®ã¿æ´æ°
+// æ±åç®¡çè: products_full.json + products_daimaru.jsonï¼p2é¤å»çï¼ãä¸¡æ¹æ´æ°
 async function saveToGitHub(){
-  if(!S.token){ alert('先にGitHubトークンを接続してください'); return; }
+  if(!S.token){ alert('åã«GitHubãã¼ã¯ã³ãæ¥ç¶ãã¦ãã ãã'); return; }
 
   const btn = document.getElementById('btn-save');
   const msg = document.getElementById('save-msg');
   btn.disabled = true;
-  btn.textContent = '保存中...';
+  btn.textContent = 'ä¿å­ä¸­...';
 
-  // products_full.json を保存
+  // products_full.json ãä¿å­
   const fullKey = MODE_INFO[S.mode].dataFile; // 'full' or 'full'
   const ok1 = await commitFile('full', S.data);
   if(!ok1){
     btn.disabled = false;
-    btn.textContent = 'GitHubに保存';
+    btn.textContent = 'GitHubã«ä¿å­';
     return;
   }
 
-  // 江原管理者の場合はdaimaru版も自動生成して保存
+  // æ±åç®¡çèã®å ´åã¯daimaruçãèªåçæãã¦ä¿å­
   if(S.mode === 'a'){
     const daimaru = stripP2(S.data);
     await commitFile('daimaru', daimaru);
   }
 
   S.dirty = false;
-  msg.textContent = '✓ 保存完了';
+  msg.textContent = 'â ä¿å­å®äº';
   setTimeout(()=>msg.textContent='', 3000);
   btn.disabled = false;
-  btn.textContent = 'GitHubに保存';
+  btn.textContent = 'GitHubã«ä¿å­';
   updateSaveUI();
 }
 
@@ -915,13 +917,13 @@ async function commitFile(fileKey, data){
       return true;
     } else {
       const err = await r.json();
-      alert(`保存失敗 (${fname}): ` + (err.message||r.status));
+      alert(`ä¿å­å¤±æ (${fname}): ` + (err.message||r.status));
       return false;
     }
-  } catch(e){ alert('ネットワークエラー: '+e.message); return false; }
+  } catch(e){ alert('ãããã¯ã¼ã¯ã¨ã©ã¼: '+e.message); return false; }
 }
 
-// p2を除去してdaimaru版を生成
+// p2ãé¤å»ãã¦daimaruçãçæ
 function stripP2(fullData){
   const d = JSON.parse(JSON.stringify(fullData));
   d.sections.forEach(sec => {
@@ -935,11 +937,11 @@ function stripP2(fullData){
   return d;
 }
 
-// ── EDITOR ──
+// ââ EDITOR ââ
 function editProduct(si, pi){
   EDIT = { type:'prod', si, pi };
   editData = JSON.parse(JSON.stringify(S.data.sections[si].products[pi]));
-  document.getElementById('ep-title').textContent = editData.nameEN || '製品を編集';
+  document.getElementById('ep-title').textContent = editData.nameEN || 'è£½åãç·¨é';
   renderProdEditor();
   document.getElementById('editor-panel').classList.add('open');
 }
@@ -949,10 +951,10 @@ function newProduct(si){
   editData = {
     id:'',nameEN:'',nameJP:'',desc:'',
     p1:'',p2:'',size:'',pack:'',weight:'',packW:'',height:'',
-    eva1:'EVA +$',eva2:'EVA +$',paint1:'塗装 +$',paint2:'塗装 +$',
+    eva1:'EVA +$',eva2:'EVA +$',paint1:'å¡è£ +$',paint2:'å¡è£ +$',
     springs:'',photos:[]
   };
-  document.getElementById('ep-title').textContent = '新規製品を追加';
+  document.getElementById('ep-title').textContent = 'æ°è¦è£½åãè¿½å ';
   renderProdEditor();
   document.getElementById('editor-panel').classList.add('open');
 }
@@ -960,7 +962,7 @@ function newProduct(si){
 function editAcc(type, ai){
   EDIT = { type:'acc', accType:type, ai };
   editData = JSON.parse(JSON.stringify(S.data.accessories[type][ai]));
-  document.getElementById('ep-title').textContent = editData.name || 'アクセサリーを編集';
+  document.getElementById('ep-title').textContent = editData.name || 'ã¢ã¯ã»ãµãªã¼ãç·¨é';
   renderAccEditor();
   document.getElementById('editor-panel').classList.add('open');
 }
@@ -968,7 +970,7 @@ function editAcc(type, ai){
 function newAcc(type){
   EDIT = { type:'acc', accType:type, ai:-1 };
   editData = { name:'',nameJP:'',p1:'',p2:'',spec:'',photo:'' };
-  document.getElementById('ep-title').textContent = '新規アクセサリーを追加';
+  document.getElementById('ep-title').textContent = 'æ°è¦ã¢ã¯ã»ãµãªã¼ãè¿½å ';
   renderAccEditor();
   document.getElementById('editor-panel').classList.add('open');
 }
@@ -978,7 +980,7 @@ function closeEditor(){
 }
 
 function fld(id, val, label, p1field=false){
-  // p1field=true かつ工場モードの場合は読み取り専用
+  // p1field=true ãã¤å·¥å ´ã¢ã¼ãã®å ´åã¯èª­ã¿åãå°ç¨
   const ro = (p1field && S.mode==='f');
   const roAttr = ro ? 'readonly' : '';
   const roStyle = ro ? 'style="background:#f0f0f0;color:#aaa"' : '';
@@ -1003,11 +1005,11 @@ function renderProdEditor(){
       <input class="f-inp" id="e-nen" value="${esc(editData.nameEN)}">
     </div>
     <div class="f-group">
-      <label class="f-lbl">日本語名</label>
+      <label class="f-lbl">æ¥æ¬èªå</label>
       <input class="f-inp" id="e-njp" value="${esc(editData.nameJP||'')}">
     </div>
     <div class="f-group">
-      <label class="f-lbl">説明</label>
+      <label class="f-lbl">èª¬æ</label>
       <textarea class="f-ta" id="e-desc">${esc(editData.desc||'')}</textarea>
     </div>
     <hr class="f-div">
@@ -1015,7 +1017,7 @@ function renderProdEditor(){
     <div class="f-group">
       <div class="f-row">
         ${fld('e-p1', editData.p1||'', L('fldP1'), true)}
-        <div><label class="f-lbl">原価 p2</label>
+        <div><label class="f-lbl">åä¾¡ p2</label>
         <input class="f-inp field-factory" id="e-p2" value="${esc(editData.p2||'')}"></div>
       </div>
     </div>
@@ -1029,12 +1031,12 @@ function renderProdEditor(){
     </div>
     <div class="f-group">
       <div class="f-row">
-        <div><label class="f-lbl">本体重量</label><input class="f-inp" id="e-wt" value="${esc(editData.weight||'')}"></div>
-        <div><label class="f-lbl">梱包重量</label><input class="f-inp" id="e-pw" value="${esc(editData.packW||'')}"></div>
+        <div><label class="f-lbl">æ¬ä½éé</label><input class="f-inp" id="e-wt" value="${esc(editData.weight||'')}"></div>
+        <div><label class="f-lbl">æ¢±åéé</label><input class="f-inp" id="e-pw" value="${esc(editData.packW||'')}"></div>
       </div>
     </div>
     <div class="f-group">
-      <label class="f-lbl">高さ</label>
+      <label class="f-lbl">é«ã</label>
       <input class="f-inp" id="e-ht" value="${esc(editData.height||'')}">
     </div>
     <hr class="f-div">
@@ -1042,14 +1044,14 @@ function renderProdEditor(){
     <div class="f-group">
       <div class="f-row">
         ${fld('e-eva1', editData.eva1||'', L('fldEva1'), true)}
-        <div><label class="f-lbl">EVA — 原価</label>
+        <div><label class="f-lbl">EVA â åä¾¡</label>
         <input class="f-inp field-factory" id="e-eva2" value="${esc(editData.eva2||'')}"></div>
       </div>
     </div>
     <div class="f-group">
       <div class="f-row">
         ${fld('e-pnt1', editData.paint1||'', L('fldPnt1'), true)}
-        <div><label class="f-lbl">塗装 — 原価</label>
+        <div><label class="f-lbl">å¡è£ â åä¾¡</label>
         <input class="f-inp field-factory" id="e-pnt2" value="${esc(editData.paint2||'')}"></div>
       </div>
     </div>
@@ -1072,7 +1074,7 @@ function renderAccEditor(){
       <input class="f-inp" id="e-name" value="${esc(editData.name||'')}">
     </div>
     <div class="f-group">
-      <label class="f-lbl">名前（日本語）</label>
+      <label class="f-lbl">ååï¼æ¥æ¬èªï¼</label>
       <input class="f-inp" id="e-namejp" value="${esc(editData.nameJP||'')}">
     </div>
     <div class="f-group">
@@ -1084,7 +1086,7 @@ function renderAccEditor(){
     <div class="f-group">
       <div class="f-row">
         ${fld('e-p1', editData.p1||'', L('fldP1'), true)}
-        <div><label class="f-lbl">原価 p2</label>
+        <div><label class="f-lbl">åä¾¡ p2</label>
         <input class="f-inp field-factory" id="e-p2" value="${esc(editData.p2||'')}"></div>
       </div>
     </div>
@@ -1100,12 +1102,12 @@ function renderPhotoGrid(photos, max=10){
   photos.forEach((ph, i) => {
     if(ph) h += `<div class="photo-item">
       <img src="${ph}">
-      <button class="photo-del" onclick="removePhoto(${i})">✕</button>
+      <button class="photo-del" onclick="removePhoto(${i})">â</button>
     </div>`;
   });
   if(photos.filter(Boolean).length < max){
     h += `<button class="photo-add" onclick="document.getElementById('photo-file-input').click()">
-      <span style="font-size:20px">＋</span><span>${L('addPhoto')}</span>
+      <span style="font-size:20px">ï¼</span><span>${L('addPhoto')}</span>
     </button>`;
   }
   return h + '</div>';
@@ -1155,11 +1157,11 @@ function applyEdit(){
       desc:    document.getElementById('e-desc').value.trim(),
       p1:      (S.mode==='f') ? (orig.p1||'') : document.getElementById('e-p1').value.trim(),
       p2:      document.getElementById('e-p2').value.trim(),
-      size:    document.getElementById('e-size').value.trim()||'—',
-      pack:    document.getElementById('e-pack').value.trim()||'—',
-      weight:  document.getElementById('e-wt').value.trim()||'—',
-      packW:   document.getElementById('e-pw').value.trim()||'—',
-      height:  document.getElementById('e-ht').value.trim()||'—',
+      size:    document.getElementById('e-size').value.trim()||'â',
+      pack:    document.getElementById('e-pack').value.trim()||'â',
+      weight:  document.getElementById('e-wt').value.trim()||'â',
+      packW:   document.getElementById('e-pw').value.trim()||'â',
+      height:  document.getElementById('e-ht').value.trim()||'â',
       eva1:    (S.mode==='f') ? (orig.eva1||'') : document.getElementById('e-eva1').value.trim(),
       eva2:    document.getElementById('e-eva2').value.trim(),
       paint1:  (S.mode==='f') ? (orig.paint1||'') : document.getElementById('e-pnt1').value.trim(),
@@ -1195,19 +1197,19 @@ function applyEdit(){
 
 function deleteProd(e, si, pi){
   e.stopPropagation();
-  if(!confirm(`"${S.data.sections[si].products[pi].nameEN}" を削除しますか？`)) return;
+  if(!confirm(`"${S.data.sections[si].products[pi].nameEN}" ãåé¤ãã¾ããï¼`)) return;
   S.data.sections[si].products.splice(pi, 1);
   markDirty(); renderAdminPanel();
 }
 
 function deleteAcc(e, type, ai){
   e.stopPropagation();
-  if(!confirm(`"${S.data.accessories[type][ai].name}" を削除しますか？`)) return;
+  if(!confirm(`"${S.data.accessories[type][ai].name}" ãåé¤ãã¾ããï¼`)) return;
   S.data.accessories[type].splice(ai, 1);
   markDirty(); renderAdminPanel();
 }
 
-// ── SEARCH ──
+// ââ SEARCH ââ
 
 function initSearch(){
   const tabs = document.getElementById('cat-tabs');
@@ -1253,7 +1255,7 @@ function applySearch(q){
     sec.style.display = vis > 0 ? '' : 'none';
     if(vis > 0) count++;
   });
-  document.getElementById('search-count').textContent = lower ? count + (S.mode==='f'?'件':'件') : '';
+  document.getElementById('search-count').textContent = lower ? count + (S.mode==='f'?'ä»¶':'ä»¶') : '';
   let nr = document.getElementById('no-results');
   if(count === 0 && lower){
     if(!nr){ nr=document.createElement('div'); nr.id='no-results'; nr.className='no-results'; document.getElementById('cat-main').appendChild(nr); }
@@ -1266,7 +1268,7 @@ function openAdminAndEdit(si, pi){
   setTimeout(() => editProduct(si, pi), 100);
 }
 
-// ── ADMIN COLLAPSIBLE ──
+// ââ ADMIN COLLAPSIBLE ââ
 var AP_OPEN = {};
 function toggleAP(key){
   AP_OPEN[key] = AP_OPEN[key] === false ? true : false;
@@ -1279,7 +1281,7 @@ function toggleAP(key){
   }
 }
 
-// ── TOAST ──
+// ââ TOAST ââ
 function showToast(msg, type='ok', dur=3000){
   const el = document.getElementById('toast');
   el.textContent = msg; el.className = 'show ' + type;
@@ -1287,7 +1289,7 @@ function showToast(msg, type='ok', dur=3000){
   el._t = setTimeout(() => el.className = '', dur);
 }
 
-// ── KEYBOARD ──
+// ââ KEYBOARD ââ
 document.addEventListener('keydown', e => {
   if(e.key !== 'Escape') return;
   if(document.getElementById('editor-panel').classList.contains('open')){
@@ -1304,7 +1306,7 @@ window.addEventListener('beforeunload', e => {
 });
 
 
-// ── 販売価格 p3 (大丸専用・localStorage保存) ──
+// ââ è²©å£²ä¾¡æ ¼ p3 (å¤§ä¸¸å°ç¨ã»localStorageä¿å­) ââ
 function p3Key(p){ return 'p3_' + (p.id||p.nameEN||'').replace(/[^a-zA-Z0-9]/g,'_'); }
 
 function getP3(p){ return localStorage.getItem(p3Key(p)) || ''; }
@@ -1322,23 +1324,23 @@ function renderP3Block(p){
     const margin = ((p3num - p1num) / p1num * 100).toFixed(1);
     const diff = (p3num - p1num).toFixed(0);
     const cls = p3num >= p1num ? '' : ' neg';
-    marginH = `<div class="p3-margin${cls}">粗利: $${diff} (${margin}%)</div>`;
+    marginH = `<div class="p3-margin${cls}">ç²å©: $${diff} (${margin}%)</div>`;
   }
 
   if(val){
     return `<div class="p3-block">
-      <div class="p3-lbl">販売価格（自社設定）<span>クリックで編集</span></div>
+      <div class="p3-lbl">è²©å£²ä¾¡æ ¼ï¼èªç¤¾è¨­å®ï¼<span>ã¯ãªãã¯ã§ç·¨é</span></div>
       <div class="p3-row">
         <div class="p3-val" onclick="editP3('${key}',this)" data-p3key="${key}">${val} <span style="font-size:13px;color:#aaa;margin-left:4px">USD</span></div>
-        <button class="p3-clear" onclick="clearP3Block('${key}')">クリア</button>
+        <button class="p3-clear" onclick="clearP3Block('${key}')">ã¯ãªã¢</button>
       </div>
       ${marginH}
     </div>`;
   } else {
     return `<div class="p3-block">
-      <div class="p3-lbl">販売価格（自社設定）<span>クリックで設定</span></div>
+      <div class="p3-lbl">è²©å£²ä¾¡æ ¼ï¼èªç¤¾è¨­å®ï¼<span>ã¯ãªãã¯ã§è¨­å®</span></div>
       <div class="p3-row">
-        <div class="p3-val empty" onclick="editP3('${key}',this)" data-p3key="${key}">クリックして販売価格を入力</div>
+        <div class="p3-val empty" onclick="editP3('${key}',this)" data-p3key="${key}">ã¯ãªãã¯ãã¦è²©å£²ä¾¡æ ¼ãå¥å</div>
       </div>
     </div>`;
   }
@@ -1348,11 +1350,11 @@ function editP3(key, el){
   const block = el.closest('.p3-block');
   const current = el.dataset.p3key ? localStorage.getItem(el.dataset.p3key) || '' : '';
   block.innerHTML = `
-    <div class="p3-lbl">販売価格（自社設定）</div>
+    <div class="p3-lbl">è²©å£²ä¾¡æ ¼ï¼èªç¤¾è¨­å®ï¼</div>
     <div class="p3-row">
-      <input class="p3-inp" id="p3-inp-${key}" type="text" value="${current}" placeholder="例: $1,350" autofocus>
-      <button class="p3-save" onclick="saveP3Block('${key}')">保存</button>
-      <button class="p3-clear" onclick="cancelP3Block('${key}')">キャンセル</button>
+      <input class="p3-inp" id="p3-inp-${key}" type="text" value="${current}" placeholder="ä¾: $1,350" autofocus>
+      <button class="p3-save" onclick="saveP3Block('${key}')">ä¿å­</button>
+      <button class="p3-clear" onclick="cancelP3Block('${key}')">ã­ã£ã³ã»ã«</button>
     </div>`;
   const inp = document.getElementById('p3-inp-' + key);
   if(inp){ inp.focus(); inp.select(); }
@@ -1365,12 +1367,12 @@ function saveP3Block(key){
   const val = inp.value.trim();
   if(val) localStorage.setItem(key, val);
   else localStorage.removeItem(key);
-  renderCatalog(); // 再描画
-  // スクロール位置維持のため少し待つ
+  renderCatalog(); // åæç»
+  // ã¹ã¯ã­ã¼ã«ä½ç½®ç¶­æã®ããå°ãå¾ã¤
 }
 
 function clearP3Block(key){
-  if(!confirm('販売価格をクリアしますか？')) return;
+  if(!confirm('è²©å£²ä¾¡æ ¼ãã¯ãªã¢ãã¾ããï¼')) return;
   localStorage.removeItem(key);
   renderCatalog();
 }
