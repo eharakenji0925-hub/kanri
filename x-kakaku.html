@@ -292,6 +292,7 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN',sans-serif;b
 .p3-clear{padding:6px 10px;background:#e8e5e0;border:none;border-radius:2px;color:#888;font-size:11px;cursor:pointer}
 .p3-margin{font-size:11px;color:#27ae60;font-weight:600;margin-top:4px}
 .p3-margin.neg{color:#e74c3c}
+
 .p3-block{margin-top:12px;padding:12px;background:rgba(76,175,80,.07);border:1px solid rgba(76,175,80,.18);border-radius:3px}
 .p3-lbl{font-size:9px;letter-spacing:2px;color:#4caf50;margin-bottom:6px;font-weight:700}
 .p3-val{font-size:20px;font-weight:700;color:#2e7d32}
@@ -568,7 +569,6 @@ async function fetchData(fileKey){
     if(!r.ok) return false;
     S.data = await r.json();
       if(S.data&&S.data.sections){S.data.sections.forEach(sec=>{if(sec.products)sec.products.sort((a,b)=>a.id.localeCompare(b.id));});}
-
     return true;
   } catch(e){ return false; }
 }
@@ -732,6 +732,19 @@ function renderAccessories(){
   return '<div class="acc-card">'+imgH+'<div class="acc-body"><div class="acc-name">'+item.name+'</div>'+(item.spec?'<div class="acc-spec">'+item.spec+'</div>':'')+' '+pH+'</div></div>';
 }
 
+  return `<section id="sec-06">
+    <div class="s-hd">
+      <div class="s-num">06</div>
+      <div><div class="s-en">Accessories</div><div class="s-jp">アクセサリー</div></div>
+    </div>
+    <div class="acc-sec">
+      <div class="acc-grid">${acc.small.map(accCard).join('')}</div>
+      <div class="acc-grid" style="margin-top:24px">${acc.large.map(accCard).join('')}</div>
+    </div>
+  </section>`;
+}
+
+// ── ADMIN PANEL ──
 function openAdmin(){
   document.getElementById('admin-overlay').classList.add('open');
   document.getElementById('admin-panel').classList.add('open');
