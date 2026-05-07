@@ -292,6 +292,15 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN',sans-serif;b
 .p3-clear{padding:6px 10px;background:#e8e5e0;border:none;border-radius:2px;color:#888;font-size:11px;cursor:pointer}
 .p3-margin{font-size:11px;color:#27ae60;font-weight:600;margin-top:4px}
 .p3-margin.neg{color:#e74c3c}
+.p3-block{margin-top:12px;padding:12px;background:rgba(76,175,80,.07);border:1px solid rgba(76,175,80,.18);border-radius:3px}
+.p3-lbl{font-size:9px;letter-spacing:2px;color:#4caf50;margin-bottom:6px;font-weight:700}
+.p3-val{font-size:20px;font-weight:700;color:#2e7d32}
+.p4-block{margin-top:12px;padding:12px;background:rgba(33,150,243,.07);border:1px solid rgba(33,150,243,.18);border-radius:3px}
+.p4-lbl{font-size:9px;letter-spacing:2px;color:#2196f3;margin-bottom:6px;font-weight:700}
+.p4-val{font-size:20px;font-weight:700;color:#1565c0}
+.p3-dual{display:flex;gap:16px}
+.p3-col{flex:1}
+.p3-sub{font-size:10px;color:#999;letter-spacing:1px}
 </style>
 </head>
 <body>
@@ -622,19 +631,29 @@ function renderCard(p, si, pi){
   const _si = si !== undefined ? si : '';
   const _pi = pi !== undefined ? pi : '';
   let priceH = '';
-  if(S.mode === 'a' || S.mode === 'f'){
-    priceH = (p1empty ? `<div class='badge-unset'>${L('priceUnsetMsg')}</div>` : '') +
-      `<div class="price-dual">
-        <div class="pd-col col1"><span class="pd-lbl">${L('wholesale')}</span><div class="pd-v">${p1empty ? 'æªè¨­å®' : p.p1}</div></div>
-        <div class="pd-col col2"><span class="pd-lbl">${L('factory')}</span><div class="pd-v">${p.p2||'â'}</div></div>
-      </div>`;
-  } else {
-    priceH = p1empty
-      ? '<div class="badge-unset">â  ä¾¡æ ¼æªè¨­å®</div>'
-      : `<div class="price-single"><div class="pv">${p.p1}</div><div class="pu">USD</div></div>`;
+  const fmtYen = n => { const num = parseInt(String(n).replace(/[^0-9]/g,'')); return isNaN(num) ? n : '¥'+num.toLocaleString(); };
+  let p3H = '';
+  if(p.p3 && String(p.p3).trim()){
+    const p3t = (p.p3tax && String(p.p3tax).trim()) ? String(p.p3tax).trim() : '';
+    const p3show = p3t || String(p.p3).trim();
+    p3H = `<div class="p3-block"><div class="p3-lbl">販売価格</div><div class="p3-dual"><div class="p3-col"><span class="p3-sub">税込</span><div class="p3-val">${fmtYen(p3show)}</div></div></div></div>`;
   }
-
-  // ã¹ããã¯
+  let p4H = '';
+  if(p.p4 && String(p.p4).trim()){
+    const p4t = (p.p4tax && String(p.p4tax).trim()) ? String(p.p4tax).trim() : '';
+    const p4show = p4t || String(p.p4).trim();
+    p4H = `<div class="p4-block"><div class="p4-lbl">代理店価格</div><div class="p3-dual"><div class="p3-col"><span class="p3-sub">税込</span><div class="p4-val">${fmtYen(p4show)}</div></div></div></div>`;
+  }
+  if(S.mode === 'a'){
+    priceH = (p1empty ? `<div class='badge-unset'>${L('priceUnsetMsg')}</div>` : '') +
+      `<div class="price-dual"><div class="pd-col col1"><span class="pd-lbl">${L('wholesale')}</span><div class="pd-v">${p1empty ? '未設定' : p.p1}</div></div><div class="pd-col col2"><span class="pd-lbl">${L('factory')}</span><div class="pd-v">${p.p2||'—'}</div></div></div>` + p4H + p3H;
+  } else if(S.mode === 'f'){
+    priceH = (p1empty ? `<div class='badge-unset'>${L('priceUnsetMsg')}</div>` : '') +
+      `<div class="price-dual"><div class="pd-col col1"><span class="pd-lbl">${L('wholesale')}</span><div class="pd-v">${p1empty ? '未設定' : p.p1}</div></div><div class="pd-col col2"><span class="pd-lbl">${L('factory')}</span><div class="pd-v">${p.p2||'—'}</div></div></div>`;
+  } else {
+    priceH = p1empty ? '<div class="badge-unset">⚠ 価格未設定</div>' : `<div class="price-single"><div class="pv">${p.p1}</div><div class="pu">USD</div></div>`;
+    priceH += p4H + p3H;
+  }
   const specs = [];
   if(p.size   && p.size!=='â')   specs.push(['SIZE',    p.size]);
   if(p.pack   && p.pack!=='â')   specs.push(['PACK',    p.pack]);
@@ -684,41 +703,35 @@ function renderAccessories(){
   const showBoth = S.mode==='f' || S.mode==='a';
 
   function accCard(item){
-    let pH = '';
-    if(showBoth){
-      pH = `<div class="acc-dual">
-        <div><span class="ad-lbl">ä»å¥ã</span><span class="ad1">${item.p1}</span></div>
-        <span style="color:#ddd">/</span>
-        <div><span class="ad-lbl">åä¾¡</span><span class="ad2">${item.p2||'â'}</span></div>
-      </div>`;
-    } else {
-      pH = `<div class="acc-price">${item.p1}<span style="font-size:10px;color:#aaa;margin-left:4px">USD</span></div>`;
+    const fmtYenAcc = n => { const num = parseInt(String(n).replace(/[^0-9]/g,'')); return isNaN(num) ? n : '¥'+num.toLocaleString(); };
+    function accP4Block(item){
+      if(!item.p4 || !String(item.p4).trim()) return '';
+      const p4t = (item.p4tax && String(item.p4tax).trim()) ? String(item.p4tax).trim() : '';
+      const p4show = p4t || String(item.p4).trim();
+      return `<div class="p4-block" style="margin-top:6px;padding:6px 8px"><div class="p4-lbl">代理店価格</div><div class="p3-dual"><div class="p3-col"><span class="p3-sub">税込</span><div class="p4-val" style="font-size:16px">${fmtYenAcc(p4show)}</div></div></div></div>`;
     }
-    return `<div class="acc-card">
-      ${item.photo
-        ? `<img class="acc-img" src="${item.photo}" loading="lazy" alt="${item.name}">`
-        : '<div class="acc-img" style="display:flex;align-items:center;justify-content:center;color:#ddd">â</div>'}
-      <div class="acc-body">
-        <div class="acc-name">${item.name}</div>
-        ${item.spec ? `<div class="acc-spec">${item.spec}</div>` : ''}
-        ${pH}
-      </div>
-    </div>`;
+    function accP3Block(item){
+      if(!item.p3 || !String(item.p3).trim()) return '';
+      const p3t = (item.p3tax && String(item.p3tax).trim()) ? String(item.p3tax).trim() : '';
+      const p3show = p3t || String(item.p3).trim();
+      return `<div class="p3-block" style="margin-top:6px;padding:6px 8px"><div class="p3-lbl">販売価格</div><div class="p3-dual"><div class="p3-col"><span class="p3-sub">税込</span><div class="p3-val" style="font-size:16px">${fmtYenAcc(p3show)}</div></div></div></div>`;
+    }
+    let pH = '';
+    if(S.mode==='f'){
+      pH = `<div class="acc-dual"><span class="ad-lbl">批发</span><span class="ad1">${item.p1||''}</span><span class="ad-lbl">出厂</span><span class="ad2">${item.p2||''}</span></div>`;
+    } else if(S.mode==='a'){
+      pH = `<div class="acc-dual"><span class="ad-lbl">仕入れ</span><span class="ad1">${item.p1||''}</span><span class="ad-lbl">原価</span><span class="ad2">${item.p2||''}</span></div>`;
+      pH += accP4Block(item);
+      pH += accP3Block(item);
+    } else {
+      pH = `<div class="acc-price">${item.p1||''}</div>`;
+      pH += accP4Block(item);
+      pH += accP3Block(item);
+    }
+    const imgH = item.img ? `<img class="acc-img" src="${item.img}" alt="">` : '<div class="acc-img" style="background:#eee"></div>';
+    return `<div class="acc-card">${imgH}<div class="acc-body"><div class="acc-name">${item.name}</div>${item.spec?`<div class="acc-spec">${item.spec}</div>`:''}${pH}</div></div>`;
   }
 
-  return `<section id="sec-06">
-    <div class="s-hd">
-      <div class="s-num">06</div>
-      <div><div class="s-en">Accessories</div><div class="s-jp">ã¢ã¯ã»ãµãªã¼</div></div>
-    </div>
-    <div class="acc-sec">
-      <div class="acc-grid">${acc.small.map(accCard).join('')}</div>
-      <div class="acc-grid" style="margin-top:24px">${acc.large.map(accCard).join('')}</div>
-    </div>
-  </section>`;
-}
-
-// ââ ADMIN PANEL ââ
 function openAdmin(){
   document.getElementById('admin-overlay').classList.add('open');
   document.getElementById('admin-panel').classList.add('open');
