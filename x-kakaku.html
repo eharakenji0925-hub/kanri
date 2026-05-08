@@ -302,6 +302,11 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN',sans-serif;b
 .p3-dual{display:flex;gap:16px}
 .p3-col{flex:1}
 .p3-sub{font-size:10px;color:#999;letter-spacing:1px}
+
+.opt-wrap{display:inline-block;vertical-align:top;margin:0 8px 8px 0}
+.opt-yen{margin-top:2px;font-size:10px;line-height:1.4}
+.opt-p4{display:block;color:#1565c0}
+.opt-p3{display:block;color:#2e7d32;font-weight:600}
 </style>
 </head>
 <body>
@@ -667,16 +672,27 @@ function renderCard(p, si, pi){
     : '';
 
   // オプション（大丸はeva1/paint1、工場はeva2/paint2）
-  const eva  = S.mode==='f' ? (p.eva2||'') : (p.eva1||'');
-  const pnt  = S.mode==='f' ? (p.paint2||'') : (p.paint1||'');
+  const eva = S.mode==='f' ? (p.eva2||'') : (p.eva1||'');
+      const pnt = S.mode==='f' ? (p.paint2||'') : (p.paint1||'');
       const dmp = S.mode==='f' ? (p.damper2||'') : (p.damper1||'');
-  const optH = `<div class="opts">
-    <span class="opt${eva.includes('N/A')?' na':''}">${eva}</span>
-    <span class="opt${pnt.includes('N/A')?' na':''}">${pnt}</span>
-  ${dmp ? `<span class="opt">${dmp}</span>` : ''}
-  </div>`;
-
-  const sprH = p.springs
+      function optBadge(label, naClass, p4tax, p3tax) {
+        if (!label) return '';
+        const na = label.includes('N/A') ? ' na' : '';
+        let yenHtml = '';
+        if (S.mode !== 'f') {
+          const parts = [];
+          if (S.mode === 'a' && p4tax) parts.push('<span class="opt-p4">代理店 \u00a5' + p4tax.toLocaleString() + '</span>');
+          if (p3tax) parts.push('<span class="opt-p3">販売 \u00a5' + p3tax.toLocaleString() + '</span>');
+          if (parts.length) yenHtml = '<div class="opt-yen">' + parts.join('') + '</div>';
+        }
+        return '<div class="opt-wrap"><span class="opt' + na + '">' + label + '</span>' + yenHtml + '</div>';
+      }
+      const optH = '<div class="opts">'
+        + optBadge(eva, '', p.evaP4tax||0, p.evaP3tax||0)
+        + optBadge(pnt, '', p.paintP4tax||0, p.paintP3tax||0)
+        + optBadge(dmp, '', p.damperP4tax||0, p.damperP3tax||0)
+        + '</div>';
+      const sprH = p.springs
     ? `<div class="spr"><div class="spr-lbl">SPRINGS</div>${p.springs}</div>` : '';
 
   const thumbsH = extras.length
@@ -958,7 +974,7 @@ function stripP2(fullData){
   const d = JSON.parse(JSON.stringify(fullData));
   d.sections.forEach(sec => {
     sec.products.forEach(p => {
-      delete p.p2; delete p.eva2; delete p.paint2; delete p.damper2;
+      delete p.p2; delete p.eva2; delete p.paint2; delete p.damper2; delete p.evaP4tax; delete p.paintP4tax; delete p.damperP4tax;
     });
   });
   [...d.accessories.small, ...d.accessories.large].forEach(item => {
