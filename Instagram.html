@@ -65,24 +65,24 @@ var PROXY_URL = "/api/proxy";
 var SUBS_HC=["コラーゲンビューティーメソッド","Beauty Yoga（ビューティーヨガ）","Rhythm Flow（リズムフロー）","美彩心（リンパケア）","シンプルヨガ","ダイエットヨガ","骨盤ビューティー","シンプルピラティス","グループリフォーマー®","コラーゲントリートメントランプ","コラーゲンドリンク HADAKOI","セルフエステ","スムージーバー","体験レッスン","五感×癒し"];
 
 var BRANDS=[
-  {id:"hc",name:"HC Lucina",sn:"HC",tag:"ホットコラーゲンスタジオ-ルキナ",color:"#E8A0BF",accent:"#C47A9F",
+  {id:"hc",name:"HC Lucina",sn:"HC",tag:"ホットコラーゲンlucina",color:"#E8A0BF",accent:"#C47A9F",
    tagline:"運動しながらキレイを補給",
    desc:"女性専用ホットヨガ＆コラーゲンスタジオ（本部）",subs:SUBS_HC,grp:"brand",logoId:"hc",
    strengths:["コラーゲンランプ×ホットヨガの独自メソッド","女性専用の安心空間","美肌・デトックス・リラックスの三位一体","初心者でも安心の丁寧指導","スムージーバー＆HADAKOIドリンク完備"]},
 
-  {id:"fit",name:"FIT Lucina",sn:"FIT",tag:"フィットネスクラブ-ルキナ",color:"#F5A623",accent:"#D8900B",
+  {id:"fit",name:"FIT Lucina",sn:"FIT",tag:"FITLucina",color:"#F5A623",accent:"#D8900B",
    tagline:"ココロとカラダも生まれ変わろう！",
    desc:"総合フィットネスクラブ｜熱海パールスターホテル3F",
    subs:["マシンジム・ウェイトトレーニング","パーソナルトレーニング","スタジオ（ヨガ・ピラティス）","ピラティスリフォーマー","パワープレート","ゴルフシミュレーター","コンディショニングエリア","ラウンジ・リラクゼーション","インフィニティバス・サウナ","会員募集・入会案内","体験レッスン"],grp:"brand",logoId:"fit",
    strengths:["熱海パールスターホテル内の好アクセス","ジム＋スタジオ＋スパの複合型フィットネス","Technogym社製最新マシン完備","初心者でも続けやすいサポート体制","インフィニティバス・サウナが宿泊者無料"]},
 
-  {id:"psga",name:"PSGA Japan",sn:"PSGA",tag:"ピラティス-セカンド-ジェネレーション-アカデミー-ジャパン",color:"#8B5CF6",accent:"#7C3AED",
+  {id:"psga",name:"PSGA Japan",sn:"PSGA",tag:"PSGAJapan",color:"#8B5CF6",accent:"#7C3AED",
    tagline:"正統は、静かに語り継がれる。",
    desc:"クラシカルピラティス教育・養成（Second Generation Academy）",
    subs:["マット養成コース I&II","リフォーマー養成コース I&II","キャデラック養成コース","チェアバレル養成コース","グランドマスターコンプリヘンシブ","養成コース体験会・説明会","ブラッシュアップセミナー","ワークショップ","インターン制度","認定資格・ライセンス","クラシカルピラティス6原則","基礎解剖学・姿勢分析"],grp:"brand",logoId:"psga",
    strengths:["Second Generation直系の本格カリキュラム","国際基準の認定資格が取得可能","少人数制で一人ひとりに丁寧な指導","マット＆全マシン対応の総合養成","卒業後も継続教育(CEC)でスキルアップ"]},
 
-  {id:"axis",name:"axiscore",sn:"axis",tag:"アクシスコア-ピラティス",color:"#374151",accent:"#111827",
+  {id:"axis",name:"axiscore",sn:"axis",tag:"axiscore",color:"#374151",accent:"#111827",
    tagline:"PilatesをDesignする",
    desc:"ピラティスマシン販売・スタジオ開業支援",
    subs:["ピラティスマシン販売","スタジオ開業支援","設計・レイアウト","機器導入サポート","メンテナンス","トレーニング機器販売","プロ向け教育","リハビリ機器提案","新規養成サポート","ワークショップサポート"],grp:"brand",logoId:"axis",
@@ -94,27 +94,27 @@ var BRANDS=[
    subs:["Collagen Beauty Method","美彩心（びさいしん）リンパケア","グループリフォーマー®︎","コラーゲントリートメントランプ","ホットスタジオプログラム","HADAKOI コラーゲンサプリ","グループリフォーマー養成コース","パーソナルインストラクター養成","更新研修","導入店舗・フランチャイズ","エビデンス・大学共同研究","マスター教育者"],grp:"brand",logoId:"assoc",
    strengths:["業界唯一のコラーゲンスタジオ認定機関","大学共同研究によるエビデンスベースの美容メソッド","光トリートメント×ホットスタジオ×エクササイズの独自融合","グループリフォーマー＆パーソナル両方の養成体制","加盟スタジオへのフランチャイズ支援"]},
 
-  {id:"kitako",name:"HC Lucina 北小金",sn:"北小金",tag:"ホットコラーゲンスタジオ-ルキナ北小金",color:"#E8A0BF",accent:"#C47A9F",
+  {id:"kitako",name:"HC Lucina 北小金",sn:"北小金",tag:"ルキナ北小金",color:"#E8A0BF",accent:"#C47A9F",
    tagline:"運動しながらキレイを補給",
    desc:"HC Lucina直営｜JR北小金駅前",subs:SUBS_HC,grp:"hc",logoId:"hc",
    strengths:["JR北小金駅から徒歩すぐの好立地","コラーゲンランプ完備のホットスタジオ","子育て世代にも通いやすいスケジュール","常連メンバー同士の温かいコミュニティ","経験豊富なインストラクター陣"]},
 
-  {id:"kitaura",name:"HC Lucina 北浦和",sn:"北浦和",tag:"ホットコラーゲンスタジオ-ルキナ北浦和",color:"#E8A0BF",accent:"#C47A9F",
+  {id:"kitaura",name:"HC Lucina 北浦和",sn:"北浦和",tag:"ルキナ北浦和",color:"#E8A0BF",accent:"#C47A9F",
    tagline:"運動しながらキレイを補給",
    desc:"HC Lucina直営｜JR北浦和駅",subs:SUBS_HC,grp:"hc",logoId:"hc",
    strengths:["JR北浦和駅近くでアクセス抜群","広々としたスタジオで快適レッスン","朝ヨガから夜ヨガまで多彩な時間帯","ホットヨガ初心者専用クラスあり","地域密着のアットホームな雰囲気"]},
 
-  {id:"higaku",name:"HC Lucina 東久留米",sn:"東久留米",tag:"ホットコラーゲンスタジオ-ルキナ東久留米",color:"#E8A0BF",accent:"#C47A9F",
+  {id:"higaku",name:"HC Lucina 東久留米",sn:"東久留米",tag:"ルキナ東久留米",color:"#E8A0BF",accent:"#C47A9F",
    tagline:"運動しながらキレイを補給",
    desc:"HC Lucina直営｜西武池袋線東久留米駅",subs:SUBS_HC,grp:"hc",logoId:"hc",
    strengths:["西武池袋線で都心からもアクセス便利","コラーゲンランプの美肌効果が人気","リラクゼーション系レッスンが充実","丁寧なカウンセリングで個別サポート","クリーンで清潔感のある施設"]},
 
-  {id:"minowa",name:"HC Lucina 三ノ輪",sn:"三ノ輪",tag:"ホットコラーゲンスタジオ-ルキナ三ノ輪",color:"#E8A0BF",accent:"#C47A9F",
+  {id:"minowa",name:"HC Lucina 三ノ輪",sn:"三ノ輪",tag:"ルキナ三ノ輪",color:"#E8A0BF",accent:"#C47A9F",
    tagline:"運動しながらキレイを補給",
    desc:"HC Lucina直営｜日比谷線三ノ輪駅",subs:SUBS_HC,grp:"hc",logoId:"hc",
    strengths:["日比谷線三ノ輪駅すぐの好アクセス","下町エリア唯一のコラーゲンホットヨガ","少人数制で一人ひとりに目が届く指導","デトックス×美肌の相乗効果プログラム","アットホームで通い続けやすい環境"]},
 
-  {id:"atami",name:"フィットネス ルキナ熱海",sn:"熱海",tag:"フィットネスクラブ-ルキナ熱海",color:"#1E6B8A",accent:"#0E4D6B",
+  {id:"atami",name:"フィットネス ルキナ熱海",sn:"熱海",tag:"フィットネスルキナ熱海",color:"#1E6B8A",accent:"#0E4D6B",
    tagline:"心と体も生まれ変わる",
    desc:"熱海パールスターホテル3F｜ホテルフィットネス",
    subs:["マシンジム・トレーニング","コンディショニングエリア","スタジオ（ヨガ・ピラティス）","パーソナルプログラム","ゴルフシミュレーター","パワープレート","ラウンジ・リラクゼーション","インフィニティバス・サウナ","ピラティスリフォーマー","会員募集・入会案内","宿泊者向けフィットネス","施設内覧"],grp:"hc",logoId:"hc",
@@ -126,11 +126,11 @@ var BRANDS=[
    subs:["コラーゲンランプトレーニング","マシンピラティス","マットピラティス","リフォーマー","キャデラック","チェア","バレル","ボディメイク","美肌プログラム","姿勢改善","体質改善","パーソナルトレーニング"],grp:"ps",logoId:"cps",
    strengths:["グループピラティス×パーソナル指導の二刀流","少人数グループで一人ひとり丁寧にサポート","結果が出やすい独自のサポート体制","沖縄唯一のコラーゲンランプ×ピラティス融合","おもろまち駅近くで通いやすい立地","美肌＆ボディメイクを同時に叶える"]},
 
-  {id:"kiyosumi",name:"PS 清澄白河",sn:"清澄",tag:"ピラティススタジオ-ルキナ清澄白河",color:"#14B8A6",accent:"#0D9488",
-   tagline:"私に還る、私を磨く。グループも、パーソナルも、思いのままに。── Pilates Specialty Studio",
-   desc:"託児併設マシンピラティス専門｜清澄白河駅（5月10日OPEN）",
-   subs:["マシンピラティス（リフォーマー）","グループリフォーマー（初級・初中級・中級）","リズムリフォーマー（音楽×ピラティス）","ピラティスベーシック（初心者向け）","ピラティスシェイプ（全身バランス）","ピラティスヒップ（ヒップアップ）","ピラティスウエスト（くびれ）","パーソナルピラティス（リフォーマー＋キャデラック）","ペア・ファミリーパーソナル","高気圧酸素ボックス（リカバリー）","こどもアソビベース（託児サービス）","プレオープンキャンペーン","体験レッスン"],grp:"ps",logoId:"kiyosumi",
-   strengths:["託児スペース「こどもアソビベース」併設で罪悪感なく自分時間","1.3気圧の高気圧酸素ボックス完備で疲労回復＆睡眠の質UP","音楽×ピラティスの最新プログラム「リズムリフォーマー」","初級・初中級・中級のレベル別グループクラスで初心者も安心","リフォーマー＋キャデラック2種マシンによる本格パーソナル","ウェルネス施設「Thank!me」内の上質空間","歴史ある庭園とモダンが共存する清澄白河の好立地"]},
+  {id:"kiyosumi",name:"PS 清澄白河",sn:"清澄",tag:"ピラティススタジオ清澄白河",color:"#14B8A6",accent:"#0D9488",
+   tagline:"",
+   desc:"新規オープン｜清澄白河駅",
+   subs:["マシンピラティス","マットピラティス","リフォーマー","キャデラック","チェア","バレル","パーソナルトレーニング","グループレッスン","ボディメイク","姿勢改善","体質改善","初心者向けプログラム"],grp:"ps",logoId:"kiyosumi",
+   strengths:["清澄白河エリア注目の新規オープン店","全マシン完備の本格ピラティススタジオ","初心者専用プログラムで未経験でも安心","おしゃれな街並みにマッチした洗練空間","パーソナル＆グループ両方選べる柔軟さ","姿勢改善・体質改善の実績多数"]},
 ];
 
 /* ロゴグループ定義 — logoIdが同じブランドは1つのロゴを共有 */
@@ -176,7 +176,7 @@ var OSTYLES=[
   {id:"full",name:"🔳 全面",pos:"full"},
 ];
 var FF="'Noto Sans JP',system-ui,-apple-system,sans-serif";
-var KW={"コラーゲンランプトレーニング":"collagen light therapy beauty woman","シンプルヨガ":"simple yoga beginner relaxing woman stretch","ダイエットヨガ":"diet yoga fitness woman exercise sweating","骨盤ビューティー":"pelvis alignment yoga beauty posture woman","シンプルピラティス":"simple pilates beginner core woman toning","グループリフォーマー®":"group pilates reformer class women exercise","セルフエステ":"self care beauty treatment facial woman","Beauty Yoga（ビューティーヨガ）":"beauty yoga woman stretching ball flexibility collagen","Rhythm Flow（リズムフロー）":"rhythm flow yoga music exercise dynamic woman","マシンピラティス":"pilates reformer machine woman","マットピラティス":"pilates mat exercise woman studio","ボディメイク":"body fitness woman sculpting","ストレッチ":"stretching flexibility woman yoga","リラクゼーション":"relaxation spa wellness calm","美肌プログラム":"skincare beauty glowing woman","女性専用フィットネス":"women only fitness gym class","温活":"warm therapy wellness woman relax","姿勢改善":"posture correction yoga woman","体質改善":"healthy lifestyle woman wellness","パーソナルトレーニング":"personal training woman gym","グループレッスン":"group fitness class women exercise","フィットネスジム":"fitness gym modern equipment","機能改善トレーニング":"functional training exercise","コンディショニング":"body conditioning fitness","有酸素トレーニング":"cardio exercise running","筋力トレーニング":"weight training strength gym","シニアフィットネス":"senior fitness elderly exercise","健康増進プログラム":"health wellness program","クラシカルピラティス":"classical pilates exercise","インストラクター養成":"fitness instructor teaching","マット養成コース":"pilates mat training course","マット養成コース I&II":"pilates mat instructor training certification","マシン養成コース":"pilates machine training","リフォーマー養成コース I&II":"pilates reformer instructor training","キャデラック養成コース":"pilates cadillac trapeze training instructor","チェアバレル養成コース":"pilates chair barrel training instructor","グランドマスターコンプリヘンシブ":"pilates master comprehensive training professional","養成コース体験会・説明会":"pilates trial lesson workshop experience","ブラッシュアップセミナー":"pilates workshop skill improvement seminar","インターン制度":"pilates internship teaching practice","認定資格・ライセンス":"pilates certification license professional","クラシカルピラティス6原則":"classical pilates principles exercise","基礎解剖学・姿勢分析":"anatomy posture analysis pilates education","ワークショップ":"workshop training seminar","継続教育（CEC）":"continuing education fitness","スキルアップ研修":"skill training professional","指導者教育":"instructor education teaching","解剖学教育":"anatomy education body","Second Generation Pilates":"pilates classical exercise","リフォーマー":"pilates reformer exercise","キャデラック":"pilates cadillac trapeze","チェア":"pilates chair exercise","バレル":"pilates barrel exercise","ピラティスマシン販売":"pilates equipment studio","スタジオ開業支援":"fitness studio design","設計・レイアウト":"studio interior design","機器導入サポート":"fitness equipment setup","メンテナンス":"equipment maintenance service","トレーニング機器販売":"training equipment fitness","プロ向け教育":"professional education seminar","リハビリ機器提案":"rehabilitation equipment therapy","新規養成サポート":"new instructor training","ワークショップサポート":"workshop event support","認定制度":"certification professional badge","インストラクター教育":"instructor education training","研修・講習会":"seminar training workshop","加盟スタジオ支援":"studio franchise support","美容ウェルネス研究":"beauty wellness research","イベント開催":"event planning wellness","資格更新":"certification renewal education","運営基準策定":"business standard planning","ブランド普及活動":"brand promotion marketing","会員コミュニティ":"community wellness group","初心者向けプログラム":"beginner pilates yoga first time woman","マシンジム・トレーニング":"gym fitness machine training weight equipment","コンディショニングエリア":"stretching core conditioning training turf","スタジオ（ヨガ・ピラティス）":"yoga pilates studio class wellness","パーソナルプログラム":"personal training fitness coach program","ゴルフシミュレーター":"golf simulator indoor sport luxury","パワープレート":"power plate vibration training fitness","ラウンジ・リラクゼーション":"luxury lounge relaxation massage chair","インフィニティバス・サウナ":"infinity hot spring ocean view sauna bath","ピラティスリフォーマー":"pilates reformer machine exercise studio","会員募集・入会案内":"fitness membership gym join community","宿泊者向けフィットネス":"hotel fitness guest luxury resort workout","施設内覧":"fitness facility tour modern gym","マシンジム・ウェイトトレーニング":"gym weight training machine fitness equipment","体験レッスン":"trial lesson fitness first time experience","Collagen Beauty Method":"collagen beauty skincare wellness method","美彩心（びさいしん）リンパケア":"lymph massage body care beauty detox","グループリフォーマー®︎":"group pilates reformer class fitness","コラーゲントリートメントランプ":"collagen light therapy lamp beauty skin","ホットスタジオプログラム":"hot studio exercise yoga warm wellness","HADAKOI コラーゲンサプリ":"collagen supplement drink beauty health","グループリフォーマー養成コース":"group reformer instructor training course","パーソナルインストラクター養成":"personal pilates instructor training certification","更新研修":"instructor renewal training workshop","導入店舗・フランチャイズ":"franchise studio business opening","エビデンス・大学共同研究":"evidence research university collagen science","マスター教育者":"master instructor educator pilates training","マシンピラティス（リフォーマー）":"pilates reformer machine woman studio","グループリフォーマー（初級・初中級・中級）":"group pilates reformer class women fitness","リズムリフォーマー（音楽×ピラティス）":"rhythm pilates reformer music dance women fitness","ピラティスベーシック（初心者向け）":"beginner pilates basic woman first time","ピラティスシェイプ（全身バランス）":"pilates body shape full balance training woman","ピラティスヒップ（ヒップアップ）":"pilates hip lift glutes woman fitness","ピラティスウエスト（くびれ）":"pilates waist abs core woman slim","パーソナルピラティス（リフォーマー＋キャデラック）":"personal pilates reformer cadillac private session","ペア・ファミリーパーソナル":"couple family pilates training session studio","高気圧酸素ボックス（リカバリー）":"oxygen chamber recovery wellness relax pod","こどもアソビベース（託児サービス）":"childcare nursery kids playroom safe","プレオープンキャンペーン":"grand opening special offer studio launch"};
+var KW={"コラーゲンランプトレーニング":"collagen light therapy beauty woman","シンプルヨガ":"simple yoga beginner relaxing woman stretch","ダイエットヨガ":"diet yoga fitness woman exercise sweating","骨盤ビューティー":"pelvis alignment yoga beauty posture woman","シンプルピラティス":"simple pilates beginner core woman toning","グループリフォーマー®":"group pilates reformer class women exercise","セルフエステ":"self care beauty treatment facial woman","Beauty Yoga（ビューティーヨガ）":"beauty yoga woman stretching ball flexibility collagen","Rhythm Flow（リズムフロー）":"rhythm flow yoga music exercise dynamic woman","マシンピラティス":"pilates reformer machine woman","マットピラティス":"pilates mat exercise woman studio","ボディメイク":"body fitness woman sculpting","ストレッチ":"stretching flexibility woman yoga","リラクゼーション":"relaxation spa wellness calm","美肌プログラム":"skincare beauty glowing woman","女性専用フィットネス":"women only fitness gym class","温活":"warm therapy wellness woman relax","姿勢改善":"posture correction yoga woman","体質改善":"healthy lifestyle woman wellness","パーソナルトレーニング":"personal training woman gym","グループレッスン":"group fitness class women exercise","フィットネスジム":"fitness gym modern equipment","機能改善トレーニング":"functional training exercise","コンディショニング":"body conditioning fitness","有酸素トレーニング":"cardio exercise running","筋力トレーニング":"weight training strength gym","シニアフィットネス":"senior fitness elderly exercise","健康増進プログラム":"health wellness program","クラシカルピラティス":"classical pilates exercise","インストラクター養成":"fitness instructor teaching","マット養成コース":"pilates mat training course","マット養成コース I&II":"pilates mat instructor training certification","マシン養成コース":"pilates machine training","リフォーマー養成コース I&II":"pilates reformer instructor training","キャデラック養成コース":"pilates cadillac trapeze training instructor","チェアバレル養成コース":"pilates chair barrel training instructor","グランドマスターコンプリヘンシブ":"pilates master comprehensive training professional","養成コース体験会・説明会":"pilates trial lesson workshop experience","ブラッシュアップセミナー":"pilates workshop skill improvement seminar","インターン制度":"pilates internship teaching practice","認定資格・ライセンス":"pilates certification license professional","クラシカルピラティス6原則":"classical pilates principles exercise","基礎解剖学・姿勢分析":"anatomy posture analysis pilates education","ワークショップ":"workshop training seminar","継続教育（CEC）":"continuing education fitness","スキルアップ研修":"skill training professional","指導者教育":"instructor education teaching","解剖学教育":"anatomy education body","Second Generation Pilates":"pilates classical exercise","リフォーマー":"pilates reformer exercise","キャデラック":"pilates cadillac trapeze","チェア":"pilates chair exercise","バレル":"pilates barrel exercise","ピラティスマシン販売":"pilates equipment studio","スタジオ開業支援":"fitness studio design","設計・レイアウト":"studio interior design","機器導入サポート":"fitness equipment setup","メンテナンス":"equipment maintenance service","トレーニング機器販売":"training equipment fitness","プロ向け教育":"professional education seminar","リハビリ機器提案":"rehabilitation equipment therapy","新規養成サポート":"new instructor training","ワークショップサポート":"workshop event support","認定制度":"certification professional badge","インストラクター教育":"instructor education training","研修・講習会":"seminar training workshop","加盟スタジオ支援":"studio franchise support","美容ウェルネス研究":"beauty wellness research","イベント開催":"event planning wellness","資格更新":"certification renewal education","運営基準策定":"business standard planning","ブランド普及活動":"brand promotion marketing","会員コミュニティ":"community wellness group","初心者向けプログラム":"beginner pilates yoga first time woman","マシンジム・トレーニング":"gym fitness machine training weight equipment","コンディショニングエリア":"stretching core conditioning training turf","スタジオ（ヨガ・ピラティス）":"yoga pilates studio class wellness","パーソナルプログラム":"personal training fitness coach program","ゴルフシミュレーター":"golf simulator indoor sport luxury","パワープレート":"power plate vibration training fitness","ラウンジ・リラクゼーション":"luxury lounge relaxation massage chair","インフィニティバス・サウナ":"infinity hot spring ocean view sauna bath","ピラティスリフォーマー":"pilates reformer machine exercise studio","会員募集・入会案内":"fitness membership gym join community","宿泊者向けフィットネス":"hotel fitness guest luxury resort workout","施設内覧":"fitness facility tour modern gym","マシンジム・ウェイトトレーニング":"gym weight training machine fitness equipment","体験レッスン":"trial lesson fitness first time experience","Collagen Beauty Method":"collagen beauty skincare wellness method","美彩心（びさいしん）リンパケア":"lymph massage body care beauty detox","グループリフォーマー®︎":"group pilates reformer class fitness","コラーゲントリートメントランプ":"collagen light therapy lamp beauty skin","ホットスタジオプログラム":"hot studio exercise yoga warm wellness","HADAKOI コラーゲンサプリ":"collagen supplement drink beauty health","グループリフォーマー養成コース":"group reformer instructor training course","パーソナルインストラクター養成":"personal pilates instructor training certification","更新研修":"instructor renewal training workshop","導入店舗・フランチャイズ":"franchise studio business opening","エビデンス・大学共同研究":"evidence research university collagen science","マスター教育者":"master instructor educator pilates training"};
 
 /* ═══════ COMPONENTS ═══════ */
 function Glass(p){var s=Object.assign({background:"rgba(255,255,255,0.92)",backdropFilter:"blur(24px)",WebkitBackdropFilter:"blur(24px)",border:"1px solid rgba(255,255,255,0.6)",borderRadius:18,padding:20,transition:"all 0.3s cubic-bezier(.4,0,.2,1)",boxShadow:"0 1px 4px rgba(0,0,0,0.03), 0 4px 16px rgba(0,0,0,0.025)",boxSizing:"border-box",minWidth:0},p.glow?{boxShadow:"0 0 0 1px "+p.glow+"18, 0 4px 20px "+p.glow+"10",borderColor:p.glow+"30"}:{},p.style||{});return <div className="glass-card" style={s} onDragOver={p.onDragOver} onDragLeave={p.onDragLeave} onDrop={p.onDrop}>{p.children}</div>;}
@@ -608,7 +608,7 @@ function App(){
     var audienceGuide={"20f":"トレンドワード、SNS映え要素、共感フレーズを活用","30f":"忙しい日常からの解放感、時短・効率的な自分磨きを訴求","40f":"上質さ・知的好奇心に響く表現。エイジングケアは前向きに","50p":"安心感・丁寧さ重視。健康寿命や生活の質向上を温かく","beg":"不安を払拭する言葉。「初めてでも」「やさしい」で安心感","exp":"専門性・本格派を示す。レベルアップ・深化を匂わせる","ins":"プロとしての成長、キャリア、スキル向上の具体像を提示","own":"ビジネス成長、投資対効果、市場優位性を論理的に訴求"};
     var pg=purposeGuide[p.id]||"";
     var ag=audienceGuide[au.id]||"";
-    return "【表記ルール】投稿文中はCPS/PS/HC/FIT/PSGA等のアルファベット略称を使わず、必ず日本語の正式名称「"+b.tag+"」を使うこと。\n\n【ブランド】"+b.name+"（"+b.desc+"）\n【カテゴリ】"+s+"\n【投稿目的】"+p.name+"（トーン: "+p.tone+"）\n → 目的別ガイド: "+pg+"\n【ターゲット】"+au.name+"（"+au.desc+"、文体: "+au.tone+"）\n → ターゲット別ガイド: "+ag+tl+strText;
+    return "【ブランド】"+b.name+"（"+b.desc+"）\n【カテゴリ】"+s+"\n【投稿目的】"+p.name+"（トーン: "+p.tone+"）\n → 目的別ガイド: "+pg+"\n【ターゲット】"+au.name+"（"+au.desc+"、文体: "+au.tone+"）\n → ターゲット別ガイド: "+ag+tl+strText;
   }
 
   /* ── AI全体生成 ── */
@@ -616,7 +616,7 @@ function App(){
     setBusy(true);notify("🪄 AI生成中...");
     var b=BRANDS[bi];
     try{
-      var res=await fetch(PROXY_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5-20250929",max_tokens:1000,messages:[{role:"user",content:
+      var res=await fetch(PROXY_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,messages:[{role:"user",content:
         "あなたはSNSマーケティングの専門家です。以下の条件でInstagram・X・Facebook向けの投稿を生成してください。\n\n"+
         aiContext()+
         "\n\n【重要：キャッチコピーとキャプションの関係】\n"+
@@ -631,7 +631,7 @@ function App(){
       }]})});
       var d=await res.json(),raw="";
       if(d.content)d.content.forEach(function(c){if(c.type==="text")raw+=c.text;});
-      console.log("AI raw response:",d);var cleaned=raw.replace(/```json|```/g,"").trim();if(!cleaned){var dbg=JSON.stringify(d).substring(0,250);throw new Error("AI応答が空: "+dbg);}var jsonMatch=cleaned.match(/\{[\s\S]*\}/);if(!jsonMatch){throw new Error("AI応答にJSONなし: "+cleaned.substring(0,150));}var j=JSON.parse(jsonMatch[0]);
+      var j=JSON.parse(raw.replace(/```json|```/g,"").trim());
       setCatch((j.catchCopy||"").replace(/\\n/g,"\n"));
       setCaption(j.caption||"");
       notify("✅ 生成完了!");
@@ -646,7 +646,7 @@ function App(){
     var b=BRANDS[bi];
     var prev=catchCopy?"現在のキャッチ:「"+catchCopy+"」\nこれとは違う表現で。":"";
     try{
-      var res=await fetch(PROXY_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5-20250929",max_tokens:300,messages:[{role:"user",content:
+      var res=await fetch(PROXY_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:300,messages:[{role:"user",content:
         "SNSマーケティングの専門家として、以下の条件でキャッチコピーだけを1つ生成。\n\n"+
         aiContext()+"\n\n"+prev+
         (caption?"\n\n【現在のキャプション冒頭】"+caption.substring(0,100)+"\nこのキャプションと連動するキャッチを作成。キャッチ=問い・感情の引き金、キャプション=その答え・具体。":"") +
@@ -654,7 +654,7 @@ function App(){
       }]})});
       var d=await res.json(),raw="";
       if(d.content)d.content.forEach(function(c){if(c.type==="text")raw+=c.text;});
-      console.log("AI raw response:",d);var cleaned=raw.replace(/```json|```/g,"").trim();if(!cleaned){var dbg=JSON.stringify(d).substring(0,250);throw new Error("AI応答が空: "+dbg);}var jsonMatch=cleaned.match(/\{[\s\S]*\}/);if(!jsonMatch){throw new Error("AI応答にJSONなし: "+cleaned.substring(0,150));}var j=JSON.parse(jsonMatch[0]);
+      var j=JSON.parse(raw.replace(/```json|```/g,"").trim());
       setCatch((j.catchCopy||"").replace(/\\n/g,"\n"));
       notify("✅ キャッチ再生成完了!");
     }catch(e){notify("⚠ エラー: "+e.message);}
@@ -668,14 +668,14 @@ function App(){
     var b=BRANDS[bi];
     var curCatch=catchCopy?"【現在のキャッチコピー】「"+catchCopy+"」\nこのキャッチが『問い・感情の引き金』。キャプションはその『答え・具体・解決策』として連動させてください。\nキャプション冒頭でキャッチの問いに応答→強みで裏付け→CTAで行動促進の流れで。":"";
     try{
-      var res=await fetch(PROXY_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5-20250929",max_tokens:800,messages:[{role:"user",content:
+      var res=await fetch(PROXY_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:800,messages:[{role:"user",content:
         "SNSマーケティングの専門家として、以下の条件でキャプションだけを1つ生成。\n\n"+
         aiContext()+"\n\n"+curCatch+
         "\n\n条件: 200-300字。キャッチコピーと連動したストーリーで強みを訴求。ハッシュタグ10-15個。#"+b.tag+"必須。絵文字OK。CTA含む。\nJSON形式のみ出力: {\"caption\":\"...\"}"
       }]})});
       var d=await res.json(),raw="";
       if(d.content)d.content.forEach(function(c){if(c.type==="text")raw+=c.text;});
-      console.log("AI raw response:",d);var cleaned=raw.replace(/```json|```/g,"").trim();if(!cleaned){var dbg=JSON.stringify(d).substring(0,250);throw new Error("AI応答が空: "+dbg);}var jsonMatch=cleaned.match(/\{[\s\S]*\}/);if(!jsonMatch){throw new Error("AI応答にJSONなし: "+cleaned.substring(0,150));}var j=JSON.parse(jsonMatch[0]);
+      var j=JSON.parse(raw.replace(/```json|```/g,"").trim());
       setCaption(j.caption||"");
       notify("✅ キャプション再生成完了!");
     }catch(e){notify("⚠ エラー: "+e.message);}
