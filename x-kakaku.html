@@ -315,11 +315,6 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN',sans-serif;b
     <button onclick="doLogin()">入 室</button>
     <div class="lb-err" id="pw-err"></div>
     </div>
-  <div class="f-group">
-  <div class="f-row">
-  ${fld('e-dmp1', editData.damper1||'', L('fldDmp1'), true)}
-  <div><label class="f-lbl">ダンパー — 原価</label>
-  <input class="f-inp field-factory" id="e-dmp2" value="${esc(editData.damper2||'')}"></div>
   </div>
   <div class="lb-loading" id="pw-loading"></div>
   </div>
@@ -1094,6 +1089,13 @@ function renderProdEditor(){
       <label class="f-lbl">SPRINGS</label>
       <textarea class="f-ta" id="e-spr">${esc(editData.springs||'')}</textarea>
     </div>
+  <div class="f-group">
+  <div class="f-row">
+  ${fld('e-dmp1', editData.damper1||'', L('fldDmp1'), true)}
+  <div><label class="f-lbl">ダンパー — 原価</label>
+  <input class="f-inp field-factory" id="e-dmp2" value="${esc(editData.damper2||'')}"></div>
+  </div>
+  </div>
     <hr class="f-div">
     <div class="f-sec">PHOTOS</div>
     ${renderPhotoGrid(editData.photos||[])}
