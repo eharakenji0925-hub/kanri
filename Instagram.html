@@ -608,7 +608,7 @@ function App(){
     var audienceGuide={"20f":"トレンドワード、SNS映え要素、共感フレーズを活用","30f":"忙しい日常からの解放感、時短・効率的な自分磨きを訴求","40f":"上質さ・知的好奇心に響く表現。エイジングケアは前向きに","50p":"安心感・丁寧さ重視。健康寿命や生活の質向上を温かく","beg":"不安を払拭する言葉。「初めてでも」「やさしい」で安心感","exp":"専門性・本格派を示す。レベルアップ・深化を匂わせる","ins":"プロとしての成長、キャリア、スキル向上の具体像を提示","own":"ビジネス成長、投資対効果、市場優位性を論理的に訴求"};
     var pg=purposeGuide[p.id]||"";
     var ag=audienceGuide[au.id]||"";
-    return "【投稿文中の表記ルール（最重要）】キャッチコピー・キャプション本文では、CPS / PS / HC / FIT / PSGA 等のアルファベット略称は絶対に使わないこと。必ず日本語の正式名称「"+b.tag+"」または店舗名のみで表記すること。例: ❌「CPS那覇新都心」→ ⭕「コラーゲンピラティススタジオ那覇新都心」、❌「PS清澄白河」→ ⭕「ピラティススタジオ-ルキナ清澄白河」\n\n【ブランド】"+b.name+"（"+b.desc+"）\n【カテゴリ】"+s+"\n【投稿目的】"+p.name+"（トーン: "+p.tone+"）\n → 目的別ガイド: "+pg+"\n【ターゲット】"+au.name+"（"+au.desc+"、文体: "+au.tone+"）\n → ターゲット別ガイド: "+ag+tl+strText;
+    return "【表記ルール】投稿文中はCPS/PS/HC/FIT/PSGA等のアルファベット略称を使わず、必ず日本語の正式名称「"+b.tag+"」を使うこと。\n\n【ブランド】"+b.name+"（"+b.desc+"）\n【カテゴリ】"+s+"\n【投稿目的】"+p.name+"（トーン: "+p.tone+"）\n → 目的別ガイド: "+pg+"\n【ターゲット】"+au.name+"（"+au.desc+"、文体: "+au.tone+"）\n → ターゲット別ガイド: "+ag+tl+strText;
   }
 
   /* ── AI全体生成 ── */
@@ -631,7 +631,7 @@ function App(){
       }]})});
       var d=await res.json(),raw="";
       if(d.content)d.content.forEach(function(c){if(c.type==="text")raw+=c.text;});
-      var j=JSON.parse(raw.replace(/```json|```/g,"").trim());
+      var cleaned=raw.replace(/```json|```/g,"").trim();if(!cleaned){throw new Error("AI応答が空です。再試行してください");}var jsonMatch=cleaned.match(/\{[\s\S]*\}/);if(!jsonMatch){throw new Error("AI応答にJSONなし: "+cleaned.substring(0,80));}var j=JSON.parse(jsonMatch[0]);
       setCatch((j.catchCopy||"").replace(/\\n/g,"\n"));
       setCaption(j.caption||"");
       notify("✅ 生成完了!");
@@ -654,7 +654,7 @@ function App(){
       }]})});
       var d=await res.json(),raw="";
       if(d.content)d.content.forEach(function(c){if(c.type==="text")raw+=c.text;});
-      var j=JSON.parse(raw.replace(/```json|```/g,"").trim());
+      var cleaned=raw.replace(/```json|```/g,"").trim();if(!cleaned){throw new Error("AI応答が空です。再試行してください");}var jsonMatch=cleaned.match(/\{[\s\S]*\}/);if(!jsonMatch){throw new Error("AI応答にJSONなし: "+cleaned.substring(0,80));}var j=JSON.parse(jsonMatch[0]);
       setCatch((j.catchCopy||"").replace(/\\n/g,"\n"));
       notify("✅ キャッチ再生成完了!");
     }catch(e){notify("⚠ エラー: "+e.message);}
@@ -675,7 +675,7 @@ function App(){
       }]})});
       var d=await res.json(),raw="";
       if(d.content)d.content.forEach(function(c){if(c.type==="text")raw+=c.text;});
-      var j=JSON.parse(raw.replace(/```json|```/g,"").trim());
+      var cleaned=raw.replace(/```json|```/g,"").trim();if(!cleaned){throw new Error("AI応答が空です。再試行してください");}var jsonMatch=cleaned.match(/\{[\s\S]*\}/);if(!jsonMatch){throw new Error("AI応答にJSONなし: "+cleaned.substring(0,80));}var j=JSON.parse(jsonMatch[0]);
       setCaption(j.caption||"");
       notify("✅ キャプション再生成完了!");
     }catch(e){notify("⚠ エラー: "+e.message);}
