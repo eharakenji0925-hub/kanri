@@ -616,7 +616,7 @@ function App(){
     setBusy(true);notify("🪄 AI生成中...");
     var b=BRANDS[bi];
     try{
-      var res=await fetch(PROXY_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,messages:[{role:"user",content:
+      var res=await fetch(PROXY_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5-20250929",max_tokens:1000,messages:[{role:"user",content:
         "あなたはSNSマーケティングの専門家です。以下の条件でInstagram・X・Facebook向けの投稿を生成してください。\n\n"+
         aiContext()+
         "\n\n【重要：キャッチコピーとキャプションの関係】\n"+
@@ -646,7 +646,7 @@ function App(){
     var b=BRANDS[bi];
     var prev=catchCopy?"現在のキャッチ:「"+catchCopy+"」\nこれとは違う表現で。":"";
     try{
-      var res=await fetch(PROXY_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:300,messages:[{role:"user",content:
+      var res=await fetch(PROXY_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5-20250929",max_tokens:300,messages:[{role:"user",content:
         "SNSマーケティングの専門家として、以下の条件でキャッチコピーだけを1つ生成。\n\n"+
         aiContext()+"\n\n"+prev+
         (caption?"\n\n【現在のキャプション冒頭】"+caption.substring(0,100)+"\nこのキャプションと連動するキャッチを作成。キャッチ=問い・感情の引き金、キャプション=その答え・具体。":"") +
@@ -668,7 +668,7 @@ function App(){
     var b=BRANDS[bi];
     var curCatch=catchCopy?"【現在のキャッチコピー】「"+catchCopy+"」\nこのキャッチが『問い・感情の引き金』。キャプションはその『答え・具体・解決策』として連動させてください。\nキャプション冒頭でキャッチの問いに応答→強みで裏付け→CTAで行動促進の流れで。":"";
     try{
-      var res=await fetch(PROXY_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:800,messages:[{role:"user",content:
+      var res=await fetch(PROXY_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-5-20250929",max_tokens:800,messages:[{role:"user",content:
         "SNSマーケティングの専門家として、以下の条件でキャプションだけを1つ生成。\n\n"+
         aiContext()+"\n\n"+curCatch+
         "\n\n条件: 200-300字。キャッチコピーと連動したストーリーで強みを訴求。ハッシュタグ10-15個。#"+b.tag+"必須。絵文字OK。CTA含む。\nJSON形式のみ出力: {\"caption\":\"...\"}"
