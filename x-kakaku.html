@@ -314,7 +314,14 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN',sans-serif;b
     <input type="password" id="pw-inp" placeholder="パスワードを入力" autocomplete="off">
     <button onclick="doLogin()">入 室</button>
     <div class="lb-err" id="pw-err"></div>
-    <div class="lb-loading" id="pw-loading"></div>
+    </div>
+  <div class="f-group">
+  <div class="f-row">
+  ${fld('e-dmp1', editData.damper1||'', L('fldDmp1'), true)}
+  <div><label class="f-lbl">ダンパー — 原価</label>
+  <input class="f-inp field-factory" id="e-dmp2" value="${esc(editData.damper2||'')}"></div>
+  </div>
+  <div class="lb-loading" id="pw-loading"></div>
   </div>
 </div>
 
@@ -448,7 +455,7 @@ var LANG = {
     fldWt:'重量', fldPw:'耐荷重', fldHt:'高さ',
     fldEva1:'EVA', fldEva2:'EVA価格',
     fldPnt1:'塗装', fldPnt2:'塗装価格',
-    fldSpr:'スプリング', fldPic:'画像URL', roNote:'（変更不可）',
+    fldSpr:'スプリング', fldDmp1:'ダンパー', fldDmp2:'ダンパー価格', fldPic:'画像URL', roNote:'（変更不可）',
     accName:'NAME', accNameJP:'日本語名', accSpec:'SPEC',
   },
   zh:{
@@ -472,7 +479,7 @@ var LANG = {
     fldWt:'净重', fldPw:'毛重', fldHt:'高度',
     fldEva1:'EVA — 批发', fldEva2:'EVA — 出厂',
     fldPnt1:'喷涂 — 批发', fldPnt2:'喷涂 — 出厂',
-    fldSpr:'弹簧配置', fldPic:'产品图片', roNote:'（只读）',
+    fldSpr:'弹簧配置', fldDmp1:'阻尼器 — 批发', fldDmp2:'阻尼器 — 出厂', fldPic:'产品图片', roNote:'（只读）',
     accName:'名称', accNameJP:'日文名称', accSpec:'规格',
   }
 };
@@ -667,9 +674,11 @@ function renderCard(p, si, pi){
   // オプション（大丸はeva1/paint1、工場はeva2/paint2）
   const eva  = S.mode==='f' ? (p.eva2||'') : (p.eva1||'');
   const pnt  = S.mode==='f' ? (p.paint2||'') : (p.paint1||'');
+      const dmp = S.mode==='f' ? (p.damper2||'') : (p.damper1||'');
   const optH = `<div class="opts">
     <span class="opt${eva.includes('N/A')?' na':''}">${eva}</span>
     <span class="opt${pnt.includes('N/A')?' na':''}">${pnt}</span>
+  ${dmp ? `<span class="opt">${dmp}</span>` : ''}
   </div>`;
 
   const sprH = p.springs
@@ -954,7 +963,7 @@ function stripP2(fullData){
   const d = JSON.parse(JSON.stringify(fullData));
   d.sections.forEach(sec => {
     sec.products.forEach(p => {
-      delete p.p2; delete p.eva2; delete p.paint2;
+      delete p.p2; delete p.eva2; delete p.paint2; delete p.damper2;
     });
   });
   [...d.accessories.small, ...d.accessories.large].forEach(item => {
@@ -978,7 +987,7 @@ function newProduct(si){
     id:'',nameEN:'',nameJP:'',desc:'',
     p1:'',p2:'',size:'',pack:'',weight:'',packW:'',height:'',
     eva1:'EVA +$',eva2:'EVA +$',paint1:'塗装 +$',paint2:'塗装 +$',
-    springs:'',photos:[]
+    springs:'',damper1:'',damper2:'',photos:[]
   };
   document.getElementById('ep-title').textContent = '新規製品を追加';
   renderProdEditor();
@@ -1193,6 +1202,8 @@ function applyEdit(){
       paint1:  (S.mode==='f') ? (orig.paint1||'') : document.getElementById('e-pnt1').value.trim(),
       paint2:  document.getElementById('e-pnt2').value.trim(),
       springs: document.getElementById('e-spr').value.trim(),
+          damper1: (S.mode==='f') ? (orig.damper1||'') : document.getElementById('e-dmp1').value.trim(),
+          damper2: document.getElementById('e-dmp2').value.trim(),
       photos:  editData.photos||[]
     };
     if(EDIT.pi === -1){
