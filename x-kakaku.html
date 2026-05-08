@@ -305,8 +305,8 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN',sans-serif;b
 
 .opt-wrap{display:inline-block;vertical-align:top;margin:0 8px 8px 0}
 .opt-yen{margin-top:2px;font-size:10px;line-height:1.4}
-.opt-p4{display:block;color:#1565c0;font-size:13px;margin-top:2px}
-.opt-p3{display:block;color:#2e7d32;font-weight:600;font-size:13px;margin-top:2px}
+.opt-p4{display:block;color:#1565c0;font-size:15px;margin-top:2px}
+.opt-p3{display:block;color:#2e7d32;font-weight:600;font-size:15px;margin-top:2px}
 </style>
 </head>
 <body>
@@ -681,8 +681,8 @@ function renderCard(p, si, pi){
         let yenHtml = '';
         if (S.mode !== 'f') {
           const parts = [];
-          if ((S.mode === 'a' || S.mode === 'd') && p4tax) parts.push('<span class="opt-p4">代理店 \u00a5' + p4tax.toLocaleString() + '</span>');
-          if (p3tax) parts.push('<span class="opt-p3">販売 \u00a5' + p3tax.toLocaleString() + '</span>');
+          if ((S.mode === 'a' || S.mode === 'd') && p4tax) parts.push('<span class="opt-p4">代理店(税込) \u00a5' + p4tax.toLocaleString() + '</span>');
+          if (p3tax) parts.push('<span class="opt-p3">販売(税込) \u00a5' + p3tax.toLocaleString() + '</span>');
           if (parts.length) yenHtml = '<div class="opt-yen">' + parts.join('') + '</div>';
         }
         return '<div class="opt-wrap"><span class="opt' + na + '">' + label + '</span>' + yenHtml + '</div>';
