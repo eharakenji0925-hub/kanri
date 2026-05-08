@@ -631,7 +631,7 @@ function App(){
       }]})});
       var d=await res.json(),raw="";
       if(d.content)d.content.forEach(function(c){if(c.type==="text")raw+=c.text;});
-      var cleaned=raw.replace(/```json|```/g,"").trim();if(!cleaned){throw new Error("AI応答が空です。再試行してください");}var jsonMatch=cleaned.match(/\{[\s\S]*\}/);if(!jsonMatch){throw new Error("AI応答にJSONなし: "+cleaned.substring(0,80));}var j=JSON.parse(jsonMatch[0]);
+      console.log("AI raw response:",d);var cleaned=raw.replace(/```json|```/g,"").trim();if(!cleaned){var dbg=JSON.stringify(d).substring(0,250);throw new Error("AI応答が空: "+dbg);}var jsonMatch=cleaned.match(/\{[\s\S]*\}/);if(!jsonMatch){throw new Error("AI応答にJSONなし: "+cleaned.substring(0,150));}var j=JSON.parse(jsonMatch[0]);
       setCatch((j.catchCopy||"").replace(/\\n/g,"\n"));
       setCaption(j.caption||"");
       notify("✅ 生成完了!");
@@ -654,7 +654,7 @@ function App(){
       }]})});
       var d=await res.json(),raw="";
       if(d.content)d.content.forEach(function(c){if(c.type==="text")raw+=c.text;});
-      var cleaned=raw.replace(/```json|```/g,"").trim();if(!cleaned){throw new Error("AI応答が空です。再試行してください");}var jsonMatch=cleaned.match(/\{[\s\S]*\}/);if(!jsonMatch){throw new Error("AI応答にJSONなし: "+cleaned.substring(0,80));}var j=JSON.parse(jsonMatch[0]);
+      console.log("AI raw response:",d);var cleaned=raw.replace(/```json|```/g,"").trim();if(!cleaned){var dbg=JSON.stringify(d).substring(0,250);throw new Error("AI応答が空: "+dbg);}var jsonMatch=cleaned.match(/\{[\s\S]*\}/);if(!jsonMatch){throw new Error("AI応答にJSONなし: "+cleaned.substring(0,150));}var j=JSON.parse(jsonMatch[0]);
       setCatch((j.catchCopy||"").replace(/\\n/g,"\n"));
       notify("✅ キャッチ再生成完了!");
     }catch(e){notify("⚠ エラー: "+e.message);}
@@ -675,7 +675,7 @@ function App(){
       }]})});
       var d=await res.json(),raw="";
       if(d.content)d.content.forEach(function(c){if(c.type==="text")raw+=c.text;});
-      var cleaned=raw.replace(/```json|```/g,"").trim();if(!cleaned){throw new Error("AI応答が空です。再試行してください");}var jsonMatch=cleaned.match(/\{[\s\S]*\}/);if(!jsonMatch){throw new Error("AI応答にJSONなし: "+cleaned.substring(0,80));}var j=JSON.parse(jsonMatch[0]);
+      console.log("AI raw response:",d);var cleaned=raw.replace(/```json|```/g,"").trim();if(!cleaned){var dbg=JSON.stringify(d).substring(0,250);throw new Error("AI応答が空: "+dbg);}var jsonMatch=cleaned.match(/\{[\s\S]*\}/);if(!jsonMatch){throw new Error("AI応答にJSONなし: "+cleaned.substring(0,150));}var j=JSON.parse(jsonMatch[0]);
       setCaption(j.caption||"");
       notify("✅ キャプション再生成完了!");
     }catch(e){notify("⚠ エラー: "+e.message);}
