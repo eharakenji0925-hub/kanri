@@ -305,8 +305,8 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN',sans-serif;b
 
 .opt-wrap{display:inline-block;vertical-align:top;margin:0 8px 8px 0}
 .opt-yen{margin-top:2px;font-size:10px;line-height:1.4}
-.opt-p4{display:block;color:#1565c0}
-.opt-p3{display:block;color:#2e7d32;font-weight:600}
+.opt-p4{display:block;color:#1565c0;font-size:13px;margin-top:2px}
+.opt-p3{display:block;color:#2e7d32;font-weight:600;font-size:13px;margin-top:2px}
 </style>
 </head>
 <body>
@@ -681,7 +681,7 @@ function renderCard(p, si, pi){
         let yenHtml = '';
         if (S.mode !== 'f') {
           const parts = [];
-          if (S.mode === 'a' && p4tax) parts.push('<span class="opt-p4">代理店 \u00a5' + p4tax.toLocaleString() + '</span>');
+          if ((S.mode === 'a' || S.mode === 'd') && p4tax) parts.push('<span class="opt-p4">代理店 \u00a5' + p4tax.toLocaleString() + '</span>');
           if (p3tax) parts.push('<span class="opt-p3">販売 \u00a5' + p3tax.toLocaleString() + '</span>');
           if (parts.length) yenHtml = '<div class="opt-yen">' + parts.join('') + '</div>';
         }
@@ -974,7 +974,7 @@ function stripP2(fullData){
   const d = JSON.parse(JSON.stringify(fullData));
   d.sections.forEach(sec => {
     sec.products.forEach(p => {
-      delete p.p2; delete p.eva2; delete p.paint2; delete p.damper2; delete p.evaP4tax; delete p.paintP4tax; delete p.damperP4tax;
+      delete p.p2; delete p.eva2; delete p.paint2; delete p.damper2; /* delete p.evaP4tax; */ /* delete p.paintP4tax; */ /* delete p.damperP4tax; */
     });
   });
   [...d.accessories.small, ...d.accessories.large].forEach(item => {
