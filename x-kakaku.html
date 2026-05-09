@@ -307,6 +307,66 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN',sans-serif;b
 .opt-yen{margin-top:2px;font-size:10px;line-height:1.4}
 .opt-p4{display:block;color:#1565c0;font-size:15px;margin-top:2px}
 .opt-p3{display:block;color:#2e7d32;font-weight:600;font-size:15px;margin-top:2px}
+
+/* ═══ 価格管理モード CSS ═══ */
+.pricing-btn{
+  padding:6px 14px;background:linear-gradient(90deg,#27ae60,#16a085);
+  border:none;border-radius:3px;color:#fff;font-size:11px;letter-spacing:1px;
+  font-weight:700;cursor:pointer;transition:all .2s;
+}
+.pricing-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(39,174,96,.3)}
+
+.pricing-modal{position:fixed;inset:0;z-index:3000;display:flex;align-items:center;justify-content:center}
+.pricing-modal-bg{position:absolute;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(4px)}
+.pricing-modal-wrap{position:relative;width:min(90vw,800px);max-height:90vh;background:#1a1a1a;border:1px solid var(--gold);border-radius:6px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+
+.pricing-modal-head{padding:20px 28px;border-bottom:1px solid rgba(255,255,255,.1);background:linear-gradient(90deg,#1a1a1a,#2a2a1a);display:flex;align-items:center;justify-content:space-between}
+.pricing-title{font-size:18px;color:var(--gold);letter-spacing:3px;font-weight:300}
+.pricing-sub{font-size:11px;color:rgba(255,255,255,.5);margin-top:4px;letter-spacing:1px}
+.pricing-close{padding:8px 12px;background:transparent;border:1px solid rgba(255,255,255,.3);border-radius:3px;color:rgba(255,255,255,.7);cursor:pointer;font-size:14px}
+.pricing-close:hover{border-color:#fff;color:#fff}
+
+.pricing-modal-body{padding:24px 28px;overflow-y:auto;flex:1;color:#fff}
+.pricing-section{margin-bottom:28px}
+.pricing-sec-lbl{font-size:11px;letter-spacing:3px;color:var(--gold);margin-bottom:14px;font-weight:700}
+.pricing-row{display:flex;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.pricing-row label{flex:0 0 200px;font-size:13px;color:rgba(255,255,255,.85);letter-spacing:1px}
+.pricing-row input[type="number"]{flex:0 0 100px;padding:8px 12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.2);border-radius:3px;color:#fff;font-size:14px;text-align:center}
+.pricing-row input[type="number"]:focus{outline:none;border-color:var(--gold)}
+
+.pr-btn-primary{padding:8px 16px;background:var(--gold);border:none;border-radius:3px;color:#111;font-size:11px;font-weight:700;letter-spacing:1px;cursor:pointer}
+.pr-btn-primary:hover{background:var(--gold-lt)}
+.pr-btn-secondary{padding:8px 16px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.3);border-radius:3px;color:#fff;font-size:11px;cursor:pointer}
+.pr-btn-secondary:hover{background:rgba(255,255,255,.2)}
+
+#pr-product-list{display:flex;flex-direction:column;gap:8px;max-height:400px;overflow-y:auto;padding:8px;background:rgba(0,0,0,.3);border-radius:3px}
+.pr-prod{padding:12px;background:rgba(255,255,255,.04);border-left:3px solid var(--gold);border-radius:2px;font-size:12px}
+.pr-prod-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.pr-prod-name{font-weight:700;color:var(--gold);font-size:13px}
+.pr-prod-id{color:rgba(255,255,255,.5);font-size:11px}
+.pr-prod-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px}
+.pr-prod-cell{display:flex;flex-direction:column;gap:4px}
+.pr-prod-cell label{font-size:10px;color:rgba(255,255,255,.6);letter-spacing:1px}
+.pr-prod-cell input{padding:6px 8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:2px;color:#fff;font-size:13px;text-align:center}
+.pr-prod-cell input:focus{outline:none;border-color:var(--gold)}
+.pr-prod-cell .pr-calc{padding:6px 8px;background:rgba(196,164,90,.1);border:1px solid rgba(196,164,90,.3);border-radius:2px;color:var(--gold);font-size:12px;text-align:center;font-weight:600}
+
+.pricing-output-row{display:flex;gap:10px;flex-wrap:wrap}
+.pr-btn-export{padding:10px 18px;background:rgba(76,175,80,.15);border:1px solid rgba(76,175,80,.4);border-radius:3px;color:#81c784;font-size:11px;font-weight:600;letter-spacing:1px;cursor:pointer;transition:all .2s}
+.pr-btn-export:hover{background:rgba(76,175,80,.25);color:#a5d6a7}
+
+.pricing-modal-foot{padding:16px 28px;border-top:1px solid rgba(255,255,255,.1);background:#0d0d0d;display:flex;justify-content:flex-end;gap:10px}
+.pr-btn-save{padding:10px 24px;background:var(--gold);border:none;border-radius:3px;color:#111;font-size:12px;font-weight:700;letter-spacing:2px;cursor:pointer}
+.pr-btn-save:hover{background:var(--gold-lt)}
+.pr-btn-cancel{padding:10px 20px;background:transparent;border:1px solid rgba(255,255,255,.3);border-radius:3px;color:rgba(255,255,255,.7);font-size:12px;cursor:pointer}
+
+@media(max-width:640px){
+  .pricing-modal-wrap{width:96vw;max-height:96vh}
+  .pricing-modal-body{padding:16px}
+  .pricing-row label{flex:0 0 100%}
+  .pr-prod-grid{grid-template-columns:1fr 1fr}
+}
+
 </style>
 </head>
 <body>
@@ -331,6 +391,7 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN',sans-serif;b
     <div class="c-brand">axiscore &nbsp; X Series</div>
     <div style="display:flex;align-items:center;gap:12px">
       <div class="c-badge" id="mode-badge"></div>
+      <button id="pricing-btn" class="pricing-btn" onclick="openPricingModal()" title="価格管理" style="display:none">💴 価格管理</button>
       <button id="logout-btn" onclick="doLogout()" title="ログアウト">ログアウト</button>
     </div>
   </header>
@@ -346,6 +407,72 @@ body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN',sans-serif;b
   </div>
   <main id="cat-main"></main>
   <footer class="c-foot">AXISCORE X Series — Professional Pilates Equipment</footer>
+
+  <!-- ═══ 価格管理モーダル（NEW） ═══ -->
+  <div id="pricing-modal" class="pricing-modal" style="display:none">
+    <div class="pricing-modal-bg" onclick="closePricingModal()"></div>
+    <div class="pricing-modal-wrap">
+      <div class="pricing-modal-head">
+        <div>
+          <div class="pricing-title">💴 販売価格 管理モード</div>
+          <div class="pricing-sub">為替・倍率を設定し、自動計算します</div>
+        </div>
+        <button class="pricing-close" onclick="closePricingModal()">✕</button>
+      </div>
+
+      <div class="pricing-modal-body" id="pricing-body">
+        <!-- 全体設定セクション -->
+        <div class="pricing-section">
+          <div class="pricing-sec-lbl">━━ 全体設定 ━━</div>
+          <div class="pricing-row">
+            <label>為替レート（円/USD）</label>
+            <input type="number" id="pr-rate" value="160" step="1" min="100" max="200">
+            <button onclick="recalcAllPrices()" class="pr-btn-primary">🔄 全商品を再計算</button>
+          </div>
+          <div class="pricing-row">
+            <label>消費税率（%）</label>
+            <input type="number" id="pr-tax" value="10" step="0.1" min="0" max="20">
+          </div>
+        </div>
+
+        <!-- 一括設定セクション -->
+        <div class="pricing-section">
+          <div class="pricing-sec-lbl">━━ 一括設定（全商品） ━━</div>
+          <div class="pricing-row">
+            <label>代理店倍率を全商品に</label>
+            <input type="number" id="pr-bulk-agency" value="1.8" step="0.1" min="1" max="10">
+            <button onclick="bulkSetMultiplier('agency')" class="pr-btn-secondary">適用</button>
+          </div>
+          <div class="pricing-row">
+            <label>小売倍率を全商品に</label>
+            <input type="number" id="pr-bulk-retail" value="3" step="0.1" min="1" max="10">
+            <button onclick="bulkSetMultiplier('retail')" class="pr-btn-secondary">適用</button>
+          </div>
+        </div>
+
+        <!-- 商品別設定セクション -->
+        <div class="pricing-section">
+          <div class="pricing-sec-lbl">━━ 商品別設定 ━━</div>
+          <div id="pr-product-list"></div>
+        </div>
+
+        <!-- 出力セクション -->
+        <div class="pricing-section">
+          <div class="pricing-sec-lbl">━━ 出力 ━━</div>
+          <div class="pricing-output-row">
+            <button onclick="exportPricingExcel()" class="pr-btn-export">📊 Excel出力</button>
+            <button onclick="exportPricingJSON()" class="pr-btn-export">📋 lineup.html用 JSON</button>
+            <button onclick="exportPricingCSV()" class="pr-btn-export">🛒 BASE Shop用 CSV</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="pricing-modal-foot">
+        <button onclick="savePricingSettings()" class="pr-btn-save">💾 GitHubに保存</button>
+        <button onclick="closePricingModal()" class="pr-btn-cancel">閉じる</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- TOAST -->
@@ -409,7 +536,8 @@ var REPO_NAME  = 'xseries';
 // 2つのJSONファイル
 var FILES = {
   full:    { name:'products_full.json',    sha:null },
-  daimaru: { name:'products_daimaru.json', sha:null }
+  daimaru: { name:'products_daimaru.json', sha:null },
+  pricing: { name:'pricing.json',          sha:null }  // NEW: 価格管理データ
 };
 
 var RAW = (fname) =>
@@ -530,6 +658,12 @@ async function doLogin(){
   if(info.canEdit){
     document.getElementById('admin-fab').classList.add('show');
     document.getElementById('catalog').classList.add('can-edit');
+  }
+  
+  // 価格管理ボタンは大丸・江原のみ表示
+  if(S.mode === 'd' || S.mode === 'a'){
+    document.getElementById('pricing-btn').style.display = 'inline-block';
+    loadPricingSettings();
   }
 }
 
@@ -1434,6 +1568,344 @@ function clearP3Block(key){
 
 function cancelP3Block(key){
   renderCatalog();
+}
+
+// ═══════════════════════════════════════════════════════════
+// 💴 価格管理モード（v2 NEW）
+// ═══════════════════════════════════════════════════════════
+var PRICING = {
+  exchangeRate: 160,
+  taxRate: 10,
+  multipliers: {} // { "X01-A": { agency: 1.8, retail: 3 }, ... }
+};
+
+// GitHubから価格設定を読込（PAT不要・誰でも読める）
+async function loadPricingFromGithub(){
+  try {
+    var r = await fetch(RAW(FILES.pricing.name) + '?t=' + Date.now());
+    if(r.ok){
+      var data = await r.json();
+      PRICING.exchangeRate = data.exchangeRate || 160;
+      PRICING.taxRate      = data.taxRate || 10;
+      PRICING.multipliers  = data.multipliers || {};
+      console.log('✅ pricing.json を GitHub から読み込みました');
+      return true;
+    }
+  } catch(e){ console.warn('GitHub pricing.json 読込失敗、ローカルにフォールバック', e); }
+  return false;
+}
+
+// ローカル設定を読込（GitHub失敗時のフォールバック）
+function loadPricingLocal(){
+  try {
+    var saved = localStorage.getItem('PRICING_SETTINGS');
+    if(saved){
+      var obj = JSON.parse(saved);
+      PRICING.exchangeRate = obj.exchangeRate || 160;
+      PRICING.taxRate      = obj.taxRate || 10;
+      PRICING.multipliers  = obj.multipliers || {};
+    }
+  } catch(e){ console.warn('価格設定読込エラー', e); }
+}
+
+// 起動時呼出（GitHub→ローカルの順）
+async function loadPricingSettings(){
+  var ok = await loadPricingFromGithub();
+  if(!ok) loadPricingLocal();
+}
+
+// 江原のみ：GitHubに保存
+async function savePricingSettings(){
+  if(S.mode !== 'a'){
+    alert('価格設定の保存は江原管理者のみ可能です');
+    return;
+  }
+  if(!S.token){
+    alert('GitHub PAT が未設定です。管理パネルでトークンを設定してください。');
+    return;
+  }
+  
+  // モーダルからの設定を取得
+  var rate = parseFloat(document.getElementById('pr-rate').value) || 160;
+  var tax  = parseFloat(document.getElementById('pr-tax').value) || 10;
+  PRICING.exchangeRate = rate;
+  PRICING.taxRate      = tax;
+  
+  // 商品別倍率を取得
+  var inputs = document.querySelectorAll('[data-pr-product]');
+  inputs.forEach(function(inp){
+    var pid  = inp.dataset.prProduct;
+    var type = inp.dataset.prType;
+    var val  = parseFloat(inp.value);
+    if(!isNaN(val) && val > 0){
+      if(!PRICING.multipliers[pid]) PRICING.multipliers[pid] = {agency:1.8, retail:3};
+      PRICING.multipliers[pid][type] = val;
+    }
+  });
+  
+  // ローカルにも保存
+  localStorage.setItem('PRICING_SETTINGS', JSON.stringify(PRICING));
+  
+  // GitHubに保存
+  var btn = document.querySelector('.pr-btn-save');
+  if(btn){ btn.disabled = true; btn.textContent = '🔄 GitHub保存中...'; }
+  
+  var ok = await commitFile('pricing', PRICING);
+  
+  if(btn){ btn.disabled = false; btn.textContent = '💾 GitHubに保存'; }
+  
+  if(ok){
+    alert('💾 GitHubに保存しました\n\n為替: ' + PRICING.exchangeRate + '円/USD\n税率: ' + PRICING.taxRate + '%\n\n大丸社員もアクセス時に最新値が読み込まれます。');
+  } else {
+    alert('⚠ GitHub保存に失敗しました（ローカルには保存済み）');
+  }
+}
+
+function getProductMultiplier(pid){
+  return PRICING.multipliers[pid] || {agency:1.8, retail:3};
+}
+
+function calcProductPrices(p){
+  var usdRaw = String(p.p1||'').replace(/[^0-9.]/g,'');
+  var usd = parseFloat(usdRaw) || 0;
+  var jpyCost = Math.round(usd * PRICING.exchangeRate);
+  var mult = getProductMultiplier(p.id);
+  var taxFactor = 1 + (PRICING.taxRate / 100);
+  var agencyTax = Math.round(jpyCost * mult.agency * taxFactor);
+  var retailTax = Math.round(jpyCost * mult.retail * taxFactor);
+  return {
+    usd: usd,
+    jpyCost: jpyCost,
+    agencyJpy: Math.round(jpyCost * mult.agency),
+    agencyTax: agencyTax,
+    retailJpy: Math.round(jpyCost * mult.retail),
+    retailTax: retailTax,
+    multAgency: mult.agency,
+    multRetail: mult.retail,
+  };
+}
+
+async function openPricingModal(){
+  // 開くたびにGitHubから最新を取得
+  await loadPricingSettings();
+  document.getElementById('pr-rate').value = PRICING.exchangeRate;
+  document.getElementById('pr-tax').value  = PRICING.taxRate;
+  renderPricingProductList();
+  applyPricingRoleUI();  // 役割に応じてUIを切替
+  document.getElementById('pricing-modal').style.display = 'flex';
+}
+
+function closePricingModal(){
+  document.getElementById('pricing-modal').style.display = 'none';
+}
+
+// 大丸ロールでは閲覧モード、江原ロールでは編集モード
+function applyPricingRoleUI(){
+  var isViewer = (S.mode === 'd');  // 大丸 = 閲覧のみ
+  var modal = document.getElementById('pricing-modal');
+  if(!modal) return;
+  
+  // タイトル
+  var titleEl = modal.querySelector('.pricing-title');
+  if(titleEl) titleEl.textContent = isViewer ? '👀 販売価格 閲覧モード' : '💴 販売価格 管理モード';
+  var subEl = modal.querySelector('.pricing-sub');
+  if(subEl) subEl.textContent = isViewer 
+    ? '江原管理者が設定した最新の販売価格を確認できます'
+    : '為替・倍率を設定し、自動計算します';
+  
+  // 入力欄を読み取り専用に
+  var inputs = modal.querySelectorAll('input[type="number"]');
+  inputs.forEach(function(inp){
+    inp.readOnly = isViewer;
+    inp.disabled = isViewer;
+    if(isViewer) inp.style.opacity = '0.7';
+  });
+  
+  // 保存ボタンと一括設定ボタンを大丸では非表示
+  var primaryBtns = modal.querySelectorAll('.pr-btn-primary, .pr-btn-secondary, .pr-btn-save');
+  primaryBtns.forEach(function(btn){
+    btn.style.display = isViewer ? 'none' : '';
+  });
+  
+  // 一括設定セクションを大丸では非表示
+  var bulkSec = modal.querySelectorAll('.pricing-section')[1]; // 2番目のセクション
+  if(bulkSec) bulkSec.style.display = isViewer ? 'none' : '';
+  
+  // Excel出力は大丸でも可能（要望通り）
+  // JSON/BASE CSV出力は江原のみ
+  var jsonBtn = document.querySelector('[onclick="exportPricingJSON()"]');
+  var csvBtn  = document.querySelector('[onclick="exportPricingCSV()"]');
+  if(jsonBtn) jsonBtn.style.display = isViewer ? 'none' : '';
+  if(csvBtn)  csvBtn.style.display  = isViewer ? 'none' : '';
+}
+
+function renderPricingProductList(){
+  if(!S.data || !S.data.sections) return;
+  var html = '';
+  S.data.sections.forEach(function(sec){
+    if(!sec.products) return;
+    sec.products.forEach(function(p){
+      if(!p.id || p.id === '—' || p.id === '\u2014') return;
+      var calc = calcProductPrices(p);
+      var pid = p.id;
+      html += '<div class="pr-prod">';
+      html += '<div class="pr-prod-head">';
+      html += '<span class="pr-prod-name">' + esc(p.nameEN || '') + '</span>';
+      html += '<span class="pr-prod-id">' + esc(pid) + '</span>';
+      html += '</div>';
+      html += '<div class="pr-prod-grid">';
+      html += '<div class="pr-prod-cell"><label>仕入USD</label><div class="pr-calc">$' + calc.usd + '</div></div>';
+      html += '<div class="pr-prod-cell"><label>円換算</label><div class="pr-calc">¥' + calc.jpyCost.toLocaleString() + '</div></div>';
+      html += '<div class="pr-prod-cell"><label>代理店倍率</label><input type="number" step="0.1" min="1" max="10" value="' + calc.multAgency + '" data-pr-product="' + esc(pid) + '" data-pr-type="agency" oninput="updatePricingPreview(\'' + esc(pid) + '\')"></div>';
+      html += '<div class="pr-prod-cell"><label>代理店税込</label><div class="pr-calc" id="pr-agency-' + esc(pid) + '">¥' + calc.agencyTax.toLocaleString() + '</div></div>';
+      html += '<div class="pr-prod-cell"><label>小売倍率</label><input type="number" step="0.1" min="1" max="10" value="' + calc.multRetail + '" data-pr-product="' + esc(pid) + '" data-pr-type="retail" oninput="updatePricingPreview(\'' + esc(pid) + '\')"></div>';
+      html += '<div class="pr-prod-cell"><label>小売税込</label><div class="pr-calc" id="pr-retail-' + esc(pid) + '">¥' + calc.retailTax.toLocaleString() + '</div></div>';
+      html += '</div>';
+      html += '</div>';
+    });
+  });
+  document.getElementById('pr-product-list').innerHTML = html;
+}
+
+function updatePricingPreview(pid){
+  var rate = parseFloat(document.getElementById('pr-rate').value) || 160;
+  var tax  = parseFloat(document.getElementById('pr-tax').value) || 10;
+  var agencyInp = document.querySelector('[data-pr-product="' + pid + '"][data-pr-type="agency"]');
+  var retailInp = document.querySelector('[data-pr-product="' + pid + '"][data-pr-type="retail"]');
+  if(!agencyInp || !retailInp) return;
+  var agencyMult = parseFloat(agencyInp.value) || 1.8;
+  var retailMult = parseFloat(retailInp.value) || 3;
+  
+  var p = findProductById(pid);
+  if(!p) return;
+  var usd = parseFloat(String(p.p1||'').replace(/[^0-9.]/g,'')) || 0;
+  var jpyCost = usd * rate;
+  var taxFactor = 1 + (tax/100);
+  var agencyTax = Math.round(jpyCost * agencyMult * taxFactor);
+  var retailTax = Math.round(jpyCost * retailMult * taxFactor);
+  
+  var ag = document.getElementById('pr-agency-' + pid);
+  var rt = document.getElementById('pr-retail-' + pid);
+  if(ag) ag.textContent = '¥' + agencyTax.toLocaleString();
+  if(rt) rt.textContent = '¥' + retailTax.toLocaleString();
+}
+
+function findProductById(pid){
+  if(!S.data || !S.data.sections) return null;
+  for(var i = 0; i < S.data.sections.length; i++){
+    var sec = S.data.sections[i];
+    if(!sec.products) continue;
+    for(var j = 0; j < sec.products.length; j++){
+      if(sec.products[j].id === pid) return sec.products[j];
+    }
+  }
+  return null;
+}
+
+function bulkSetMultiplier(type){
+  if(S.mode !== 'a') return;
+  var inpId = type === 'agency' ? 'pr-bulk-agency' : 'pr-bulk-retail';
+  var val = parseFloat(document.getElementById(inpId).value) || (type === 'agency' ? 1.8 : 3);
+  var inputs = document.querySelectorAll('[data-pr-type="' + type + '"]');
+  inputs.forEach(function(inp){
+    inp.value = val;
+    var pid = inp.dataset.prProduct;
+    updatePricingPreview(pid);
+  });
+}
+
+function recalcAllPrices(){
+  var inputs = document.querySelectorAll('[data-pr-product]');
+  var pids = {};
+  inputs.forEach(function(inp){ pids[inp.dataset.prProduct] = true; });
+  Object.keys(pids).forEach(function(pid){
+    updatePricingPreview(pid);
+  });
+}
+
+// ═══ 出力機能 ═══
+function exportPricingExcel(){
+  // 大丸も使える（要望通り）
+  var lines = [];
+  lines.push('カテゴリ,型番,マシン名称,仕入USD,円換算,代理店倍率,代理店価格,代理店税込,小売倍率,小売価格,小売税込');
+  if(!S.data || !S.data.sections) return;
+  S.data.sections.forEach(function(sec){
+    if(!sec.products) return;
+    sec.products.forEach(function(p){
+      if(!p.id || p.id === '—' || p.id === '\u2014') return;
+      var calc = calcProductPrices(p);
+      lines.push([
+        sec.jp || sec.en, p.id, p.nameEN, calc.usd, calc.jpyCost,
+        calc.multAgency, calc.agencyJpy, calc.agencyTax,
+        calc.multRetail, calc.retailJpy, calc.retailTax
+      ].join(','));
+    });
+  });
+  // BOM付きUTF-8でExcel互換
+  downloadFile('axiscore_pricing_' + dateStr() + '.csv', '\uFEFF' + lines.join('\n'), 'text/csv;charset=utf-8');
+}
+
+function exportPricingJSON(){
+  if(S.mode !== 'a') return;
+  var products = [];
+  if(!S.data || !S.data.sections) return;
+  S.data.sections.forEach(function(sec){
+    if(!sec.products) return;
+    sec.products.forEach(function(p){
+      if(!p.id || p.id === '—' || p.id === '\u2014') return;
+      var calc = calcProductPrices(p);
+      products.push({
+        model: p.id,
+        nameEn: p.nameEN,
+        nameJp: p.nameJP,
+        priceUSD: calc.usd,
+        priceJpy: calc.retailTax,
+        agencyJpy: calc.agencyTax,
+      });
+    });
+  });
+  var json = JSON.stringify({
+    exchangeRate: PRICING.exchangeRate,
+    taxRate: PRICING.taxRate,
+    products: products
+  }, null, 2);
+  downloadFile('lineup_data_' + dateStr() + '.json', json, 'application/json');
+}
+
+function exportPricingCSV(){
+  if(S.mode !== 'a') return;
+  var lines = [];
+  lines.push('商品名,価格,在庫,説明,カテゴリ');
+  if(!S.data || !S.data.sections) return;
+  S.data.sections.forEach(function(sec){
+    if(!sec.products) return;
+    sec.products.forEach(function(p){
+      if(!p.id || p.id === '—' || p.id === '\u2014') return;
+      var calc = calcProductPrices(p);
+      var name = '【Brand X】' + p.id + ' / ' + (p.nameEN || '');
+      var desc = (p.desc || '').replace(/[\r\n]+/g, ' ');
+      lines.push([
+        '"' + name + '"', calc.retailTax, 1,
+        '"' + desc + '"', '"' + (sec.jp || sec.en) + '"'
+      ].join(','));
+    });
+  });
+  downloadFile('base_shop_' + dateStr() + '.csv', '\uFEFF' + lines.join('\n'), 'text/csv;charset=utf-8');
+}
+
+function downloadFile(filename, content, mime){
+  var blob = new Blob([content], {type: mime});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 100);
+}
+
+function dateStr(){
+  var d = new Date();
+  return d.getFullYear() + ('0'+(d.getMonth()+1)).slice(-2) + ('0'+d.getDate()).slice(-2);
 }
 
 
